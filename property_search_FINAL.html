@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Property Search</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #006B54;
+    --primary-dark: #004D3B;
+    --primary-light: rgba(0,107,84,0.08);
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #111111;
+    --text-secondary: #555555;
+    --text-tertiary: #888888;
+    --border: #e0e0e0;
+    --red: #c53030;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); }
+  input:focus, select:focus { outline: none; border-color: var(--primary) !important; }
+
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--primary); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ── House placeholder image (base64) for PP-1001 sizing example ── */
+const HOUSE_IMG = 'data:image/jpeg;base64,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';
+
+/* ── Master Color System ── */
+const STATUS_COLORS = {
+  available: { label: 'Available', bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', solid: '#006B54' },
+  on_hold:   { label: 'On Hold',   bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', solid: '#D97706' },
+  booked:    { label: 'Booked',    bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD', solid: '#2563EB' },
+};
+
+const TYPE_COLORS = {
+  Corporate:     { bg: '#F1F5F9', text: '#475569', border: '#94A3B8' },
+  Private:       { bg: '#FEF7ED', text: '#92400E', border: '#FDBA74' },
+  Local:         { bg: '#ECFEFF', text: '#0E7490', border: '#67E8F9' },
+  Institutional: { bg: '#F5F3FF', text: '#6D28D9', border: '#C4B5FD' },
+};
+
+const PROPERTIES = [
+  {
+    id: "PP-1001", address: "142 Berkman Dr", neighborhood: "West Augusta",
+    bedrooms: 5, bathrooms: 4, maxGuests: 12, sqft: 3800,
+    pricePerNight: 3200, totalPrice: 22400,
+    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Covered Patio", "Golf Cart", "WiFi"],
+    status: "available", type: "Corporate", distanceMi: 1.2, walkable: true,
+    description: "Stunning 5BR estate just steps from Augusta National. Recently renovated chef's kitchen, heated pool, and private backyard perfect for entertaining.",
+    rating: 4.9, reviews: 8, yearListed: 2019,
+    highlight: "Walking distance to Gate 6",
+    imgHue: 142
+  },
+  {
+    id: "PP-1002", address: "308 Wheeler Rd", neighborhood: "National Hills",
+    bedrooms: 4, bathrooms: 3, maxGuests: 10, sqft: 3200,
+    pricePerNight: 2800, totalPrice: 19600,
+    amenities: ["Pool", "Chef's Kitchen", "Fireplace", "WiFi", "Screened Porch"],
+    status: "available", type: "Corporate", distanceMi: 0.8, walkable: true,
+    description: "Classic National Hills charmer with pool and mature landscaping. Walking distance to the course. Booked by Delta three consecutive years.",
+    rating: 4.8, reviews: 6, yearListed: 2020,
+    highlight: "Delta's #1 pick since 2024",
+    imgHue: 160
+  },
+  {
+    id: "PP-1003", address: "1547 Monte Sano Ave", neighborhood: "Summerville",
+    bedrooms: 6, bathrooms: 5, maxGuests: 14, sqft: 4500,
+    pricePerNight: 4100, totalPrice: 28700,
+    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio"],
+    status: "available", type: "Private", distanceMi: 2.1, walkable: false,
+    description: "Premier Summerville estate. Home theater, wine cellar, and resort-style pool. Ideal for large groups needing space and privacy.",
+    rating: 5.0, reviews: 4, yearListed: 2021,
+    highlight: "Perfect 5.0 rating",
+    imgHue: 180
+  },
+  {
+    id: "PP-1004", address: "2205 Henry St", neighborhood: "Olde Town",
+    bedrooms: 3, bathrooms: 2, maxGuests: 6, sqft: 2100,
+    pricePerNight: 1800, totalPrice: 12600,
+    amenities: ["Patio", "Fireplace", "WiFi", "Chef's Kitchen"],
+    status: "available", type: "Private", distanceMi: 3.4, walkable: false,
+    description: "Beautifully restored historic home in Olde Town. Cozy 3BR with character, perfect for smaller groups wanting a quieter Augusta experience.",
+    rating: 4.7, reviews: 5, yearListed: 2020,
+    highlight: "Historic district charm",
+    imgHue: 30
+  },
+  {
+    id: "PP-1005", address: "789 Milledge Rd", neighborhood: "West Augusta",
+    bedrooms: 4, bathrooms: 3.5, maxGuests: 8, sqft: 3000,
+    pricePerNight: 2500, totalPrice: 17500,
+    amenities: ["Pool", "Chef's Kitchen", "WiFi", "Golf Cart", "Patio"],
+    status: "available", type: "Local", distanceMi: 1.5, walkable: true,
+    description: "Modern 4BR with saltwater pool and open-concept living. Golf cart included. Five-minute walk to Washington Road restaurants.",
+    rating: 4.6, reviews: 3, yearListed: 2022,
+    highlight: "Golf cart included",
+    imgHue: 200
+  },
+  {
+    id: "PP-1006", address: "411 Cumming Rd", neighborhood: "National Hills",
+    bedrooms: 5, bathrooms: 4, maxGuests: 12, sqft: 3600,
+    pricePerNight: 3500, totalPrice: 24500,
+    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "WiFi", "Patio", "Fireplace"],
+    status: "on_hold", type: "Corporate", distanceMi: 0.6, walkable: true,
+    description: "Flagship National Hills property. Closest walkable home to Gate 6. Hot tub, theater room, and professional-grade outdoor kitchen.",
+    rating: 4.9, reviews: 7, yearListed: 2018,
+    highlight: "Closest to Gate 6",
+    imgHue: 120
+  },
+  {
+    id: "PP-1007", address: "925 Lake Olmstead Dr", neighborhood: "Lake Olmstead",
+    bedrooms: 4, bathrooms: 3, maxGuests: 10, sqft: 2800,
+    pricePerNight: 2200, totalPrice: 15400,
+    amenities: ["Lake View", "Dock", "Patio", "Chef's Kitchen", "WiFi", "Fireplace"],
+    status: "available", type: "Private", distanceMi: 4.2, walkable: false,
+    description: "Lakefront retreat with private dock and stunning water views. Peaceful setting ten minutes from the course.",
+    rating: 4.5, reviews: 2, yearListed: 2023,
+    highlight: "Private lakefront dock",
+    imgHue: 220
+  },
+  {
+    id: "PP-1008", address: "1803 Highland Ave", neighborhood: "Summerville",
+    bedrooms: 3, bathrooms: 2.5, maxGuests: 7, sqft: 2400,
+    pricePerNight: 2000, totalPrice: 14000,
+    amenities: ["Pool", "WiFi", "Screened Porch", "Chef's Kitchen", "Patio"],
+    status: "available", type: "Local", distanceMi: 2.5, walkable: false,
+    description: "Charming Summerville bungalow with pool and screened porch. Tree-lined street, walkable to local restaurants.",
+    rating: 4.4, reviews: 3, yearListed: 2022,
+    highlight: "Tree-lined Summerville street",
+    imgHue: 90
+  },
+  {
+    id: "PP-1009", address: "556 Berckmans Rd", neighborhood: "West Augusta",
+    bedrooms: 7, bathrooms: 6, maxGuests: 18, sqft: 5200,
+    pricePerNight: 5500, totalPrice: 38500,
+    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio", "Fireplace", "Gym"],
+    status: "available", type: "Institutional", distanceMi: 0.4, walkable: true,
+    description: "Our crown jewel. 7BR estate on Berckmans Road — literally adjacent to Augusta National. Full gym, theater, wine cellar, resort pool.",
+    rating: 5.0, reviews: 5, yearListed: 2017,
+    highlight: "Adjacent to Augusta National",
+    imgHue: 155
+  },
+  {
+    id: "PP-1010", address: "2100 Walton Way", neighborhood: "Summerville",
+    bedrooms: 4, bathrooms: 3, maxGuests: 9, sqft: 2900,
+    pricePerNight: 2400, totalPrice: 16800,
+    amenities: ["Pool", "Chef's Kitchen", "WiFi", "Screened Porch", "Fireplace"],
+    status: "booked", type: "Corporate", distanceMi: 2.8, walkable: false,
+    description: "Walton Way classic with gorgeous pool and mature gardens. Summerville charm at its finest. Popular with returning families.",
+    rating: 4.7, reviews: 6, yearListed: 2019,
+    highlight: "Returning guest favorite",
+    imgHue: 45
+  }
+];
+
+const NEIGHBORHOODS = ["All", "West Augusta", "National Hills", "Summerville", "Olde Town", "Lake Olmstead"];
+const ALL_AMENITIES = ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio", "Screened Porch", "Fireplace", "Lake View", "Dock", "Gym"];
+
+function PropertySearch() {
+  const [hood, setHood] = useState("All");
+  const [beds, setBeds] = useState(0);
+  const [baths, setBaths] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(6000);
+  const [guests, setGuests] = useState(0);
+  const [walkOnly, setWalkOnly] = useState(false);
+  const [amenities, setAmenities] = useState([]);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("price-asc");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [expanded, setExpanded] = useState(null);
+  const [inquiryId, setInquiryId] = useState(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [viewMode, setViewMode] = useState("cards"); // cards or grid
+
+  const toggleAmenity = a => setAmenities(p => p.includes(a) ? p.filter(x => x !== a) : [...p, a]);
+
+  const filtered = useMemo(() => {
+    let r = PROPERTIES.filter(p => {
+      if (hood !== "All" && p.neighborhood !== hood) return false;
+      if (p.bedrooms < beds) return false;
+      if (p.bathrooms < baths) return false;
+      if (p.pricePerNight > maxPrice) return false;
+      if (p.maxGuests < guests) return false;
+      if (walkOnly && !p.walkable) return false;
+      if (statusFilter !== "all" && p.status !== statusFilter) return false;
+      if (typeFilter !== "all" && p.type !== typeFilter) return false;
+      if (amenities.length && !amenities.every(a => p.amenities.includes(a))) return false;
+      if (search) {
+        const s = search.toLowerCase();
+        if (![p.address, p.neighborhood, p.description, p.id].some(x => x.toLowerCase().includes(s))) return false;
+      }
+      return true;
+    });
+    const [f, d] = sort.split("-");
+    r.sort((a, b) => {
+      const va = f === "price" ? a.pricePerNight : f === "beds" ? a.bedrooms : f === "rating" ? a.rating : a.distanceMi;
+      const vb = f === "price" ? b.pricePerNight : f === "beds" ? b.bedrooms : f === "rating" ? b.rating : b.distanceMi;
+      return d === "asc" ? va - vb : vb - va;
+    });
+    return r;
+  }, [hood, beds, baths, maxPrice, guests, walkOnly, amenities, search, sort, statusFilter, typeFilter]);
+
+  const clearAll = () => {
+    setHood("All"); setBeds(0); setBaths(0); setMaxPrice(6000);
+    setGuests(0); setWalkOnly(false); setAmenities([]); setSearch("");
+    setStatusFilter("all"); setTypeFilter("all");
+  };
+
+  const activeCount = [hood !== "All", beds > 0, baths > 0, maxPrice < 6000, guests > 0, walkOnly, statusFilter !== "all", typeFilter !== "all", amenities.length > 0, search.length > 0].filter(Boolean).length;
+
+  /* KPI calculations */
+  const totalValue = PROPERTIES.reduce((s, p) => s + p.totalPrice, 0);
+  const avgPrice = Math.round(PROPERTIES.reduce((s, p) => s + p.pricePerNight, 0) / PROPERTIES.length);
+  const availCount = PROPERTIES.filter(p => p.status === 'available').length;
+  const walkableCount = PROPERTIES.filter(p => p.walkable).length;
+  const avgRating = (PROPERTIES.reduce((s, p) => s + p.rating, 0) / PROPERTIES.length).toFixed(1);
+  const totalBeds = PROPERTIES.reduce((s, p) => s + p.bedrooms, 0);
+
+  /* Status counts */
+  const statusCounts = {};
+  Object.keys(STATUS_COLORS).forEach(k => { statusCounts[k] = PROPERTIES.filter(p => p.status === k).length; });
+  const typeCounts = {};
+  ['Corporate', 'Private', 'Local', 'Institutional'].forEach(t => { typeCounts[t] = PROPERTIES.filter(p => p.type === t).length; });
+
+  const StatusButton = ({ value, label, count }) => {
+    const isActive = statusFilter === value;
+    if (value === 'all') {
+      return (
+        <button onClick={() => setStatusFilter('all')} style={{
+          padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+          border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
+          background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
+          display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
+        }}>
+          {label}
+          <span style={{
+            background: isActive ? 'rgba(255,255,255,0.25)' : '#f0f0f0',
+            padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
+          }}>{count}</span>
+        </button>
+      );
+    }
+    const sc = STATUS_COLORS[value];
+    return (
+      <button onClick={() => setStatusFilter(statusFilter === value ? 'all' : value)} style={{
+        padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+        border: isActive ? `2px solid ${sc.solid}` : `1px solid ${sc.border}`,
+        background: isActive ? sc.solid : sc.bg, color: isActive ? '#fff' : sc.text,
+        display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
+      }}>
+        {label}
+        <span style={{
+          background: isActive ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.06)',
+          padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
+        }}>{count}</span>
+      </button>
+    );
+  };
+
+  const TypeButton = ({ value, label, count }) => {
+    const isActive = typeFilter === value;
+    if (value === 'all') {
+      return (
+        <button onClick={() => setTypeFilter('all')} style={{
+          padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+          border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
+          background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
+          display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
+        }}>
+          {label}
+          <span style={{
+            background: isActive ? 'rgba(255,255,255,0.25)' : '#f0f0f0',
+            padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
+          }}>{count}</span>
+        </button>
+      );
+    }
+    const tc = TYPE_COLORS[value];
+    return (
+      <button onClick={() => setTypeFilter(typeFilter === value ? 'all' : value)} style={{
+        padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+        border: `1px solid ${isActive ? tc.text : tc.border}`,
+        background: isActive ? tc.bg : '#fff', color: tc.text,
+        display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
+      }}>
+        {label}
+        <span style={{
+          background: isActive ? 'rgba(0,0,0,0.06)' : '#f5f5f5',
+          padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
+        }}>{count}</span>
+      </button>
+    );
+  };
+
+  /* Property image — real photo for PP-1001, gradient placeholders for others (4:3 landscape) */
+  const PropertyImage = ({ p, size }) => {
+    const w = size === 'grid' ? '100%' : 280;
+    const h = size === 'grid' ? 200 : 210;
+    const sc = STATUS_COLORS[p.status];
+    const hasPhoto = p.id === 'PP-1001';
+    return (
+      <div style={{
+        width: w, height: h, flexShrink: 0, position: 'relative', overflow: 'hidden',
+        background: hasPhoto ? '#000' : `linear-gradient(135deg, hsl(${p.imgHue},25%,35%) 0%, hsl(${p.imgHue},20%,45%) 50%, hsl(${p.imgHue},25%,35%) 100%)`,
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 12,
+        borderRadius: size === 'grid' ? '8px 8px 0 0' : 0
+      }}>
+        {/* Actual house photo for PP-1001 */}
+        {hasPhoto && (
+          <img src={HOUSE_IMG} alt={p.address} style={{
+            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: 'center'
+          }} />
+        )}
+        {/* Top row: ID + rating */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 1 }}>
+          <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700, background: 'rgba(0,0,0,0.45)', color: '#fff', letterSpacing: 0.5 }}>{p.id}</span>
+          {p.rating >= 4.8 && (
+            <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 11, fontWeight: 700, background: 'rgba(0,0,0,0.45)', color: '#FFD700' }}>★ {p.rating}</span>
+          )}
+        </div>
+        {/* Center house icon — only for placeholders */}
+        {!hasPhoto && (
+          <div style={{ textAlign: 'center', opacity: 0.3 }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, marginTop: 4 }}>280 × 210 photo area</div>
+          </div>
+        )}
+        {hasPhoto && <div />}
+        {/* Bottom row: status + walkable */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
+          <span style={{
+            padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+            background: sc.solid, color: '#fff'
+          }}>{sc.label}</span>
+          {p.walkable && (
+            <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 10, fontWeight: 600, background: 'rgba(0,0,0,0.35)', color: '#fff' }}>🚶 Walkable</span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const InquiryModal = ({ p, onClose }) => (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+    }} onClick={onClose}>
+      <div style={{
+        background: '#fff', borderRadius: 12, padding: 32, width: 480, maxWidth: '90vw'
+      }} onClick={e => e.stopPropagation()}>
+        <h3 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 700 }}>Inquire: {p.address}</h3>
+        <p style={{ margin: '0 0 20px', fontSize: 13, color: '#888' }}>{p.id} · {p.neighborhood} · ${p.pricePerNight.toLocaleString()}/night</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <input placeholder="Renter / Company Name" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
+          <input placeholder="Email" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
+          <input placeholder="Phone" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <input placeholder="Check-in" type="date" defaultValue="2027-04-01" style={{ flex: 1, padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
+            <input placeholder="Check-out" type="date" defaultValue="2027-04-14" style={{ flex: 1, padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
+          </div>
+          <textarea placeholder="Notes..." rows={3} style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit', resize: 'vertical' }} />
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 20, justifyContent: 'flex-end' }}>
+          <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: 8, border: '1px solid #e0e0e0', background: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Cancel</button>
+          <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: 8, border: 'none', background: '#006B54', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Submit Inquiry</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
+
+      {/* ── Gradient Header ── */}
+      <div style={{
+        background: 'linear-gradient(135deg, #006B54, #004D3B)',
+        padding: '28px 40px 24px',
+        color: '#fff'
+      }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', opacity: 0.7, marginBottom: 6 }}>Patron Properties</div>
+              <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>Property Search</h1>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button style={{
+                padding: '10px 20px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.3)',
+                background: 'rgba(255,255,255,0.1)', color: '#fff', fontSize: 13, fontWeight: 600,
+                cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+              </button>
+              <button style={{
+                padding: '10px 20px', borderRadius: 8, border: 'none',
+                background: '#fff', color: '#006B54', fontSize: 13, fontWeight: 700,
+                cursor: 'pointer', fontFamily: 'inherit'
+              }}>+ Add Property</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── KPI Bar ── */}
+      <div style={{
+        background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '16px 40px'
+      }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 24 }}>
+          {[
+            { label: 'PORTFOLIO VALUE', value: `$${(totalValue/1000).toFixed(0)}K`, sub: `${PROPERTIES.length} properties` },
+            { label: 'AVG NIGHTLY RATE', value: `$${avgPrice.toLocaleString()}`, sub: 'per property' },
+            { label: 'AVAILABLE', value: availCount, sub: `of ${PROPERTIES.length} total` },
+            { label: 'WALKABLE', value: walkableCount, sub: `${Math.round(walkableCount/PROPERTIES.length*100)}% of portfolio` },
+            { label: 'AVG RATING', value: avgRating, sub: `${PROPERTIES.reduce((s,p) => s+p.reviews, 0)} total reviews` },
+            { label: 'TOTAL BEDROOMS', value: totalBeds, sub: `${PROPERTIES.reduce((s,p) => s+p.maxGuests, 0)} max guests` },
+          ].map((kpi, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#888', letterSpacing: 1, marginBottom: 4 }}>{kpi.label}</div>
+              <div style={{ fontSize: 28, fontWeight: 700, color: '#006B54', letterSpacing: -1 }}>{kpi.value}</div>
+              <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>{kpi.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Masters 2027 Banner ── */}
+      <div style={{
+        background: 'linear-gradient(90deg, #B8860B, #DAA520, #B8860B)',
+        padding: '8px 40px', textAlign: 'center'
+      }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: '#fff', letterSpacing: 1.5 }}>
+          🏌️ THE MASTERS 2027 · APRIL 5–11 · AUGUSTA NATIONAL GOLF CLUB · CALENDAR: APRIL 1–14
+        </span>
+      </div>
+
+      {/* ── Filter Buttons Row ── */}
+      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+          {/* Status buttons */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>STATUS</span>
+            <StatusButton value="all" label="All Properties" count={PROPERTIES.length} />
+            {Object.entries(STATUS_COLORS).map(([key, sc]) => (
+              <StatusButton key={key} value={key} label={sc.label} count={statusCounts[key]} />
+            ))}
+          </div>
+          {/* Type buttons */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>TYPE</span>
+            <TypeButton value="all" label="All Types" count={PROPERTIES.length} />
+            {Object.keys(TYPE_COLORS).map(t => (
+              <TypeButton key={t} value={t} label={t} count={typeCounts[t]} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Search + Advanced Filters Bar ── */}
+      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '12px 40px' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ flex: 1, position: 'relative' }}>
+            <input value={search} onChange={e => setSearch(e.target.value)}
+              placeholder="Search address, neighborhood, ID, or features..."
+              style={{
+                width: '100%', padding: '10px 16px 10px 38px', borderRadius: 8,
+                border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit', background: '#fafafa'
+              }} />
+            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 15, opacity: 0.35 }}>🔍</span>
+          </div>
+          <select value={sort} onChange={e => setSort(e.target.value)} style={{
+            padding: '10px 32px 10px 12px', borderRadius: 8, border: '1px solid #e0e0e0',
+            fontSize: 13, fontWeight: 500, background: '#fafafa', cursor: 'pointer', fontFamily: 'inherit'
+          }}>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="beds-desc">Most Bedrooms</option>
+            <option value="rating-desc">Highest Rated</option>
+            <option value="distance-asc">Nearest to Course</option>
+          </select>
+          <button onClick={() => setFiltersOpen(!filtersOpen)} style={{
+            padding: '10px 18px', borderRadius: 8, border: '1px solid #e0e0e0',
+            background: filtersOpen ? 'rgba(0,107,84,0.08)' : '#fafafa',
+            color: filtersOpen ? '#006B54' : '#555', fontSize: 13, fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
+          }}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <line x1="1" y1="4" x2="15" y2="4"/><line x1="1" y1="8" x2="15" y2="8"/><line x1="1" y1="12" x2="15" y2="12"/>
+              <circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="8" r="1.5" fill="currentColor"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/>
+            </svg>
+            Filters
+            {activeCount > 0 && <span style={{ background: '#006B54', color: '#fff', borderRadius: 20, padding: '1px 7px', fontSize: 11, fontWeight: 700 }}>{activeCount}</span>}
+          </button>
+          {/* View toggle */}
+          <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 8, overflow: 'hidden' }}>
+            <button onClick={() => setViewMode('cards')} style={{
+              padding: '8px 12px', border: 'none', cursor: 'pointer',
+              background: viewMode === 'cards' ? '#006B54' : '#fafafa', color: viewMode === 'cards' ? '#fff' : '#888', fontSize: 14
+            }}>☰</button>
+            <button onClick={() => setViewMode('grid')} style={{
+              padding: '8px 12px', border: 'none', cursor: 'pointer',
+              background: viewMode === 'grid' ? '#006B54' : '#fafafa', color: viewMode === 'grid' ? '#fff' : '#888', fontSize: 14
+            }}>▦</button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Collapsible Advanced Filters ── */}
+      <div style={{
+        maxHeight: filtersOpen ? 400 : 0, overflow: 'hidden',
+        transition: 'max-height 0.35s ease', background: '#fff',
+        borderBottom: filtersOpen ? '1px solid #e0e0e0' : 'none'
+      }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', padding: '20px 40px' }}>
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 16 }}>
+            {/* Neighborhood */}
+            <div>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>NEIGHBORHOOD</label>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                {NEIGHBORHOODS.map(n => (
+                  <button key={n} onClick={() => setHood(n)} style={{
+                    padding: '6px 12px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                    border: hood === n ? 'none' : '1px solid #e0e0e0',
+                    background: hood === n ? '#006B54' : '#fff', color: hood === n ? '#fff' : '#555',
+                    fontFamily: 'inherit', transition: 'all 0.2s'
+                  }}>{n}</button>
+                ))}
+              </div>
+            </div>
+            {/* Bedrooms */}
+            <div>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>BEDROOMS</label>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {[0,3,4,5,6,7].map(n => (
+                  <button key={n} onClick={() => setBeds(n)} style={{
+                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                    border: beds === n ? 'none' : '1px solid #e0e0e0',
+                    background: beds === n ? '#006B54' : '#fff', color: beds === n ? '#fff' : '#555',
+                    fontFamily: 'inherit'
+                  }}>{n === 0 ? 'Any' : n + '+'}</button>
+                ))}
+              </div>
+            </div>
+            {/* Bathrooms */}
+            <div>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>BATHROOMS</label>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {[0,2,3,4,5].map(n => (
+                  <button key={n} onClick={() => setBaths(n)} style={{
+                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                    border: baths === n ? 'none' : '1px solid #e0e0e0',
+                    background: baths === n ? '#006B54' : '#fff', color: baths === n ? '#fff' : '#555',
+                    fontFamily: 'inherit'
+                  }}>{n === 0 ? 'Any' : n + '+'}</button>
+                ))}
+              </div>
+            </div>
+            {/* Max Price */}
+            <div style={{ minWidth: 180 }}>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>
+                MAX /NIGHT: <span style={{ color: '#006B54', fontSize: 12 }}>${maxPrice >= 6000 ? '6,000+' : maxPrice.toLocaleString()}</span>
+              </label>
+              <input type="range" min={1000} max={6000} step={100} value={maxPrice} onChange={e => setMaxPrice(+e.target.value)} />
+            </div>
+            {/* Guests */}
+            <div>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>GUESTS</label>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {[0,6,8,10,14].map(n => (
+                  <button key={n} onClick={() => setGuests(n)} style={{
+                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                    border: guests === n ? 'none' : '1px solid #e0e0e0',
+                    background: guests === n ? '#006B54' : '#fff', color: guests === n ? '#fff' : '#555',
+                    fontFamily: 'inherit'
+                  }}>{n === 0 ? 'Any' : n + '+'}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* Amenities + toggles */}
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            <div style={{ flex: 1, minWidth: 300 }}>
+              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>AMENITIES</label>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                {ALL_AMENITIES.map(a => (
+                  <button key={a} onClick={() => toggleAmenity(a)} style={{
+                    padding: '6px 12px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                    border: amenities.includes(a) ? 'none' : '1px solid #e0e0e0',
+                    background: amenities.includes(a) ? '#006B54' : '#fff', color: amenities.includes(a) ? '#fff' : '#555',
+                    fontFamily: 'inherit'
+                  }}>{a}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {/* Walkable toggle */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 12, fontWeight: 500 }}>
+                <div style={{ width: 40, height: 22, borderRadius: 11, padding: 2, background: walkOnly ? '#006B54' : 'rgba(0,0,0,0.12)', transition: 'background 0.2s', cursor: 'pointer' }} onClick={() => setWalkOnly(!walkOnly)}>
+                  <div style={{ width: 18, height: 18, borderRadius: 9, background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transform: walkOnly ? 'translateX(18px)' : 'translateX(0)', transition: 'transform 0.2s' }} />
+                </div>
+                Walkable only
+              </label>
+              {activeCount > 0 && (
+                <button onClick={clearAll} style={{
+                  background: 'none', border: 'none', color: '#c53030', fontSize: 12,
+                  fontWeight: 600, cursor: 'pointer', padding: 0, fontFamily: 'inherit'
+                }}>Clear all filters ×</button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Results ── */}
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '24px 40px 60px' }}>
+        <div style={{ fontSize: 13, color: '#888', fontWeight: 500, marginBottom: 16 }}>
+          Showing <strong style={{ color: '#111' }}>{filtered.length}</strong> of {PROPERTIES.length} properties
+          {activeCount > 0 && <span> · {activeCount} filter{activeCount !== 1 && 's'} active</span>}
+        </div>
+
+        {filtered.length === 0 ? (
+          <div style={{ background: '#fff', borderRadius: 12, padding: '64px 40px', textAlign: 'center', border: '1px solid #e0e0e0' }}>
+            <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 600 }}>No properties found</h3>
+            <p style={{ margin: '0 0 24px', color: '#888', fontSize: 14 }}>Adjust your filters to see more results.</p>
+            <button onClick={clearAll} style={{ padding: '12px 28px', borderRadius: 8, background: '#006B54', color: '#fff', border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Clear All Filters</button>
+          </div>
+        ) : viewMode === 'grid' ? (
+          /* ── Grid View ── */
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320, 1fr))', gap: 20 }}>
+            {filtered.map(p => {
+              const sc = STATUS_COLORS[p.status];
+              const tc = TYPE_COLORS[p.type];
+              return (
+                <div key={p.id} style={{
+                  background: '#fff', borderRadius: 8, overflow: 'hidden',
+                  border: '1px solid #e0e0e0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  cursor: 'pointer', transition: 'box-shadow 0.2s'
+                }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
+                  onClick={() => setExpanded(expanded === p.id ? null : p.id)}
+                >
+                  <PropertyImage p={p} size="grid" />
+                  <div style={{ padding: 16 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                      <div>
+                        <div style={{ fontSize: 16, fontWeight: 700 }}>{p.address}</div>
+                        <div style={{ fontSize: 12, color: '#888' }}>{p.neighborhood} · {p.distanceMi}mi</div>
+                      </div>
+                      <span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>{p.type}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 12, marginBottom: 12, fontSize: 12, color: '#555' }}>
+                      <span>{p.bedrooms} BD</span><span>{p.bathrooms} BA</span><span>{p.maxGuests} Guests</span><span>{p.sqft.toLocaleString()} sf</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontSize: 20, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
+                        <span style={{ fontSize: 12, color: '#888' }}>/night</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: '#888' }}>★ {p.rating} ({p.reviews})</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* ── List/Card View ── */
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {filtered.map(p => {
+              const isExp = expanded === p.id;
+              const sc = STATUS_COLORS[p.status];
+              const tc = TYPE_COLORS[p.type];
+              return (
+                <div key={p.id} style={{
+                  background: '#fff', borderRadius: 12, overflow: 'hidden',
+                  border: '1px solid #e0e0e0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  transition: 'box-shadow 0.2s'
+                }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
+                >
+                  <div style={{ display: 'flex' }}>
+                    {/* Image */}
+                    <PropertyImage p={p} size="list" />
+
+                    {/* Content */}
+                    <div style={{ flex: 1, padding: '16px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+                          <div>
+                            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>{p.address}</h3>
+                            <div style={{ fontSize: 13, color: '#888', marginTop: 2 }}>{p.neighborhood} · {p.distanceMi} mi from course</div>
+                          </div>
+                          <span style={{ padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600, background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>{p.type}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 13, color: '#555' }}>
+                          <span><strong>{p.bedrooms}</strong> BD</span>
+                          <span><strong>{p.bathrooms}</strong> BA</span>
+                          <span><strong>{p.maxGuests}</strong> Guests</span>
+                          <span><strong>{p.sqft.toLocaleString()}</strong> sf</span>
+                          <span>★ <strong>{p.rating}</strong> ({p.reviews})</span>
+                        </div>
+                        {p.highlight && (
+                          <div style={{ marginTop: 8, padding: '4px 10px', borderRadius: 4, background: '#FFFBEB', color: '#92400E', fontSize: 11, fontWeight: 600, display: 'inline-block' }}>
+                            ✦ {p.highlight}
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 10 }}>
+                        <div>
+                          <span style={{ fontSize: 24, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
+                          <span style={{ fontSize: 13, color: '#888' }}>/night</span>
+                          <div style={{ fontSize: 12, color: '#aaa', marginTop: 2 }}>${p.totalPrice.toLocaleString()} total (7 nights)</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <button onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : p.id); }} style={{
+                            padding: '8px 16px', borderRadius: 8, border: '1px solid #e0e0e0',
+                            background: '#fff', color: '#555', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'
+                          }}>
+                            {isExp ? 'Less' : 'Details'}
+                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); setInquiryId(p.id); }} style={{
+                            padding: '8px 16px', borderRadius: 8, border: 'none',
+                            background: '#006B54', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'
+                          }}>Inquire</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expanded Details */}
+                  {isExp && (
+                    <div style={{ borderTop: '1px solid #e0e0e0', padding: '16px 20px', background: '#fafaf9' }}>
+                      <p style={{ fontSize: 14, color: '#555', lineHeight: 1.6, marginBottom: 12 }}>{p.description}</p>
+                      <div>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: '#888', letterSpacing: 1, marginBottom: 8 }}>AMENITIES</div>
+                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                          {p.amenities.map(a => (
+                            <span key={a} style={{ padding: '4px 10px', borderRadius: 4, background: '#f0f0f0', fontSize: 12, color: '#555', fontWeight: 500 }}>{a}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <div style={{ marginTop: 12, fontSize: 12, color: '#aaa' }}>Listed since {p.yearListed} · {p.sqft.toLocaleString()} sq ft</div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Inquiry Modal */}
+      {inquiryId && <InquiryModal p={PROPERTIES.find(x => x.id === inquiryId)} onClose={() => setInquiryId(null)} />}
+
+      {/* ── Footer ── */}
+      <div style={{
+        borderTop: '1px solid #e0e0e0', padding: '16px 40px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        fontSize: 12, color: '#aaa', background: '#fff'
+      }}>
+        <span>Patron Properties · Masters 2027 · Property Search</span>
+        <span>Prototype v2.0 · Hybrid Design</span>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<PropertySearch />, document.getElementById('root'));
+</script>
+</body>
+</html>

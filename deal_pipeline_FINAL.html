@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Deal Pipeline</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #006B54;
+    --primary-dark: #004D3B;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #555;
+    --text-tertiary: #888;
+    --border: #e0e0e0;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(0,107,84,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  input, button { font-family: var(--font); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ── Master Color System (consistent across all prototypes) ── */
+const STATUS_COLORS = {
+  inquiry:       { label: 'Inquiry',       bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', solid: '#D97706' },
+  qualified:     { label: 'Qualified',     bg: '#CCFBF1', text: '#115E59', border: '#5EEAD4', solid: '#0891B2' },
+  property_visit:{ label: 'Property Visit',bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD', solid: '#2563EB' },
+  contract:      { label: 'Contract',      bg: '#EDE9FE', text: '#5B21B6', border: '#C4B5FD', solid: '#7C3AED' },
+  deposit:       { label: 'Deposit Paid',  bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', solid: '#059669' },
+  booked:        { label: 'Booked',        bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', solid: '#006B54' },
+};
+
+const TYPE_COLORS = {
+  Corporate:     { bg: '#F1F5F9', text: '#475569', border: '#94A3B8' },
+  Private:       { bg: '#FEF7ED', text: '#92400E', border: '#FDBA74' },
+  Local:         { bg: '#ECFEFF', text: '#0E7490', border: '#67E8F9' },
+  Institutional: { bg: '#F5F3FF', text: '#6D28D9', border: '#C4B5FD' },
+};
+
+/* ── Pipeline Stages ── */
+const STAGES = [
+  { id: 'inquiry',        label: 'Inquiry',        order: 1 },
+  { id: 'qualified',      label: 'Qualified',      order: 2 },
+  { id: 'property_visit', label: 'Property Visit', order: 3 },
+  { id: 'contract',       label: 'Contract',       order: 4 },
+  { id: 'deposit',        label: 'Deposit Paid',   order: 5 },
+  { id: 'booked',         label: 'Booked',         order: 6 },
+];
+
+/* ── Sample Deals ── */
+const DEALS = [
+  { id:'D-2701', renter:'Delta Air Lines', contact:'Marcus Chen', email:'m.chen@delta.com', phone:'(404) 555-0142', type:'Corporate', property:'556 Berckmans Rd', neighborhood:'West Augusta', beds:7, guests:18, rate:5500, nights:7, total:38500, stage:'booked', priority:'high', days:2, notes:'Returning client — 3rd consecutive year. VIP concierge requested.', created:'Jan 8', lastActivity:'Feb 28', docs:{lease:true,insurance:true,payment:true,docusign:true} },
+  { id:'D-2702', renter:'PGA of America', contact:'Sarah Mitchell', email:'s.mitchell@pga.org', phone:'(561) 555-0198', type:'Corporate', property:'142 Berkman Dr', neighborhood:'West Augusta', beds:5, guests:12, rate:3200, nights:7, total:22400, stage:'contract', priority:'high', days:5, notes:'Contract sent via DocuSign 2/23. Awaiting CFO signature.', created:'Jan 15', lastActivity:'Feb 23', docs:{lease:true,insurance:false,payment:false,docusign:false} },
+  { id:'D-2703', renter:'Rolex USA', contact:'James Park', email:'j.park@rolex.com', phone:'(212) 555-0167', type:'Corporate', property:'1547 Monte Sano Ave', neighborhood:'Summerville', beds:6, guests:14, rate:4100, nights:7, total:28700, stage:'deposit', priority:'high', days:1, notes:'Deposit received 2/27. Full payment due March 15. Chef service confirmed.', created:'Jan 22', lastActivity:'Feb 27', docs:{lease:true,insurance:true,payment:true,docusign:true} },
+  { id:'D-2704', renter:'Augusta Dental Group', contact:'Dr. Kevin Rhodes', email:'krhodes@augustadental.com', phone:'(706) 555-0234', type:'Local', property:'308 Wheeler Rd', neighborhood:'National Hills', beds:4, guests:10, rate:2800, nights:7, total:19600, stage:'qualified', priority:'medium', days:8, notes:'Local dentist group hosting out-of-town partners. Budget-conscious.', created:'Feb 10', lastActivity:'Feb 20', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2705', renter:'The Thompson Family', contact:'Linda Thompson', email:'linda.t@gmail.com', phone:'(843) 555-0189', type:'Private', property:'2205 Henry St', neighborhood:'Olde Town', beds:3, guests:6, rate:1800, nights:7, total:12600, stage:'property_visit', priority:'medium', days:3, notes:'Family reunion. Visit scheduled March 5.', created:'Feb 14', lastActivity:'Feb 25', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2706', renter:'Morgan Stanley', contact:'Patricia Wells', email:'p.wells@morganstanley.com', phone:'(212) 555-0301', type:'Corporate', property:'411 Cumming Rd', neighborhood:'National Hills', beds:5, guests:12, rate:3500, nights:7, total:24500, stage:'contract', priority:'high', days:2, notes:'Hosting top clients. Contract being reviewed by legal.', created:'Feb 1', lastActivity:'Feb 26', docs:{lease:true,insurance:false,payment:false,docusign:false} },
+  { id:'D-2707', renter:'IBM Events', contact:'Raj Patel', email:'raj.patel@ibm.com', phone:'(919) 555-0412', type:'Corporate', property:'', neighborhood:'', beds:0, guests:16, rate:0, nights:10, total:0, stage:'inquiry', priority:'high', days:1, notes:'Needs 2 homes for 16 execs. 10-night stay. Budget ~$8K/night combined.', created:'Feb 27', lastActivity:'Feb 27', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2708', renter:'Steve & Karen Walsh', contact:'Steve Walsh', email:'swalsh@outlook.com', phone:'(678) 555-0156', type:'Private', property:'789 Milledge Rd', neighborhood:'West Augusta', beds:4, guests:8, rate:2500, nights:7, total:17500, stage:'qualified', priority:'low', days:12, notes:'Repeat renter from 2025. Wants golf cart included.', created:'Feb 5', lastActivity:'Feb 16', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2709', renter:'Coca-Cola Hospitality', contact:'Diana Flores', email:'d.flores@coca-cola.com', phone:'(404) 555-0278', type:'Corporate', property:'', neighborhood:'', beds:0, guests:20, rate:0, nights:7, total:0, stage:'inquiry', priority:'medium', days:4, notes:'Exploring executive hospitality suite. Want premium property with pool.', created:'Feb 24', lastActivity:'Feb 24', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2710', renter:'Augusta University Med', contact:'Dr. Alan Foster', email:'afoster@augusta.edu', phone:'(706) 555-0345', type:'Institutional', property:'1803 Highland Ave', neighborhood:'Summerville', beds:3, guests:7, rate:2000, nights:7, total:14000, stage:'property_visit', priority:'low', days:6, notes:'Visiting medical faculty. Liked the property. Awaiting budget approval.', created:'Feb 12', lastActivity:'Feb 22', docs:{lease:false,insurance:false,payment:false,docusign:false} },
+  { id:'D-2711', renter:'UBS Private Banking', contact:'Michael Kramer', email:'michael.kramer@ubs.com', phone:'(203) 555-0199', type:'Corporate', property:'925 Lake Olmstead Dr', neighborhood:'Lake Olmstead', beds:4, guests:10, rate:2200, nights:7, total:15400, stage:'deposit', priority:'medium', days:4, notes:'Deposit paid. Wants lakefront for private client dinners.', created:'Feb 3', lastActivity:'Feb 24', docs:{lease:true,insurance:true,payment:true,docusign:true} },
+];
+
+/* ── App ── */
+function App() {
+  const [deals, setDeals] = useState(DEALS);
+  const [dragging, setDragging] = useState(null);
+  const [dragOver, setDragOver] = useState(null);
+  const [expanded, setExpanded] = useState(null);
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+
+  const move = (id, stage) => setDeals(d => d.map(x => x.id === id ? {...x, stage, days: 0} : x));
+
+  const filtered = useMemo(() => deals.filter(d => {
+    if (filter === 'corporate' && d.type !== 'Corporate') return false;
+    if (filter === 'private' && d.type === 'Corporate') return false;
+    if (filter === 'high' && d.priority !== 'high') return false;
+    if (search) { const s = search.toLowerCase(); return [d.renter,d.contact,d.property,d.id].some(x=>x.toLowerCase().includes(s)); }
+    return true;
+  }), [deals, filter, search]);
+
+  const byStage = (sid) => filtered.filter(d => d.stage === sid);
+  const pipe = deals.reduce((s,d) => s + d.total, 0);
+  const booked = deals.filter(d => d.stage==='booked'||d.stage==='deposit').reduce((s,d) => s + d.total, 0);
+  const activeDeals = deals.filter(d => d.stage !== 'booked').length;
+  const highPriority = deals.filter(d => d.priority === 'high').length;
+  const avgDealSize = Math.round(pipe / deals.filter(d => d.total > 0).length);
+  const docCount = (d) => Object.values(d.docs).filter(Boolean).length;
+
+  /* Filter counts for buttons */
+  const filterCounts = {
+    all: deals.length,
+    corporate: deals.filter(d => d.type === 'Corporate').length,
+    private: deals.filter(d => d.type !== 'Corporate').length,
+    high: deals.filter(d => d.priority === 'high').length,
+  };
+
+  const TypeTag = ({ type }) => {
+    const c = TYPE_COLORS[type] || TYPE_COLORS.Private;
+    return <span style={{ fontSize: 10, fontWeight: 600, color: c.text, background: c.bg, padding: '2px 7px', borderRadius: 4, border: `1px solid ${c.border}` }}>{type}</span>;
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── Branded Header (matches season planner + CRM) ── */}
+      <header style={{
+        background: 'linear-gradient(135deg, #006B54 0%, #004D3B 100%)',
+        color: '#fff', padding: '20px 32px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>Deal Pipeline</h1>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 2 }}>Patron Properties · Masters 2027</p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Export</button>
+            <button style={{ padding: '8px 16px', background: '#fff', color: '#006B54', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>+ New Deal</button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── KPI Dashboard Bar ── */}
+      <div style={{
+        background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e0e0e0',
+        display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 24,
+      }}>
+        {[
+          { label: 'Pipeline Value', value: `$${(pipe/1000).toFixed(0)}K`, sub: `${deals.length} deals`, pct: 100 },
+          { label: 'Booked Revenue', value: `$${(booked/1000).toFixed(0)}K`, sub: `${deals.filter(d=>d.stage==='booked'||d.stage==='deposit').length} confirmed`, pct: Math.round((booked/pipe)*100) },
+          { label: 'Active Deals', value: activeDeals, sub: 'In progress', pct: Math.round((activeDeals/deals.length)*100) },
+          { label: 'High Priority', value: highPriority, sub: 'Needs attention', pct: Math.round((highPriority/deals.length)*100) },
+          { label: 'Avg Deal Size', value: `$${(avgDealSize/1000).toFixed(1)}K`, sub: 'Per deal', pct: 0 },
+          { label: 'Conversion', value: `${Math.round((deals.filter(d=>d.stage==='booked').length/deals.length)*100)}%`, sub: 'Inquiry → Booked', pct: Math.round((deals.filter(d=>d.stage==='booked').length/deals.length)*100) },
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: '#006B54', lineHeight: 1 }}>{kpi.value}</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{kpi.sub}</div>
+            {kpi.pct > 0 && (
+              <div style={{ width: '100%', height: 5, background: '#e8f0ed', borderRadius: 3, marginTop: 8, overflow: 'hidden' }}>
+                <div style={{ width: `${Math.min(kpi.pct,100)}%`, height: '100%', background: 'linear-gradient(90deg, #006B54, #005543)', borderRadius: 3 }} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Masters Banner ── */}
+      <div style={{
+        background: 'linear-gradient(90deg, #D4AF37 0%, #F4E4A6 50%, #D4AF37 100%)',
+        color: '#333', padding: '10px 32px', textAlign: 'center',
+        fontSize: 13, fontWeight: 600, letterSpacing: 0.5,
+        borderBottom: '2px solid #B8941C',
+      }}>
+        The Masters Tournament · April 5–11, 2027 · Augusta National Golf Club
+      </div>
+
+      {/* ── Filter Bar: Clickable Buttons ── */}
+      <div style={{ background: '#fff', padding: '14px 32px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search deals…"
+            style={{ width: 220, padding: '8px 12px', fontSize: 13, border: '1px solid #e0e0e0', borderRadius: 6, outline: 'none', background: '#f5f5f4', color: '#1a1a1a' }} />
+
+          <div style={{ width: 1, height: 28, background: '#e0e0e0' }} />
+
+          {[
+            { id: 'all', label: 'All Deals', color: '#006B54' },
+            { id: 'corporate', label: 'Corporate', color: TYPE_COLORS.Corporate.text },
+            { id: 'private', label: 'Non-Corporate', color: '#92400E' },
+            { id: 'high', label: 'High Priority', color: '#DC2626' },
+          ].map(f => {
+            const isActive = filter === f.id;
+            return (
+              <button key={f.id} onClick={() => setFilter(f.id)}
+                style={{
+                  padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  border: `2px solid ${isActive ? f.color : '#e0e0e0'}`,
+                  background: isActive ? f.color : '#fff',
+                  color: isActive ? '#fff' : f.color,
+                  transition: 'all 0.15s',
+                  display: 'flex', alignItems: 'center', gap: 6,
+                }}>
+                {f.label}
+                <span style={{
+                  background: isActive ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.06)',
+                  padding: '1px 7px', borderRadius: 10, fontSize: 10, fontWeight: 700,
+                  color: isActive ? '#fff' : f.color,
+                }}>{filterCounts[f.id]}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Board ── */}
+      <div style={{ flex: 1, padding: '16px 24px', overflowX: 'auto' }}>
+        <div style={{ display: 'flex', gap: 12, minWidth: STAGES.length * 280 }}>
+          {STAGES.map(stage => {
+            const sc = STATUS_COLORS[stage.id];
+            const cards = byStage(stage.id);
+            const stageVal = cards.reduce((s,d) => s + d.total, 0);
+            const isDragTarget = dragOver === stage.id;
+            return (
+              <div key={stage.id}
+                onDragOver={e => { e.preventDefault(); setDragOver(stage.id); }}
+                onDragLeave={() => setDragOver(null)}
+                onDrop={e => { e.preventDefault(); if(dragging) move(dragging, stage.id); setDragOver(null); }}
+                style={{
+                  flex: 1, minWidth: 264,
+                  background: isDragTarget ? 'rgba(0,107,84,0.03)' : 'transparent',
+                  borderRadius: 8,
+                  border: isDragTarget ? '1.5px dashed rgba(0,107,84,0.2)' : '1.5px solid transparent',
+                  padding: 8, transition: 'all 0.15s',
+                }}
+              >
+                {/* Column header with colored indicator */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 4px 12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: 3, background: sc.solid }} />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{stage.label}</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: sc.text, background: sc.bg, padding: '2px 8px', borderRadius: 4, border: `1px solid ${sc.border}` }}>{cards.length}</span>
+                  </div>
+                  {stageVal > 0 && <span style={{ fontSize: 11, color: '#888', fontWeight: 500 }}>${(stageVal/1000).toFixed(0)}K</span>}
+                </div>
+
+                {/* Cards */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {cards.length === 0 && (
+                    <div style={{ padding: 20, textAlign: 'center', color: '#888', fontSize: 12, border: '1px dashed #e0e0e0', borderRadius: 8 }}>Drop here</div>
+                  )}
+                  {cards.map(deal => {
+                    const stale = deal.days > 7;
+                    const isExpanded = expanded === deal.id;
+                    const priorityColor = deal.priority === 'high' ? '#DC2626' : deal.priority === 'medium' ? '#D97706' : '#888';
+                    return (
+                      <div key={deal.id} draggable
+                        onDragStart={() => setDragging(deal.id)}
+                        onDragEnd={() => { setDragging(null); setDragOver(null); }}
+                        onClick={() => setExpanded(isExpanded ? null : deal.id)}
+                        style={{
+                          background: '#fff', borderRadius: 8, padding: '14px 16px', cursor: 'grab',
+                          border: dragging === deal.id ? '1.5px solid #006B54' : '1px solid #e0e0e0',
+                          borderLeft: `4px solid ${sc.solid}`,
+                          opacity: dragging === deal.id ? 0.5 : 1, transition: 'all 0.15s',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                        }}
+                      >
+                        {/* Row 1: Name + Value */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a', lineHeight: 1.2 }}>{deal.renter}</span>
+                          {deal.total > 0
+                            ? <span style={{ fontSize: 14, fontWeight: 700, color: '#006B54', letterSpacing: -0.3, flexShrink: 0, marginLeft: 8 }}>${(deal.total/1000).toFixed(1)}K</span>
+                            : <span style={{ fontSize: 12, color: '#888', fontStyle: 'italic', flexShrink: 0, marginLeft: 8 }}>TBD</span>
+                          }
+                        </div>
+
+                        {/* Row 2: Property */}
+                        <div style={{ fontSize: 12, color: deal.property ? '#555' : '#888', marginBottom: 8, lineHeight: 1.3 }}>
+                          {deal.property ? `${deal.property} · ${deal.beds}BR · ${deal.guests} guests` : `${deal.guests} guests · No property assigned`}
+                        </div>
+
+                        {/* Row 3: Meta */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#888' }}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: priorityColor, flexShrink: 0 }} />
+                          <span style={{ color: stale ? '#DC2626' : '#888', fontWeight: stale ? 600 : 400 }}>{deal.days}d</span>
+                          <span>·</span>
+                          <span>{docCount(deal)}/4 docs</span>
+                          <span>·</span>
+                          <TypeTag type={deal.type} />
+                        </div>
+
+                        {/* Expanded detail */}
+                        {isExpanded && (
+                          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #e0e0e0' }} onClick={e => e.stopPropagation()}>
+                            <p style={{ fontSize: 12, color: '#555', lineHeight: 1.5, marginBottom: 12 }}>{deal.notes}</p>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '4px 12px', fontSize: 12, marginBottom: 12 }}>
+                              <span style={{ color: '#888' }}>Contact</span><span style={{ fontWeight: 500 }}>{deal.contact}</span>
+                              <span style={{ color: '#888' }}>Email</span><span style={{ fontWeight: 500 }}>{deal.email}</span>
+                              <span style={{ color: '#888' }}>Phone</span><span style={{ fontWeight: 500 }}>{deal.phone}</span>
+                              {deal.rate > 0 && <><span style={{ color: '#888' }}>Rate</span><span style={{ fontWeight: 500 }}>${deal.rate.toLocaleString()}/nt × {deal.nights}</span></>}
+                              <span style={{ color: '#888' }}>Created</span><span>{deal.created}</span>
+                              <span style={{ color: '#888' }}>Last active</span><span>{deal.lastActivity}</span>
+                            </div>
+
+                            {/* Doc checklist */}
+                            <div style={{ display: 'flex', gap: 12, fontSize: 11, marginBottom: 12 }}>
+                              {[['lease','Lease'],['insurance','Insurance'],['payment','Payment'],['docusign','DocuSign']].map(([k,l]) => (
+                                <span key={k} style={{ color: deal.docs[k] ? '#006B54' : '#888', fontWeight: deal.docs[k] ? 600 : 400 }}>
+                                  {deal.docs[k] ? '✓' : '○'} {l}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Stage move buttons */}
+                            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                              {STAGES.filter(s => s.id !== deal.stage).map(s => {
+                                const btnSc = STATUS_COLORS[s.id];
+                                return (
+                                  <button key={s.id} onClick={() => move(deal.id, s.id)} style={{
+                                    padding: '5px 10px', fontSize: 11, fontWeight: 500, borderRadius: 4,
+                                    border: `1px solid ${btnSc.border}`, background: btnSc.bg, color: btnSc.text,
+                                    cursor: 'pointer', transition: 'all 0.12s',
+                                  }}>→ {s.label}</button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Footer ── */}
+      <footer style={{ padding: '12px 32px', borderTop: '1px solid #e0e0e0', background: '#fff', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#999', textTransform: 'uppercase' }}>Patron Properties</span>
+        <span style={{ fontSize: 11, color: '#999' }}>Masters 2027 · Drag cards between columns to advance stage</span>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Document Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #006B54;
+    --primary-dark: #004D3B;
+    --primary-light: rgba(0,107,84,0.08);
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #555;
+    --text-tertiary: #888;
+    --border: #e0e0e0;
+    --red: #c53030;
+    --green: #34c759;
+    --amber: #ff9500;
+    --blue: #007aff;
+    --gold: #D4A843;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+  ::selection { background: rgba(0,107,84,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  input, button, select { font-family: var(--font); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ══════════════════════════════════════════════════════
+   BUSINESS LOGIC
+   ══════════════════════════════════════════════════════
+   Every deal has TWO parties:
+
+   CLIENT (Renter) — the corporation or individual renting
+     • Rental Agreement  — lease terms, rate, dates, rules
+     • DocuSign           — signature packet executing the deal
+     • Payment            — deposit confirmation / full payment
+     • Corporate Auth     — internal corporate approval (if applicable)
+
+   HOMEOWNER (Property Owner) — the person who owns the home
+     • W-9                — IRS tax form (Patron pays homeowner income)
+     • Property Agreement — authorization for Patron to rent the home
+     • Insurance          — liability coverage certificate on property
+     • Home Photos        — marketing photos of the property
+
+   Patron Properties sits between both parties. The tracker
+   must show WHO you're chasing for each missing document.
+   ══════════════════════════════════════════════════════ */
+
+const STATUS_MAP = {
+  Complete:  { bg: 'rgba(52,199,89,0.12)', text: '#15803D', dot: '#34c759' },
+  Pending:   { bg: 'rgba(255,149,0,0.12)', text: '#B45309', dot: '#ff9500' },
+  Overdue:   { bg: 'rgba(197,48,48,0.12)', text: '#991B1B', dot: '#c53030' },
+  Rejected:  { bg: 'rgba(197,48,48,0.12)', text: '#991B1B', dot: '#c53030' },
+  Requested: { bg: 'rgba(0,122,255,0.12)', text: '#1D4ED8', dot: '#007aff' },
+  'N/A':     { bg: '#f5f5f4', text: '#aaa', dot: '#ccc' },
+};
+
+const PARTY_COLORS = {
+  client:    { bg: '#EFF6FF', text: '#1E40AF', border: '#93C5FD', label: 'Client', icon: '🏢' },
+  homeowner: { bg: '#FEF7ED', text: '#92400E', border: '#FDBA74', label: 'Homeowner', icon: '🏠' },
+};
+
+/* ── Deal Data with two-party document structure ── */
+/*
+   ASSIGNMENT LOGIC:
+   A homeowner must be ASSIGNED to a client to form a deal.
+   This assignment tracks:
+     - assignedDate  — when Patron paired them
+     - assignedBy    — the Patron team member who made the match
+     - assignmentNote — rationale for the pairing (proximity, capacity, etc.)
+
+   Before assignment, the homeowner's baseline docs (W-9, Property Agreement,
+   Insurance, Home Photos) may already be in progress. Once assigned, the
+   client-side docs begin flowing. The deal isn't "active" until both
+   parties are linked.
+*/
+
+const DEALS = [
+  {
+    id: 'D-2701',
+    dealName: 'Delta Airlines — 1847 Magnolia Dr',
+    client: { name: 'Delta Airlines', contact: 'Marcus Chen', email: 'm.chen@delta.com', type: 'Corporate' },
+    homeowner: { name: 'Margaret Ashford', property: '1847 Magnolia Drive', neighborhood: 'West Augusta' },
+    assignment: { date: '2027-01-08', by: 'James Chen', note: 'Returning client — Ashford hosted Delta in 2025 & 2026. Proximity to Augusta National (1.2 mi).' },
+    rate: '$16,500/wk', dates: 'Apr 1–8, 2027',
+    clientDocs: [
+      { id: 101, docType: 'Rental Agreement', status: 'Complete', assignedTo: 'James Chen', dueDate: '2027-02-15', lastUpdated: '2027-02-12', sentDate: '2027-02-01', notes: 'Fully executed. 7-night stay, $16,500/wk, 12 guests max.', uploads: [{ date: '2027-02-12', file: 'Rental_Agreement_Delta.pdf', by: 'James Chen' }], versions: [{ v: '1.0', date: '2027-02-12', status: 'Fully Executed' }] },
+      { id: 102, docType: 'DocuSign', status: 'Complete', assignedTo: 'Emma Wilson', dueDate: '2027-02-20', lastUpdated: '2027-02-18', sentDate: '2027-02-10', notes: 'All signatures obtained — Marcus Chen (Delta) and Patron Properties.', uploads: [{ date: '2027-02-18', file: 'DocuSign_Delta_Executed.pdf', by: 'Emma Wilson' }], versions: [{ v: '1.0', date: '2027-02-18', status: 'Final' }] },
+      { id: 103, docType: 'Payment', status: 'Complete', assignedTo: 'Sarah Mitchell', dueDate: '2027-03-01', lastUpdated: '2027-02-25', sentDate: null, notes: 'Full payment received via wire transfer. $16,500 confirmed.', uploads: [{ date: '2027-02-25', file: 'Payment_Confirmation_Delta.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-02-25', status: 'Confirmed' }] },
+      { id: 104, docType: 'Corporate Auth', status: 'Complete', assignedTo: 'James Chen', dueDate: '2027-02-10', lastUpdated: '2027-02-08', sentDate: null, notes: 'Internal Delta approval on file. Returning client — 3rd consecutive year.', uploads: [{ date: '2027-02-08', file: 'Delta_Internal_Approval.pdf', by: 'James Chen' }], versions: [{ v: '1.0', date: '2027-02-08', status: 'Filed' }] },
+    ],
+    homeownerDocs: [
+      { id: 105, docType: 'W-9', status: 'Complete', assignedTo: 'Sarah Mitchell', dueDate: '2027-02-15', lastUpdated: '2027-02-10', sentDate: '2027-01-20', notes: 'Tax form completed and verified for Margaret Ashford.', uploads: [{ date: '2027-02-10', file: 'W-9_Ashford.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-02-10', status: 'Final' }] },
+      { id: 106, docType: 'Property Agreement', status: 'Complete', assignedTo: 'David Rodriguez', dueDate: '2027-02-10', lastUpdated: '2027-02-08', sentDate: '2027-01-15', notes: 'Ashford authorized Patron to market and rent Magnolia Dr property.', uploads: [{ date: '2027-02-08', file: 'Property_Agreement_Ashford.pdf', by: 'David Rodriguez' }], versions: [{ v: '1.0', date: '2027-02-08', status: 'Executed' }] },
+      { id: 107, docType: 'Insurance', status: 'Complete', assignedTo: 'Maria Garcia', dueDate: '2027-02-20', lastUpdated: '2027-02-19', sentDate: '2027-02-01', notes: 'Liability and property insurance verified. Policy #AUG-44281.', uploads: [{ date: '2027-02-19', file: 'Insurance_Ashford.pdf', by: 'Maria Garcia' }], versions: [{ v: '1.0', date: '2027-02-19', status: 'Verified' }] },
+      { id: 108, docType: 'Home Photos', status: 'Complete', assignedTo: 'Maria Garcia', dueDate: '2027-02-25', lastUpdated: '2027-02-22', sentDate: null, notes: 'Professional photos received. 42 images uploaded to listing.', uploads: [{ date: '2027-02-22', file: 'Photos_Magnolia_Dr.zip', by: 'Maria Garcia' }], versions: [{ v: '1.0', date: '2027-02-22', status: 'Published' }] },
+    ],
+  },
+  {
+    id: 'D-2702',
+    dealName: 'Morgan Stanley — 411 Cumming Rd',
+    client: { name: 'Morgan Stanley', contact: 'Patricia Wells', email: 'p.wells@morganstanley.com', type: 'Corporate' },
+    homeowner: { name: 'Robert & Linda Hayes', property: '411 Cumming Road', neighborhood: 'National Hills' },
+    assignment: { date: '2027-01-22', by: 'David Rodriguez', note: 'Premium estate. Morgan Stanley requested large-capacity property for 20+ executive guests.' },
+    rate: '$24,500/wk', dates: 'Apr 1–8, 2027',
+    clientDocs: [
+      { id: 201, docType: 'Rental Agreement', status: 'Pending', assignedTo: 'James Chen', dueDate: '2027-03-10', lastUpdated: '2027-02-26', sentDate: '2027-02-20', notes: 'Contract sent to Patricia Wells. Awaiting MS legal review.', uploads: [{ date: '2027-02-26', file: 'Rental_Agreement_MS_v2.pdf', by: 'James Chen' }], versions: [{ v: '2.0', date: '2027-02-26', status: 'Under Review' }, { v: '1.0', date: '2027-02-15', status: 'Initial Draft' }] },
+      { id: 202, docType: 'DocuSign', status: 'Requested', assignedTo: 'Emma Wilson', dueDate: '2027-03-12', lastUpdated: '2027-02-28', sentDate: '2027-02-28', notes: 'DocuSign envelope sent. Pending Patricia Wells signature.', uploads: [], versions: [] },
+      { id: 203, docType: 'Payment', status: 'Pending', assignedTo: 'Sarah Mitchell', dueDate: '2027-03-15', lastUpdated: '2027-02-28', sentDate: null, notes: 'Invoice sent. Awaiting wire transfer of $24,500 deposit.', uploads: [], versions: [] },
+      { id: 204, docType: 'Corporate Auth', status: 'Pending', assignedTo: 'James Chen', dueDate: '2027-03-08', lastUpdated: '2027-02-22', sentDate: null, notes: 'MS hosting top clients. Internal budget approval pending VP sign-off.', uploads: [], versions: [] },
+    ],
+    homeownerDocs: [
+      { id: 205, docType: 'W-9', status: 'Complete', assignedTo: 'Sarah Mitchell', dueDate: '2027-02-05', lastUpdated: '2027-02-02', sentDate: '2027-01-15', notes: 'Robert Hayes W-9 verified and filed.', uploads: [{ date: '2027-02-02', file: 'W-9_Hayes.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-02-02', status: 'Final' }] },
+      { id: 206, docType: 'Property Agreement', status: 'Overdue', assignedTo: 'David Rodriguez', dueDate: '2027-01-31', lastUpdated: '2027-01-25', sentDate: '2027-01-10', notes: 'Legal review required. Hayes family attorney requested changes to liability clause.', uploads: [{ date: '2027-01-25', file: 'Property_Agreement_Hayes_v3.pdf', by: 'David Rodriguez' }], versions: [{ v: '3.0', date: '2027-01-25', status: 'Legal Review' }, { v: '2.0', date: '2027-01-18', status: 'Marked Up' }] },
+      { id: 207, docType: 'Insurance', status: 'Pending', assignedTo: 'Maria Garcia', dueDate: '2027-03-05', lastUpdated: '2027-02-27', sentDate: '2027-02-15', notes: 'Renewal certificate requested from Hayes insurer. Policy expires March 1.', uploads: [], versions: [] },
+      { id: 208, docType: 'Home Photos', status: 'Complete', assignedTo: 'Maria Garcia', dueDate: '2027-02-15', lastUpdated: '2027-02-14', sentDate: null, notes: 'Photos received and uploaded. 38 images.', uploads: [{ date: '2027-02-14', file: 'Photos_Cumming_Rd.zip', by: 'Maria Garcia' }], versions: [{ v: '1.0', date: '2027-02-14', status: 'Published' }] },
+    ],
+  },
+  {
+    id: 'D-2703',
+    dealName: 'Thompson Family — 2205 Henry St',
+    client: { name: 'Thompson Family', contact: 'Linda Thompson', email: 'linda.t@gmail.com', type: 'Private' },
+    homeowner: { name: 'William & June Parker', property: '2205 Henry Street', neighborhood: 'Olde Town' },
+    assignment: { date: '2026-12-15', by: 'Sarah Mitchell', note: 'Thompson family requested walkable downtown location. Parker property 0.4 mi from restaurants.' },
+    rate: '$12,600/wk', dates: 'Apr 5–12, 2027',
+    clientDocs: [
+      { id: 301, docType: 'Rental Agreement', status: 'Complete', assignedTo: 'James Chen', dueDate: '2027-01-15', lastUpdated: '2027-01-12', sentDate: '2027-01-05', notes: 'All parties signed and executed. Family reunion stay.', uploads: [{ date: '2027-01-12', file: 'Rental_Agreement_Thompson.pdf', by: 'James Chen' }], versions: [{ v: '1.0', date: '2027-01-12', status: 'Fully Executed' }] },
+      { id: 302, docType: 'DocuSign', status: 'Complete', assignedTo: 'Emma Wilson', dueDate: '2027-01-20', lastUpdated: '2027-01-18', sentDate: '2027-01-10', notes: 'Linda Thompson signed via DocuSign.', uploads: [{ date: '2027-01-18', file: 'DocuSign_Thompson.pdf', by: 'Emma Wilson' }], versions: [{ v: '1.0', date: '2027-01-18', status: 'Final' }] },
+      { id: 303, docType: 'Payment', status: 'Pending', assignedTo: 'Sarah Mitchell', dueDate: '2027-03-15', lastUpdated: '2027-02-20', sentDate: null, notes: 'Deposit of $6,300 received. Balance of $6,300 due March 15.', uploads: [{ date: '2027-02-20', file: 'Deposit_Thompson.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-02-20', status: 'Partial — 50%' }] },
+      { id: 304, docType: 'Corporate Auth', status: 'N/A', assignedTo: '—', dueDate: '', lastUpdated: '', sentDate: null, notes: 'Private rental — no corporate authorization needed.', uploads: [], versions: [] },
+    ],
+    homeownerDocs: [
+      { id: 305, docType: 'W-9', status: 'Complete', assignedTo: 'Sarah Mitchell', dueDate: '2027-01-20', lastUpdated: '2027-01-18', sentDate: '2027-01-05', notes: 'William Parker W-9 on file.', uploads: [{ date: '2027-01-18', file: 'W-9_Parker.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-01-18', status: 'Final' }] },
+      { id: 306, docType: 'Property Agreement', status: 'Rejected', assignedTo: 'David Rodriguez', dueDate: '2027-02-10', lastUpdated: '2027-02-15', sentDate: '2027-01-25', notes: 'Returned with requested revisions — Parker wants higher commission split. Resubmit required.', uploads: [{ date: '2027-02-15', file: 'Property_Agreement_Parker_Rejected.pdf', by: 'David Rodriguez' }], versions: [{ v: '2.0', date: '2027-02-15', status: 'Rejected' }, { v: '1.0', date: '2027-01-25', status: 'Initial' }] },
+      { id: 307, docType: 'Insurance', status: 'Pending', assignedTo: 'Maria Garcia', dueDate: '2027-03-05', lastUpdated: '2027-02-27', sentDate: '2027-02-10', notes: 'Certificate requested from Parker insurance agent.', uploads: [], versions: [] },
+      { id: 308, docType: 'Home Photos', status: 'Overdue', assignedTo: 'Maria Garcia', dueDate: '2027-02-15', lastUpdated: '2027-02-01', sentDate: null, notes: 'Professional photographer scheduled twice — Parker cancelled both times. Need to reschedule.', uploads: [], versions: [] },
+    ],
+  },
+  {
+    id: 'D-2704',
+    dealName: 'Berkshire Investment — 925 Lake Olmstead Dr',
+    client: { name: 'Berkshire Investment Group', contact: 'Michael Kramer', email: 'michael.kramer@berkshire.com', type: 'Corporate' },
+    homeowner: { name: 'Daniel & Christine Moore', property: '925 Lake Olmstead Drive', neighborhood: 'Lake Olmstead' },
+    assignment: { date: '2027-02-03', by: 'James Chen', note: 'Berkshire wanted waterfront. Moore property on Lake Olmstead — private dock, ideal for client dinners.' },
+    rate: '$15,400/wk', dates: 'Apr 4–11, 2027',
+    clientDocs: [
+      { id: 401, docType: 'Rental Agreement', status: 'Complete', assignedTo: 'James Chen', dueDate: '2027-02-18', lastUpdated: '2027-02-16', sentDate: '2027-02-05', notes: 'Signed and filed. Lakefront property for private client dinners.', uploads: [{ date: '2027-02-16', file: 'Rental_Agreement_Berkshire.pdf', by: 'James Chen' }], versions: [{ v: '1.0', date: '2027-02-16', status: 'Final' }] },
+      { id: 402, docType: 'DocuSign', status: 'Requested', assignedTo: 'Emma Wilson', dueDate: '2027-03-10', lastUpdated: '2027-02-28', sentDate: '2027-02-28', notes: 'Envelope sent to Michael Kramer. Awaiting signature.', uploads: [], versions: [] },
+      { id: 403, docType: 'Payment', status: 'Pending', assignedTo: 'Sarah Mitchell', dueDate: '2027-03-15', lastUpdated: '2027-02-28', sentDate: null, notes: 'Invoice issued. $15,400 due by March 15.', uploads: [], versions: [] },
+      { id: 404, docType: 'Corporate Auth', status: 'Pending', assignedTo: 'James Chen', dueDate: '2027-03-05', lastUpdated: '2027-02-20', sentDate: null, notes: 'Awaiting Berkshire compliance department approval.', uploads: [], versions: [] },
+    ],
+    homeownerDocs: [
+      { id: 405, docType: 'W-9', status: 'Overdue', assignedTo: 'Sarah Mitchell', dueDate: '2027-02-01', lastUpdated: '2027-01-20', sentDate: '2027-01-10', notes: 'Follow-up sent twice to Daniel Moore. No response.', uploads: [], versions: [] },
+      { id: 406, docType: 'Property Agreement', status: 'Complete', assignedTo: 'David Rodriguez', dueDate: '2027-02-10', lastUpdated: '2027-02-08', sentDate: '2027-01-20', notes: 'Moore authorized rental. Standard terms.', uploads: [{ date: '2027-02-08', file: 'Property_Agreement_Moore.pdf', by: 'David Rodriguez' }], versions: [{ v: '1.0', date: '2027-02-08', status: 'Executed' }] },
+      { id: 407, docType: 'Insurance', status: 'Complete', assignedTo: 'Maria Garcia', dueDate: '2027-02-10', lastUpdated: '2027-02-08', sentDate: '2027-01-25', notes: 'Insurance certificate verified. Policy through March 2028.', uploads: [{ date: '2027-02-08', file: 'Insurance_Moore.pdf', by: 'Maria Garcia' }], versions: [{ v: '1.0', date: '2027-02-08', status: 'Verified' }] },
+      { id: 408, docType: 'Home Photos', status: 'Complete', assignedTo: 'Maria Garcia', dueDate: '2027-02-15', lastUpdated: '2027-02-12', sentDate: null, notes: '35 professional photos uploaded.', uploads: [{ date: '2027-02-12', file: 'Photos_Lake_Olmstead.zip', by: 'Maria Garcia' }], versions: [{ v: '1.0', date: '2027-02-12', status: 'Published' }] },
+    ],
+  },
+  {
+    id: 'D-2705',
+    dealName: 'Unassigned — 310 Walton Way',
+    client: null,
+    homeowner: { name: 'Patricia & George Sullivan', property: '310 Walton Way', neighborhood: 'Summerville' },
+    assignment: null,
+    rate: '—', dates: 'TBD',
+    clientDocs: [],
+    homeownerDocs: [
+      { id: 501, docType: 'W-9', status: 'Complete', assignedTo: 'Sarah Mitchell', dueDate: '2027-01-15', lastUpdated: '2027-01-12', sentDate: '2027-01-05', notes: 'Patricia Sullivan W-9 on file.', uploads: [{ date: '2027-01-12', file: 'W-9_Sullivan.pdf', by: 'Sarah Mitchell' }], versions: [{ v: '1.0', date: '2027-01-12', status: 'Final' }] },
+      { id: 502, docType: 'Property Agreement', status: 'Complete', assignedTo: 'David Rodriguez', dueDate: '2027-01-20', lastUpdated: '2027-01-18', sentDate: '2027-01-08', notes: 'Sullivan authorized property for Masters rental.', uploads: [{ date: '2027-01-18', file: 'Property_Agreement_Sullivan.pdf', by: 'David Rodriguez' }], versions: [{ v: '1.0', date: '2027-01-18', status: 'Executed' }] },
+      { id: 503, docType: 'Insurance', status: 'Pending', assignedTo: 'Maria Garcia', dueDate: '2027-03-01', lastUpdated: '2027-02-20', sentDate: '2027-02-10', notes: 'Awaiting updated certificate from Sullivan insurer.', uploads: [], versions: [] },
+      { id: 504, docType: 'Home Photos', status: 'Pending', assignedTo: 'Maria Garcia', dueDate: '2027-02-28', lastUpdated: '2027-02-15', sentDate: null, notes: 'Photography session scheduled March 3.', uploads: [], versions: [] },
+    ],
+  },
+];
+
+/* ── Helpers ── */
+const allDocs = DEALS.flatMap(d => [...d.clientDocs, ...d.homeownerDocs]);
+const docIcon = (type) => ({ 'Rental Agreement': '📝', 'DocuSign': '✍️', 'Payment': '💳', 'Corporate Auth': '🏛️', 'W-9': '📋', 'Property Agreement': '🏠', 'Insurance': '🛡️', 'Home Photos': '📸' }[type] || '📄');
+
+/* ── App ── */
+function App() {
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [partyFilter, setPartyFilter] = useState('all'); // 'all', 'client', 'homeowner'
+  const [expandedDocs, setExpandedDocs] = useState(new Set());
+  const [collapsedDeals, setCollapsedDeals] = useState(new Set());
+
+  const toggleDoc = (id) => { const n = new Set(expandedDocs); n.has(id) ? n.delete(id) : n.add(id); setExpandedDocs(n); };
+  const toggleDeal = (id) => { const n = new Set(collapsedDeals); n.has(id) ? n.delete(id) : n.add(id); setCollapsedDeals(n); };
+
+  /* KPIs */
+  const total = allDocs.filter(d => d.status !== 'N/A').length;
+  const complete = allDocs.filter(d => d.status === 'Complete').length;
+  const pending = allDocs.filter(d => d.status === 'Pending' || d.status === 'Requested').length;
+  const overdue = allDocs.filter(d => d.status === 'Overdue').length;
+  const rejected = allDocs.filter(d => d.status === 'Rejected').length;
+  const completionRate = Math.round((complete / total) * 100);
+
+  /* Status counts for filter buttons */
+  const statusCounts = { all: total, Complete: complete, Pending: allDocs.filter(d => d.status === 'Pending').length, Overdue: overdue, Requested: allDocs.filter(d => d.status === 'Requested').length, Rejected: rejected };
+
+  /* Filter deals */
+  const matchesFilters = (doc) => {
+    if (doc.status === 'N/A') return partyFilter !== 'all' ? false : statusFilter === 'all';
+    const matchStatus = statusFilter === 'all' || doc.status === statusFilter;
+    return matchStatus;
+  };
+
+  const filteredDeals = useMemo(() => {
+    return DEALS.filter(deal => {
+      const s = search.toLowerCase();
+      const matchSearch = !s || deal.dealName.toLowerCase().includes(s) || (deal.client && deal.client.name.toLowerCase().includes(s)) || deal.homeowner.name.toLowerCase().includes(s) || deal.homeowner.property.toLowerCase().includes(s);
+      if (!matchSearch) return false;
+
+      const clientVisible = partyFilter !== 'homeowner' && deal.clientDocs.length > 0 && deal.clientDocs.some(matchesFilters);
+      const homeownerVisible = partyFilter !== 'client' && deal.homeownerDocs.some(matchesFilters);
+      // Show unassigned homeowners when viewing all or homeowner docs
+      const showUnassigned = !deal.client && partyFilter !== 'client';
+      return clientVisible || homeownerVisible || showUnassigned;
+    });
+  }, [search, statusFilter, partyFilter]);
+
+  /* Deal progress */
+  const dealProgress = (deal) => {
+    const docs = [...deal.clientDocs, ...deal.homeownerDocs].filter(d => d.status !== 'N/A');
+    const done = docs.filter(d => d.status === 'Complete').length;
+    return { done, total: docs.length, pct: docs.length > 0 ? Math.round((done / docs.length) * 100) : 0 };
+  };
+
+  /* Party progress */
+  const partyProgress = (docs) => {
+    const valid = docs.filter(d => d.status !== 'N/A');
+    const done = valid.filter(d => d.status === 'Complete').length;
+    return { done, total: valid.length, pct: valid.length > 0 ? Math.round((done / valid.length) * 100) : 0 };
+  };
+
+  /* Status Badge */
+  const Badge = ({ status }) => {
+    const s = STATUS_MAP[status] || STATUS_MAP.Pending;
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 12, background: s.bg, color: s.text }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot }} />
+        {status}
+      </span>
+    );
+  };
+
+  /* Party Tag */
+  const PartyTag = ({ party }) => {
+    const p = PARTY_COLORS[party];
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: p.bg, color: p.text, border: `1px solid ${p.border}`, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+        {p.icon} {p.label}
+      </span>
+    );
+  };
+
+  /* Progress Bar */
+  const ProgressBar = ({ pct, size = 'normal' }) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ flex: 1, height: size === 'small' ? 4 : 6, background: '#e8f0ed', borderRadius: 3, overflow: 'hidden', minWidth: 50 }}>
+        <div style={{ width: `${pct}%`, height: '100%', background: pct === 100 ? 'linear-gradient(90deg, #34c759, #27ae20)' : 'linear-gradient(90deg, #006B54, #005543)', borderRadius: 3, transition: 'width 0.3s' }} />
+      </div>
+      <span style={{ fontSize: 11, fontWeight: 700, color: pct === 100 ? '#15803D' : '#006B54', minWidth: 30, textAlign: 'right' }}>{pct}%</span>
+    </div>
+  );
+
+  /* Document Row */
+  const DocRow = ({ doc, party }) => {
+    const isExpanded = expandedDocs.has(doc.id);
+    const isOverdue = doc.dueDate && new Date(doc.dueDate) < new Date() && doc.status !== 'Complete' && doc.status !== 'N/A';
+    const canResend = doc.sentDate && doc.status !== 'Complete';
+
+    return [
+      <tr key={`doc-${doc.id}`}
+        style={{ borderBottom: '1px solid #f0f0ef', cursor: 'pointer', background: isExpanded ? 'rgba(0,107,84,0.03)' : 'transparent' }}
+        onClick={() => toggleDoc(doc.id)}>
+        <td style={{ padding: '10px 16px 10px 48px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 9, color: '#888', transition: 'transform 0.2s', transform: isExpanded ? 'rotate(90deg)' : 'none', display: 'inline-block' }}>▶</span>
+            <span style={{ fontSize: 16, lineHeight: 1 }}>{docIcon(doc.docType)}</span>
+            <span style={{ fontWeight: 600, color: '#1a1a1a', fontSize: 13 }}>{doc.docType}</span>
+          </div>
+        </td>
+        <td style={{ padding: '10px 16px' }}><Badge status={doc.status} /></td>
+        <td style={{ padding: '10px 16px', fontSize: 12, color: '#555' }}>{doc.assignedTo}</td>
+        <td style={{ padding: '10px 16px', fontSize: 12, color: isOverdue ? '#c53030' : '#555', fontWeight: isOverdue ? 600 : 400 }}>
+          {doc.dueDate ? new Date(doc.dueDate).toLocaleDateString() : '—'}
+        </td>
+        <td style={{ padding: '10px 16px', fontSize: 12, color: '#888' }}>
+          {doc.lastUpdated ? new Date(doc.lastUpdated).toLocaleDateString() : '—'}
+        </td>
+        <td style={{ padding: '10px 16px' }}>
+          <div style={{ display: 'flex', gap: 4 }} onClick={e => e.stopPropagation()}>
+            {doc.uploads && doc.uploads.length > 0 && (
+              <button style={{ padding: '4px 10px', background: '#007aff', color: '#fff', border: 'none', borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>View</button>
+            )}
+            <button style={{ padding: '4px 10px', background: doc.status === 'N/A' ? '#e0e0e0' : '#006B54', color: doc.status === 'N/A' ? '#999' : '#fff', border: 'none', borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: doc.status === 'N/A' ? 'default' : 'pointer', pointerEvents: doc.status === 'N/A' ? 'none' : 'auto' }}>Remind</button>
+            {canResend && (
+              <button style={{ padding: '4px 10px', background: '#fff', color: '#006B54', border: '1px solid #006B54', borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>Resend</button>
+            )}
+            <button style={{ padding: '4px 10px', background: '#fff', color: '#555', border: '1px solid #e0e0e0', borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>Upload</button>
+          </div>
+        </td>
+      </tr>,
+
+      isExpanded && (
+        <tr key={`exp-${doc.id}`} style={{ background: 'rgba(0,107,84,0.02)' }}>
+          <td colSpan="6" style={{ padding: '0 16px 12px 56px' }}>
+            <div style={{ padding: '14px 18px', background: '#fff', borderRadius: 8, border: '1px solid #e8e8e8', marginTop: 2 }}>
+              {/* Notes */}
+              <div style={{ fontSize: 13, color: '#555', lineHeight: 1.5, marginBottom: doc.uploads.length > 0 || doc.versions.length > 0 ? 14 : 0 }}>
+                {doc.notes}
+              </div>
+
+              {/* Sent info */}
+              {doc.sentDate && (
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 10 }}>
+                  Originally sent: <span style={{ fontWeight: 600, color: '#555' }}>{new Date(doc.sentDate).toLocaleDateString()}</span>
+                </div>
+              )}
+
+              {/* Uploads */}
+              {doc.uploads.length > 0 && (
+                <div style={{ marginBottom: 10 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>Files</div>
+                  {doc.uploads.map((u, i) => (
+                    <div key={i} style={{ fontSize: 12, color: '#555', padding: '4px 0' }}>
+                      <span style={{ fontWeight: 600, color: '#1a1a1a' }}>{u.file}</span>
+                      <span style={{ color: '#888' }}> — {u.date} by {u.by}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Versions */}
+              {doc.versions.length > 0 && (
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>Versions</div>
+                  {doc.versions.map((v, i) => (
+                    <div key={i} style={{ fontSize: 12, color: '#555', padding: '4px 0' }}>
+                      <span style={{ fontWeight: 600 }}>v{v.v}</span> — {v.date}
+                      <span style={{ marginLeft: 6, fontSize: 10, padding: '1px 6px', borderRadius: 4, background: v.status === 'Final' || v.status === 'Fully Executed' || v.status === 'Executed' || v.status === 'Verified' || v.status === 'Confirmed' || v.status === 'Published' || v.status === 'Filed' ? 'rgba(52,199,89,0.12)' : v.status === 'Rejected' ? 'rgba(197,48,48,0.12)' : 'rgba(0,107,84,0.06)', color: v.status === 'Rejected' ? '#991B1B' : v.status === 'Final' || v.status === 'Fully Executed' || v.status === 'Executed' || v.status === 'Verified' || v.status === 'Confirmed' || v.status === 'Published' || v.status === 'Filed' ? '#15803D' : '#006B54' }}>{v.status}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </td>
+        </tr>
+      ),
+    ];
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── Branded Gradient Header ── */}
+      <header style={{ background: 'linear-gradient(135deg, #006B54 0%, #004D3B 100%)', color: '#fff', padding: '20px 32px', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>Document Tracker</h1>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 2 }}>Patron Properties · Masters 2027</p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Export</button>
+            <button style={{ padding: '8px 16px', background: '#fff', color: '#006B54', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>+ Request Doc</button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── KPI Bar ── */}
+      <div style={{ background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e0e0e0', display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 24 }}>
+        {[
+          { label: 'Total Documents', value: total, color: '#006B54' },
+          { label: 'Complete', value: complete, color: '#15803D' },
+          { label: 'Pending / Requested', value: pending, color: '#B45309' },
+          { label: 'Overdue', value: overdue, color: overdue > 0 ? '#c53030' : '#006B54' },
+          { label: 'Rejected', value: rejected, color: rejected > 0 ? '#c53030' : '#006B54' },
+          { label: 'Deals Assigned', value: `${DEALS.filter(d => d.assignment).length}/${DEALS.length}`, color: DEALS.some(d => !d.assignment) ? '#B45309' : '#15803D' },
+          { label: 'Completion', value: `${completionRate}%`, color: '#006B54' },
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: kpi.color, lineHeight: 1 }}>{kpi.value}</div>
+          </div>
+        ))}
+        <div style={{ gridColumn: '1 / -1' }}>
+          <div style={{ width: '100%', height: 6, background: '#e8f0ed', borderRadius: 3, overflow: 'hidden' }}>
+            <div style={{ width: `${completionRate}%`, height: '100%', background: 'linear-gradient(90deg, #006B54, #005543)', borderRadius: 3 }} />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Masters Banner ── */}
+      <div style={{ background: 'linear-gradient(90deg, #D4AF37 0%, #F4E4A6 50%, #D4AF37 100%)', color: '#333', padding: '10px 32px', textAlign: 'center', fontSize: 13, fontWeight: 600, letterSpacing: 0.5, borderBottom: '2px solid #B8941C' }}>
+        The Masters Tournament · April 7–13, 2027 · Augusta National Golf Club
+      </div>
+
+      {/* ── Filter Bar ── */}
+      <div style={{ background: '#fff', padding: '14px 32px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search deals, clients, homeowners…"
+            style={{ width: 260, padding: '8px 12px', fontSize: 13, border: '1px solid #e0e0e0', borderRadius: 6, outline: 'none', background: '#f5f5f4' }} />
+
+          <div style={{ width: 1, height: 28, background: '#e0e0e0' }} />
+
+          {/* Party filter */}
+          {[
+            { id: 'all', label: 'All Parties', icon: '📋' },
+            { id: 'client', label: 'Client Docs', icon: '🏢' },
+            { id: 'homeowner', label: 'Homeowner Docs', icon: '🏠' },
+          ].map(f => {
+            const isActive = partyFilter === f.id;
+            return (
+              <button key={f.id} onClick={() => setPartyFilter(f.id)}
+                style={{
+                  padding: '5px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  border: `2px solid ${isActive ? '#006B54' : '#e0e0e0'}`,
+                  background: isActive ? '#006B54' : '#fff',
+                  color: isActive ? '#fff' : '#006B54',
+                  transition: 'all 0.15s',
+                }}>
+                {f.icon} {f.label}
+              </button>
+            );
+          })}
+
+          <div style={{ width: 1, height: 28, background: '#e0e0e0' }} />
+
+          {/* Status filter */}
+          {[
+            { id: 'all', label: 'All', color: '#006B54' },
+            { id: 'Complete', label: 'Complete', color: '#15803D' },
+            { id: 'Pending', label: 'Pending', color: '#B45309' },
+            { id: 'Overdue', label: 'Overdue', color: '#c53030' },
+            { id: 'Requested', label: 'Requested', color: '#1D4ED8' },
+            { id: 'Rejected', label: 'Rejected', color: '#991B1B' },
+          ].map(f => {
+            const isActive = statusFilter === f.id;
+            return (
+              <button key={f.id} onClick={() => setStatusFilter(f.id)}
+                style={{
+                  padding: '5px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                  border: `1.5px solid ${isActive ? f.color : '#e0e0e0'}`,
+                  background: isActive ? f.color : '#fff',
+                  color: isActive ? '#fff' : f.color,
+                  transition: 'all 0.15s',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}>
+                {f.label}
+                <span style={{ fontSize: 9, opacity: 0.8 }}>{statusCounts[f.id]}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Deal Document Cards ── */}
+      <div style={{ flex: 1, padding: '24px 32px' }}>
+        {filteredDeals.length === 0 ? (
+          <div style={{ background: '#fff', borderRadius: 10, padding: '60px 24px', textAlign: 'center', color: '#888', border: '1px solid #e0e0e0' }}>
+            No documents match your filters.
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {filteredDeals.map(deal => {
+              const prog = dealProgress(deal);
+              const isCollapsed = collapsedDeals.has(deal.id);
+              const clientProg = partyProgress(deal.clientDocs);
+              const ownerProg = partyProgress(deal.homeownerDocs);
+              const showClient = partyFilter !== 'homeowner';
+              const showOwner = partyFilter !== 'client';
+
+              return (
+                <div key={deal.id} style={{ background: '#fff', borderRadius: 10, border: '1px solid #e0e0e0', overflow: 'hidden' }}>
+
+                  {/* Deal Header */}
+                  <div onClick={() => toggleDeal(deal.id)}
+                    style={{ padding: '16px 20px', cursor: 'pointer', borderBottom: isCollapsed ? 'none' : '1px solid #e0e0e0', background: prog.pct === 100 ? 'rgba(52,199,89,0.04)' : '#fafaf9' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <span style={{ fontSize: 11, color: '#888', transform: isCollapsed ? 'rotate(0deg)' : 'rotate(90deg)', transition: 'transform 0.2s', display: 'inline-block' }}>▶</span>
+                        <div>
+                          <div style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', letterSpacing: -0.2 }}>{deal.id}</div>
+                          <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
+                            {deal.client ? deal.client.type : 'Unassigned'} · {deal.rate} · {deal.dates}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: 11, color: '#888' }}>{prog.done}/{prog.total} docs complete</div>
+                        </div>
+                        <div style={{ width: 120 }}>
+                          <ProgressBar pct={prog.pct} size="small" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* ── Assignment Bar: Client ↔ Homeowner ── */}
+                    <div style={{ marginTop: 10, marginLeft: 23, display: 'flex', alignItems: 'center', gap: 0 }}>
+
+                      {deal.assignment ? (
+                        <>
+                          {/* Client side */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#EFF6FF', padding: '6px 12px', borderRadius: '8px 0 0 8px', border: '1px solid #93C5FD', borderRight: 'none' }}>
+                            <span style={{ fontSize: 14 }}>🏢</span>
+                            <div>
+                              <div style={{ fontSize: 12, fontWeight: 700, color: '#1E40AF', lineHeight: 1.2 }}>{deal.client.name}</div>
+                              <div style={{ fontSize: 10, color: '#60A5FA' }}>{deal.client.contact}</div>
+                            </div>
+                          </div>
+
+                          {/* Assignment link */}
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '4px 12px', background: 'linear-gradient(180deg, #EFF6FF 0%, #f8f8f7 50%, #FEF7ED 100%)', border: '1px solid #e0e0e0', borderLeft: 'none', borderRight: 'none' }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: '#006B54', letterSpacing: 0.5, textTransform: 'uppercase', lineHeight: 1 }}>Assigned</div>
+                            <div style={{ fontSize: 9, color: '#888', lineHeight: 1.3 }}>{new Date(deal.assignment.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                            <div style={{ fontSize: 9, color: '#aaa' }}>by {deal.assignment.by}</div>
+                          </div>
+
+                          {/* Homeowner side */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#FEF7ED', padding: '6px 12px', borderRadius: '0 8px 8px 0', border: '1px solid #FDBA74', borderLeft: 'none' }}>
+                            <span style={{ fontSize: 14 }}>🏠</span>
+                            <div>
+                              <div style={{ fontSize: 12, fontWeight: 700, color: '#92400E', lineHeight: 1.2 }}>{deal.homeowner.name}</div>
+                              <div style={{ fontSize: 10, color: '#D97706' }}>{deal.homeowner.property}</div>
+                            </div>
+                          </div>
+
+                          {/* Assignment note */}
+                          <div style={{ marginLeft: 10, fontSize: 10, color: '#888', fontStyle: 'italic', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {deal.assignment.note}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Unassigned — homeowner ready, no client yet */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#FEF7ED', padding: '6px 12px', borderRadius: '8px 0 0 8px', border: '1px solid #FDBA74', borderRight: 'none' }}>
+                            <span style={{ fontSize: 14 }}>🏠</span>
+                            <div>
+                              <div style={{ fontSize: 12, fontWeight: 700, color: '#92400E', lineHeight: 1.2 }}>{deal.homeowner.name}</div>
+                              <div style={{ fontSize: 10, color: '#D97706' }}>{deal.homeowner.property}</div>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: '0 8px 8px 0', border: '2px dashed #ff9500', background: 'rgba(255,149,0,0.06)' }}>
+                            <span style={{ fontSize: 14 }}>⏳</span>
+                            <div>
+                              <div style={{ fontSize: 11, fontWeight: 700, color: '#B45309', lineHeight: 1.2 }}>Awaiting Client Assignment</div>
+                              <div style={{ fontSize: 10, color: '#D97706' }}>Homeowner docs in progress</div>
+                            </div>
+                          </div>
+
+                          <button onClick={e => { e.stopPropagation(); alert('Assign Client flow — would open client selection modal'); }}
+                            style={{ marginLeft: 10, padding: '5px 14px', background: '#006B54', color: '#fff', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
+                            + Assign Client
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Document Tables (collapsed/expanded) */}
+                  {!isCollapsed && (
+                    <div>
+                      {/* Client Documents */}
+                      {showClient && deal.client && deal.clientDocs.length > 0 && (
+                        <div>
+                          <div style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(239,246,255,0.5)', borderBottom: '1px solid #f0f0ef' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                              <PartyTag party="client" />
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>{deal.client.name}</span>
+                              <span style={{ fontSize: 11, color: '#888' }}>· {deal.client.contact}</span>
+                            </div>
+                            <div style={{ fontSize: 11, color: '#888' }}>{clientProg.done}/{clientProg.total} complete</div>
+                          </div>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {deal.clientDocs.filter(matchesFilters).map(doc => <DocRow key={doc.id} doc={doc} party="client" />)}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                      {/* No client assigned yet */}
+                      {showClient && !deal.client && (
+                        <div style={{ padding: '16px 20px', background: 'rgba(255,149,0,0.04)', borderBottom: '1px solid #f0f0ef', display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <span style={{ fontSize: 16 }}>⏳</span>
+                          <div>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: '#B45309' }}>No client assigned yet</div>
+                            <div style={{ fontSize: 11, color: '#888' }}>Client documents will appear once a client is assigned to this homeowner</div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Homeowner Documents */}
+                      {showOwner && (
+                        <div>
+                          <div style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(254,247,237,0.5)', borderBottom: '1px solid #f0f0ef', borderTop: showClient ? '1px solid #e0e0e0' : 'none' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                              <PartyTag party="homeowner" />
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>{deal.homeowner.name}</span>
+                              <span style={{ fontSize: 11, color: '#888' }}>· {deal.homeowner.property}</span>
+                            </div>
+                            <div style={{ fontSize: 11, color: '#888' }}>{ownerProg.done}/{ownerProg.total} complete</div>
+                          </div>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <tbody>
+                              {deal.homeownerDocs.filter(matchesFilters).map(doc => <DocRow key={doc.id} doc={doc} party="homeowner" />)}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div style={{ textAlign: 'center', padding: '20px 0', fontSize: 12, color: '#888' }}>
+          {filteredDeals.length} deals · {allDocs.filter(d => d.status !== 'N/A').length} total documents
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

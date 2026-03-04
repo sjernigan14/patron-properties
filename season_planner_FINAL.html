@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patron Properties — Season Planner</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #006B54;
+    --primary-dark: #004D3B;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #555;
+    --text-tertiary: #888;
+    --border: #e0e0e0;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+
+    /* Calendar status colors — solid, unmistakable */
+    --booked: #006B54;
+    --booked-hover: #005543;
+    --available: #A7F3D0;
+    --available-hover: #6EE7B7;
+    --not-rented: #f0f0f0;
+    --not-rented-hover: #e4e4e4;
+    --prep: #FFE680;
+    --prep-hover: #FFD64D;
+    --blocked: #EF5350;
+    --blocked-hover: #E53935;
+    --turnover: #FF9800;
+    --turnover-hover: #F57C00;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(0,107,84,0.2); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ── Constants ──────────────────────────────────── */
+const MASTERS_START = 5, MASTERS_END = 11;
+const CAL_START = 1, CAL_END = 14;
+const dates = Array.from({ length: CAL_END - CAL_START + 1 }, (_, i) => CAL_START + i);
+
+// Apr 1 2027 = Tuesday
+const dayNames = ['Tue','Wed','Thu','Fri','Sat','Sun','Mon','Tue','Wed','Thu','Fri','Sat','Sun','Mon'];
+const dayOfWeek = (d) => dayNames[d - 1] || '';
+
+const STATUS_META = {
+  booked:     { label: 'Booked',      color: '#006B54',  legendBg: '#006B54' },
+  available:  { label: 'Available',   color: '#059669',  legendBg: '#A7F3D0' },
+  notRented:  { label: 'Not Rented',  color: '#999',     legendBg: '#f0f0f0' },
+  prep:       { label: 'Prep',        color: '#D4A017',  legendBg: '#FFE680' },
+  turnover:   { label: 'Turnover',    color: '#F57C00',  legendBg: '#FF9800' },
+  blocked:    { label: 'Blocked',     color: '#E53935',  legendBg: '#EF5350' },
+};
+
+/* ── Data ──────────────────────────────────────── */
+const properties = [
+  { addr: '1847 Berkman Dr', beds: 7, rate: 5500, nbhd: 'West Augusta' },
+  { addr: '205 Walton Way', beds: 5, rate: 3200, nbhd: 'Summerville' },
+  { addr: '412 Highland Ave', beds: 6, rate: 4100, nbhd: 'Summerville' },
+  { addr: '628 Forest Hills Dr', beds: 4, rate: 2800, nbhd: 'Forest Hills' },
+  { addr: '734 Laurel Ave', beds: 5, rate: 3500, nbhd: 'National Hills' },
+  { addr: '845 Regent Dr', beds: 3, rate: 2000, nbhd: 'Regent Park' },
+  { addr: '956 Azalea Dr', beds: 4, rate: 2600, nbhd: 'Azalea District' },
+  { addr: '1067 Magnolia Rd', beds: 6, rate: 4200, nbhd: 'Magnolia' },
+  { addr: '1178 Dogwood Dr', beds: 3, rate: 1800, nbhd: 'Dogwood' },
+  { addr: '1289 Ivy Lane', beds: 5, rate: 3100, nbhd: 'National Hills' },
+  { addr: '1390 Oak Ridge Rd', beds: 4, rate: 2500, nbhd: 'Oak Ridge' },
+  { addr: '1401 Peach Tree Dr', beds: 7, rate: 5800, nbhd: 'West Augusta' },
+  { addr: '1502 Quail Run Ln', beds: 3, rate: 1900, nbhd: 'Quail Hollow' },
+  { addr: '1613 Rose Garden Dr', beds: 5, rate: 3400, nbhd: 'Rose Garden' },
+  { addr: '1724 Sunnyvale Rd', beds: 4, rate: 2700, nbhd: 'Sunnyvale' },
+  { addr: '1835 Timber Ridge', beds: 6, rate: 4000, nbhd: 'Timber Ridge' },
+  { addr: '1946 Utopia Ave', beds: 3, rate: 2100, nbhd: 'Utopia' },
+  { addr: '2057 Valley View Dr', beds: 5, rate: 3300, nbhd: 'Valley View' },
+  { addr: '2168 Walnut Way', beds: 4, rate: 2400, nbhd: 'Walnut Creek' },
+  { addr: '2279 Xavier Dr', beds: 6, rate: 3900, nbhd: 'Xavier Estates' },
+];
+
+const renters = [
+  { id: 1, name: 'James Mitchell', company: 'Goldman Sachs', checkIn: 'Apr 6', checkOut: 'Apr 13', rate: '$8,500/nt', guests: 14 },
+  { id: 2, name: 'Sarah Chen', company: 'Morgan Stanley', checkIn: 'Apr 4', checkOut: 'Apr 12', rate: '$6,200/nt', guests: 10 },
+  { id: 3, name: 'Robert Thompson', company: 'JP Morgan', checkIn: 'Apr 5', checkOut: 'Apr 11', rate: '$7,500/nt', guests: 12 },
+  { id: 4, name: 'Victoria Stone', company: 'BlackRock', checkIn: 'Apr 3', checkOut: 'Apr 14', rate: '$5,800/nt', guests: 8 },
+  { id: 5, name: 'Michael Park', company: 'Carlyle Group', checkIn: 'Apr 6', checkOut: 'Apr 13', rate: '$7,200/nt', guests: 16 },
+];
+
+const issues = [
+  { id: 1, prop: '205 Walton Way', issue: 'Incomplete prep — staging not finished', sev: 'high' },
+  { id: 2, prop: '628 Forest Hills Dr', issue: 'Missing homeowner documentation', sev: 'medium' },
+  { id: 3, prop: '1847 Berkman Dr', issue: 'HVAC maintenance due before Apr 1', sev: 'high' },
+  { id: 4, prop: '734 Laurel Ave', issue: 'Photography incomplete', sev: 'low' },
+  { id: 5, prop: '1067 Magnolia Rd', issue: 'Guest WiFi not configured', sev: 'medium' },
+];
+
+function generateCalendarData() {
+  const data = {};
+  properties.forEach(p => {
+    data[p.addr] = {};
+    dates.forEach(day => {
+      const rand = Math.random();
+      const isMasters = day >= MASTERS_START && day <= MASTERS_END;
+      if (isMasters) {
+        // Masters week: mostly booked, some prep, rare blocked
+        if (rand > 0.12) data[p.addr][day] = 'booked';
+        else if (rand > 0.05) data[p.addr][day] = 'prep';
+        else data[p.addr][day] = 'blocked';
+      } else {
+        // Outside Masters: ~90% not rented, small chance of other statuses
+        if (rand > 0.90) data[p.addr][day] = 'booked';
+        else if (rand > 0.85) data[p.addr][day] = 'available';
+        else if (rand > 0.80) data[p.addr][day] = 'prep';
+        else if (rand > 0.78) data[p.addr][day] = 'turnover';
+        else if (rand > 0.76) data[p.addr][day] = 'blocked';
+        else data[p.addr][day] = 'notRented';
+      }
+    });
+  });
+  return data;
+}
+
+/* ── App ──────────────────────────────────────── */
+function SeasonPlanner() {
+  const [calendarData] = useState(generateCalendarData);
+  const [hoveredCell, setHoveredCell] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [bedroomFilter, setBedroomFilter] = useState('all');
+  const [priceFilter, setPriceFilter] = useState('all');
+
+  const filteredProperties = useMemo(() => {
+    let result = properties;
+    if (bedroomFilter === '1-2') result = result.filter(p => p.beds <= 2);
+    else if (bedroomFilter === '3-4') result = result.filter(p => p.beds >= 3 && p.beds <= 4);
+    else if (bedroomFilter === '5+') result = result.filter(p => p.beds >= 5);
+    if (priceFilter === 'under2k') result = result.filter(p => p.rate < 2000);
+    else if (priceFilter === '2k-3k') result = result.filter(p => p.rate >= 2000 && p.rate <= 3000);
+    else if (priceFilter === '3k-5k') result = result.filter(p => p.rate > 3000 && p.rate <= 5000);
+    else if (priceFilter === '5k+') result = result.filter(p => p.rate > 5000);
+    return result;
+  }, [bedroomFilter, priceFilter]);
+
+  const metrics = useMemo(() => {
+    let booked = 0, available = 0, notRented = 0, prep = 0, blocked = 0, turnover = 0;
+    Object.values(calendarData).forEach(row =>
+      Object.values(row).forEach(s => {
+        if (s === 'booked') booked++;
+        else if (s === 'available') available++;
+        else if (s === 'notRented') notRented++;
+        else if (s === 'prep') prep++;
+        else if (s === 'blocked') blocked++;
+        else if (s === 'turnover') turnover++;
+      })
+    );
+    const total = properties.length * dates.length;
+    return { booked, available, notRented, prep, blocked, turnover, total, occupancy: Math.round((booked / total) * 100) };
+  }, [calendarData]);
+
+  const projectedRevenue = useMemo(() => {
+    let rev = 0;
+    properties.forEach(p => dates.forEach(d => { if (calendarData[p.addr][d] === 'booked') rev += p.rate; }));
+    return rev;
+  }, [calendarData]);
+
+  const isMasters = (d) => d >= MASTERS_START && d <= MASTERS_END;
+
+  const getTooltip = (addr, day, status) => {
+    const p = properties.find(x => x.addr === addr);
+    if (status === 'booked') {
+      const r = renters[Math.floor(Math.random() * renters.length)];
+      return `${r.name} · ${r.company}\n${r.checkIn} – ${r.checkOut}\n${r.rate}`;
+    }
+    if (status === 'available') return `Available for booking\n${p.beds}BR · $${p.rate.toLocaleString()}/nt`;
+    if (status === 'notRented') return `Not rented — off-season\n${p.beds}BR · ${p.nbhd}`;
+    if (status === 'prep') return `Prep in progress\n${p.beds}BR · $${p.rate.toLocaleString()}/nt`;
+    if (status === 'blocked') return 'Blocked — Owner hold';
+    if (status === 'turnover') return 'Turnover day\nCleaning & inspection';
+    return '';
+  };
+
+  const cssVar = (status) => {
+    if (status === 'notRented') return 'not-rented';
+    return status;
+  };
+
+  const sevColor = (s) => s === 'high' ? '#EF5350' : s === 'medium' ? '#FF9800' : '#999';
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── Branded Header ──────────────────── */}
+      <header style={{
+        background: 'linear-gradient(135deg, #006B54 0%, #004D3B 100%)',
+        color: '#fff', padding: '20px 32px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>Season Planner</h1>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 2 }}>Patron Properties · Masters 2027</p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Export</button>
+            <button style={{ padding: '8px 16px', background: '#fff', color: '#006B54', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>+ Add Property</button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── KPI Dashboard Bar ──────────────────── */}
+      <div style={{
+        background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e0e0e0',
+        display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 24,
+      }}>
+        {[
+          { label: 'Occupancy Rate', value: `${metrics.occupancy}%`, sub: `${metrics.booked} of ${metrics.total} nights`, pct: metrics.occupancy },
+          { label: 'Projected Revenue', value: `$${(projectedRevenue/1000).toFixed(0)}K`, sub: `${properties.length} properties`, pct: 72 },
+          { label: 'Booked Nights', value: metrics.booked, sub: 'Confirmed', pct: Math.round((metrics.booked/metrics.total)*100) },
+          { label: 'Available', value: metrics.available, sub: 'Open for booking', pct: Math.round((metrics.available/metrics.total)*100) },
+          { label: 'Not Rented', value: metrics.notRented, sub: 'Off-season nights', pct: Math.round((metrics.notRented/metrics.total)*100) },
+          { label: 'Needs Attention', value: issues.length, sub: `${issues.filter(i=>i.sev==='high').length} high priority`, pct: 0 },
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: '#006B54', lineHeight: 1 }}>{kpi.value}</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{kpi.sub}</div>
+            {kpi.pct > 0 && (
+              <div style={{ width: '100%', height: 5, background: '#e8f0ed', borderRadius: 3, marginTop: 8, overflow: 'hidden' }}>
+                <div style={{ width: `${Math.min(kpi.pct,100)}%`, height: '100%', background: 'linear-gradient(90deg, #006B54, #005543)', borderRadius: 3 }} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Masters Banner ──────────────────── */}
+      <div style={{
+        background: 'linear-gradient(90deg, #D4AF37 0%, #F4E4A6 50%, #D4AF37 100%)',
+        color: '#333', padding: '10px 32px', textAlign: 'center',
+        fontSize: 13, fontWeight: 600, letterSpacing: 0.5,
+        borderBottom: '2px solid #B8941C',
+      }}>
+        The Masters Tournament · April 5–11, 2027 · Augusta National Golf Club
+      </div>
+
+      {/* ── Main: Calendar + Sidebar ──────────────────── */}
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 280px', gap: 16, padding: '16px 32px', overflow: 'hidden' }}>
+
+        {/* ── Calendar ──────────────────── */}
+        <div style={{ background: '#fff', borderRadius: 8, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+
+          {/* Calendar sub-header: title + legend */}
+          <div style={{ padding: '14px 20px', borderBottom: '1px solid #e0e0e0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+            <span style={{ fontSize: 16, fontWeight: 600, color: '#1a1a1a' }}>April 2027 · Property Calendar</span>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+              {Object.entries(STATUS_META).map(([key, m]) => (
+                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 5, cursor: 'pointer', opacity: statusFilter === 'all' || statusFilter === key ? 1 : 0.3 }}
+                  onClick={() => setStatusFilter(statusFilter === key ? 'all' : key)}>
+                  <div style={{ width: 13, height: 13, borderRadius: 3, background: m.legendBg, border: key === 'notRented' || key === 'available' ? '1px solid #ccc' : 'none' }} />
+                  <span style={{ fontSize: 11, fontWeight: 500, color: '#555' }}>{m.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div style={{ flex: 1, overflow: 'auto' }}>
+            <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 900 }}>
+              <thead>
+                <tr>
+                  <th style={{
+                    position: 'sticky', left: 0, top: 0, zIndex: 20, background: '#f4f4f3',
+                    padding: '10px 12px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: '#888',
+                    borderBottom: '2px solid #d0d0d0', borderRight: '2px solid #d0d0d0', minWidth: 180,
+                  }}>Property</th>
+                  {dates.map(d => (
+                    <th key={d} style={{
+                      position: 'sticky', top: 0, zIndex: 15,
+                      padding: '8px 2px', textAlign: 'center', fontSize: 11, fontWeight: 600,
+                      color: isMasters(d) ? '#006B54' : '#666',
+                      background: isMasters(d) ? '#e8f5f0' : '#f4f4f3',
+                      borderBottom: isMasters(d) ? '3px solid #D4AF37' : '2px solid #d0d0d0',
+                      borderRight: '1px solid #d0d0d0', minWidth: 52,
+                    }}>
+                      <div style={{ fontSize: 10, color: isMasters(d) ? '#006B54' : '#aaa' }}>{dayOfWeek(d)}</div>
+                      <div>Apr {d}</div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProperties.map((prop, idx) => (
+                  <tr key={prop.addr}>
+                    <td style={{
+                      position: 'sticky', left: 0, zIndex: 10,
+                      background: idx % 2 === 0 ? '#fff' : '#fafaf9',
+                      padding: '8px 12px', borderBottom: '1px solid #e8e8e8', borderRight: '2px solid #d0d0d0',
+                      fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
+                    }}>
+                      <div style={{ color: '#1a1a1a' }}>{prop.addr}</div>
+                      <div style={{ fontSize: 10, color: '#999', fontWeight: 400 }}>{prop.beds}BR · {prop.nbhd}</div>
+                    </td>
+                    {dates.map(day => {
+                      const status = calendarData[prop.addr][day];
+                      const cellKey = `${prop.addr}-${day}`;
+                      const isHovered = hoveredCell === cellKey;
+                      const dimmed = statusFilter !== 'all' && statusFilter !== status;
+                      const cv = cssVar(status);
+
+                      return (
+                        <td key={cellKey}
+                          onMouseEnter={() => setHoveredCell(cellKey)}
+                          onMouseLeave={() => setHoveredCell(null)}
+                          style={{
+                            position: 'relative', padding: 0,
+                            borderBottom: '1px solid #e8e8e8', borderRight: '1px solid #e8e8e8',
+                            background: dimmed ? '#fafafa' : (isHovered ? `var(--${cv}-hover)` : `var(--${cv})`),
+                            cursor: 'pointer', opacity: dimmed ? 0.2 : 1,
+                            transition: 'background 0.1s, opacity 0.15s',
+                          }}>
+                          <div style={{ height: 36 }} />
+                          {isHovered && !dimmed && (
+                            <div style={{
+                              position: 'absolute', bottom: 'calc(100% + 8px)', left: '50%', transform: 'translateX(-50%)',
+                              background: '#333', color: '#fff', padding: '10px 14px', borderRadius: 6, fontSize: 11, lineHeight: 1.5,
+                              whiteSpace: 'pre-line', zIndex: 100, pointerEvents: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                            }}>
+                              {getTooltip(prop.addr, day, status)}
+                              <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', border: '6px solid transparent', borderTopColor: '#333' }} />
+                            </div>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* ── Sidebar ──────────────────── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto' }}>
+
+          {/* Filters — 2×2 grid: Status | Bedrooms / Price Range | (space) */}
+          <div style={{ background: '#fff', borderRadius: 8, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>Filters</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {/* Status filter */}
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 500, color: '#333', marginBottom: 8 }}>Status</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  {[['all','All'],['booked','Booked'],['available','Available'],['notRented','Not Rented'],['prep','Prep'],['turnover','Turnover'],['blocked','Blocked']].map(([val,label]) => (
+                    <label key={val} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12 }}>
+                      <input type="radio" name="status" checked={statusFilter===val} onChange={()=>setStatusFilter(val)}
+                        style={{ width: 14, height: 14, accentColor: '#006B54', cursor: 'pointer' }} />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              {/* Bedroom filter */}
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 500, color: '#333', marginBottom: 8 }}>Bedrooms</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  {[['all','All'],['1-2','1–2 BR'],['3-4','3–4 BR'],['5+','5+ BR']].map(([val,label]) => (
+                    <label key={val} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12 }}>
+                      <input type="radio" name="beds" checked={bedroomFilter===val} onChange={()=>setBedroomFilter(val)}
+                        style={{ width: 14, height: 14, accentColor: '#006B54', cursor: 'pointer' }} />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+                {/* Price Range filter — below Bedrooms in right column */}
+                <div style={{ marginTop: 14 }}>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: '#333', marginBottom: 8 }}>Price Range</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                    {[['all','All'],['under2k','Under $2K'],['2k-3k','$2K–$3K'],['3k-5k','$3K–$5K'],['5k+','$5K+']].map(([val,label]) => (
+                      <label key={val} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12 }}>
+                        <input type="radio" name="price" checked={priceFilter===val} onChange={()=>setPriceFilter(val)}
+                          style={{ width: 14, height: 14, accentColor: '#006B54', cursor: 'pointer' }} />
+                        <span>{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Unmatched Renters */}
+          <div style={{ background: '#fff', borderRadius: 8, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>
+              Unmatched Renters <span style={{ color: '#EF5350', fontWeight: 700 }}>({renters.length})</span>
+            </div>
+            {renters.map(r => (
+              <div key={r.id} style={{ padding: '10px 12px', borderLeft: '3px solid #006B54', background: '#f8fdfb', marginBottom: 10, borderRadius: 4 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 2 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{r.name}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#006B54' }}>{r.rate}</span>
+                </div>
+                <div style={{ fontSize: 11, color: '#666' }}>{r.company} · {r.guests} guests</div>
+                <div style={{ fontSize: 11, color: '#999', marginBottom: 6 }}>{r.checkIn} – {r.checkOut}</div>
+                <button style={{ padding: '5px 12px', background: '#006B54', color: '#fff', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>Assign</button>
+              </div>
+            ))}
+          </div>
+
+          {/* Needs Attention */}
+          <div style={{ background: '#fff', borderRadius: 8, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>
+              Needs Attention <span style={{ color: '#EF5350', fontWeight: 700 }}>({issues.length})</span>
+            </div>
+            {issues.map(i => (
+              <div key={i.id} style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: sevColor(i.sev), flexShrink: 0 }} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a' }}>{i.prop}</span>
+                </div>
+                <div style={{ fontSize: 11, color: '#888', paddingLeft: 13 }}>{i.issue}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Booking Breakdown */}
+          <div style={{ background: '#fff', borderRadius: 8, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>Booking Breakdown</div>
+            {[
+              ['Booked', metrics.booked, '#006B54'],
+              ['Available', metrics.available, '#059669'],
+              ['Not Rented', metrics.notRented, '#ccc'],
+              ['Prep', metrics.prep, '#D4A017'],
+              ['Turnover', metrics.turnover, '#FF9800'],
+              ['Blocked', metrics.blocked, '#EF5350'],
+            ].map(([label, val, color]) => (
+              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid #f5f5f5' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ width: 10, height: 10, borderRadius: 2, background: color }} />
+                  <span style={{ fontSize: 12, color: '#555' }}>{label}</span>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#1a1a1a' }}>{val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer style={{ padding: '12px 32px', borderTop: '1px solid #e0e0e0', background: '#fff', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#999', textTransform: 'uppercase' }}>Patron Properties</span>
+        <span style={{ fontSize: 11, color: '#999' }}>Masters 2027 · Apr 1–14 · Click legend to filter · Hover for detail</span>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.render(<SeasonPlanner />, document.getElementById('root'));
+</script>
+</body>
+</html>

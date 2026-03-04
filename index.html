@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patron Properties — Platform Prototype</title>
+<style>
+  :root {
+    --primary: #006B54;
+    --primary-dark: #004D3B;
+    --gold: #C49A2A;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #555;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 48px 40px 40px;
+    text-align: center;
+  }
+  .header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .masters-banner {
+    background: linear-gradient(90deg, #b8860b, #daa520, #b8860b);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+  .intro {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .intro h2 {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .intro p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  .card-header {
+    background: var(--primary);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-num {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .card-body { padding: 20px; }
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .card-features { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    background: #e8f5f0;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .card-cta {
+    display: block;
+    text-align: center;
+    padding: 14px 20px;
+    background: #f8f8f7;
+    border-top: 1px solid #eee;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+  }
+  .card:hover .card-cta { background: #e8f5f0; }
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 32px;
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>PATRON PROPERTIES</h1>
+  <p>Masters Tournament 2027 — Platform Prototype</p>
+</div>
+<div class="masters-banner">
+  Practice Rounds Apr 7–9 · Tournament Apr 10–13, 2027 · Augusta National Golf Club
+</div>
+<div class="content">
+  <div class="intro">
+    <h2>Interactive Prototype Screens</h2>
+    <p>Click any card below to open the full interactive prototype. Each screen is a working demo with filters, buttons, and sample data — built for luxury rental management during the Masters Tournament.</p>
+  </div>
+  <div class="grid">
+    <a href="season_planner_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">01</span><span class="card-title">Season Planner</span></div>
+      <div class="card-body">
+        <div class="card-desc">Calendar view of all properties across the Masters Tournament window. Track occupancy, booking status, and assign unmatched renters to available homes.</div>
+        <div class="card-features"><span class="tag">Calendar View</span><span class="tag">Occupancy KPIs</span><span class="tag">Renter Assignment</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="renter_crm_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">02</span><span class="card-title">Renter CRM</span></div>
+      <div class="card-body">
+        <div class="card-desc">Complete renter database with qualification status, booking history, property preferences, and star ratings. Filter by status, type, and tier.</div>
+        <div class="card-features"><span class="tag">Renter Profiles</span><span class="tag">Status Tracking</span><span class="tag">Star Ratings</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="deal_pipeline_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">03</span><span class="card-title">Deal Pipeline</span></div>
+      <div class="card-body">
+        <div class="card-desc">Kanban-style deal tracking from initial inquiry through confirmation. Revenue projections, stage analytics, and deal value at every step.</div>
+        <div class="card-features"><span class="tag">Kanban Board</span><span class="tag">Revenue Forecast</span><span class="tag">Stage Analytics</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="property_search_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">04</span><span class="card-title">Property Search</span></div>
+      <div class="card-body">
+        <div class="card-desc">Filterable property inventory with proximity to Augusta National, bedrooms, amenities, and nightly pricing. Quick-scan cards for fast comparison.</div>
+        <div class="card-features"><span class="tag">Property Filters</span><span class="tag">Proximity Data</span><span class="tag">Quick Compare</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="property_detail_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">05</span><span class="card-title">Property Detail</span></div>
+      <div class="card-body">
+        <div class="card-desc">Deep-dive property profile with photos, amenities, pricing tiers, availability calendar, and full booking history for each home.</div>
+        <div class="card-features"><span class="tag">Photo Gallery</span><span class="tag">Pricing Tiers</span><span class="tag">Booking History</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="homeowner_intake_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">06</span><span class="card-title">Homeowner Intake</span></div>
+      <div class="card-body">
+        <div class="card-desc">Multi-step onboarding form for new homeowner properties. Capture property details, photos, availability preferences, and agreement terms.</div>
+        <div class="card-features"><span class="tag">Multi-Step Form</span><span class="tag">Photo Upload</span><span class="tag">Agreements</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="document_tracker_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">07</span><span class="card-title">Document Tracker</span></div>
+      <div class="card-body">
+        <div class="card-desc">Two-party document management tracking client and homeowner paperwork status per deal. Upload, review, and verify all required documents.</div>
+        <div class="card-features"><span class="tag">Client Docs</span><span class="tag">Homeowner Docs</span><span class="tag">Status Tracking</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+    <a href="pricing_calculator_FINAL.html" class="card">
+      <div class="card-header"><span class="card-num">08</span><span class="card-title">Pricing Calculator</span></div>
+      <div class="card-body">
+        <div class="card-desc">Dynamic pricing tool with tournament and practice round rate multipliers, 7/8/10-night rental packages, and commission modeling for homeowner net revenue.</div>
+        <div class="card-features"><span class="tag">Rate Multipliers</span><span class="tag">Rental Packages</span><span class="tag">Commission Model</span></div>
+      </div>
+      <div class="card-cta">Open Prototype →</div>
+    </a>
+  </div>
+</div>
+<div class="footer">
+  Patron Properties · Masters Tournament 2027 · Augusta, Georgia<br>
+  Interactive prototypes — click any screen above to explore
+</div>
+</body>
+</html>

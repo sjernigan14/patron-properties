@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patron Properties - Homeowner Intake</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #006B54;
+            --primary-dark: #004D3B;
+            --primary-light: rgba(0, 107, 84, 0.08);
+            --bg: #f5f5f4;
+            --surface: #ffffff;
+            --text: #111111;
+            --text-secondary: #555555;
+            --text-tertiary: #888888;
+            --border: #e0e0e0;
+            --red: #c53030;
+            --gold: #D4A843;
+            --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+        }
+
+        html, body { height: 100%; width: 100%; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            letter-spacing: -0.15px;
+        }
+
+        #root { display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Branded Gradient Header */
+        .header {
+            background: linear-gradient(135deg, #006B54, #004D3B);
+            padding: 1.25rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-logo {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(255,255,255,0.2); display: flex;
+            align-items: center; justify-content: center;
+            font-size: 1.25rem; font-weight: 700; color: white;
+        }
+        .header-text h1 {
+            font-size: 1.375rem; font-weight: 700; color: white;
+            letter-spacing: -0.5px; line-height: 1.2;
+        }
+        .header-text span {
+            font-size: 0.75rem; color: rgba(255,255,255,0.7);
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .header-actions { display: flex; gap: 0.75rem; }
+        .header-btn {
+            padding: 0.5rem 1.25rem; border-radius: 8px;
+            font-size: 0.8125rem; font-weight: 600; cursor: pointer;
+            font-family: var(--font); border: none; transition: all 0.15s;
+        }
+        .header-btn-outline {
+            background: rgba(255,255,255,0.15); color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .header-btn-outline:hover { background: rgba(255,255,255,0.25); }
+
+        /* Masters Banner */
+        .masters-banner {
+            background: linear-gradient(135deg, #D4A843, #B8922E);
+            padding: 0.625rem 2rem; text-align: center;
+            font-size: 0.8125rem; font-weight: 600; color: white;
+            letter-spacing: 0.3px;
+        }
+
+        /* Step Progress Bar */
+        .step-progress {
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            padding: 1.25rem 2rem;
+        }
+        .step-progress-inner {
+            max-width: 800px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .step-item {
+            display: flex; align-items: center; gap: 0.625rem;
+            cursor: pointer; flex: 1; position: relative;
+        }
+        .step-item:not(:last-child)::after {
+            content: ''; position: absolute; top: 50%;
+            width: calc(100% - 140px); height: 2px;
+            background: var(--border); transform: translateY(-50%);
+            left: 140px;
+        }
+        .step-item.completed:not(:last-child)::after { background: var(--primary); }
+        .step-number {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.875rem; font-weight: 600;
+            border: 2px solid var(--border); color: var(--text-tertiary);
+            background: var(--surface); transition: all 0.2s;
+            flex-shrink: 0; position: relative; z-index: 1;
+        }
+        .step-item.active .step-number {
+            background: var(--primary); color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 107, 84, 0.15);
+        }
+        .step-item.completed .step-number {
+            background: var(--primary); color: white;
+            border-color: var(--primary);
+        }
+        .step-label {
+            font-size: 0.8125rem; font-weight: 500;
+            color: var(--text-tertiary); white-space: nowrap;
+        }
+        .step-item.active .step-label { color: var(--primary); font-weight: 600; }
+        .step-item.completed .step-label { color: var(--text); }
+
+        /* KPI Bar */
+        .kpi-bar {
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+        .kpi-bar-inner {
+            max-width: 800px; margin: 0 auto;
+            display: flex; justify-content: space-between;
+        }
+        .kpi-item { text-align: center; }
+        .kpi-value {
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--primary); letter-spacing: -0.5px;
+        }
+        .kpi-label {
+            font-size: 0.6875rem; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1; display: flex; justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .content { width: 100%; max-width: 800px; }
+
+        /* Form Card */
+        .form-card {
+            background: var(--surface); border-radius: 12px;
+            border: 1px solid var(--border); padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .step-title {
+            font-size: 1.375rem; font-weight: 700; color: var(--text);
+            margin-bottom: 0.25rem; letter-spacing: -0.3px;
+        }
+        .step-description {
+            font-size: 0.9375rem; color: var(--text-secondary);
+            margin-bottom: 1.75rem;
+        }
+
+        /* Form Elements */
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.5rem; margin-bottom: 1.5rem;
+        }
+        .form-grid.full { grid-template-columns: 1fr; }
+        .form-grid.thirds { grid-template-columns: 1fr 1fr 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-label {
+            font-size: 0.8125rem; font-weight: 600; color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        .required { color: var(--red); font-weight: 600; }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.75rem 1rem; border: 1px solid var(--border);
+            border-radius: 8px; font-family: var(--font);
+            font-size: 0.9375rem; color: var(--text);
+            background: var(--surface); transition: all 0.15s; width: 100%;
+        }
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--text-tertiary); }
+        .form-input:hover, .form-select:hover, .form-textarea:hover { border-color: var(--text-tertiary); }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 107, 84, 0.12);
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+
+        /* Clickable Button Selectors */
+        .type-buttons { display: flex; flex-wrap: wrap; gap: 0.625rem; }
+        .type-btn {
+            padding: 0.625rem 1.25rem; border-radius: 8px;
+            font-size: 0.875rem; font-weight: 600; cursor: pointer;
+            font-family: var(--font); border: 1.5px solid var(--border);
+            background: var(--surface); color: var(--text-secondary);
+            transition: all 0.15s;
+        }
+        .type-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .type-btn.selected {
+            background: var(--primary); color: white; border-color: var(--primary);
+        }
+
+        /* Amenities Grid */
+        .amenities-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+            gap: 0.75rem;
+        }
+        .amenity-checkbox { position: relative; }
+        .amenity-checkbox input { position: absolute; opacity: 0; cursor: pointer; }
+        .amenity-label {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1rem; border: 1.5px solid var(--border);
+            border-radius: 8px; cursor: pointer; transition: all 0.15s;
+            background: var(--surface); font-weight: 500; font-size: 0.875rem;
+            text-align: center; min-height: 44px; gap: 0.5rem;
+        }
+        .amenity-checkbox input:checked + .amenity-label {
+            background: var(--primary-light); border-color: var(--primary); color: var(--primary);
+        }
+
+        /* Date Input */
+        .date-input {
+            padding: 0.75rem 1rem; border: 1px solid var(--border);
+            border-radius: 8px; font-family: var(--font);
+            font-size: 0.9375rem; color: var(--text);
+            background: var(--surface); transition: all 0.15s; width: 100%;
+        }
+        .date-input:hover { border-color: var(--text-tertiary); }
+        .date-input:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 107, 84, 0.12);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border); border-radius: 10px;
+            padding: 2rem 1.5rem; text-align: center;
+            cursor: pointer; transition: all 0.15s; background: var(--bg);
+        }
+        .upload-area:hover { border-color: var(--primary); background: var(--primary-light); }
+        .upload-area.active { border-color: var(--primary); background: var(--primary-light); }
+        .upload-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .upload-text { font-size: 0.875rem; color: var(--text-secondary); font-weight: 500; }
+        .upload-hint { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.25rem; }
+        .upload-input { display: none; }
+
+        .file-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .file-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.625rem 1rem; background: var(--primary-light);
+            border-radius: 8px; border-left: 3px solid var(--primary);
+        }
+        .file-name { font-size: 0.875rem; color: var(--text); font-weight: 500; }
+        .file-remove {
+            background: none; border: none; color: var(--text-tertiary);
+            cursor: pointer; font-size: 1rem; padding: 0.25rem;
+        }
+        .file-remove:hover { color: var(--red); }
+
+        /* Review Section */
+        .review-section {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem;
+        }
+        .review-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+        .review-icon {
+            width: 28px; height: 28px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-size: 0.875rem;
+        }
+        .review-title {
+            font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.15px;
+        }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .review-item { display: flex; flex-direction: column; }
+        .review-label {
+            font-size: 0.6875rem; font-weight: 600; color: var(--text-tertiary);
+            margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .review-value {
+            font-size: 0.9375rem; color: var(--text); font-weight: 500;
+        }
+
+        /* Button Group */
+        .button-group {
+            display: flex; justify-content: space-between;
+            gap: 1rem; margin-top: 2rem; padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .button {
+            padding: 0.875rem 2rem; border: none; border-radius: 10px;
+            font-size: 0.9375rem; font-weight: 600; cursor: pointer;
+            transition: all 0.15s; font-family: var(--font);
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.5rem; min-height: 48px;
+        }
+        .button-primary {
+            background: var(--primary); color: white; border: 1px solid var(--primary);
+        }
+        .button-primary:hover:not(:disabled) {
+            background: #005543; box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .button-primary:disabled {
+            background: var(--text-tertiary); border-color: var(--text-tertiary);
+            cursor: not-allowed; opacity: 0.5;
+        }
+        .button-secondary {
+            background: var(--surface); color: var(--primary); border: 1px solid var(--border);
+        }
+        .button-secondary:hover:not(:disabled) {
+            background: var(--bg); border-color: var(--text-secondary);
+        }
+        .button-secondary:disabled {
+            color: var(--text-tertiary); border-color: var(--border); cursor: not-allowed;
+        }
+
+        /* Success State */
+        .success-card {
+            background: var(--surface); border-radius: 12px;
+            border: 1px solid var(--border); padding: 3rem 2rem;
+            text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .success-icon {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: #D1FAE5; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;
+        }
+        .success-title {
+            font-size: 1.5rem; font-weight: 700; color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+        .success-desc {
+            font-size: 1rem; color: var(--text-secondary);
+            max-width: 450px; margin: 0 auto 2rem;
+        }
+        .ref-badge {
+            display: inline-block; padding: 0.5rem 1.25rem;
+            background: var(--primary-light); border-radius: 8px;
+            font-size: 0.9375rem; font-weight: 600; color: var(--primary);
+            border: 1px solid rgba(0, 107, 84, 0.2);
+        }
+
+        /* Section Divider */
+        .section-divider { height: 1px; background: var(--border); margin: 1.75rem 0; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 1.25rem;
+        }
+
+        /* Contact Methods */
+        .contact-methods { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+        .contact-btn {
+            padding: 0.625rem 1.25rem; border-radius: 8px;
+            font-size: 0.875rem; font-weight: 600; cursor: pointer;
+            font-family: var(--font); border: 1.5px solid var(--border);
+            background: var(--surface); color: var(--text-secondary); transition: all 0.15s;
+        }
+        .contact-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .contact-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Info callout */
+        .info-callout {
+            background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px;
+            padding: 1rem 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start;
+            margin-top: 1rem;
+        }
+        .info-callout-icon { font-size: 1.125rem; flex-shrink: 0; margin-top: 1px; }
+        .info-callout-text { font-size: 0.8125rem; color: #1E40AF; line-height: 1.5; }
+
+        @media (max-width: 640px) {
+            .form-grid, .review-grid { grid-template-columns: 1fr; }
+            .form-grid.thirds { grid-template-columns: 1fr; }
+            .step-progress-inner { flex-wrap: wrap; gap: 0.5rem; }
+            .step-item:not(:last-child)::after { display: none; }
+            .kpi-bar-inner { flex-wrap: wrap; gap: 1rem; }
+            .header { padding: 1rem; }
+            .form-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef } = React;
+
+        const STEPS = [
+            { num: 1, label: 'Owner Info' },
+            { num: 2, label: 'Property Details' },
+            { num: 3, label: 'Availability & Pricing' },
+            { num: 4, label: 'Photos & Review' }
+        ];
+
+        const AMENITIES = [
+            { name: 'Pool', icon: '🏊' },
+            { name: 'Pool House', icon: '🏠' },
+            { name: 'Hot Tub', icon: '♨️' },
+            { name: 'Outdoor Kitchen', icon: '🍳' },
+            { name: 'Fire Pit', icon: '🔥' },
+            { name: 'Screened Porch', icon: '🪟' },
+            { name: 'Deck / Patio', icon: '🌿' },
+            { name: 'Gazebo', icon: '⛱️' },
+            { name: 'Golf Course View', icon: '⛳' },
+            { name: 'Pond / Lake View', icon: '🌊' },
+            { name: 'Golf Cart Included', icon: '🏌️' },
+            { name: 'Garage Parking', icon: '🚗' },
+            { name: 'Circular Driveway', icon: '🔄' },
+            { name: 'Fenced Yard', icon: '🏡' },
+            { name: 'Tennis Court', icon: '🎾' },
+            { name: 'Basketball Hoop', icon: '🏀' },
+            { name: 'Exercise Room', icon: '💪' },
+            { name: 'Theater Room', icon: '🎬' },
+            { name: 'Game Room', icon: '🎱' },
+            { name: 'Wet Bar', icon: '🍸' },
+            { name: 'Piano', icon: '🎹' },
+            { name: 'Smart Home', icon: '📱' },
+            { name: 'Security System', icon: '🔒' },
+            { name: 'EV Charger', icon: '⚡' },
+            { name: 'Wireless Internet', icon: '📶' },
+            { name: 'Gas Grill', icon: '🔥' },
+            { name: 'Charcoal Grill', icon: '♨️' },
+            { name: 'Double Ovens', icon: '🍽️' },
+            { name: 'Keurig / Coffee Bar', icon: '☕' },
+            { name: 'Hardwood Floors', icon: '🪵' }
+        ];
+
+        const OWNER_TYPES = ['Individual', 'LLC', 'Trust', 'Corporation'];
+        const PROPERTY_TYPES = ['Single Family', 'Townhome', 'Condo', 'Estate'];
+
+        // Pre-filled demo data so all 4 steps are visible
+        const DEMO_DATA = {
+            ownerType: 'individual', firstName: 'Margaret', lastName: 'Ashford',
+            email: 'margaret.ashford@gmail.com', phone: '(706) 555-0847',
+            mailingAddress: '482 Walton Way, Augusta, GA 30901',
+            preferredContact: 'email',
+            propertyAddress: '1847 Magnolia Drive, Augusta, GA 30904',
+            neighborhood: 'West Lake', distanceToAugusta: '1.2 miles',
+            bedrooms: '5', bathrooms: '4', sqFootage: '4200',
+            lotSize: '0.8 acres', yearBuilt: '2018', propertyType: 'singlefamily',
+            parkingSpaces: '3', homeType: 'host',
+            smokingAllowed: 'no', petsOnProperty: 'boarded', diningSeats: '16',
+            amenities: ['Pool', 'Pool House', 'Outdoor Kitchen', 'Screened Porch', 'Golf Cart Included', 'Smart Home', 'Security System', 'Fire Pit', 'Gas Grill', 'Wireless Internet', 'Garage Parking'],
+            availableFromDate: '2027-04-01', availableToDate: '2027-04-08',
+            blackoutDates: 'None',
+            preferredNightlyRate: '2800', preferredWeeklyRate: '16500',
+            minimumStay: '7', maxOccupancy: '12',
+            checkInMethod: 'smartlock',
+            cleaningPreference: 'patron',
+            housekeeperName: 'Augusta Clean Team', housekeeperPhone: '(706) 555-1234',
+            wifiName: 'Magnolia-Guest', wifiPassword: 'Masters2027',
+            houseRules: 'No smoking indoors. No pets. Quiet hours after 10pm. Golf cart must stay within 3-mile radius. Pool gate must remain locked when not in use.',
+            propertyPhotos: [],
+            accuracyAgreed: false
+        };
+
+        function HomeownerIntakeForm() {
+            const [currentStep, setCurrentStep] = useState(1);
+            const [submitted, setSubmitted] = useState(false);
+            const [showAllSteps, setShowAllSteps] = useState(true);
+            const [formData, setFormData] = useState(DEMO_DATA);
+
+            const handleInputChange = (field, value) => {
+                setFormData(prev => ({ ...prev, [field]: value }));
+            };
+
+            const handleAmenityChange = (amenity) => {
+                setFormData(prev => ({
+                    ...prev,
+                    amenities: prev.amenities.includes(amenity)
+                        ? prev.amenities.filter(a => a !== amenity)
+                        : [...prev.amenities, amenity]
+                }));
+            };
+
+            const handleFileUpload = (field, files) => {
+                if (field === 'propertyPhotos') {
+                    setFormData(prev => ({
+                        ...prev,
+                        propertyPhotos: [...prev.propertyPhotos, ...Array.from(files)]
+                    }));
+                } else {
+                    if (files.length > 0) {
+                        setFormData(prev => ({ ...prev, [field]: files[0] }));
+                    }
+                }
+            };
+
+            const removeFile = (field, index) => {
+                if (field === 'propertyPhotos') {
+                    setFormData(prev => ({
+                        ...prev,
+                        propertyPhotos: prev.propertyPhotos.filter((_, i) => i !== index)
+                    }));
+                } else {
+                    setFormData(prev => ({ ...prev, [field]: null }));
+                }
+            };
+
+            const canProceedToNextStep = () => {
+                const req = {
+                    1: ['ownerType', 'firstName', 'lastName', 'email', 'phone', 'mailingAddress'],
+                    2: ['propertyAddress', 'bedrooms', 'bathrooms', 'propertyType', 'homeType'],
+                    3: ['availableFromDate', 'availableToDate', 'preferredNightlyRate', 'minimumStay', 'maxOccupancy'],
+                    4: true
+                };
+                const fields = req[currentStep];
+                if (fields === true) return true;
+                return fields.every(f => formData[f] !== '' && formData[f] !== null);
+            };
+
+            const completedFields = () => {
+                const all = ['ownerType','firstName','lastName','email','phone','mailingAddress',
+                    'propertyAddress','bedrooms','bathrooms','propertyType','homeType',
+                    'availableFromDate','availableToDate','preferredNightlyRate','minimumStay','maxOccupancy'];
+                return all.filter(f => formData[f] !== '' && formData[f] !== null).length;
+            };
+
+            const totalRequired = 16;
+
+            const handleSubmit = () => {
+                console.log('Form submitted:', formData);
+                setSubmitted(true);
+            };
+
+            if (submitted) {
+                return (
+                    <>
+                        <Header />
+                        <div className="masters-banner">⛳ Masters 2027 — Application Received</div>
+                        <div className="main-container">
+                            <div className="content">
+                                <div className="success-card">
+                                    <div className="success-icon">✓</div>
+                                    <div className="success-title">Application Submitted</div>
+                                    <div className="success-desc">
+                                        Thank you, {formData.firstName}! Your property at {formData.propertyAddress} has been submitted for review.
+                                        Our team will contact you within 2 business days.
+                                    </div>
+                                    <div className="ref-badge">Ref: PP-{String(Math.floor(1000 + Math.random() * 9000))}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+            }
+
+            // Show All Steps mode — renders all 4 forms stacked
+            if (showAllSteps) {
+                return (
+                    <>
+                        <Header />
+                        <div className="masters-banner">⛳ Masters 2027 — New Property Applications Open Through Apr 1</div>
+
+                        <div className="step-progress">
+                            <div className="step-progress-inner">
+                                {STEPS.map(s => (
+                                    <div key={s.num} className="step-item completed">
+                                        <div className="step-number">✓</div>
+                                        <span className="step-label">{s.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="kpi-bar">
+                            <div className="kpi-bar-inner">
+                                <div className="kpi-item">
+                                    <div className="kpi-value">{formData.homeType === 'host' ? '🏠' : formData.homeType === 'dinner' ? '🍽️' : formData.homeType === 'sleeper' ? '🛏️' : formData.homeType === 'staff' ? '👥' : '—'}</div>
+                                    <div className="kpi-label">{formData.homeType === 'host' ? 'Host Home' : formData.homeType === 'dinner' ? 'Dinner' : formData.homeType === 'sleeper' ? 'Sleeper' : formData.homeType === 'staff' ? 'Staff' : 'Home Type'}</div>
+                                </div>
+                                <div className="kpi-item">
+                                    <div className="kpi-value">${Number(formData.preferredWeeklyRate || 0).toLocaleString()}</div>
+                                    <div className="kpi-label">Weekly Rate</div>
+                                </div>
+                                <div className="kpi-item">
+                                    <div className="kpi-value">{formData.minimumStay || '—'}</div>
+                                    <div className="kpi-label">Min Stay</div>
+                                </div>
+                                <div className="kpi-item">
+                                    <div className="kpi-value">{formData.amenities.length}</div>
+                                    <div className="kpi-label">Amenities</div>
+                                </div>
+                                <div className="kpi-item">
+                                    <div className="kpi-value">{formData.maxOccupancy || '—'}</div>
+                                    <div className="kpi-label">Max Guests</div>
+                                </div>
+                                <div className="kpi-item">
+                                    <div className="kpi-value">{Math.round((completedFields() / totalRequired) * 100)}%</div>
+                                    <div className="kpi-label">Complete</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="main-container">
+                            <div className="content" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+                                <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
+                                    <button className="button button-secondary" style={{ fontSize: '0.8125rem', padding: '0.5rem 1.5rem', minHeight: 'auto' }}
+                                        onClick={() => { setShowAllSteps(false); setCurrentStep(1); }}>
+                                        Switch to Step-by-Step View
+                                    </button>
+                                </div>
+
+                                {/* Step 1 */}
+                                <div style={{ position: 'relative' }}>
+                                    <div style={{ position: 'absolute', top: '-0.625rem', left: '1.5rem', background: 'var(--primary)', color: 'white',
+                                        padding: '0.25rem 0.875rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.3px', zIndex: 1 }}>
+                                        STEP 1 — OWNER INFO
+                                    </div>
+                                    <Step1 formData={formData} onChange={handleInputChange} />
+                                </div>
+
+                                {/* Step 2 */}
+                                <div style={{ position: 'relative' }}>
+                                    <div style={{ position: 'absolute', top: '-0.625rem', left: '1.5rem', background: 'var(--primary)', color: 'white',
+                                        padding: '0.25rem 0.875rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.3px', zIndex: 1 }}>
+                                        STEP 2 — PROPERTY DETAILS
+                                    </div>
+                                    <Step2 formData={formData} onChange={handleInputChange} onAmenity={handleAmenityChange} />
+                                </div>
+
+                                {/* Step 3 */}
+                                <div style={{ position: 'relative' }}>
+                                    <div style={{ position: 'absolute', top: '-0.625rem', left: '1.5rem', background: 'var(--primary)', color: 'white',
+                                        padding: '0.25rem 0.875rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.3px', zIndex: 1 }}>
+                                        STEP 3 — AVAILABILITY & PRICING
+                                    </div>
+                                    <Step3 formData={formData} onChange={handleInputChange} />
+                                </div>
+
+                                {/* Step 4 */}
+                                <div style={{ position: 'relative' }}>
+                                    <div style={{ position: 'absolute', top: '-0.625rem', left: '1.5rem', background: 'var(--primary)', color: 'white',
+                                        padding: '0.25rem 0.875rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.3px', zIndex: 1 }}>
+                                        STEP 4 — PHOTOS & REVIEW
+                                    </div>
+                                    <Step4 formData={formData} onFileUpload={handleFileUpload} onRemoveFile={removeFile} />
+                                </div>
+
+                                <div className="button-group" style={{ borderTop: 'none', paddingTop: 0 }}>
+                                    <div></div>
+                                    <button className="button button-primary" onClick={handleSubmit}
+                                        style={{ padding: '0.875rem 2.5rem' }}>
+                                        Submit Application
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+            }
+
+            // Normal step-by-step mode
+            return (
+                <>
+                    <Header />
+                    <div className="masters-banner">⛳ Masters 2027 — New Property Applications Open Through Apr 1</div>
+
+                    <div className="step-progress">
+                        <div className="step-progress-inner">
+                            {STEPS.map(s => (
+                                <div key={s.num}
+                                    className={`step-item ${s.num === currentStep ? 'active' : ''} ${s.num < currentStep ? 'completed' : ''}`}
+                                    onClick={() => { if (s.num < currentStep) setCurrentStep(s.num); }}>
+                                    <div className="step-number">{s.num < currentStep ? '✓' : s.num}</div>
+                                    <span className="step-label">{s.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="kpi-bar">
+                        <div className="kpi-bar-inner">
+                            <div className="kpi-item">
+                                <div className="kpi-value">{currentStep}/4</div>
+                                <div className="kpi-label">Current Step</div>
+                            </div>
+                            <div className="kpi-item">
+                                <div className="kpi-value">{formData.homeType === 'host' ? '🏠' : formData.homeType === 'dinner' ? '🍽️' : formData.homeType === 'sleeper' ? '🛏️' : formData.homeType === 'staff' ? '👥' : '—'}</div>
+                                <div className="kpi-label">{formData.homeType === 'host' ? 'Host Home' : formData.homeType === 'dinner' ? 'Dinner' : formData.homeType === 'sleeper' ? 'Sleeper' : formData.homeType === 'staff' ? 'Staff' : 'Home Type'}</div>
+                            </div>
+                            <div className="kpi-item">
+                                <div className="kpi-value">${Number(formData.preferredWeeklyRate || 0).toLocaleString()}</div>
+                                <div className="kpi-label">Weekly Rate</div>
+                            </div>
+                            <div className="kpi-item">
+                                <div className="kpi-value">{formData.minimumStay || '—'}</div>
+                                <div className="kpi-label">Min Stay</div>
+                            </div>
+                            <div className="kpi-item">
+                                <div className="kpi-value">{formData.amenities.length}</div>
+                                <div className="kpi-label">Amenities</div>
+                            </div>
+                            <div className="kpi-item">
+                                <div className="kpi-value">{Math.round((completedFields() / totalRequired) * 100)}%</div>
+                                <div className="kpi-label">Complete</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="main-container">
+                        <div className="content">
+                            <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                                <button className="button button-secondary" style={{ fontSize: '0.8125rem', padding: '0.5rem 1.5rem', minHeight: 'auto' }}
+                                    onClick={() => setShowAllSteps(true)}>
+                                    View All Steps
+                                </button>
+                            </div>
+
+                            {currentStep === 1 && <Step1 formData={formData} onChange={handleInputChange} />}
+                            {currentStep === 2 && <Step2 formData={formData} onChange={handleInputChange} onAmenity={handleAmenityChange} />}
+                            {currentStep === 3 && <Step3 formData={formData} onChange={handleInputChange} />}
+                            {currentStep === 4 && <Step4 formData={formData} onFileUpload={handleFileUpload} onRemoveFile={removeFile} />}
+
+                            <div className="button-group">
+                                <button className="button button-secondary"
+                                    onClick={() => currentStep > 1 && setCurrentStep(currentStep - 1)}
+                                    disabled={currentStep === 1}>← Back</button>
+                                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                    {currentStep < 4 ? (
+                                        <button className="button button-primary"
+                                            onClick={() => canProceedToNextStep() && setCurrentStep(currentStep + 1)}
+                                            disabled={!canProceedToNextStep()}>Continue →</button>
+                                    ) : (
+                                        <button className="button button-primary" onClick={handleSubmit}
+                                            style={{ padding: '0.875rem 2.5rem' }}>Submit Application</button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        function Header() {
+            return (
+                <div className="header">
+                    <div className="header-left">
+                        <div className="header-logo">PP</div>
+                        <div className="header-text">
+                            <span>Patron Properties</span>
+                            <h1>Homeowner Intake</h1>
+                        </div>
+                    </div>
+                    <div className="header-actions">
+                        <button className="header-btn header-btn-outline">Save Draft</button>
+                        <button className="header-btn header-btn-outline">Need Help?</button>
+                    </div>
+                </div>
+            );
+        }
+
+        function Step1({ formData, onChange }) {
+            return (
+                <div className="form-card">
+                    <h2 className="step-title">Owner Information</h2>
+                    <p className="step-description">Tell us about yourself so we can set up your account</p>
+
+                    <div className="section-label">Ownership Type</div>
+                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                        <label className="form-label">Owner Type <span className="required">*</span></label>
+                        <div className="type-buttons">
+                            {OWNER_TYPES.map(t => {
+                                const val = t.toLowerCase().replace(' ', '');
+                                return (
+                                    <button key={t} className={`type-btn ${formData.ownerType === val ? 'selected' : ''}`}
+                                        onClick={() => onChange('ownerType', val)}>{t}</button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Contact Information</div>
+
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">First Name <span className="required">*</span></label>
+                            <input type="text" className="form-input" value={formData.firstName}
+                                onChange={e => onChange('firstName', e.target.value)} placeholder="John" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Last Name <span className="required">*</span></label>
+                            <input type="text" className="form-input" value={formData.lastName}
+                                onChange={e => onChange('lastName', e.target.value)} placeholder="Smith" />
+                        </div>
+                    </div>
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">Email <span className="required">*</span></label>
+                            <input type="email" className="form-input" value={formData.email}
+                                onChange={e => onChange('email', e.target.value)} placeholder="john@example.com" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Phone <span className="required">*</span></label>
+                            <input type="tel" className="form-input" value={formData.phone}
+                                onChange={e => onChange('phone', e.target.value)} placeholder="(706) 555-0123" />
+                        </div>
+                    </div>
+                    <div className="form-grid full">
+                        <div className="form-group">
+                            <label className="form-label">Mailing Address <span className="required">*</span></label>
+                            <input type="text" className="form-input" value={formData.mailingAddress}
+                                onChange={e => onChange('mailingAddress', e.target.value)}
+                                placeholder="123 Main Street, City, State ZIP" />
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Communication Preference</div>
+                    <div className="form-group">
+                        <label className="form-label">Preferred Contact Method</label>
+                        <div className="contact-methods">
+                            {['Email', 'Phone', 'Text'].map(m => (
+                                <button key={m}
+                                    className={`contact-btn ${formData.preferredContact === m.toLowerCase() ? 'selected' : ''}`}
+                                    onClick={() => onChange('preferredContact', m.toLowerCase())}>{m}</button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function Step2({ formData, onChange, onAmenity }) {
+            return (
+                <div className="form-card">
+                    <h2 className="step-title">Property Details</h2>
+                    <p className="step-description">Tell us about the property you'd like to list</p>
+
+                    <div className="section-label">Location</div>
+                    <div className="form-grid full">
+                        <div className="form-group">
+                            <label className="form-label">Property Address <span className="required">*</span></label>
+                            <input type="text" className="form-input" value={formData.propertyAddress}
+                                onChange={e => onChange('propertyAddress', e.target.value)}
+                                placeholder="123 Magnolia Drive, Augusta, GA 30904" />
+                        </div>
+                    </div>
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">Neighborhood</label>
+                            <input type="text" className="form-input" value={formData.neighborhood}
+                                onChange={e => onChange('neighborhood', e.target.value)}
+                                placeholder="e.g., West Lake, Forest Hills" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Distance to Augusta National</label>
+                            <input type="text" className="form-input" value={formData.distanceToAugusta}
+                                onChange={e => onChange('distanceToAugusta', e.target.value)}
+                                placeholder="e.g., 1.2 miles" />
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Specifications</div>
+
+                    <div className="form-grid thirds">
+                        <div className="form-group">
+                            <label className="form-label">Bedrooms <span className="required">*</span></label>
+                            <select className="form-select" value={formData.bedrooms}
+                                onChange={e => onChange('bedrooms', e.target.value)}>
+                                <option value="">Select</option>
+                                {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>{n}</option>)}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Bathrooms <span className="required">*</span></label>
+                            <select className="form-select" value={formData.bathrooms}
+                                onChange={e => onChange('bathrooms', e.target.value)}>
+                                <option value="">Select</option>
+                                {[1,1.5,2,2.5,3,3.5,4,4.5,5,6].map(n => <option key={n} value={n}>{n}</option>)}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Sq Footage</label>
+                            <input type="number" className="form-input" value={formData.sqFootage}
+                                onChange={e => onChange('sqFootage', e.target.value)} placeholder="3,200" />
+                        </div>
+                    </div>
+                    <div className="form-grid thirds">
+                        <div className="form-group">
+                            <label className="form-label">Lot Size</label>
+                            <input type="text" className="form-input" value={formData.lotSize}
+                                onChange={e => onChange('lotSize', e.target.value)} placeholder="0.5 acres" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Year Built</label>
+                            <input type="number" className="form-input" value={formData.yearBuilt}
+                                onChange={e => onChange('yearBuilt', e.target.value)} placeholder="2005" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Parking Spaces</label>
+                            <input type="number" className="form-input" value={formData.parkingSpaces}
+                                onChange={e => onChange('parkingSpaces', e.target.value)} placeholder="3" />
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Policies & Capacity</div>
+                    <div className="form-grid thirds">
+                        <div className="form-group">
+                            <label className="form-label">Smoking Allowed?</label>
+                            <div className="type-buttons">
+                                <button className={`type-btn ${formData.smokingAllowed === 'no' ? 'selected' : ''}`}
+                                    onClick={() => onChange('smokingAllowed', 'no')} style={{ flex: 1 }}>🚭 No</button>
+                                <button className={`type-btn ${formData.smokingAllowed === 'outdoors' ? 'selected' : ''}`}
+                                    onClick={() => onChange('smokingAllowed', 'outdoors')} style={{ flex: 1 }}>🌿 Outdoors Only</button>
+                                <button className={`type-btn ${formData.smokingAllowed === 'yes' ? 'selected' : ''}`}
+                                    onClick={() => onChange('smokingAllowed', 'yes')} style={{ flex: 1 }}>✅ Yes</button>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Pets on Property?</label>
+                            <div className="type-buttons">
+                                <button className={`type-btn ${formData.petsOnProperty === 'no' ? 'selected' : ''}`}
+                                    onClick={() => onChange('petsOnProperty', 'no')} style={{ flex: 1 }}>No Pets</button>
+                                <button className={`type-btn ${formData.petsOnProperty === 'boarded' ? 'selected' : ''}`}
+                                    onClick={() => onChange('petsOnProperty', 'boarded')} style={{ flex: 1 }}>Will Board</button>
+                                <button className={`type-btn ${formData.petsOnProperty === 'onsite' ? 'selected' : ''}`}
+                                    onClick={() => onChange('petsOnProperty', 'onsite')} style={{ flex: 1 }}>On-Site</button>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Dining Seats</label>
+                            <input type="number" className="form-input" value={formData.diningSeats}
+                                onChange={e => onChange('diningSeats', e.target.value)} placeholder="12" />
+                            <span style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)' }}>Total seated dining capacity</span>
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Classification</div>
+                    <div className="form-grid">
+                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                            <label className="form-label">Property Type <span className="required">*</span></label>
+                            <div className="type-buttons" style={{ flexWrap: 'nowrap' }}>
+                                {PROPERTY_TYPES.map(t => {
+                                    const val = t.toLowerCase().replace(' ', '');
+                                    return (
+                                        <button key={t} className={`type-btn ${formData.propertyType === val ? 'selected' : ''}`}
+                                            onClick={() => onChange('propertyType', val)} style={{ flex: 1 }}>{t}</button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                            <label className="form-label">Home Classification <span className="required">*</span></label>
+                            <div className="type-buttons" style={{ flexWrap: 'wrap' }}>
+                                <button className={`type-btn ${formData.homeType === 'host' ? 'selected' : ''}`}
+                                    onClick={() => onChange('homeType', 'host')}>🏠 Host Home</button>
+                                <button className={`type-btn ${formData.homeType === 'dinner' ? 'selected' : ''}`}
+                                    onClick={() => onChange('homeType', 'dinner')}>🍽️ Dinner Home</button>
+                                <button className={`type-btn ${formData.homeType === 'sleeper' ? 'selected' : ''}`}
+                                    onClick={() => onChange('homeType', 'sleeper')}>🛏️ Sleeper Home</button>
+                                <button className={`type-btn ${formData.homeType === 'staff' ? 'selected' : ''}`}
+                                    onClick={() => onChange('homeType', 'staff')}>👥 Staff Home</button>
+                            </div>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '0.375rem', display: 'block' }}>
+                                {formData.homeType === 'host' ? 'Host Home — Large home with entertaining amenities, outdoor spaces, secondary kitchen. Ideal for corporate events.' :
+                                 formData.homeType === 'dinner' ? 'Dinner Home — Smaller than host, but suitable for intimate dinners and corporate gatherings.' :
+                                 formData.homeType === 'sleeper' ? 'Sleeper Home — Mid-size home primarily for rest between events. Clean, decluttered, properly furnished.' :
+                                 formData.homeType === 'staff' ? 'Staff Home — Multiple beds, budget-friendly. Townhomes or smaller properties for support staff.' :
+                                 'Select the classification that best fits your property'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Amenities</div>
+                    <div className="amenities-grid">
+                        {AMENITIES.map(a => (
+                            <div key={a.name} className="amenity-checkbox">
+                                <input type="checkbox" id={a.name}
+                                    checked={formData.amenities.includes(a.name)}
+                                    onChange={() => onAmenity(a.name)} />
+                                <label htmlFor={a.name} className="amenity-label">{a.icon} {a.name}</label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        function Step3({ formData, onChange }) {
+            return (
+                <div className="form-card">
+                    <h2 className="step-title">Availability & Pricing</h2>
+                    <p className="step-description">Set your rental terms for Masters 2027</p>
+
+                    <div className="section-label">Availability Window</div>
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">Available From <span className="required">*</span></label>
+                            <input type="date" className="date-input" value={formData.availableFromDate}
+                                onChange={e => onChange('availableFromDate', e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Available To <span className="required">*</span></label>
+                            <input type="date" className="date-input" value={formData.availableToDate}
+                                onChange={e => onChange('availableToDate', e.target.value)} />
+                        </div>
+                    </div>
+                    <div className="form-grid full">
+                        <div className="form-group">
+                            <label className="form-label">Blackout Dates <span style={{ fontWeight: 400, color: 'var(--text-tertiary)' }}>(if any)</span></label>
+                            <input type="text" className="form-input" value={formData.blackoutDates}
+                                onChange={e => onChange('blackoutDates', e.target.value)}
+                                placeholder="None" />
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Pricing</div>
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">Preferred Nightly Rate <span className="required">*</span></label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                                    color: 'var(--text-tertiary)', fontSize: '0.9375rem', fontWeight: 500 }}>$</span>
+                                <input type="number" className="form-input" style={{ paddingLeft: 28 }}
+                                    value={formData.preferredNightlyRate}
+                                    onChange={e => onChange('preferredNightlyRate', e.target.value)} placeholder="2,500" />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Preferred Weekly Rate</label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                                    color: 'var(--text-tertiary)', fontSize: '0.9375rem', fontWeight: 500 }}>$</span>
+                                <input type="number" className="form-input" style={{ paddingLeft: 28 }}
+                                    value={formData.preferredWeeklyRate}
+                                    onChange={e => onChange('preferredWeeklyRate', e.target.value)} placeholder="15,000" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Guest Requirements</div>
+                    <div className="form-grid thirds">
+                        <div className="form-group">
+                            <label className="form-label">Minimum Stay (nights) <span className="required">*</span></label>
+                            <input type="number" className="form-input" value={formData.minimumStay}
+                                onChange={e => onChange('minimumStay', e.target.value)} placeholder="3" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Max Occupancy <span className="required">*</span></label>
+                            <input type="number" className="form-input" value={formData.maxOccupancy}
+                                onChange={e => onChange('maxOccupancy', e.target.value)} placeholder="12" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Check-In Method</label>
+                            <select className="form-select" value={formData.checkInMethod}
+                                onChange={e => onChange('checkInMethod', e.target.value)}>
+                                <option value="">Select</option>
+                                <option value="lockbox">Lockbox</option>
+                                <option value="smartlock">Smart Lock / Code</option>
+                                <option value="inperson">In-Person Handoff</option>
+                                <option value="patron">Patron Manages</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Housekeeping & Services</div>
+                    <div className="form-grid thirds">
+                        <div className="form-group">
+                            <label className="form-label">Cleaning Preference</label>
+                            <select className="form-select" value={formData.cleaningPreference}
+                                onChange={e => onChange('cleaningPreference', e.target.value)}>
+                                <option value="">Select</option>
+                                <option value="owner">Owner arranges</option>
+                                <option value="patron">Patron arranges</option>
+                                <option value="either">No preference</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Housekeeper Name</label>
+                            <input type="text" className="form-input" value={formData.housekeeperName}
+                                onChange={e => onChange('housekeeperName', e.target.value)} placeholder="Name or company" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Housekeeper Phone</label>
+                            <input type="tel" className="form-input" value={formData.housekeeperPhone}
+                                onChange={e => onChange('housekeeperPhone', e.target.value)} placeholder="(706) 555-0000" />
+                        </div>
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">WiFi & Access</div>
+                    <div className="form-grid">
+                        <div className="form-group">
+                            <label className="form-label">WiFi Network Name</label>
+                            <input type="text" className="form-input" value={formData.wifiName}
+                                onChange={e => onChange('wifiName', e.target.value)} placeholder="Network name" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">WiFi Password</label>
+                            <input type="text" className="form-input" value={formData.wifiPassword}
+                                onChange={e => onChange('wifiPassword', e.target.value)} placeholder="Password" />
+                        </div>
+                    </div>
+
+                    <div className="form-grid full">
+                        <div className="form-group">
+                            <label className="form-label">House Rules</label>
+                            <textarea className="form-textarea" value={formData.houseRules}
+                                onChange={e => onChange('houseRules', e.target.value)}
+                                placeholder="Enter any house rules for guests (e.g., no smoking, no pets, quiet hours after 10pm, golf cart radius, pool hours)..." />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function Step4({ formData, onFileUpload, onRemoveFile }) {
+            const photoRef = useRef(null);
+
+            return (
+                <div className="form-card">
+                    <h2 className="step-title">Photos & Review</h2>
+                    <p className="step-description">Upload property photos and review your application before submitting</p>
+
+                    <div className="section-label">Property Photos</div>
+                    <div className="form-group">
+                        <label className="form-label">Upload Photos</label>
+                        <div className="upload-area"
+                            onClick={() => photoRef.current?.click()}
+                            onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add('active'); }}
+                            onDragLeave={e => e.currentTarget.classList.remove('active')}
+                            onDrop={e => {
+                                e.preventDefault(); e.currentTarget.classList.remove('active');
+                                onFileUpload('propertyPhotos', e.dataTransfer.files);
+                            }}>
+                            <div className="upload-icon">📷</div>
+                            <div className="upload-text">Drop photos here or click to upload</div>
+                            <div className="upload-hint">JPG, PNG — at least 10 photos recommended for best listing results</div>
+                        </div>
+                        <input ref={photoRef} type="file" multiple accept="image/*" className="upload-input"
+                            onChange={e => onFileUpload('propertyPhotos', e.target.files)} />
+                        {formData.propertyPhotos.length > 0 && (
+                            <div className="file-list">
+                                {formData.propertyPhotos.map((f, i) => (
+                                    <div key={i} className="file-item">
+                                        <span className="file-name">📷 {f.name}</span>
+                                        <button className="file-remove" onClick={() => onRemoveFile('propertyPhotos', i)}>✕</button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="section-divider" />
+                    <div className="section-label">Application Summary</div>
+
+                    <div className="review-section">
+                        <div className="review-header">
+                            <div className="review-icon" style={{ background: '#D1FAE5' }}>👤</div>
+                            <div className="review-title">Owner Information</div>
+                        </div>
+                        <div className="review-grid">
+                            <div className="review-item">
+                                <span className="review-label">Name</span>
+                                <span className="review-value">{formData.firstName} {formData.lastName || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Owner Type</span>
+                                <span className="review-value" style={{ textTransform: 'capitalize' }}>{formData.ownerType || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Email</span>
+                                <span className="review-value">{formData.email || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Phone</span>
+                                <span className="review-value">{formData.phone || '—'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="review-section">
+                        <div className="review-header">
+                            <div className="review-icon" style={{ background: '#DBEAFE' }}>🏠</div>
+                            <div className="review-title">Property Details</div>
+                        </div>
+                        <div className="review-grid">
+                            <div className="review-item" style={{ gridColumn: '1 / -1' }}>
+                                <span className="review-label">Address</span>
+                                <span className="review-value">{formData.propertyAddress || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Type</span>
+                                <span className="review-value" style={{ textTransform: 'capitalize' }}>{formData.propertyType || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Home Classification</span>
+                                <span className="review-value">{formData.homeType === 'host' ? '🏠 Host Home' : formData.homeType === 'dinner' ? '🍽️ Dinner Home' : formData.homeType === 'sleeper' ? '🛏️ Sleeper Home' : formData.homeType === 'staff' ? '👥 Staff Home' : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Bedrooms / Baths</span>
+                                <span className="review-value">{formData.bedrooms || '—'} bd / {formData.bathrooms || '—'} ba</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Sq Ft</span>
+                                <span className="review-value">{formData.sqFootage ? Number(formData.sqFootage).toLocaleString() : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Distance to Augusta National</span>
+                                <span className="review-value">{formData.distanceToAugusta || '—'}</span>
+                            </div>
+                            <div className="review-item" style={{ gridColumn: '1 / -1' }}>
+                                <span className="review-label">Amenities</span>
+                                <span className="review-value">{formData.amenities.length > 0 ? formData.amenities.join(', ') : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Smoking Policy</span>
+                                <span className="review-value">{formData.smokingAllowed === 'no' ? '🚭 No Smoking' : formData.smokingAllowed === 'outdoors' ? '🌿 Outdoors Only' : formData.smokingAllowed === 'yes' ? '✅ Allowed' : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Pets on Property</span>
+                                <span className="review-value">{formData.petsOnProperty === 'no' ? 'No Pets' : formData.petsOnProperty === 'boarded' ? 'Will Board' : formData.petsOnProperty === 'onsite' ? 'On-Site' : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Dining Seats</span>
+                                <span className="review-value">{formData.diningSeats || '—'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="review-section">
+                        <div className="review-header">
+                            <div className="review-icon" style={{ background: '#FEF3C7' }}>💰</div>
+                            <div className="review-title">Availability & Pricing</div>
+                        </div>
+                        <div className="review-grid">
+                            <div className="review-item">
+                                <span className="review-label">Available</span>
+                                <span className="review-value">{formData.availableFromDate || '—'} → {formData.availableToDate || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Nightly Rate</span>
+                                <span className="review-value">{formData.preferredNightlyRate ? '$' + Number(formData.preferredNightlyRate).toLocaleString() : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Weekly Rate</span>
+                                <span className="review-value">{formData.preferredWeeklyRate ? '$' + Number(formData.preferredWeeklyRate).toLocaleString() : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Min Stay / Max Guests</span>
+                                <span className="review-value">{formData.minimumStay || '—'} nights / {formData.maxOccupancy || '—'} guests</span>
+                            </div>
+                            <div className="review-item" style={{ gridColumn: '1 / -1' }}>
+                                <span className="review-label">House Rules</span>
+                                <span className="review-value">{formData.houseRules || '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Check-In Method</span>
+                                <span className="review-value">{formData.checkInMethod === 'lockbox' ? 'Lockbox' : formData.checkInMethod === 'smartlock' ? 'Smart Lock / Code' : formData.checkInMethod === 'inperson' ? 'In-Person Handoff' : formData.checkInMethod === 'patron' ? 'Patron Manages' : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Cleaning</span>
+                                <span className="review-value">{formData.cleaningPreference === 'owner' ? 'Owner Arranges' : formData.cleaningPreference === 'patron' ? 'Patron Arranges' : formData.cleaningPreference === 'either' ? 'No Preference' : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">Housekeeper</span>
+                                <span className="review-value">{formData.housekeeperName ? `${formData.housekeeperName} — ${formData.housekeeperPhone}` : '—'}</span>
+                            </div>
+                            <div className="review-item">
+                                <span className="review-label">WiFi</span>
+                                <span className="review-value">{formData.wifiName ? `${formData.wifiName} / ${formData.wifiPassword}` : '—'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Accuracy Agreement */}
+                    <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'var(--primary-light)', borderRadius: '12px', border: '1px solid rgba(0,107,84,0.15)' }}>
+                        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer' }}>
+                            <input type="checkbox" checked={formData.accuracyAgreed}
+                                onChange={e => onChange('accuracyAgreed', e.target.checked)}
+                                style={{ marginTop: '0.25rem', width: '18px', height: '18px', accentColor: 'var(--primary)' }} />
+                            <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                                I certify that the information provided is accurate and complete. I understand that Patron Properties will use this information to market my property for the Masters Tournament 2027 and that I am responsible for updating any changes prior to event week.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <HomeownerIntakeForm />
+        );
+    </script>
+</body>
+</html>
