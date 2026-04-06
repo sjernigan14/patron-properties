@@ -1087,11 +1087,42 @@
             border-top: 1px solid #e8e4df;
         }
 
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 200;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #2d5f47;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 90;
+        }
+
+        .sidebar-overlay.active { display: block; }
+
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr;
             }
+
+            .hamburger { display: flex; }
 
             .sidebar {
                 position: fixed;
@@ -1104,6 +1135,10 @@
 
             .sidebar.open {
                 left: 0;
+            }
+
+            .main .header {
+                padding-left: 60px;
             }
 
             .hero {
@@ -1163,6 +1198,7 @@
         function App() {
             const [activeSection, setActiveSection] = useState('dashboard');
             const [expandedFaq, setExpandedFaq] = useState(null);
+            const [sidebarOpen, setSidebarOpen] = useState(false);
 
             const homeowner = {
                 name: 'Margaret & David Whitfield',
@@ -1268,9 +1304,16 @@
                 { q: 'Do I need to be home during Masters week?', a: 'No. Most homeowners are away. We arrange all check-in/check-out and handle guest issues.' }
             ];
 
+            const navClick = (section) => {
+                setActiveSection(section);
+                setSidebarOpen(false);
+            };
+
             return (
                 <div className="container">
-                    <div className="sidebar">
+                    <button className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>&#9776;</button>
+                    <div className={`sidebar-overlay ${sidebarOpen ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}></div>
+                    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}
                         <div className="sidebar-header">
                             <div className="logo">Patron Properties</div>
                             <div className="homeowner-name">{homeowner.name}</div>
@@ -1278,33 +1321,33 @@
 
                         <div className="nav-section">
                             <span className="nav-label">Main</span>
-                            <button className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveSection('dashboard')}>
+                            <button className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`} onClick={() => navClick('dashboard')}>
                                 Dashboard
                             </button>
-                            <button className={`nav-item ${activeSection === 'property' ? 'active' : ''}`} onClick={() => setActiveSection('property')}>
+                            <button className={`nav-item ${activeSection === 'property' ? 'active' : ''}`} onClick={() => navClick('property')}>
                                 My Property
                             </button>
-                            <button className={`nav-item ${activeSection === 'houseinfo' ? 'active' : ''}`} onClick={() => setActiveSection('houseinfo')}>
+                            <button className={`nav-item ${activeSection === 'houseinfo' ? 'active' : ''}`} onClick={() => navClick('houseinfo')}>
                                 House Info Form
                             </button>
                         </div>
 
                         <div className="nav-section">
                             <span className="nav-label">Rental</span>
-                            <button className={`nav-item ${activeSection === 'availability' ? 'active' : ''}`} onClick={() => setActiveSection('availability')}>
+                            <button className={`nav-item ${activeSection === 'availability' ? 'active' : ''}`} onClick={() => navClick('availability')}>
                                 Availability
                             </button>
-                            <button className={`nav-item ${activeSection === 'documents' ? 'active' : ''}`} onClick={() => setActiveSection('documents')}>
+                            <button className={`nav-item ${activeSection === 'documents' ? 'active' : ''}`} onClick={() => navClick('documents')}>
                                 Documents & Payments
                             </button>
-                            <button className={`nav-item ${activeSection === 'postevent' ? 'active' : ''}`} onClick={() => setActiveSection('postevent')}>
+                            <button className={`nav-item ${activeSection === 'postevent' ? 'active' : ''}`} onClick={() => navClick('postevent')}>
                                 Post-Event
                             </button>
                         </div>
 
                         <div className="nav-section">
                             <span className="nav-label">Support</span>
-                            <button className={`nav-item ${activeSection === 'resources' ? 'active' : ''}`} onClick={() => setActiveSection('resources')}>
+                            <button className={`nav-item ${activeSection === 'resources' ? 'active' : ''}`} onClick={() => navClick('resources')}>
                                 Resources & FAQ
                             </button>
                         </div>
