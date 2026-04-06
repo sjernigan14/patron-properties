@@ -513,16 +513,16 @@ function PropertySearch() {
       <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
         <div style={{ maxWidth: 1400, margin: '0 auto' }}>
           {/* Status buttons */}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>STATUS</span>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, minWidth: 52 }}>STATUS</span>
             <StatusButton value="all" label="All Properties" count={PROPERTIES.length} />
             {Object.entries(STATUS_COLORS).map(([key, sc]) => (
               <StatusButton key={key} value={key} label={sc.label} count={statusCounts[key]} />
             ))}
           </div>
           {/* Type buttons */}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>TYPE</span>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, minWidth: 52 }}>TYPE</span>
             <TypeButton value="all" label="All Types" count={PROPERTIES.length} />
             {Object.keys(TYPE_COLORS).map(t => (
               <TypeButton key={t} value={t} label={t} count={typeCounts[t]} />
