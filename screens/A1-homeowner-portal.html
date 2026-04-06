@@ -1313,7 +1313,7 @@
                 <div className="container">
                     <button className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>&#9776;</button>
                     <div className={`sidebar-overlay ${sidebarOpen ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}></div>
-                    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}
+                    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                         <div className="sidebar-header">
                             <div className="logo">Patron Properties</div>
                             <div className="homeowner-name">{homeowner.name}</div>
