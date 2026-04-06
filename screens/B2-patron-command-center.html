@@ -147,6 +147,47 @@ const HOUSEKEEPING_SCHEDULE = [
   { propId: 'prop-c', day: 'sun2', service: 'no-service', submittedBy: 'Patron', submittedDate: '4/1' },
 ];
 
+/* ══════════════════════════════════════════════════════════
+   HOUSEKEEPING TIME WINDOWS
+   ══════════════════════════════════════════════════════════ */
+
+const TURNOVER_WINDOWS = [
+  { propId:'prop-a', day:'mon', checkOut:'10:00 AM', cleanStart:'10:30 AM', cleanEnd:'1:30 PM', cleanDuration:180, checkIn:'2:00 PM', notes:'Full 5-bed turn. Need 3-person crew.' },
+  { propId:'prop-a', day:'wed', checkOut:null, cleanStart:'9:00 AM', cleanEnd:'10:30 AM', cleanDuration:90, checkIn:null, notes:'Light refresh — linens + bathrooms only.' },
+  { propId:'prop-a', day:'sat', checkOut:'10:00 AM', cleanStart:'10:30 AM', cleanEnd:'2:00 PM', cleanDuration:210, checkIn:'3:00 PM', notes:'Full turnover. Deep clean before final checkout sweep.' },
+  { propId:'prop-b', day:'tue', checkOut:null, cleanStart:'9:00 AM', cleanEnd:'10:00 AM', cleanDuration:60, checkIn:null, notes:'Light refresh — towels + kitchen wipe.' },
+  { propId:'prop-b', day:'fri', checkOut:'10:00 AM', cleanStart:'10:15 AM', cleanEnd:'12:15 PM', cleanDuration:120, checkIn:'3:00 PM', notes:'Mid-week turn. Cottage + main house.' },
+  { propId:'prop-b', day:'sat', checkOut:'10:00 AM', cleanStart:'10:30 AM', cleanEnd:'1:30 PM', cleanDuration:180, checkIn:null, notes:'Final turnover — restore to homeowner condition.' },
+  { propId:'prop-c', day:'mon', checkOut:null, cleanStart:'9:00 AM', cleanEnd:'9:45 AM', cleanDuration:45, checkIn:null, notes:'Light refresh. Small property.' },
+  { propId:'prop-c', day:'wed', checkOut:'10:00 AM', cleanStart:'10:00 AM', cleanEnd:'11:30 AM', cleanDuration:90, checkIn:'2:00 PM', notes:'Tyler Nash checkout, loft turnover for new config.' },
+  { propId:'prop-c', day:'sat', checkOut:'4:00 PM', cleanStart:'4:30 PM', cleanEnd:'6:00 PM', cleanDuration:90, checkIn:null, notes:'Final turnover — restore to homeowner condition.' },
+];
+
+/* ══════════════════════════════════════════════════════════
+   ROOM STATUS & AMENITY TRACKING
+   ══════════════════════════════════════════════════════════ */
+
+const ROOM_STATUS = {
+  'prop-a': {
+    'r1': { status:'occupied', linens:'fresh', lastCleaned:'Apr 6 8:00 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r2': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 7:30 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r3': { status:'occupied', linens:'fresh', lastCleaned:'Apr 5 3:00 PM', amenities:{ towels:true, toiletries:true, water:true, coffee:false, hangers:true }, maintenanceNotes:'Coffee maker requested — deliver by noon.' },
+    'r4': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 7:45 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r5': { status:'occupied', linens:'needs-change', lastCleaned:'Apr 5 2:00 PM', amenities:{ towels:true, toiletries:false, water:true, coffee:true, hangers:true }, maintenanceNotes:'VIP room — restock premium toiletries.' },
+  },
+  'prop-b': {
+    'r1': { status:'occupied', linens:'fresh', lastCleaned:'Apr 5 5:00 PM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r2': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 8:00 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r3': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 8:15 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r4': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 7:00 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:false }, maintenanceNotes:'Extra hangers needed for cottage.' },
+  },
+  'prop-c': {
+    'r1': { status:'occupied', linens:'fresh', lastCleaned:'Apr 6 7:00 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r2': { status:'ready', linens:'fresh', lastCleaned:'Apr 6 7:30 AM', amenities:{ towels:true, toiletries:true, water:true, coffee:true, hangers:true }, maintenanceNotes:'' },
+    'r3': { status:'needs-cleaning', linens:'needs-change', lastCleaned:'Apr 5 4:00 PM', amenities:{ towels:false, toiletries:false, water:false, coffee:false, hangers:true }, maintenanceNotes:'Tyler Nash checked out — full turn needed.' },
+  },
+};
+
 const StatusBadge = ({status}) => {
   const map = {
     'occupied':{ bg:'#00b894',text:'#fff',label:'Occupied' }, 'available':{ bg:'#2d3a34',text:'#8a9a8e',label:'Available' },
@@ -167,6 +208,189 @@ const TaskDot = ({status}) => {
 const StarRating = ({rating}) => {
   return React.createElement('div',{style:{display:'flex',gap:2}},
     ...[1,2,3,4,5].map(i=>React.createElement('span',{key:i,style:{fontSize:12,color:i<=rating?'#c9a84c':'#2d3a34'}},'★'))
+  );
+};
+
+const RoomStatusBadge = ({status}) => {
+  const map = {
+    'occupied':{ bg:'#00b894',text:'#fff',label:'Occupied' },
+    'ready':{ bg:'#55efc4',text:'#2d3436',label:'Ready' },
+    'needs-cleaning':{ bg:'#fdcb6e',text:'#2d3436',label:'Needs Cleaning' },
+    'maintenance':{ bg:'#d63031',text:'#fff',label:'Maintenance' },
+  };
+  const c = map[status]||map['ready'];
+  return React.createElement('span',{style:{background:c.bg,color:c.text,padding:'2px 8px',borderRadius:10,fontSize:8,fontWeight:600,letterSpacing:.3,textTransform:'uppercase',whiteSpace:'nowrap'}},c.label);
+};
+
+const LinenBadge = ({status}) => {
+  const map = { 'fresh':{ color:'#55efc4', label:'Fresh' }, 'needs-change':{ color:'#fdcb6e', label:'Needs Change' } };
+  const c = map[status]||map['fresh'];
+  return React.createElement('span',{style:{color:c.color,fontSize:8,fontWeight:600,letterSpacing:.3,textTransform:'uppercase'}},`🛏 ${c.label}`);
+};
+
+const AmenityDots = ({amenities}) => {
+  const items = [
+    { key:'towels', icon:'🛁', label:'Towels' },
+    { key:'toiletries', icon:'🧴', label:'Toiletries' },
+    { key:'water', icon:'💧', label:'Water' },
+    { key:'coffee', icon:'☕', label:'Coffee' },
+    { key:'hangers', icon:'👔', label:'Hangers' },
+  ];
+  return React.createElement('div',{style:{display:'flex',gap:4,flexWrap:'wrap'}},
+    ...items.map(it => React.createElement('span',{key:it.key,title:`${it.label}: ${amenities[it.key]?'Stocked':'Missing'}`,style:{fontSize:10,opacity:amenities[it.key]?1:0.3,filter:amenities[it.key]?'none':'grayscale(1)'}},it.icon))
+  );
+};
+
+const TurnoverTimeline = ({windows, property}) => {
+  const propWindows = windows.filter(w => w.propId === property.id);
+  if (propWindows.length === 0) return React.createElement('div',{style:{fontSize:10,color:'#3a4a3e',fontStyle:'italic',padding:'8px 0'}},'No turnovers scheduled this week.');
+
+  const getBufferInfo = (w) => {
+    if (!w.checkOut || !w.checkIn) return { minutes: null, label: w.checkOut ? 'Final turn' : 'Light refresh', color: '#8a9a8e' };
+    const checkInHr = parseInt(w.checkIn.split(':')[0]) + (w.checkIn.includes('PM') && !w.checkIn.startsWith('12') ? 12 : 0);
+    const checkInMin = parseInt(w.checkIn.split(':')[1]);
+    const cleanEndHr = parseInt(w.cleanEnd.split(':')[0]) + (w.cleanEnd.includes('PM') && !w.cleanEnd.startsWith('12') ? 12 : 0);
+    const cleanEndMin = parseInt(w.cleanEnd.split(':')[1]);
+    const buffer = (checkInHr * 60 + checkInMin) - (cleanEndHr * 60 + cleanEndMin);
+    if (buffer < 30) return { minutes: buffer, label: 'TIGHT', color: '#d63031' };
+    if (buffer < 60) return { minutes: buffer, label: 'OK', color: '#fdcb6e' };
+    return { minutes: buffer, label: 'Comfortable', color: '#55efc4' };
+  };
+
+  const dayLabel = (key) => WEEK_DAYS.find(d=>d.key===key)?.label || key;
+
+  return React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:10}},
+    ...propWindows.map(w => {
+      const buf = getBufferInfo(w);
+      const totalSpan = 12 * 60; // 6AM to 6PM = 720 min
+      const startOffset = 6 * 60; // start at 6AM
+      const parseTime = (t) => { if(!t) return null; const h = parseInt(t.split(':')[0]) + (t.includes('PM')&&!t.startsWith('12')?12:0); const m = parseInt(t.split(':')[1]); return h*60+m; };
+      const coPos = w.checkOut ? ((parseTime(w.checkOut)-startOffset)/totalSpan*100) : null;
+      const csPos = (parseTime(w.cleanStart)-startOffset)/totalSpan*100;
+      const cePos = (parseTime(w.cleanEnd)-startOffset)/totalSpan*100;
+      const ciPos = w.checkIn ? ((parseTime(w.checkIn)-startOffset)/totalSpan*100) : null;
+
+      return React.createElement('div',{key:w.propId+w.day,style:{background:'#0f1412',borderRadius:8,padding:12,border:'1px solid #1a1f1d'}},
+        React.createElement('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+          React.createElement('div',{style:{display:'flex',alignItems:'center',gap:8}},
+            React.createElement('span',{style:{fontSize:11,fontWeight:600,color:'#e8e6e1'}},dayLabel(w.day)),
+            React.createElement('span',{style:{fontSize:9,color:buf.color,fontWeight:600,background:buf.color+'20',padding:'2px 6px',borderRadius:4}},
+              buf.minutes !== null ? `${buf.label} (${buf.minutes}min buffer)` : buf.label
+            )
+          ),
+          React.createElement('span',{style:{fontSize:9,color:'#636e72'}},`${w.cleanDuration} min clean`)
+        ),
+        /* Visual timeline bar */
+        React.createElement('div',{style:{position:'relative',height:28,background:'#1a1f1d',borderRadius:4,overflow:'hidden',marginBottom:6}},
+          /* Time labels */
+          ...[6,8,10,12,14,16,18].map(h=>
+            React.createElement('div',{key:h,style:{position:'absolute',left:`${((h*60-startOffset)/totalSpan)*100}%`,top:0,height:'100%',borderLeft:'1px solid #2a3a2e',zIndex:1}},
+              React.createElement('span',{style:{position:'absolute',top:1,left:2,fontSize:7,color:'#3a4a3e'}},h<=12?`${h}AM`:`${h-12}PM`)
+            )
+          ),
+          /* Checkout marker */
+          coPos !== null && React.createElement('div',{style:{position:'absolute',left:`${coPos}%`,top:0,height:'100%',width:2,background:'#d63031',zIndex:3},title:`Check-out: ${w.checkOut}`}),
+          /* Cleaning window */
+          React.createElement('div',{style:{position:'absolute',left:`${csPos}%`,width:`${cePos-csPos}%`,top:4,height:20,background:'linear-gradient(90deg,#fdcb6e,#e17055)',borderRadius:3,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center'},title:`Clean: ${w.cleanStart} - ${w.cleanEnd}`},
+            React.createElement('span',{style:{fontSize:8,fontWeight:600,color:'#1a1f1d'}},'CLEAN')
+          ),
+          /* Check-in marker */
+          ciPos !== null && React.createElement('div',{style:{position:'absolute',left:`${ciPos}%`,top:0,height:'100%',width:2,background:'#55efc4',zIndex:3},title:`Check-in: ${w.checkIn}`})
+        ),
+        /* Legend row */
+        React.createElement('div',{style:{display:'flex',gap:12,fontSize:9,color:'#8a9a8e'}},
+          w.checkOut && React.createElement('span',{},React.createElement('span',{style:{color:'#d63031',fontWeight:700}},'|'),' Out: '+w.checkOut),
+          React.createElement('span',{},React.createElement('span',{style:{color:'#fdcb6e',fontWeight:700}},'■'),' Clean: '+w.cleanStart+' – '+w.cleanEnd),
+          w.checkIn && React.createElement('span',{},React.createElement('span',{style:{color:'#55efc4',fontWeight:700}},'|'),' In: '+w.checkIn)
+        ),
+        w.notes && React.createElement('div',{style:{fontSize:9,color:'#636e72',marginTop:4,fontStyle:'italic'}},w.notes)
+      );
+    })
+  );
+};
+
+const DietaryAggregate = ({guests, properties}) => {
+  /* Build aggregate counts */
+  const dietaryGuests = guests.filter(g => g.dietary && g.dietary !== 'None');
+  const countMap = {};
+  dietaryGuests.forEach(g => {
+    const diet = g.dietary.toLowerCase().replace(/lisa:\s*/i,'');
+    countMap[diet] = (countMap[diet]||0) + 1;
+  });
+  const sortedDiets = Object.entries(countMap).sort((a,b)=>b[1]-a[1]);
+  const total = dietaryGuests.length;
+
+  /* Per-property breakdown */
+  const perProp = properties.map(p => {
+    const pg = dietaryGuests.filter(g => g.propertyId === p.id);
+    const propCounts = {};
+    pg.forEach(g => {
+      const diet = g.dietary.toLowerCase().replace(/lisa:\s*/i,'');
+      propCounts[diet] = (propCounts[diet]||0) + 1;
+    });
+    return { property: p, guests: pg, counts: propCounts };
+  });
+
+  const dietColors = { 'vegetarian':'#55efc4','gluten-free':'#fdcb6e','pescatarian':'#74b9ff','vegan':'#a29bfe','keto':'#fd79a8','dairy-free':'#ffeaa7','nut allergy':'#e17055' };
+  const getColor = (d) => dietColors[d] || '#b0bfb5';
+
+  return React.createElement('div',{style:{background:'#111714',borderRadius:12,padding:16,border:'1px solid #2d3a34'}},
+    React.createElement('h3',{style:{fontSize:13,fontWeight:700,marginBottom:14,color:'#fdcb6e',letterSpacing:.5}},'DIETARY REQUIREMENTS — ALL PROPERTIES'),
+    /* Summary bar */
+    React.createElement('div',{style:{display:'flex',gap:8,flexWrap:'wrap',marginBottom:14}},
+      ...sortedDiets.map(([diet,count]) =>
+        React.createElement('div',{key:diet,style:{background:getColor(diet)+'18',border:`1px solid ${getColor(diet)}40`,borderRadius:8,padding:'8px 12px',display:'flex',alignItems:'center',gap:6}},
+          React.createElement('span',{style:{fontSize:20,fontWeight:700,color:getColor(diet)}},count),
+          React.createElement('span',{style:{fontSize:10,color:getColor(diet),textTransform:'capitalize',fontWeight:500}},diet)
+        )
+      ),
+      React.createElement('div',{style:{background:'#1a1f1d',borderRadius:8,padding:'8px 12px',display:'flex',alignItems:'center',gap:6}},
+        React.createElement('span',{style:{fontSize:20,fontWeight:700,color:'#e8e6e1'}},total),
+        React.createElement('span',{style:{fontSize:10,color:'#8a9a8e',fontWeight:500}},'total dietary needs')
+      )
+    ),
+    /* Provisioning bar chart */
+    total > 0 && React.createElement('div',{style:{marginBottom:16}},
+      React.createElement('div',{style:{fontSize:10,color:'#636e72',marginBottom:8,fontWeight:600,textTransform:'uppercase',letterSpacing:.5}},'Distribution'),
+      React.createElement('div',{style:{height:18,borderRadius:4,overflow:'hidden',display:'flex',background:'#1a1f1d'}},
+        ...sortedDiets.map(([diet,count]) =>
+          React.createElement('div',{key:diet,title:`${diet}: ${count}`,style:{width:`${(count/total)*100}%`,height:'100%',background:getColor(diet),display:'flex',alignItems:'center',justifyContent:'center'}},
+            React.createElement('span',{style:{fontSize:7,fontWeight:700,color:'#1a1f1d'}},count > 0 ? diet.charAt(0).toUpperCase() : '')
+          )
+        )
+      )
+    ),
+    /* Per-property breakdown */
+    React.createElement('div',{style:{fontSize:10,color:'#636e72',marginBottom:8,fontWeight:600,textTransform:'uppercase',letterSpacing:.5}},'Per-Property Breakdown'),
+    ...perProp.map(pp =>
+      React.createElement('div',{key:pp.property.id,style:{background:'#0f1412',borderRadius:8,padding:10,marginBottom:8,border:'1px solid #1a1f1d'}},
+        React.createElement('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}},
+          React.createElement('span',{style:{fontSize:11,fontWeight:600,color:'#e8e6e1'}},pp.property.name),
+          React.createElement('span',{style:{fontSize:9,color:'#636e72'}},`${pp.guests.length} dietary need${pp.guests.length!==1?'s':''}`)
+        ),
+        pp.guests.length > 0 ?
+          React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:4}},
+            ...pp.guests.map(g =>
+              React.createElement('div',{key:g.id,style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'3px 0'}},
+                React.createElement('span',{style:{fontSize:10,color:'#b0bfb5'}},g.name),
+                React.createElement('span',{style:{fontSize:9,color:getColor(g.dietary.toLowerCase().replace(/lisa:\s*/i,'')),background:getColor(g.dietary.toLowerCase().replace(/lisa:\s*/i,''))+'18',padding:'2px 6px',borderRadius:4,fontWeight:500}},g.dietary)
+              )
+            )
+          )
+        : React.createElement('div',{style:{fontSize:9,color:'#3a4a3e'}},'No dietary restrictions')
+      )
+    ),
+    /* Provisioning checklist */
+    React.createElement('div',{style:{background:'#1a2a1f',border:'1px solid #2d4a3e',borderRadius:8,padding:12,marginTop:10}},
+      React.createElement('div',{style:{fontSize:10,color:'#55efc4',fontWeight:600,marginBottom:8}},'PROVISIONING CHECKLIST'),
+      ...sortedDiets.map(([diet,count]) =>
+        React.createElement('div',{key:diet,style:{display:'flex',alignItems:'center',gap:8,padding:'4px 0',borderBottom:'1px solid #1a1f1d'}},
+          React.createElement('span',{style:{fontSize:11,color:'#636e72'}},'☐'),
+          React.createElement('span',{style:{fontSize:10,color:'#e8e6e1',flex:1,textTransform:'capitalize'}},`${diet} meals/supplies`),
+          React.createElement('span',{style:{fontSize:9,color:getColor(diet),fontWeight:600}},`${count} guest${count>1?'s':''}`)
+        )
+      )
+    )
   );
 };
 
@@ -204,16 +428,26 @@ const PropertyCard = ({property, onClick, isSelected}) => {
   );
 };
 
-const RoomCard = ({room, guest, onClick}) => {
+const RoomCard = ({room, guest, onClick, propertyId}) => {
   const isVIP = guest?.vip;
-  return React.createElement('div',{onClick,style:{background: guest ? 'linear-gradient(135deg,#1a2f26 0%,#1a1f1d 100%)' : '#141a17', border: isVIP ? '1px solid #c9a84c' : '1px solid #2d3a34', borderRadius:12, padding:14, cursor:'pointer', position:'relative', minHeight:160, transition:'all .15s'}},
+  const rs = ROOM_STATUS[propertyId]?.[room.id];
+  const roomSt = rs?.status || (guest ? 'occupied' : 'ready');
+  const borderColor = isVIP ? '#c9a84c' : roomSt === 'needs-cleaning' ? '#fdcb6e' : roomSt === 'maintenance' ? '#d63031' : '#2d3a34';
+  return React.createElement('div',{onClick,style:{background: guest ? 'linear-gradient(135deg,#1a2f26 0%,#1a1f1d 100%)' : '#141a17', border: `1px solid ${borderColor}`, borderRadius:12, padding:14, cursor:'pointer', position:'relative', minHeight:160, transition:'all .15s'}},
     React.createElement('div',{style:{width:'100%',height:80,borderRadius:8,overflow:'hidden',marginBottom:10,background:'#1a1f1d'}},
       React.createElement('img',{src:room.photo, alt:room.name, style:{width:'100%',height:'100%',objectFit:'cover',opacity: guest ? 1 : 0.4}, onError:(e)=>{e.target.style.display='none'}})
     ),
     React.createElement('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}},
       React.createElement('span',{style:{fontWeight:600,fontSize:12,color:'#e8e6e1'}},room.name),
+      React.createElement(RoomStatusBadge,{status:roomSt})
     ),
-    React.createElement('div',{style:{fontSize:10,color:'#636e72',marginBottom:8}},`${room.bedType} · ${room.bath} · ${room.floor}`),
+    React.createElement('div',{style:{fontSize:10,color:'#636e72',marginBottom:4}},`${room.bedType} · ${room.bath} · ${room.floor}`),
+    /* Linen & Amenity row */
+    rs && React.createElement('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6,padding:'4px 0',borderBottom:'1px solid #1a1f1d'}},
+      React.createElement(LinenBadge,{status:rs.linens}),
+      React.createElement(AmenityDots,{amenities:rs.amenities})
+    ),
+    rs && rs.maintenanceNotes && React.createElement('div',{style:{fontSize:9,color:'#fdcb6e',background:'#463a1a',padding:'3px 6px',borderRadius:4,marginBottom:6}},rs.maintenanceNotes),
     guest ?
       React.createElement('div',{style:{borderTop:'1px solid #2d3a34',paddingTop:8}},
         React.createElement('div',{style:{display:'flex',alignItems:'center',gap:5,marginBottom:3}},
@@ -308,20 +542,67 @@ const GuestDetail = ({guest, room, onClose}) => {
   );
 };
 
-const RoomDetail = ({room, onClose}) => {
+const RoomDetail = ({room, onClose, propertyId}) => {
   if (!room) return null;
+  const rs = ROOM_STATUS[propertyId]?.[room.id];
+  const roomGuest = GUESTS.find(g => g.propertyId === propertyId && g.roomId === room.id);
+  const amenityNames = { towels:'Towels', toiletries:'Toiletries', water:'Water Bottles', coffee:'Coffee/Tea', hangers:'Hangers' };
   return React.createElement('div',{style:{position:'fixed',top:0,right:0,width:440,height:'100vh',background:'#111714',borderLeft:'1px solid #2d3a34',overflowY:'auto',zIndex:100,padding:24,boxShadow:'-10px 0 40px rgba(0,0,0,.5)'}},
     React.createElement('div',{onClick:onClose,style:{position:'absolute',top:16,right:16,cursor:'pointer',fontSize:20,color:'#636e72'}},'✕'),
     React.createElement('div',{style:{width:'100%',height:200,borderRadius:10,overflow:'hidden',marginBottom:16}},
       React.createElement('img',{src:room.photo,alt:room.name,style:{width:'100%',height:'100%',objectFit:'cover'},onError:(e)=>{e.target.style.display='none'}})
     ),
-    React.createElement('h2',{style:{fontSize:22,fontWeight:700,marginBottom:4}},room.name),
+    React.createElement('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}},
+      React.createElement('h2',{style:{fontSize:22,fontWeight:700}},room.name),
+      rs && React.createElement(RoomStatusBadge,{status:rs.status})
+    ),
     React.createElement('div',{style:{fontSize:13,color:'#8a9a8e',marginBottom:16}},`${room.bedType} · ${room.bath} · ${room.floor} · ${room.sqft} sqft`),
+    /* Room status details */
+    rs && React.createElement('div',{style:{background:'#1a1f1d',padding:14,borderRadius:8,marginBottom:16,border:'1px solid #2d3a34'}},
+      React.createElement('div',{style:{fontSize:11,color:'#636e72',marginBottom:10,fontWeight:600}},'ROOM STATUS'),
+      React.createElement('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}},
+        React.createElement('div',{style:{background:'#0f1412',padding:8,borderRadius:6}},
+          React.createElement('div',{style:{fontSize:9,color:'#636e72',marginBottom:2}},'Linens'),
+          React.createElement(LinenBadge,{status:rs.linens})
+        ),
+        React.createElement('div',{style:{background:'#0f1412',padding:8,borderRadius:6}},
+          React.createElement('div',{style:{fontSize:9,color:'#636e72',marginBottom:2}},'Last Cleaned'),
+          React.createElement('div',{style:{fontSize:10,color:'#b0bfb5'}},rs.lastCleaned)
+        )
+      ),
+      rs.maintenanceNotes && React.createElement('div',{style:{marginTop:8,padding:'6px 8px',background:'#463a1a',borderRadius:6,fontSize:10,color:'#fdcb6e'}},rs.maintenanceNotes)
+    ),
+    /* Amenity tracking */
+    rs && React.createElement('div',{style:{background:'#1a1f1d',padding:14,borderRadius:8,marginBottom:16,border:'1px solid #2d3a34'}},
+      React.createElement('div',{style:{fontSize:11,color:'#636e72',marginBottom:10,fontWeight:600}},'AMENITIES'),
+      ...Object.entries(amenityNames).map(([key,label]) =>
+        React.createElement('div',{key,style:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'5px 0',borderBottom:'1px solid #0f1412'}},
+          React.createElement('span',{style:{fontSize:11,color:'#e8e6e1'}},label),
+          React.createElement('span',{style:{fontSize:11,color:rs.amenities[key]?'#55efc4':'#d63031'}},rs.amenities[key]?'✓ Stocked':'✗ Missing')
+        )
+      )
+    ),
+    /* Guest assignment */
+    roomGuest ? React.createElement('div',{style:{background:'#1a2a1f',padding:14,borderRadius:8,marginBottom:16,border:'1px solid #2d4a3e'}},
+      React.createElement('div',{style:{fontSize:11,color:'#55efc4',marginBottom:8,fontWeight:600}},'ASSIGNED GUEST'),
+      React.createElement('div',{style:{display:'flex',alignItems:'center',gap:6,marginBottom:4}},
+        roomGuest.vip && React.createElement('span',{style:{fontSize:9,background:'#c9a84c',color:'#1a1f1d',padding:'1px 5px',borderRadius:3,fontWeight:700}},'VIP'),
+        React.createElement('span',{style:{fontSize:13,fontWeight:600,color:'#e8e6e1'}},roomGuest.name)
+      ),
+      React.createElement('div',{style:{fontSize:10,color:'#8a9a8e',marginBottom:2}},roomGuest.company),
+      React.createElement('div',{style:{fontSize:10,color:'#b0bfb5'}},`${roomGuest.arrival} → ${roomGuest.departure}`),
+      roomGuest.dietary && roomGuest.dietary !== 'None' && React.createElement('div',{style:{fontSize:10,color:'#fdcb6e',marginTop:4}},'Dietary: '+roomGuest.dietary),
+      roomGuest.preferences && React.createElement('div',{style:{fontSize:10,color:'#b0bfb5',marginTop:4,fontStyle:'italic'}},roomGuest.preferences)
+    ) : null,
     React.createElement('div',{style:{background:'#1a2a1f',padding:14,borderRadius:8,marginBottom:16,border:'1px solid #2d4a3e'}},
       React.createElement('div',{style:{fontSize:11,color:'#55efc4',marginBottom:6,fontWeight:600}},'ROOM NOTES'),
       React.createElement('div',{style:{fontSize:12,color:'#b0bfb5',lineHeight:1.5}},room.notes)
     ),
-    React.createElement('button',{style:{width:'100%',background:'#c9a84c',color:'#1a1f1d',border:'none',padding:'12px',borderRadius:8,fontWeight:600,fontSize:13,cursor:'pointer'}},'+ Assign Guest')
+    React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+      React.createElement('button',{style:{width:'100%',background:'#c9a84c',color:'#1a1f1d',border:'none',padding:'12px',borderRadius:8,fontWeight:600,fontSize:13,cursor:'pointer'}},roomGuest ? '🔄 Reassign Guest' : '+ Assign Guest'),
+      React.createElement('button',{style:{width:'100%',background:'#2d4a3e',color:'#55efc4',border:'1px solid #3d5a4e',padding:'10px',borderRadius:8,fontWeight:600,fontSize:12,cursor:'pointer'}},'🧹 Mark for Cleaning'),
+      React.createElement('button',{style:{width:'100%',background:'transparent',color:'#fdcb6e',border:'1px solid #463a1a',padding:'10px',borderRadius:8,fontWeight:600,fontSize:12,cursor:'pointer'}},'🔧 Report Maintenance')
+    )
   );
 };
 
@@ -500,8 +781,8 @@ const App = () => {
         })
       ),
     React.createElement('div',{style:{display:'flex',gap:2,marginBottom:14,overflowX:'auto'}},
-      ...['rooms','timeline','guests','contracts','housekeeping','damage','properties'].map(v=>{
-        const labels = {rooms:'🏠 Room Board',timeline:'📅 Week',guests:'👥 Guests',contracts:'📋 Contracts',housekeeping:'🧹 Cleaning',damage:'🚨 Damage',properties:'🏘 Overview'};
+      ...['rooms','timeline','guests','turnover','dietary','contracts','housekeeping','damage','properties'].map(v=>{
+        const labels = {rooms:'🏠 Room Board',timeline:'📅 Week',guests:'👥 Guests',turnover:'⏱ Turnovers',dietary:'🥗 Dietary',contracts:'📋 Contracts',housekeeping:'🧹 Cleaning',damage:'🚨 Damage',properties:'🏘 Overview'};
         return React.createElement('button',{key:v,onClick:()=>setView(v),style:{padding:'5px 12px',borderRadius:6,border:'none',cursor:'pointer',fontSize:10,fontWeight:500,whiteSpace:'nowrap',background:view===v?'#c9a84c':'#1a1f1d',color:view===v?'#1a1f1d':'#8a9a8e'}}, labels[v])
       })
     ),
@@ -511,7 +792,7 @@ const App = () => {
           React.createElement('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(210px,1fr))',gap:10}},
             ...property.rooms.map(room=>{
               const guest = pGuests.find(g=>g.roomId===room.id);
-              return React.createElement(RoomCard,{key:room.id,room,guest,onClick:()=>{if(guest){setSelGuest(guest);setSelRoom(null);setSelProperty(null);}else{setSelRoom(room);setSelGuest(null);setSelProperty(null);}}});
+              return React.createElement(RoomCard,{key:room.id,room,guest,propertyId:selProp,onClick:()=>{if(guest){setSelGuest(guest);setSelRoom(null);setSelProperty(null);}else{setSelRoom(room);setSelGuest(null);setSelProperty(null);}}});
             })
           ),
           React.createElement(WeekTimeline,{property,guests:GUESTS,selectedDay:selDay,onDayClick:setSelDay})
@@ -564,6 +845,30 @@ const App = () => {
             )
           )
         ),
+        view==='turnover' && React.createElement('div',{},
+          React.createElement('h3',{style:{fontSize:13,fontWeight:600,marginBottom:4,color:'#e17055'}},'Housekeeping Turnover Windows'),
+          React.createElement('div',{style:{fontSize:10,color:'#636e72',marginBottom:14}},'Check-out / cleaning / check-in timeline for each property this week'),
+          /* Legend */
+          React.createElement('div',{style:{display:'flex',gap:14,marginBottom:14,padding:'8px 12px',background:'#111714',borderRadius:8,border:'1px solid #1a1f1d'}},
+            React.createElement('span',{style:{fontSize:9,color:'#d63031',fontWeight:600}},'| Check-Out'),
+            React.createElement('span',{style:{fontSize:9,color:'#fdcb6e',fontWeight:600}},'■ Cleaning Window'),
+            React.createElement('span',{style:{fontSize:9,color:'#55efc4',fontWeight:600}},'| Check-In'),
+            React.createElement('span',{style:{fontSize:9,marginLeft:'auto'}},
+              React.createElement('span',{style:{color:'#d63031',marginRight:8}},'TIGHT <30m'),
+              React.createElement('span',{style:{color:'#fdcb6e',marginRight:8}},'OK 30-60m'),
+              React.createElement('span',{style:{color:'#55efc4'}},'Comfortable >60m')
+            )
+          ),
+          ...PROPERTIES.map(p=>
+            React.createElement('div',{key:p.id,style:{marginBottom:20}},
+              React.createElement('h4',{style:{fontSize:12,fontWeight:600,marginBottom:8,color:'#55efc4'}},p.name),
+              React.createElement(TurnoverTimeline,{windows:TURNOVER_WINDOWS,property:p})
+            )
+          )
+        ),
+        view==='dietary' && React.createElement('div',{},
+          React.createElement(DietaryAggregate,{guests:GUESTS,properties:PROPERTIES})
+        ),
         view==='housekeeping' && React.createElement('div',{},
           React.createElement('h3',{style:{fontSize:13,fontWeight:600,marginBottom:12,color:'#2d4a3e'}},'Housekeeping Schedule'),
           ...PROPERTIES.map(p=>
@@ -611,9 +916,9 @@ const App = () => {
       )
     ),
     selGuest && React.createElement(GuestDetail,{guest:selGuest,room:findRoom(selGuest),onClose:()=>setSelGuest(null)}),
-    selRoom && React.createElement(RoomDetail,{room:selRoom,onClose:()=>setSelRoom(null)}),
+    selRoom && React.createElement(RoomDetail,{room:selRoom,propertyId:selProp,onClose:()=>setSelRoom(null)}),
     selProperty && React.createElement(PropertyDetail,{property:selProperty,onClose:()=>setSelProperty(null)}),
-    React.createElement('div',{style:{textAlign:'center',padding:'20px 0 10px',fontSize:9,color:'#2a3a2e'}},'Property Command Center · v3.0 — Internal Ops Tool')
+    React.createElement('div',{style:{textAlign:'center',padding:'20px 0 10px',fontSize:9,color:'#2a3a2e'}},'Property Command Center · v4.0 — Internal Ops Tool')
   );
 };
 

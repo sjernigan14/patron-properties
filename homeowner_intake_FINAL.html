@@ -319,6 +319,98 @@
             color: var(--text-tertiary); border-color: var(--border); cursor: not-allowed;
         }
 
+        /* Revenue Splash (Step 0) */
+        .splash-container {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .splash-card {
+            background: var(--surface); border-radius: 16px;
+            border: 1px solid var(--border); padding: 3.5rem 2.5rem;
+            text-align: center; max-width: 640px; width: 100%;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .splash-eyebrow {
+            font-size: 0.75rem; font-weight: 700; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem;
+        }
+        .splash-headline {
+            font-size: 2.25rem; font-weight: 800; color: var(--text);
+            letter-spacing: -1px; line-height: 1.15; margin-bottom: 0.5rem;
+        }
+        .splash-earnings {
+            font-size: 3rem; font-weight: 800; letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #006B54, #00916E);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin: 0.75rem 0;
+        }
+        .splash-subtext {
+            font-size: 1.0625rem; color: var(--text-secondary); line-height: 1.6;
+            max-width: 460px; margin: 0 auto 0.5rem;
+        }
+        .splash-commission {
+            display: inline-block; padding: 0.5rem 1.25rem; margin: 1rem 0 1.75rem;
+            background: var(--primary-light); border-radius: 8px;
+            font-size: 0.875rem; font-weight: 600; color: var(--primary);
+            border: 1px solid rgba(0,107,84,0.15);
+        }
+        .splash-cta {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2.5rem; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #006B54, #004D3B);
+            color: white; font-size: 1.125rem; font-weight: 700;
+            cursor: pointer; font-family: var(--font); transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(0,107,84,0.3);
+        }
+        .splash-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0,107,84,0.4);
+        }
+        .splash-fine {
+            font-size: 0.75rem; color: var(--text-tertiary); margin-top: 1.25rem;
+        }
+        .splash-stats {
+            display: flex; justify-content: center; gap: 2.5rem;
+            margin-top: 2rem; padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .splash-stat-value {
+            font-size: 1.375rem; font-weight: 700; color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        .splash-stat-label {
+            font-size: 0.6875rem; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;
+        }
+
+        /* Step time badge */
+        .step-time-badge {
+            display: inline-flex; align-items: center; gap: 0.375rem;
+            font-size: 0.75rem; color: var(--text-tertiary); font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        /* Save toast */
+        .save-toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: var(--primary-dark); color: white; padding: 0.75rem 1.5rem;
+            border-radius: 10px; font-size: 0.875rem; font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 100;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards;
+        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+        /* Progress percentage bar */
+        .progress-bar-track {
+            height: 4px; background: var(--border); border-radius: 2px;
+            margin-top: 0.75rem; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #006B54, #00916E);
+            border-radius: 2px; transition: width 0.4s ease;
+        }
+
         /* Success State */
         .success-card {
             background: var(--surface); border-radius: 12px;
@@ -390,10 +482,10 @@
         const { useState, useRef } = React;
 
         const STEPS = [
-            { num: 1, label: 'Owner Info' },
-            { num: 2, label: 'Property Details' },
-            { num: 3, label: 'Availability & Pricing' },
-            { num: 4, label: 'Photos & Review' }
+            { num: 1, label: 'Owner Info', time: '~2 min' },
+            { num: 2, label: 'Property Details', time: '~4 min' },
+            { num: 3, label: 'Availability & Pricing', time: '~3 min' },
+            { num: 4, label: 'Photos & Review', time: '~2 min' }
         ];
 
         const AMENITIES = [
@@ -459,10 +551,12 @@
         };
 
         function HomeownerIntakeForm() {
+            const [showSplash, setShowSplash] = useState(true);
             const [currentStep, setCurrentStep] = useState(1);
             const [submitted, setSubmitted] = useState(false);
             const [showAllSteps, setShowAllSteps] = useState(true);
             const [formData, setFormData] = useState(DEMO_DATA);
+            const [showSaveToast, setShowSaveToast] = useState(false);
 
             const handleInputChange = (field, value) => {
                 setFormData(prev => ({ ...prev, [field]: value }));
@@ -527,6 +621,57 @@
                 setSubmitted(true);
             };
 
+            const handleSaveDraft = () => {
+                console.log('Draft saved:', formData);
+                setShowSaveToast(true);
+                setTimeout(() => setShowSaveToast(false), 2000);
+            };
+
+            const progressPercent = Math.round((completedFields() / totalRequired) * 100);
+
+            // Revenue splash screen — first thing a homeowner sees
+            if (showSplash) {
+                return (
+                    <>
+                        <Header />
+                        <div className="masters-banner">⛳ Masters 2027 — New Property Applications Open Through Apr 1</div>
+                        <div className="splash-container">
+                            <div className="splash-card">
+                                <div className="splash-eyebrow">Masters Tournament Week</div>
+                                <div className="splash-headline">Your Home Could Earn</div>
+                                <div className="splash-earnings">$8,000 – $35,000</div>
+                                <div className="splash-subtext">
+                                    Augusta homeowners earn premium rental income during the Masters.
+                                    Patron handles the guests, marketing, and logistics — you keep the lion's share.
+                                </div>
+                                <div className="splash-commission">You keep 85% of gross rental income. Patron's commission is just 15%.</div>
+                                <br />
+                                <button className="splash-cta" onClick={() => setShowSplash(false)}>
+                                    Let's Get Started →
+                                </button>
+                                <div className="splash-fine">
+                                    Application takes about 10 minutes. You can save and come back anytime.
+                                </div>
+                                <div className="splash-stats">
+                                    <div>
+                                        <div className="splash-stat-value">150+</div>
+                                        <div className="splash-stat-label">Homes Listed</div>
+                                    </div>
+                                    <div>
+                                        <div className="splash-stat-value">98%</div>
+                                        <div className="splash-stat-label">Owner Satisfaction</div>
+                                    </div>
+                                    <div>
+                                        <div className="splash-stat-value">7 Days</div>
+                                        <div className="splash-stat-label">Avg Booking</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+            }
+
             if (submitted) {
                 return (
                     <>
@@ -564,6 +709,9 @@
                                         <span className="step-label">{s.label}</span>
                                     </div>
                                 ))}
+                            </div>
+                            <div className="progress-bar-track" style={{ maxWidth: 800, margin: '0.75rem auto 0' }}>
+                                <div className="progress-bar-fill" style={{ width: progressPercent + '%' }} />
                             </div>
                         </div>
 
@@ -643,7 +791,9 @@
                                 </div>
 
                                 <div className="button-group" style={{ borderTop: 'none', paddingTop: 0 }}>
-                                    <div></div>
+                                    <button className="button button-secondary" onClick={handleSaveDraft}>
+                                        Save & Continue Later
+                                    </button>
                                     <button className="button button-primary" onClick={handleSubmit}
                                         style={{ padding: '0.875rem 2.5rem' }}>
                                         Submit Application
@@ -651,6 +801,7 @@
                                 </div>
                             </div>
                         </div>
+                        {showSaveToast && <div className="save-toast">Draft saved successfully</div>}
                     </>
                 );
             }
@@ -668,9 +819,12 @@
                                     className={`step-item ${s.num === currentStep ? 'active' : ''} ${s.num < currentStep ? 'completed' : ''}`}
                                     onClick={() => { if (s.num < currentStep) setCurrentStep(s.num); }}>
                                     <div className="step-number">{s.num < currentStep ? '✓' : s.num}</div>
-                                    <span className="step-label">{s.label}</span>
+                                    <span className="step-label">{s.label}{s.num === currentStep && <span className="step-time-badge">{s.time}</span>}</span>
                                 </div>
                             ))}
+                        </div>
+                        <div className="progress-bar-track" style={{ maxWidth: 800, margin: '0.75rem auto 0' }}>
+                            <div className="progress-bar-fill" style={{ width: progressPercent + '%' }} />
                         </div>
                     </div>
 
@@ -722,6 +876,10 @@
                                     onClick={() => currentStep > 1 && setCurrentStep(currentStep - 1)}
                                     disabled={currentStep === 1}>← Back</button>
                                 <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                    <button className="button button-secondary" onClick={handleSaveDraft}
+                                        style={{ fontSize: '0.8125rem', padding: '0.625rem 1rem', minHeight: 'auto' }}>
+                                        Save & Continue Later
+                                    </button>
                                     {currentStep < 4 ? (
                                         <button className="button button-primary"
                                             onClick={() => canProceedToNextStep() && setCurrentStep(currentStep + 1)}
@@ -734,6 +892,7 @@
                             </div>
                         </div>
                     </div>
+                    {showSaveToast && <div className="save-toast">Draft saved successfully</div>}
                 </>
             );
         }
@@ -760,7 +919,7 @@
             return (
                 <div className="form-card">
                     <h2 className="step-title">Owner Information</h2>
-                    <p className="step-description">Tell us about yourself so we can set up your account</p>
+                    <p className="step-description">Tell us about yourself so we can set up your account <span className="step-time-badge">~2 min</span></p>
 
                     <div className="section-label">Ownership Type</div>
                     <div className="form-group" style={{ marginBottom: '1.5rem' }}>
@@ -832,7 +991,7 @@
             return (
                 <div className="form-card">
                     <h2 className="step-title">Property Details</h2>
-                    <p className="step-description">Tell us about the property you'd like to list</p>
+                    <p className="step-description">Tell us about the property you'd like to list <span className="step-time-badge">~4 min</span></p>
 
                     <div className="section-label">Location</div>
                     <div className="form-grid full">
@@ -992,7 +1151,7 @@
             return (
                 <div className="form-card">
                     <h2 className="step-title">Availability & Pricing</h2>
-                    <p className="step-description">Set your rental terms for Masters 2027</p>
+                    <p className="step-description">Set your rental terms for Masters 2027 <span className="step-time-badge">~3 min</span></p>
 
                     <div className="section-label">Availability Window</div>
                     <div className="form-grid">
@@ -1125,7 +1284,7 @@
             return (
                 <div className="form-card">
                     <h2 className="step-title">Photos & Review</h2>
-                    <p className="step-description">Upload property photos and review your application before submitting</p>
+                    <p className="step-description">Upload property photos and review your application before submitting <span className="step-time-badge">~2 min</span></p>
 
                     <div className="section-label">Property Photos</div>
                     <div className="form-group">

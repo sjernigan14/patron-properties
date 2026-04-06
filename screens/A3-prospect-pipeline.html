@@ -1,982 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patron Properties — Prospect Pipeline</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background-color: #0d1117;
-            color: #f0f6fc;
-            padding: 20px;
-        }
-
-        .container { max-width: 1600px; margin: 0 auto; }
-
-        /* ===== HEADER ===== */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .header-left h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .header-left .subtitle { color: #8b949e; font-size: 13px; margin-top: 2px; }
-        .header-left .description { font-size: 12px; color: #6e7681; }
-
-        .header-right {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .api-badge {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 8px 14px;
-            color: #3fb950;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* ===== KPI CARDS ===== */
-        .kpi-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .kpi-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 14px;
-            text-align: center;
-        }
-
-        .kpi-card .label {
-            font-size: 10px;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .kpi-card .value {
-            font-size: 26px;
-            font-weight: 700;
-            color: #3fb950;
-        }
-
-        /* ===== CONTROLS ===== */
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 10px 14px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #f0f6fc;
-            font-size: 14px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #388bfd;
-            box-shadow: 0 0 0 3px rgba(56,139,253,0.1);
-        }
-
-        .filter-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
-
-        .btn-filter {
-            padding: 8px 14px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #8b949e;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .btn-filter:hover { border-color: #58a6ff; color: #f0f6fc; }
-
-        .btn-filter.active {
-            background-color: #388bfd;
-            border-color: #388bfd;
-            color: white;
-        }
-
-        .btn-clean-toggle {
-            padding: 8px 16px;
-            background-color: #0d1117;
-            border: 2px solid #d29922;
-            color: #d29922;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            transition: all 0.2s;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-clean-toggle:hover { background-color: rgba(210,153,34,0.1); }
-
-        .btn-clean-toggle.active {
-            background-color: #d29922;
-            color: #0d1117;
-        }
-
-        .btn-export {
-            padding: 8px 14px;
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            color: #8b949e;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .btn-export:hover { border-color: #58a6ff; color: #f0f6fc; }
-
-        .sort-select {
-            padding: 8px 12px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #8b949e;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .sort-select:focus { outline: none; border-color: #388bfd; }
-
-        .results-count {
-            font-size: 12px;
-            color: #6e7681;
-            padding: 8px 0;
-        }
-
-        /* ===== PROPERTY CARD GRID ===== */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 16px;
-            align-items: start;
-        }
-
-        .property-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .property-card:hover {
-            border-color: #388bfd;
-            box-shadow: 0 4px 16px rgba(56,139,253,0.08);
-        }
-
-        .property-card.clean-highlight {
-            border-color: #d29922;
-        }
-
-        .property-card.clean-highlight:hover {
-            border-color: #d29922;
-            box-shadow: 0 4px 16px rgba(210,153,34,0.12);
-        }
-
-        .card-photo {
-            width: 100%;
-            height: 180px;
-            background-color: #0d1117;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .card-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .card-photo-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #30363d;
-        }
-
-        .card-photo-placeholder svg {
-            width: 48px;
-            height: 48px;
-        }
-
-        .score-overlay {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .score-90 { background-color: #2ea043; }
-        .score-80 { background-color: #1a7f37; }
-        .score-75 { background-color: #388bfd; }
-        .score-60 { background-color: #6e7681; }
-
-        .clean-badge-overlay {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            background-color: #d29922;
-            color: #0d1117;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-overlay {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-new { background-color: rgba(56,139,253,0.2); color: #58a6ff; }
-        .status-contacted { background-color: rgba(210,153,34,0.2); color: #d29922; }
-        .status-interested { background-color: rgba(46,160,67,0.2); color: #3fb950; }
-        .status-signed { background-color: rgba(46,160,67,0.4); color: #3fb950; }
-        .status-passed { background-color: rgba(110,118,129,0.2); color: #6e7681; }
-
-        .card-body { padding: 14px 16px; }
-
-        .card-address {
-            font-size: 15px;
-            font-weight: 600;
-            color: #f0f6fc;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-owner {
-            font-size: 13px;
-            color: #8b949e;
-            margin-bottom: 10px;
-        }
-
-        .card-stats {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 12px;
-            color: #8b949e;
-        }
-
-        .card-stats span { white-space: nowrap; }
-        .card-stats .val { color: #f0f6fc; font-weight: 600; }
-
-        .card-contact {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding-top: 10px;
-            border-top: 1px solid #30363d;
-        }
-
-        .contact-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .contact-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .contact-info .icon { color: #8b949e; flex-shrink: 0; }
-
-        .contact-info .text {
-            color: #f0f6fc;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dnc-tag {
-            font-size: 9px;
-            font-weight: 700;
-            padding: 1px 5px;
-            border-radius: 3px;
-            background-color: rgba(248,81,73,0.15);
-            color: #f85149;
-            flex-shrink: 0;
-        }
-
-        .cell-tag {
-            font-size: 9px;
-            font-weight: 600;
-            padding: 1px 5px;
-            border-radius: 3px;
-            background-color: rgba(56,139,253,0.15);
-            color: #58a6ff;
-            flex-shrink: 0;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-        }
-
-        .btn-action {
-            flex: 1;
-            padding: 7px 10px;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s;
-            background-color: #0d1117;
-        }
-
-        .btn-call {
-            color: #3fb950;
-            border-color: rgba(63,185,80,0.3);
-        }
-
-        .btn-call:hover {
-            background-color: rgba(63,185,80,0.1);
-            border-color: #3fb950;
-        }
-
-        .btn-email-action {
-            color: #58a6ff;
-            border-color: rgba(88,166,255,0.3);
-        }
-
-        .btn-email-action:hover {
-            background-color: rgba(56,139,253,0.1);
-            border-color: #58a6ff;
-        }
-
-        .btn-maps-action {
-            color: #8b949e;
-            border-color: #30363d;
-        }
-
-        .btn-maps-action:hover {
-            background-color: rgba(139,148,158,0.1);
-            border-color: #8b949e;
-        }
-
-        /* ===== DETAIL MODAL ===== */
-        .modal-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 100;
-            overflow-y: auto;
-            padding: 40px 20px;
-        }
-
-        .modal-backdrop.active { display: flex; justify-content: center; align-items: flex-start; }
-
-        .modal {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 900px;
-            overflow: hidden;
-        }
-
-        .modal-photo {
-            width: 100%;
-            height: 300px;
-            background-color: #0d1117;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .modal-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background-color: rgba(0,0,0,0.6);
-            border: none;
-            color: #f0f6fc;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .modal-close:hover { background-color: rgba(0,0,0,0.9); }
-
-        .modal-body { padding: 24px; }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #f0f6fc;
-        }
-
-        .modal-owner {
-            font-size: 14px;
-            color: #8b949e;
-            margin-top: 2px;
-        }
-
-        .modal-score {
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .modal-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .modal-stat {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 12px;
-        }
-
-        .modal-stat .label {
-            font-size: 10px;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .modal-stat .value {
-            font-size: 16px;
-            font-weight: 600;
-            color: #f0f6fc;
-        }
-
-        .modal-section-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #30363d;
-        }
-
-        .modal-contacts {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 8px;
-        }
-
-        .modal-contact-item {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            padding: 10px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .modal-contact-number {
-            font-weight: 600;
-            color: #58a6ff;
-            margin-bottom: 4px;
-        }
-
-        .modal-contact-badge {
-            display: inline-block;
-            font-size: 10px;
-            padding: 2px 6px;
-            background-color: rgba(56,139,253,0.15);
-            color: #58a6ff;
-            border-radius: 3px;
-            margin: 2px;
-        }
-
-        .modal-contact-badge.dnc {
-            background-color: rgba(248,81,73,0.15);
-            color: #f85149;
-        }
-
-        .modal-emails {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 8px;
-        }
-
-        .modal-email-item {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            color: #58a6ff;
-            word-break: break-all;
-        }
-
-        .score-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .score-label {
-            font-size: 12px;
-            color: #8b949e;
-            min-width: 70px;
-        }
-
-        .score-progress {
-            flex: 1;
-            height: 8px;
-            background-color: #0d1117;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .score-fill {
-            height: 100%;
-            background-color: #3fb950;
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-
-        .score-value {
-            font-size: 12px;
-            font-weight: 600;
-            color: #f0f6fc;
-            min-width: 35px;
-            text-align: right;
-        }
-
-        .modal-status-select {
-            padding: 6px 12px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #f0f6fc;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .modal-status-select:focus {
-            outline: none;
-            border-color: #388bfd;
-        }
-
-        .notes-textarea {
-            width: 100%;
-            padding: 10px 12px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #f0f6fc;
-            font-size: 13px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 70px;
-            margin-top: 8px;
-        }
-
-        .notes-textarea:focus {
-            outline: none;
-            border-color: #388bfd;
-            box-shadow: 0 0 0 3px rgba(56,139,253,0.1);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #30363d;
-        }
-
-        .modal-actions a, .modal-actions button {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .modal-btn-call {
-            background-color: #2ea043;
-            color: white;
-        }
-
-        .modal-btn-call:hover { background-color: #26843a; }
-
-        .modal-btn-email {
-            background-color: #388bfd;
-            color: white;
-        }
-
-        .modal-btn-email:hover { background-color: #1f6feb; }
-
-        .modal-btn-maps {
-            background-color: #0d1117;
-            border: 1px solid #30363d !important;
-            color: #8b949e;
-        }
-
-        .modal-btn-maps:hover { color: #f0f6fc; border-color: #58a6ff !important; }
-
-        /* ===== FILTER BAR ===== */
-        .filter-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 14px 16px;
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-        }
-
-        .filter-bar-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-right: 4px;
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .filter-group label {
-            font-size: 12px;
-            color: #8b949e;
-            white-space: nowrap;
-        }
-
-        .filter-select {
-            padding: 6px 10px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #f0f6fc;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #388bfd;
-            box-shadow: 0 0 0 3px rgba(56,139,253,0.1);
-        }
-
-        .filter-pills {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .filter-pill {
-            padding: 5px 10px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #8b949e;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .filter-pill:hover { border-color: #58a6ff; color: #f0f6fc; }
-
-        .filter-pill.active {
-            background-color: #388bfd;
-            border-color: #388bfd;
-            color: white;
-        }
-
-        .filter-divider {
-            width: 1px;
-            height: 24px;
-            background-color: #30363d;
-            margin: 0 4px;
-        }
-
-        .btn-clear-filters {
-            padding: 5px 10px;
-            background: none;
-            border: 1px solid transparent;
-            color: #f85149;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s;
-            margin-left: auto;
-        }
-
-        .btn-clear-filters:hover { border-color: #f85149; }
-
-        .active-filters-summary {
-            font-size: 11px;
-            color: #d29922;
-            padding: 4px 0 0;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .card-grid { grid-template-columns: 1fr; }
-            .modal-grid { grid-template-columns: 1fr 1fr; }
-            header { flex-direction: column; }
-        }
-
-        @media (max-width: 480px) {
-            .modal-grid { grid-template-columns: 1fr; }
-            .controls { flex-direction: column; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Prospect Pipeline</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --primary: #2d6a4f;
+    --primary-dark: #1e4d38;
+    --navy: #1a2332;
+    --text: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border: #e5e5e5;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(45,106,79,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  input, button, select, textarea { font-family: var(--font); }
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-left">
-                <h1>PATRON PROPERTIES</h1>
-                <div class="subtitle">Prospect Pipeline</div>
-                <div class="description" id="resultCount">110 Tier 1 Prospects &bull; Augusta, GA 30904</div>
-            </div>
-            <div class="header-right">
-                <div class="api-badge">&#x2705; Street View Active</div>
-            </div>
-        </header>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo, useCallback } = React;
 
-        <div class="kpi-cards">
-            <div class="kpi-card">
-                <div class="label">Total Prospects</div>
-                <div class="value" id="kpiTotal">110</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">With Phone</div>
-                <div class="value" id="kpiPhone">&mdash;</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">With Email</div>
-                <div class="value" id="kpiEmail">&mdash;</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">Clean Cell / No DNC</div>
-                <div class="value" id="kpiClean">&mdash;</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">Avg Patron Score</div>
-                <div class="value" id="kpiAvgScore">&mdash;</div>
-            </div>
-        </div>
+/* ── Google Street View API Key ── */
+const API_KEY = 'AIzaSyA-AJIw4l3H83o16C1PwFzOkkcE2bdxhZE';
 
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search by address, name, phone, email...">
-            </div>
-            <div class="filter-buttons">
-                <button class="btn-filter active" data-filter="all">All</button>
-                <button class="btn-filter" data-filter="90">90+</button>
-                <button class="btn-filter" data-filter="80">80-89</button>
-                <button class="btn-filter" data-filter="75">75-79</button>
-            </div>
-            <button class="btn-clean-toggle" id="cleanToggle">&#x1F4DE; Clean Outreach Only</button>
-            <select class="sort-select" id="sortSelect">
-                <option value="score-desc">Score: High &rarr; Low</option>
-                <option value="score-asc">Score: Low &rarr; High</option>
-                <option value="address">Address: A &rarr; Z</option>
-                <option value="value-desc">Value: High &rarr; Low</option>
-                <option value="beds-desc">Beds: Most &rarr; Least</option>
-            </select>
-            <button class="btn-export" id="exportBtn">Export CSV</button>
-        </div>
+/* ── Pipeline Status Colors ── */
+const PIPELINE_STATUS = {
+  cold:      { label: 'Cold',      bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD', dot: '#3B82F6' },
+  warm:      { label: 'Warm',      bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', dot: '#D97706' },
+  hot:       { label: 'Hot',       bg: '#FEE2E2', text: '#991B1B', border: '#FCA5A5', dot: '#DC2626' },
+  converted: { label: 'Converted', bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', dot: '#059669' },
+};
 
-        <!-- PROPERTY FILTER BAR -->
-        <div class="filter-bar">
-            <span class="filter-bar-label">Filters</span>
+/* ── Prospect Status Colors ── */
+const STATUS_COLORS = {
+  New:        { bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD' },
+  Contacted:  { bg: '#FEF3C7', text: '#92400E', border: '#FCD34D' },
+  Interested: { bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7' },
+  Signed:     { bg: '#D1FAE5', text: '#065F46', border: '#34D399' },
+  Passed:     { bg: '#F3F4F6', text: '#6B7280', border: '#D1D5DB' },
+};
 
-            <div class="filter-group">
-                <label>Beds</label>
-                <div class="filter-pills" id="bedFilter">
-                    <button class="filter-pill active" data-val="any">Any</button>
-                    <button class="filter-pill" data-val="2">2+</button>
-                    <button class="filter-pill" data-val="3">3+</button>
-                    <button class="filter-pill" data-val="4">4+</button>
-                    <button class="filter-pill" data-val="5">5+</button>
-                    <button class="filter-pill" data-val="6">6+</button>
-                </div>
-            </div>
+/* ── Score Color ── */
+function scoreColor(score) {
+  if (score >= 90) return '#2d6a4f';
+  if (score >= 80) return '#2563EB';
+  if (score >= 75) return '#D97706';
+  return '#6B7280';
+}
 
-            <div class="filter-divider"></div>
+/* ── Format Helpers ── */
+function fmtCurrency(val) { return val ? '$' + parseInt(val).toLocaleString() : '$0'; }
+function fmtPhone(num) {
+  if (!num) return '';
+  const c = num.replace(/\D/g, '');
+  return c.length === 10 ? `(${c.slice(0,3)}) ${c.slice(3,6)}-${c.slice(6)}` : num;
+}
+function bestPhone(p) {
+  if (!p.phones?.length) return null;
+  return p.phones.find(ph => ph.type === 'Cell' && !ph.dnc) || p.phones.find(ph => ph.type === 'Cell') || p.phones[0];
+}
 
-            <div class="filter-group">
-                <label>Baths</label>
-                <div class="filter-pills" id="bathFilter">
-                    <button class="filter-pill active" data-val="any">Any</button>
-                    <button class="filter-pill" data-val="2">2+</button>
-                    <button class="filter-pill" data-val="3">3+</button>
-                    <button class="filter-pill" data-val="4">4+</button>
-                    <button class="filter-pill" data-val="5">5+</button>
-                </div>
-            </div>
-
-            <div class="filter-divider"></div>
-
-            <div class="filter-group">
-                <label>Value</label>
-                <select class="filter-select" id="valueFilter">
-                    <option value="any">Any</option>
-                    <option value="0-200">Under $200K</option>
-                    <option value="200-400">$200K – $400K</option>
-                    <option value="400-600">$400K – $600K</option>
-                    <option value="600-1000">$600K – $1M</option>
-                    <option value="1000+">$1M+</option>
-                </select>
-            </div>
-
-            <div class="filter-divider"></div>
-
-            <div class="filter-group">
-                <label>Sqft</label>
-                <select class="filter-select" id="sqftFilter">
-                    <option value="any">Any</option>
-                    <option value="1000">1,000+</option>
-                    <option value="1500">1,500+</option>
-                    <option value="2000">2,000+</option>
-                    <option value="3000">3,000+</option>
-                    <option value="5000">5,000+</option>
-                </select>
-            </div>
-
-            <button class="btn-clear-filters" id="clearFilters">Clear All</button>
-        </div>
-
-        <div class="card-grid" id="cardGrid">
-            <!-- populated by JS -->
-        </div>
-    </div>
-
-    <!-- Detail Modal -->
-    <div class="modal-backdrop" id="modalBackdrop">
-        <div class="modal" id="modalContent">
-            <!-- populated by JS -->
-        </div>
-    </div>
-
-    <script>
-        // ===== STATE =====
-        let allProspects = [];
-        let filteredProspects = [];
-        const apiKey = 'AIzaSyA-AJIw4l3H83o16C1PwFzOkkcE2bdxhZE';
-        let currentScoreFilter = 'all';
-        let cleanOnly = false;
-        let prospectNotes = {};
-        let bedMin = 'any';
-        let bathMin = 'any';
-        let valueRange = 'any';
-        let sqftMin = 'any';
+/* ── Sample Activity Data (placeholder per spec) ── */
+function generateActivities(p) {
+  const acts = [];
+  if (p.status === 'Contacted' || p.status === 'Interested' || p.status === 'Signed') {
+    acts.push({ date: '2026-03-28', type: 'Call', note: 'Left voicemail regarding Masters rental opportunity.' });
+  }
+  if (p.emails?.length) {
+    acts.push({ date: '2026-03-15', type: 'Email', note: 'Sent introductory email about property management partnership.' });
+  }
+  if (p.phones?.length) {
+    acts.push({ date: '2026-03-01', type: 'Research', note: 'Property added to pipeline from county records search.' });
+  }
+  return acts.slice(0, 3);
+}
 
         const PROSPECT_DATA = [
           {
@@ -7962,406 +7072,669 @@
           }
         ];
 
-        // ===== INIT =====
-        document.addEventListener('DOMContentLoaded', () => {
-            allProspects = PROSPECT_DATA;
-            allProspects.forEach((p, i) => {
-                p.id = i;
-                if (!p.status) p.status = 'New';
-                if (!p.notes) p.notes = '';
-            });
-            updateKPIs();
-            filteredProspects = [...allProspects];
-            renderGrid();
+/* ── App Component ── */
+function App() {
+  const [prospects, setProspects] = useState(() => {
+    return PROSPECT_DATA.map((p, i) => ({
+      ...p,
+      id: i,
+      status: p.status || 'New',
+      notes: p.notes || '',
+      pipelineStatus: p.patron_score >= 90 ? 'warm' : 'cold',
+    }));
+  });
+  const [search, setSearch] = useState('');
+  const [scoreFilter, setScoreFilter] = useState('all');
+  const [cleanOnly, setCleanOnly] = useState(false);
+  const [sortBy, setSortBy] = useState('score-desc');
+  const [bedMin, setBedMin] = useState('any');
+  const [bathMin, setBathMin] = useState('any');
+  const [valueRange, setValueRange] = useState('any');
+  const [sqftMin, setSqftMin] = useState('any');
+  const [selectedId, setSelectedId] = useState(null);
+  const [prospectNotes, setProspectNotes] = useState({});
+  const [expandedActivities, setExpandedActivities] = useState({});
 
-            document.getElementById('searchInput').addEventListener('input', applyFilters);
-            document.getElementById('sortSelect').addEventListener('change', applyFilters);
+  /* ── Filtering ── */
+  const filtered = useMemo(() => {
+    let result = prospects.filter(p => {
+      if (scoreFilter === '90' && p.patron_score < 90) return false;
+      if (scoreFilter === '80' && (p.patron_score < 80 || p.patron_score >= 90)) return false;
+      if (scoreFilter === '75' && (p.patron_score < 75 || p.patron_score >= 80)) return false;
+      if (cleanOnly && !p.is_clean_cell_no_dnc) return false;
+      if (bedMin !== 'any' && (parseInt(p.beds) || 0) < parseInt(bedMin)) return false;
+      if (bathMin !== 'any' && (parseFloat(p.baths) || 0) < parseInt(bathMin)) return false;
+      if (valueRange !== 'any') {
+        const v = p.est_value || 0;
+        if (valueRange === '0-200' && v >= 200000) return false;
+        if (valueRange === '200-400' && (v < 200000 || v >= 400000)) return false;
+        if (valueRange === '400-600' && (v < 400000 || v >= 600000)) return false;
+        if (valueRange === '600-1000' && (v < 600000 || v >= 1000000)) return false;
+        if (valueRange === '1000+' && v < 1000000) return false;
+      }
+      if (sqftMin !== 'any' && (parseInt(p.sqft) || 0) < parseInt(sqftMin)) return false;
+      if (search) {
+        const hay = [p.property_address, p.owner_name, p.owner_2_name, ...(p.phones||[]).map(ph=>ph.number), ...(p.emails||[])].join(' ').toLowerCase();
+        if (!hay.includes(search.toLowerCase())) return false;
+      }
+      return true;
+    });
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case 'score-desc': return b.patron_score - a.patron_score;
+        case 'score-asc': return a.patron_score - b.patron_score;
+        case 'address': return a.property_address.localeCompare(b.property_address);
+        case 'value-desc': return (b.est_value||0) - (a.est_value||0);
+        case 'beds-desc': return (parseInt(b.beds)||0) - (parseInt(a.beds)||0);
+        default: return 0;
+      }
+    });
+    return result;
+  }, [prospects, search, scoreFilter, cleanOnly, sortBy, bedMin, bathMin, valueRange, sqftMin]);
 
-            document.querySelectorAll('.btn-filter').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentScoreFilter = btn.dataset.filter;
-                    applyFilters();
-                });
-            });
+  /* ── KPIs ── */
+  const kpis = useMemo(() => ({
+    total: prospects.length,
+    withPhone: prospects.filter(p => p.phones?.length).length,
+    withEmail: prospects.filter(p => p.emails?.length).length,
+    cleanCell: prospects.filter(p => p.is_clean_cell_no_dnc).length,
+    avgScore: (prospects.reduce((s, p) => s + p.patron_score, 0) / prospects.length).toFixed(0),
+    hotCount: prospects.filter(p => p.pipelineStatus === 'hot').length,
+    warmCount: prospects.filter(p => p.pipelineStatus === 'warm').length,
+    convertedCount: prospects.filter(p => p.pipelineStatus === 'converted').length,
+  }), [prospects]);
 
-            document.getElementById('cleanToggle').addEventListener('click', () => {
-                cleanOnly = !cleanOnly;
-                document.getElementById('cleanToggle').classList.toggle('active', cleanOnly);
-                applyFilters();
-            });
+  /* ── Handlers ── */
+  const updateStatus = (id, status) => setProspects(ps => ps.map(p => p.id === id ? {...p, status} : p));
+  const updatePipelineStatus = (id, pipelineStatus) => setProspects(ps => ps.map(p => p.id === id ? {...p, pipelineStatus} : p));
+  const updateNote = (id, text) => setProspectNotes(n => ({...n, [id]: text}));
+  const toggleActivity = (id) => setExpandedActivities(ea => ({...ea, [id]: !ea[id]}));
 
-            document.getElementById('exportBtn').addEventListener('click', exportCSV);
+  const clearFilters = () => {
+    setSearch(''); setScoreFilter('all'); setCleanOnly(false); setSortBy('score-desc');
+    setBedMin('any'); setBathMin('any'); setValueRange('any'); setSqftMin('any');
+  };
 
-            // Bed pills
-            document.querySelectorAll('#bedFilter .filter-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    document.querySelectorAll('#bedFilter .filter-pill').forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    bedMin = pill.dataset.val;
-                    applyFilters();
-                });
-            });
+  const exportCSV = () => {
+    const headers = ['Score','Address','Owner','Phone 1','Phone 1 Type','Phone 1 DNC','Phone 2','Email 1','Email 2','Beds','Baths','Sqft','Est Value','Est Equity','LTV %','Clean Cell','Status','Pipeline'];
+    const rows = filtered.map(p => [
+      p.patron_score, p.property_address, p.owner_name,
+      p.phones?.[0]?.number||'', p.phones?.[0]?.type||'', p.phones?.[0]?.dnc?'Y':'N',
+      p.phones?.[1]?.number||'', p.emails?.[0]||'', p.emails?.[1]||'',
+      p.beds, p.baths, p.sqft, p.est_value, p.est_equity,
+      p.ltv_pct?.toFixed(2)||'', p.is_clean_cell_no_dnc?'Y':'N', p.status, p.pipelineStatus
+    ]);
+    let csv = headers.join(',') + '\n';
+    rows.forEach(row => {
+      csv += row.map(c => { const s = String(c??''); return s.includes(',')||s.includes('"') ? `"${s.replace(/"/g,'""')}"` : s; }).join(',') + '\n';
+    });
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'patron-prospects.csv'; a.click();
+    URL.revokeObjectURL(url);
+  };
 
-            // Bath pills
-            document.querySelectorAll('#bathFilter .filter-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    document.querySelectorAll('#bathFilter .filter-pill').forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    bathMin = pill.dataset.val;
-                    applyFilters();
-                });
-            });
+  const selected = selectedId !== null ? prospects.find(p => p.id === selectedId) : null;
 
-            // Value select
-            document.getElementById('valueFilter').addEventListener('change', (e) => {
-                valueRange = e.target.value;
-                applyFilters();
-            });
+  /* ── Pill Button Helper ── */
+  const Pill = ({active, onClick, children}) => (
+    <button onClick={onClick} style={{
+      padding: '5px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+      border: active ? '2px solid #2d6a4f' : '1px solid #e5e5e5',
+      background: active ? '#2d6a4f' : '#fff', color: active ? '#fff' : '#6b7280',
+      transition: 'all 0.15s', whiteSpace: 'nowrap',
+    }}>{children}</button>
+  );
 
-            // Sqft select
-            document.getElementById('sqftFilter').addEventListener('change', (e) => {
-                sqftMin = e.target.value;
-                applyFilters();
-            });
+  /* ── Pipeline Badge ── */
+  const PipelineBadge = ({status, small}) => {
+    const c = PIPELINE_STATUS[status] || PIPELINE_STATUS.cold;
+    return (
+      <span style={{
+        display: 'inline-flex', alignItems: 'center', gap: 4,
+        fontSize: small ? 10 : 11, fontWeight: 600, padding: small ? '2px 6px' : '3px 8px',
+        borderRadius: 4, background: c.bg, color: c.text, border: `1px solid ${c.border}`,
+        textTransform: 'uppercase', letterSpacing: 0.5,
+      }}>
+        <span style={{width: small ? 5 : 6, height: small ? 5 : 6, borderRadius: '50%', background: c.dot}} />
+        {c.label}
+      </span>
+    );
+  };
 
-            // Clear all filters
-            document.getElementById('clearFilters').addEventListener('click', () => {
-                bedMin = 'any'; bathMin = 'any'; valueRange = 'any'; sqftMin = 'any';
-                currentScoreFilter = 'all'; cleanOnly = false;
-                document.getElementById('searchInput').value = '';
-                document.getElementById('valueFilter').value = 'any';
-                document.getElementById('sqftFilter').value = 'any';
-                document.getElementById('sortSelect').value = 'score-desc';
-                document.getElementById('cleanToggle').classList.remove('active');
-                document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
-                document.querySelector('.btn-filter[data-filter="all"]').classList.add('active');
-                document.querySelectorAll('#bedFilter .filter-pill').forEach(p => p.classList.remove('active'));
-                document.querySelector('#bedFilter .filter-pill[data-val="any"]').classList.add('active');
-                document.querySelectorAll('#bathFilter .filter-pill').forEach(p => p.classList.remove('active'));
-                document.querySelector('#bathFilter .filter-pill[data-val="any"]').classList.add('active');
-                applyFilters();
-            });
+  /* ── Status Badge ── */
+  const StatusBadge = ({status}) => {
+    const c = STATUS_COLORS[status] || STATUS_COLORS.New;
+    return (
+      <span style={{
+        fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+        background: c.bg, color: c.text, border: `1px solid ${c.border}`,
+        textTransform: 'uppercase', letterSpacing: 0.5,
+      }}>{status}</span>
+    );
+  };
 
-            document.getElementById('modalBackdrop').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeModal();
-            });
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeModal();
-            });
-        });
-
-        // ===== KPIs =====
-        function updateKPIs() {
-            const src = allProspects;
-            document.getElementById('kpiTotal').textContent = src.length;
-            document.getElementById('kpiPhone').textContent = src.filter(p => p.phones?.length).length;
-            document.getElementById('kpiEmail').textContent = src.filter(p => p.emails?.length).length;
-            document.getElementById('kpiClean').textContent = src.filter(p => p.is_clean_cell_no_dnc).length;
-            document.getElementById('kpiAvgScore').textContent = (src.reduce((s, p) => s + p.patron_score, 0) / src.length).toFixed(0);
-        }
-
-        // ===== HELPERS =====
-        function getScoreClass(score) {
-            if (score >= 90) return 'score-90';
-            if (score >= 80) return 'score-80';
-            if (score >= 75) return 'score-75';
-            return 'score-60';
-        }
-
-        function formatCurrency(val) {
-            if (!val) return '$0';
-            return '$' + parseInt(val).toLocaleString();
-        }
-
-        function formatPhone(num) {
-            if (!num) return '';
-            const c = num.replace(/\D/g, '');
-            if (c.length === 10) return `(${c.slice(0,3)}) ${c.slice(3,6)}-${c.slice(6)}`;
-            return num;
-        }
-
-        function getStatusClass(status) {
-            return 'status-' + (status || 'new').toLowerCase();
-        }
-
-        function getBestPhone(p) {
-            if (!p.phones?.length) return null;
-            // Prefer clean cell first
-            const cleanCell = p.phones.find(ph => ph.type === 'Cell' && !ph.dnc);
-            if (cleanCell) return cleanCell;
-            const cell = p.phones.find(ph => ph.type === 'Cell');
-            if (cell) return cell;
-            return p.phones[0];
-        }
-
-        // ===== FILTER & SORT =====
-        function applyFilters() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const sort = document.getElementById('sortSelect').value;
-
-            filteredProspects = allProspects.filter(p => {
-                // Score filter
-                if (currentScoreFilter === '90' && p.patron_score < 90) return false;
-                if (currentScoreFilter === '80' && (p.patron_score < 80 || p.patron_score >= 90)) return false;
-                if (currentScoreFilter === '75' && (p.patron_score < 75 || p.patron_score >= 80)) return false;
-
-                // Clean outreach filter
-                if (cleanOnly && !p.is_clean_cell_no_dnc) return false;
-
-                // Bedrooms filter
-                if (bedMin !== 'any' && (parseInt(p.beds) || 0) < parseInt(bedMin)) return false;
-
-                // Bathrooms filter
-                if (bathMin !== 'any' && (parseFloat(p.baths) || 0) < parseInt(bathMin)) return false;
-
-                // Value filter
-                if (valueRange !== 'any') {
-                    const v = p.est_value || 0;
-                    if (valueRange === '0-200' && v >= 200000) return false;
-                    if (valueRange === '200-400' && (v < 200000 || v >= 400000)) return false;
-                    if (valueRange === '400-600' && (v < 400000 || v >= 600000)) return false;
-                    if (valueRange === '600-1000' && (v < 600000 || v >= 1000000)) return false;
-                    if (valueRange === '1000+' && v < 1000000) return false;
-                }
-
-                // Sqft filter
-                if (sqftMin !== 'any' && (parseInt(p.sqft) || 0) < parseInt(sqftMin)) return false;
-
-                // Search
-                if (search) {
-                    const haystack = [
-                        p.property_address,
-                        p.owner_name,
-                        p.owner_2_name,
-                        ...(p.phones || []).map(ph => ph.number),
-                        ...(p.emails || [])
-                    ].join(' ').toLowerCase();
-                    if (!haystack.includes(search)) return false;
-                }
-
-                return true;
-            });
-
-            // Sort
-            filteredProspects.sort((a, b) => {
-                switch (sort) {
-                    case 'score-desc': return b.patron_score - a.patron_score;
-                    case 'score-asc': return a.patron_score - b.patron_score;
-                    case 'address': return a.property_address.localeCompare(b.property_address);
-                    case 'value-desc': return (b.est_value || 0) - (a.est_value || 0);
-                    case 'beds-desc': return (parseInt(b.beds) || 0) - (parseInt(a.beds) || 0);
-                    default: return 0;
-                }
-            });
-
-            renderGrid();
-        }
-
-        // ===== RENDER CARD GRID =====
-        function renderGrid() {
-            const grid = document.getElementById('cardGrid');
-            const total = allProspects.length;
-            const showing = filteredProspects.length;
-            document.getElementById('resultCount').textContent =
-                showing === total
-                    ? `${total} Tier 1 Prospects \u2022 Augusta, GA 30904`
-                    : `Showing ${showing} of ${total} prospects`;
-
-            grid.innerHTML = filteredProspects.map(p => {
-                const streetView = `https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${encodeURIComponent(p.property_address + ', Augusta, GA 30904')}&key=${apiKey}`;
-                const phone = getBestPhone(p);
-                const email = p.emails?.[0];
-                const isClean = p.is_clean_cell_no_dnc;
-
-                return `
-                <div class="property-card${isClean ? ' clean-highlight' : ''}" onclick="openModal(${p.id})">
-                    <div class="card-photo">
-                        <img src="${streetView}" loading="lazy" alt="${p.property_address}">
-                        <div class="score-overlay ${getScoreClass(p.patron_score)}">${p.patron_score}</div>
-                        ${isClean ? '<div class="clean-badge-overlay">CLEAN</div>' : ''}
-                        ${p.status !== 'New' ? `<div class="status-overlay ${getStatusClass(p.status)}">${p.status}</div>` : ''}
-                    </div>
-                    <div class="card-body">
-                        <div class="card-address">${p.property_address}</div>
-                        <div class="card-owner">${p.owner_name}${p.owner_2_name ? ' & ' + p.owner_2_name : ''}</div>
-                        <div class="card-stats">
-                            <span><span class="val">${p.beds}</span> bd / <span class="val">${p.baths}</span> ba</span>
-                            <span><span class="val">${p.sqft ? parseInt(p.sqft).toLocaleString() : '-'}</span> sqft</span>
-                            <span><span class="val">${formatCurrency(p.est_value)}</span></span>
-                        </div>
-                        <div class="card-contact">
-                            ${phone ? `
-                            <div class="contact-row">
-                                <div class="contact-info">
-                                    <span class="icon">&#x1F4F1;</span>
-                                    <span class="text">${formatPhone(phone.number)}</span>
-                                </div>
-                                ${phone.type === 'Cell' ? '<span class="cell-tag">CELL</span>' : ''}
-                                ${phone.dnc ? '<span class="dnc-tag">DNC</span>' : ''}
-                            </div>` : '<div class="contact-row"><span style="color:#6e7681;font-size:12px;">No phone</span></div>'}
-                            ${email ? `
-                            <div class="contact-row">
-                                <div class="contact-info">
-                                    <span class="icon">&#x2709;</span>
-                                    <span class="text">${email}</span>
-                                </div>
-                            </div>` : ''}
-                        </div>
-                        <div class="card-actions" onclick="event.stopPropagation()">
-                            ${phone ? `<a href="tel:${phone.number}" class="btn-action btn-call">&#x1F4DE; Call</a>` : '<span class="btn-action" style="opacity:0.3;cursor:default">No Phone</span>'}
-                            ${email ? `<a href="mailto:${email}" class="btn-action btn-email-action">&#x2709; Email</a>` : '<span class="btn-action" style="opacity:0.3;cursor:default">No Email</span>'}
-                            <a href="${p.google_maps_url}" target="_blank" class="btn-action btn-maps-action" title="Google Maps">&#x1F5FA;</a>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        // ===== MODAL =====
-        function openModal(id) {
-            const p = allProspects.find(x => x.id === id);
-            if (!p) return;
-
-            const streetView = `https://maps.googleapis.com/maps/api/streetview?size=900x400&location=${encodeURIComponent(p.property_address + ', Augusta, GA 30904')}&key=${apiKey}`;
-
-            const contactsHtml = (p.phones || []).map(ph => `
-                <div class="modal-contact-item">
-                    <div class="modal-contact-number">${formatPhone(ph.number)}</div>
-                    <span class="modal-contact-badge">${ph.type}</span>
-                    ${ph.dnc ? '<span class="modal-contact-badge dnc">DNC</span>' : ''}
+  /* ── Activity Section ── */
+  const ActivitySection = ({prospect}) => {
+    const isOpen = expandedActivities[prospect.id];
+    const activities = generateActivities(prospect);
+    return (
+      <div style={{marginTop: 8}}>
+        <button onClick={(e) => {e.stopPropagation(); toggleActivity(prospect.id);}} style={{
+          display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
+          cursor: 'pointer', fontSize: 11, fontWeight: 600, color: '#2d6a4f', padding: '4px 0',
+        }}>
+          <span style={{transform: isOpen ? 'rotate(90deg)' : 'rotate(0)', transition: 'transform 0.15s', display: 'inline-block'}}>&#9654;</span>
+          Activity Log ({activities.length})
+        </button>
+        {isOpen && (
+          <div style={{marginTop: 6, paddingLeft: 4}}>
+            {activities.length === 0 ? (
+              <div style={{fontSize: 11, color: '#6b7280', fontStyle: 'italic'}}>No activities recorded yet.</div>
+            ) : activities.map((a, i) => (
+              <div key={i} style={{
+                display: 'flex', gap: 8, alignItems: 'flex-start', padding: '6px 0',
+                borderBottom: i < activities.length - 1 ? '1px solid #f3f4f6' : 'none',
+              }}>
+                <span style={{
+                  fontSize: 9, fontWeight: 700, padding: '2px 5px', borderRadius: 3, flexShrink: 0,
+                  background: a.type === 'Call' ? '#DBEAFE' : a.type === 'Email' ? '#FEF3C7' : '#F3F4F6',
+                  color: a.type === 'Call' ? '#1E40AF' : a.type === 'Email' ? '#92400E' : '#6B7280',
+                }}>{a.type}</span>
+                <div style={{flex: 1, minWidth: 0}}>
+                  <div style={{fontSize: 11, color: '#1a1a1a', lineHeight: 1.4}}>{a.note}</div>
+                  <div style={{fontSize: 10, color: '#6b7280', marginTop: 2}}>{a.date}</div>
                 </div>
-            `).join('');
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
-            const emailsHtml = (p.emails || []).map(e => `<div class="modal-email-item">${e}</div>`).join('');
+  return (
+    <div style={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
 
-            const scoringHtml = [
-                { label: 'Proximity', val: p.scoring.proximity, max: 30 },
-                { label: 'Value', val: p.scoring.value, max: 25 },
-                { label: 'Beds', val: p.scoring.beds, max: 20 },
-                { label: 'Equity', val: p.scoring.equity, max: 15 },
-                { label: 'Sqft', val: p.scoring.sqft, max: 10 }
-            ].map(s => `
-                <div class="score-bar">
-                    <div class="score-label">${s.label}</div>
-                    <div class="score-progress"><div class="score-fill" style="width:${(s.val / s.max) * 100}%"></div></div>
-                    <div class="score-value">${s.val}/${s.max}</div>
+      {/* ── Header ── */}
+      <header style={{
+        background: 'linear-gradient(135deg, #2d6a4f 0%, #1a2332 100%)',
+        color: '#fff', padding: '20px 32px', boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      }}>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12}}>
+          <div>
+            <h1 style={{fontSize: 28, fontWeight: 700, letterSpacing: -0.5}}>Prospect Pipeline</h1>
+            <p style={{fontSize: 13, opacity: 0.85, marginTop: 2}}>Patron Properties &middot; Masters 2027 &middot; A-01</p>
+          </div>
+          <div style={{display: 'flex', gap: 8, alignItems: 'center'}}>
+            <span style={{
+              padding: '6px 12px', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: 6, fontSize: 12, fontWeight: 500, color: '#6EE7B7',
+            }}>&#x2705; Street View Active</span>
+            <button onClick={exportCSV} style={{
+              padding: '8px 16px', background: 'rgba(255,255,255,0.15)', color: '#fff',
+              border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            }}>Export CSV</button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── KPI Cards ── */}
+      <div style={{
+        background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e5e5e5',
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 20,
+      }}>
+        {[
+          {label: 'Total Prospects', value: kpis.total, color: '#2d6a4f'},
+          {label: 'With Phone', value: kpis.withPhone, color: '#2d6a4f'},
+          {label: 'With Email', value: kpis.withEmail, color: '#2563EB'},
+          {label: 'Clean Cell / No DNC', value: kpis.cleanCell, color: '#D97706'},
+          {label: 'Avg Patron Score', value: kpis.avgScore, color: '#2d6a4f'},
+          {label: 'Hot Prospects', value: kpis.hotCount, color: '#DC2626'},
+          {label: 'Warm Prospects', value: kpis.warmCount, color: '#D97706'},
+          {label: 'Converted', value: kpis.convertedCount, color: '#059669'},
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{fontSize: 10, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6}}>{kpi.label}</div>
+            <div style={{fontSize: 28, fontWeight: 700, color: kpi.color, lineHeight: 1}}>{kpi.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Masters Banner ── */}
+      <div style={{
+        background: 'linear-gradient(90deg, #D4AF37 0%, #F4E4A6 50%, #D4AF37 100%)',
+        color: '#1a2332', padding: '10px 32px', textAlign: 'center',
+        fontSize: 13, fontWeight: 600, letterSpacing: 0.5, borderBottom: '2px solid #B8941C',
+      }}>
+        The Masters Tournament &middot; April 5-11, 2027 &middot; Augusta National Golf Club
+      </div>
+
+      {/* ── Controls Bar ── */}
+      <div style={{background: '#fff', padding: '14px 32px', borderBottom: '1px solid #e5e5e5'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap'}}>
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Search by address, name, phone, email..."
+            style={{
+              flex: 1, minWidth: 220, padding: '8px 14px', fontSize: 13,
+              border: '1px solid #e5e5e5', borderRadius: 6, outline: 'none',
+              background: '#f5f5f4', color: '#1a1a1a',
+            }} />
+
+          <div style={{width: 1, height: 28, background: '#e5e5e5'}} />
+
+          {[
+            {id: 'all', label: 'All'},
+            {id: '90', label: '90+'},
+            {id: '80', label: '80-89'},
+            {id: '75', label: '75-79'},
+          ].map(f => (
+            <Pill key={f.id} active={scoreFilter === f.id} onClick={() => setScoreFilter(f.id)}>{f.label}</Pill>
+          ))}
+
+          <div style={{width: 1, height: 28, background: '#e5e5e5'}} />
+
+          <button onClick={() => setCleanOnly(!cleanOnly)} style={{
+            padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer',
+            border: `2px solid ${cleanOnly ? '#D97706' : '#e5e5e5'}`,
+            background: cleanOnly ? '#D97706' : '#fff', color: cleanOnly ? '#fff' : '#D97706',
+            transition: 'all 0.15s', letterSpacing: 0.3,
+          }}>&#x1F4DE; Clean Outreach Only</button>
+
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)} style={{
+            padding: '8px 12px', background: '#f5f5f4', border: '1px solid #e5e5e5',
+            color: '#1a1a1a', borderRadius: 6, fontSize: 13, cursor: 'pointer',
+          }}>
+            <option value="score-desc">Score: High → Low</option>
+            <option value="score-asc">Score: Low → High</option>
+            <option value="address">Address: A → Z</option>
+            <option value="value-desc">Value: High → Low</option>
+            <option value="beds-desc">Beds: Most → Least</option>
+          </select>
+        </div>
+      </div>
+
+      {/* ── Advanced Filter Bar ── */}
+      <div style={{
+        background: '#fff', padding: '12px 32px', borderBottom: '1px solid #e5e5e5',
+        display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+      }}>
+        <span style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginRight: 4}}>Filters</span>
+
+        <span style={{fontSize: 12, color: '#6b7280'}}>Beds</span>
+        {['any','2','3','4','5','6'].map(v => (
+          <Pill key={'bed'+v} active={bedMin === v} onClick={() => setBedMin(v)}>
+            {v === 'any' ? 'Any' : v + '+'}
+          </Pill>
+        ))}
+
+        <div style={{width: 1, height: 24, background: '#e5e5e5'}} />
+
+        <span style={{fontSize: 12, color: '#6b7280'}}>Baths</span>
+        {['any','2','3','4','5'].map(v => (
+          <Pill key={'bath'+v} active={bathMin === v} onClick={() => setBathMin(v)}>
+            {v === 'any' ? 'Any' : v + '+'}
+          </Pill>
+        ))}
+
+        <div style={{width: 1, height: 24, background: '#e5e5e5'}} />
+
+        <span style={{fontSize: 12, color: '#6b7280'}}>Value</span>
+        <select value={valueRange} onChange={e => setValueRange(e.target.value)} style={{
+          padding: '5px 10px', background: '#f5f5f4', border: '1px solid #e5e5e5',
+          color: '#1a1a1a', borderRadius: 6, fontSize: 12, cursor: 'pointer',
+        }}>
+          <option value="any">Any</option>
+          <option value="0-200">Under $200K</option>
+          <option value="200-400">$200K – $400K</option>
+          <option value="400-600">$400K – $600K</option>
+          <option value="600-1000">$600K – $1M</option>
+          <option value="1000+">$1M+</option>
+        </select>
+
+        <div style={{width: 1, height: 24, background: '#e5e5e5'}} />
+
+        <span style={{fontSize: 12, color: '#6b7280'}}>Sqft</span>
+        <select value={sqftMin} onChange={e => setSqftMin(e.target.value)} style={{
+          padding: '5px 10px', background: '#f5f5f4', border: '1px solid #e5e5e5',
+          color: '#1a1a1a', borderRadius: 6, fontSize: 12, cursor: 'pointer',
+        }}>
+          <option value="any">Any</option>
+          <option value="1000">1,000+</option>
+          <option value="1500">1,500+</option>
+          <option value="2000">2,000+</option>
+          <option value="3000">3,000+</option>
+          <option value="5000">5,000+</option>
+        </select>
+
+        <button onClick={clearFilters} style={{
+          marginLeft: 'auto', padding: '5px 10px', background: 'none', border: '1px solid transparent',
+          color: '#DC2626', borderRadius: 6, cursor: 'pointer', fontSize: 11, fontWeight: 600,
+        }}>Clear All</button>
+      </div>
+
+      {/* ── Results Count ── */}
+      <div style={{padding: '8px 32px', background: '#f5f5f4'}}>
+        <span style={{fontSize: 12, color: '#6b7280'}}>
+          {filtered.length === prospects.length
+            ? `${prospects.length} Tier 1 Prospects \u2022 Augusta, GA 30904`
+            : `Showing ${filtered.length} of ${prospects.length} prospects`
+          }
+        </span>
+      </div>
+
+      {/* ── Card Grid ── */}
+      <div style={{
+        flex: 1, padding: '16px 32px',
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+        gap: 16, alignItems: 'start',
+      }}>
+        {filtered.map(p => {
+          const streetView = `https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${encodeURIComponent(p.property_address + ', Augusta, GA 30904')}&key=${API_KEY}`;
+          const phone = bestPhone(p);
+          const email = p.emails?.[0];
+          const isClean = p.is_clean_cell_no_dnc;
+          const ps = PIPELINE_STATUS[p.pipelineStatus] || PIPELINE_STATUS.cold;
+
+          return (
+            <div key={p.id} onClick={() => setSelectedId(p.id)} style={{
+              background: '#fff', borderRadius: 10, overflow: 'hidden', cursor: 'pointer',
+              border: isClean ? '2px solid #D97706' : '1px solid #e5e5e5',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+              transition: 'box-shadow 0.2s, border-color 0.2s',
+            }}>
+              {/* Card Photo */}
+              <div style={{width: '100%', height: 180, background: '#f5f5f4', overflow: 'hidden', position: 'relative'}}>
+                <img src={streetView} loading="lazy" alt={p.property_address}
+                  style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                <div style={{
+                  position: 'absolute', top: 10, left: 10, padding: '4px 10px', borderRadius: 4,
+                  fontSize: 14, fontWeight: 700, color: '#fff', background: scoreColor(p.patron_score),
+                }}>{p.patron_score}</div>
+                {isClean && <div style={{
+                  position: 'absolute', top: 10, right: 10, padding: '3px 8px', borderRadius: 4,
+                  fontSize: 10, fontWeight: 700, background: '#D97706', color: '#fff',
+                  textTransform: 'uppercase', letterSpacing: 0.5,
+                }}>CLEAN</div>}
+                {/* Pipeline Status Indicator */}
+                <div style={{position: 'absolute', bottom: 10, left: 10}}>
+                  <PipelineBadge status={p.pipelineStatus} small />
                 </div>
-            `).join('');
+                {p.status !== 'New' && <div style={{
+                  position: 'absolute', bottom: 10, right: 10,
+                }}><StatusBadge status={p.status} /></div>}
+              </div>
 
-            const mailingDiff = p.mailing_address !== p.property_address
-                ? `<div class="modal-stat"><div class="label">Mailing</div><div class="value" style="font-size:13px;">${p.mailing_address}, ${p.mailing_city} ${p.mailing_state} ${p.mailing_zip}</div></div>`
-                : '';
-
-            const phone = getBestPhone(p);
-            const email = p.emails?.[0];
-
-            document.getElementById('modalContent').innerHTML = `
-                <div class="modal-photo">
-                    <img src="${streetView}" alt="${p.property_address}">
-                    <button class="modal-close" onclick="closeModal()">&times;</button>
+              {/* Card Body */}
+              <div style={{padding: '14px 16px'}}>
+                <div style={{fontSize: 15, fontWeight: 600, color: '#1a1a1a', marginBottom: 2,
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{p.property_address}</div>
+                <div style={{fontSize: 13, color: '#6b7280', marginBottom: 10}}>
+                  {p.owner_name}{p.owner_2_name ? ' & ' + p.owner_2_name : ''}
                 </div>
-                <div class="modal-body">
-                    <div class="modal-header">
-                        <div>
-                            <div class="modal-title">${p.property_address}</div>
-                            <div class="modal-owner">${p.owner_name}${p.owner_2_name ? ' & ' + p.owner_2_name : ''}</div>
-                        </div>
-                        <div style="display:flex;gap:10px;align-items:center;">
-                            <select class="modal-status-select" onchange="updateStatus(${p.id}, this.value)">
-                                ${['New','Contacted','Interested','Signed','Passed'].map(s =>
-                                    `<option value="${s}" ${p.status === s ? 'selected' : ''}>${s}</option>`
-                                ).join('')}
-                            </select>
-                            <div class="modal-score ${getScoreClass(p.patron_score)}">${p.patron_score}</div>
-                        </div>
-                    </div>
 
-                    <div class="modal-grid">
-                        <div class="modal-stat"><div class="label">Est Value</div><div class="value">${formatCurrency(p.est_value)}</div></div>
-                        <div class="modal-stat"><div class="label">Equity</div><div class="value">${formatCurrency(p.est_equity)}</div></div>
-                        <div class="modal-stat"><div class="label">Beds / Baths</div><div class="value">${p.beds} / ${p.baths}</div></div>
-                        <div class="modal-stat"><div class="label">Sqft</div><div class="value">${p.sqft ? parseInt(p.sqft).toLocaleString() : '-'}</div></div>
-                        <div class="modal-stat"><div class="label">Year Built</div><div class="value">${p.year_built}</div></div>
-                        <div class="modal-stat"><div class="label">LTV</div><div class="value">${p.ltv_pct ? p.ltv_pct.toFixed(1) : '-'}%</div></div>
-                        <div class="modal-stat"><div class="label">Owner Occupied</div><div class="value">${p.owner_occupied}</div></div>
-                        <div class="modal-stat"><div class="label">Last Sale</div><div class="value">${formatCurrency(p.last_sale_price)}<br><span style="font-size:11px;color:#8b949e;">${p.last_sale_date}</span></div></div>
-                        ${mailingDiff}
-                    </div>
-
-                    <div class="modal-section-title">Phones</div>
-                    <div class="modal-contacts">${contactsHtml || '<span style="color:#6e7681;font-size:12px;">No phones on file</span>'}</div>
-
-                    <div class="modal-section-title">Emails</div>
-                    <div class="modal-emails">${emailsHtml || '<span style="color:#6e7681;font-size:12px;">No emails on file</span>'}</div>
-
-                    <div class="modal-section-title">Patron Score Breakdown</div>
-                    ${scoringHtml}
-
-                    <div class="modal-section-title">Notes</div>
-                    <textarea class="notes-textarea" onchange="updateNotes(${p.id}, this.value)" placeholder="Add notes...">${prospectNotes[p.id] || p.notes || ''}</textarea>
-
-                    <div class="modal-actions">
-                        ${phone ? `<a href="tel:${phone.number}" class="modal-btn-call">&#x1F4DE; Call ${formatPhone(phone.number)}</a>` : ''}
-                        ${email ? `<a href="mailto:${email}" class="modal-btn-email">&#x2709; Email</a>` : ''}
-                        <a href="${p.google_maps_url}" target="_blank" class="modal-btn-maps">&#x1F5FA; Google Maps</a>
-                    </div>
+                <div style={{display: 'flex', gap: 12, marginBottom: 12, fontSize: 12, color: '#6b7280'}}>
+                  <span><span style={{color: '#1a1a1a', fontWeight: 600}}>{p.beds}</span> bd / <span style={{color: '#1a1a1a', fontWeight: 600}}>{p.baths}</span> ba</span>
+                  <span><span style={{color: '#1a1a1a', fontWeight: 600}}>{p.sqft ? parseInt(p.sqft).toLocaleString() : '-'}</span> sqft</span>
+                  <span><span style={{color: '#1a1a1a', fontWeight: 600}}>{fmtCurrency(p.est_value)}</span></span>
                 </div>
-            `;
 
-            document.getElementById('modalBackdrop').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+                {/* Contact Info */}
+                <div style={{display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 10, borderTop: '1px solid #e5e5e5'}}>
+                  {phone ? (
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, fontSize: 12}}>
+                      <div style={{display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: 1}}>
+                        <span style={{color: '#6b7280', flexShrink: 0}}>&#x1F4F1;</span>
+                        <span style={{color: '#1a1a1a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{fmtPhone(phone.number)}</span>
+                      </div>
+                      {phone.type === 'Cell' && <span style={{fontSize: 9, fontWeight: 600, padding: '1px 5px', borderRadius: 3, background: '#DBEAFE', color: '#1E40AF', flexShrink: 0}}>CELL</span>}
+                      {phone.dnc && <span style={{fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: '#FEE2E2', color: '#DC2626', flexShrink: 0}}>DNC</span>}
+                    </div>
+                  ) : (
+                    <div style={{fontSize: 12, color: '#6b7280'}}>No phone</div>
+                  )}
+                  {email && (
+                    <div style={{display: 'flex', alignItems: 'center', gap: 6, fontSize: 12}}>
+                      <span style={{color: '#6b7280', flexShrink: 0}}>&#x2709;</span>
+                      <span style={{color: '#1a1a1a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{email}</span>
+                    </div>
+                  )}
+                </div>
 
-        function closeModal() {
-            document.getElementById('modalBackdrop').classList.remove('active');
-            document.body.style.overflow = '';
-        }
+                {/* Activity Log (collapsible) */}
+                <ActivitySection prospect={p} />
 
-        function updateStatus(id, status) {
-            const p = allProspects.find(x => x.id === id);
-            if (p) { p.status = status; renderGrid(); }
-        }
+                {/* Action Buttons */}
+                <div style={{display: 'flex', gap: 6, marginTop: 10}} onClick={e => e.stopPropagation()}>
+                  {phone ? (
+                    <a href={`tel:${phone.number}`} style={{
+                      flex: 1, padding: '7px 10px', border: '1px solid #D1FAE5', borderRadius: 6,
+                      fontSize: 12, fontWeight: 600, textAlign: 'center', textDecoration: 'none',
+                      color: '#2d6a4f', background: '#fff', transition: 'all 0.2s',
+                    }}>&#x1F4DE; Call</a>
+                  ) : (
+                    <span style={{flex: 1, padding: '7px 10px', border: '1px solid #e5e5e5', borderRadius: 6,
+                      fontSize: 12, fontWeight: 600, textAlign: 'center', color: '#D1D5DB', background: '#fff',
+                    }}>No Phone</span>
+                  )}
+                  {email ? (
+                    <a href={`mailto:${email}`} style={{
+                      flex: 1, padding: '7px 10px', border: '1px solid #DBEAFE', borderRadius: 6,
+                      fontSize: 12, fontWeight: 600, textAlign: 'center', textDecoration: 'none',
+                      color: '#2563EB', background: '#fff', transition: 'all 0.2s',
+                    }}>&#x2709; Email</a>
+                  ) : (
+                    <span style={{flex: 1, padding: '7px 10px', border: '1px solid #e5e5e5', borderRadius: 6,
+                      fontSize: 12, fontWeight: 600, textAlign: 'center', color: '#D1D5DB', background: '#fff',
+                    }}>No Email</span>
+                  )}
+                  <a href={p.google_maps_url} target="_blank" style={{
+                    padding: '7px 10px', border: '1px solid #e5e5e5', borderRadius: 6,
+                    fontSize: 12, fontWeight: 600, textAlign: 'center', textDecoration: 'none',
+                    color: '#6b7280', background: '#fff', transition: 'all 0.2s',
+                  }}>&#x1F5FA;</a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        function updateNotes(id, text) {
-            prospectNotes[id] = text;
-        }
+      {/* ── Detail Modal ── */}
+      {selected && (
+        <div onClick={() => setSelectedId(null)} style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100,
+          display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
+          overflowY: 'auto', padding: '40px 20px',
+        }}>
+          <div onClick={e => e.stopPropagation()} style={{
+            background: '#fff', borderRadius: 12, width: '100%', maxWidth: 900,
+            overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+          }}>
+            {/* Modal Photo */}
+            <div style={{width: '100%', height: 300, background: '#f5f5f4', overflow: 'hidden', position: 'relative'}}>
+              <img src={`https://maps.googleapis.com/maps/api/streetview?size=900x400&location=${encodeURIComponent(selected.property_address + ', Augusta, GA 30904')}&key=${API_KEY}`}
+                alt={selected.property_address} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+              <button onClick={() => setSelectedId(null)} style={{
+                position: 'absolute', top: 12, right: 12, width: 32, height: 32, borderRadius: 6,
+                background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff', fontSize: 18,
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>&times;</button>
+            </div>
 
-        function exportCSV() {
-            const headers = ['Score','Address','Owner','Phone 1','Phone 1 Type','Phone 1 DNC','Phone 2','Email 1','Email 2','Beds','Baths','Sqft','Est Value','Est Equity','LTV %','Clean Cell','Status'];
-            const rows = filteredProspects.map(p => [
-                p.patron_score,
-                p.property_address,
-                p.owner_name,
-                p.phones?.[0]?.number || '',
-                p.phones?.[0]?.type || '',
-                p.phones?.[0]?.dnc ? 'Y' : 'N',
-                p.phones?.[1]?.number || '',
-                p.emails?.[0] || '',
-                p.emails?.[1] || '',
-                p.beds, p.baths, p.sqft,
-                p.est_value, p.est_equity,
-                p.ltv_pct?.toFixed(2) || '',
-                p.is_clean_cell_no_dnc ? 'Y' : 'N',
-                p.status
-            ]);
-            let csv = headers.join(',') + '\n';
-            rows.forEach(row => {
-                csv += row.map(c => {
-                    const s = String(c ?? '');
-                    return s.includes(',') || s.includes('"') ? `"${s.replace(/"/g, '""')}"` : s;
-                }).join(',') + '\n';
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'patron-prospects.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-    </script>
+            {/* Modal Body */}
+            <div style={{padding: 24}}>
+              {/* Header row */}
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20, flexWrap: 'wrap', gap: 12}}>
+                <div>
+                  <div style={{fontSize: 22, fontWeight: 700, color: '#1a1a1a'}}>{selected.property_address}</div>
+                  <div style={{fontSize: 14, color: '#6b7280', marginTop: 2}}>
+                    {selected.owner_name}{selected.owner_2_name ? ' & ' + selected.owner_2_name : ''}
+                  </div>
+                </div>
+                <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
+                  {/* Pipeline Status Selector */}
+                  <select value={selected.pipelineStatus} onChange={e => updatePipelineStatus(selected.id, e.target.value)}
+                    style={{padding: '6px 12px', background: '#f5f5f4', border: '1px solid #e5e5e5', color: '#1a1a1a', borderRadius: 6, fontSize: 13, cursor: 'pointer'}}>
+                    {Object.entries(PIPELINE_STATUS).map(([k, v]) => (
+                      <option key={k} value={k}>{v.label}</option>
+                    ))}
+                  </select>
+                  {/* Status Selector */}
+                  <select value={selected.status} onChange={e => updateStatus(selected.id, e.target.value)}
+                    style={{padding: '6px 12px', background: '#f5f5f4', border: '1px solid #e5e5e5', color: '#1a1a1a', borderRadius: 6, fontSize: 13, cursor: 'pointer'}}>
+                    {['New','Contacted','Interested','Signed','Passed'].map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <div style={{
+                    padding: '6px 14px', borderRadius: 6, fontSize: 18, fontWeight: 700,
+                    color: '#fff', background: scoreColor(selected.patron_score),
+                  }}>{selected.patron_score}</div>
+                </div>
+              </div>
+
+              {/* Pipeline Status Banner */}
+              <div style={{marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8}}>
+                <span style={{fontSize: 12, fontWeight: 600, color: '#6b7280'}}>Pipeline:</span>
+                <PipelineBadge status={selected.pipelineStatus} />
+              </div>
+
+              {/* Stats Grid */}
+              <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20}}>
+                {[
+                  {label: 'Est Value', value: fmtCurrency(selected.est_value)},
+                  {label: 'Equity', value: fmtCurrency(selected.est_equity)},
+                  {label: 'Beds / Baths', value: `${selected.beds} / ${selected.baths}`},
+                  {label: 'Sqft', value: selected.sqft ? parseInt(selected.sqft).toLocaleString() : '-'},
+                  {label: 'Year Built', value: selected.year_built},
+                  {label: 'LTV', value: `${selected.ltv_pct ? selected.ltv_pct.toFixed(1) : '-'}%`},
+                  {label: 'Owner Occupied', value: selected.owner_occupied},
+                  {label: 'Last Sale', value: fmtCurrency(selected.last_sale_price)},
+                ].map(stat => (
+                  <div key={stat.label} style={{background: '#f5f5f4', border: '1px solid #e5e5e5', borderRadius: 8, padding: 12}}>
+                    <div style={{fontSize: 10, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4, fontWeight: 600}}>{stat.label}</div>
+                    <div style={{fontSize: 16, fontWeight: 600, color: '#1a1a1a'}}>{stat.value}</div>
+                  </div>
+                ))}
+                {selected.mailing_address !== selected.property_address && (
+                  <div style={{background: '#f5f5f4', border: '1px solid #e5e5e5', borderRadius: 8, padding: 12, gridColumn: 'span 2'}}>
+                    <div style={{fontSize: 10, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4, fontWeight: 600}}>Mailing Address</div>
+                    <div style={{fontSize: 13, fontWeight: 500, color: '#1a1a1a'}}>{selected.mailing_address}, {selected.mailing_city} {selected.mailing_state} {selected.mailing_zip}</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Phones Section */}
+              <div style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>Phones</div>
+              <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 8}}>
+                {(selected.phones||[]).length > 0 ? selected.phones.map((ph, i) => (
+                  <div key={i} style={{background: '#f5f5f4', border: '1px solid #e5e5e5', padding: '10px 12px', borderRadius: 6, fontSize: 12, textAlign: 'center'}}>
+                    <div style={{fontWeight: 600, color: '#2563EB', marginBottom: 4}}>{fmtPhone(ph.number)}</div>
+                    <span style={{display: 'inline-block', fontSize: 10, padding: '2px 6px', background: '#DBEAFE', color: '#1E40AF', borderRadius: 3, margin: 2}}>{ph.type}</span>
+                    {ph.dnc && <span style={{display: 'inline-block', fontSize: 10, padding: '2px 6px', background: '#FEE2E2', color: '#DC2626', borderRadius: 3, margin: 2}}>DNC</span>}
+                  </div>
+                )) : <span style={{color: '#6b7280', fontSize: 12}}>No phones on file</span>}
+              </div>
+
+              {/* Emails Section */}
+              <div style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>Emails</div>
+              <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8}}>
+                {(selected.emails||[]).length > 0 ? selected.emails.map((em, i) => (
+                  <div key={i} style={{background: '#f5f5f4', border: '1px solid #e5e5e5', padding: '8px 12px', borderRadius: 6, fontSize: 12, color: '#2563EB', wordBreak: 'break-all'}}>{em}</div>
+                )) : <span style={{color: '#6b7280', fontSize: 12}}>No emails on file</span>}
+              </div>
+
+              {/* Patron Score Breakdown */}
+              <div style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>Patron Score Breakdown</div>
+              {[
+                {label: 'Proximity', val: selected.scoring.proximity, max: 30},
+                {label: 'Value', val: selected.scoring.value, max: 25},
+                {label: 'Beds', val: selected.scoring.beds, max: 20},
+                {label: 'Equity', val: selected.scoring.equity, max: 15},
+                {label: 'Sqft', val: selected.scoring.sqft, max: 10},
+              ].map(s => (
+                <div key={s.label} style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8}}>
+                  <div style={{fontSize: 12, color: '#6b7280', minWidth: 70}}>{s.label}</div>
+                  <div style={{flex: 1, height: 8, background: '#e5e5e5', borderRadius: 4, overflow: 'hidden'}}>
+                    <div style={{height: '100%', width: `${(s.val/s.max)*100}%`, background: '#2d6a4f', borderRadius: 4, transition: 'width 0.3s'}} />
+                  </div>
+                  <div style={{fontSize: 12, fontWeight: 600, color: '#1a1a1a', minWidth: 35, textAlign: 'right'}}>{s.val}/{s.max}</div>
+                </div>
+              ))}
+
+              {/* Activity Log in Modal */}
+              <div style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>Recent Activity</div>
+              {(() => {
+                const acts = generateActivities(selected);
+                return acts.length > 0 ? acts.map((a, i) => (
+                  <div key={i} style={{display: 'flex', gap: 10, alignItems: 'flex-start', padding: '8px 0', borderBottom: i < acts.length - 1 ? '1px solid #f3f4f6' : 'none'}}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 3, flexShrink: 0,
+                      background: a.type === 'Call' ? '#DBEAFE' : a.type === 'Email' ? '#FEF3C7' : '#F3F4F6',
+                      color: a.type === 'Call' ? '#1E40AF' : a.type === 'Email' ? '#92400E' : '#6B7280',
+                    }}>{a.type}</span>
+                    <div style={{flex: 1}}>
+                      <div style={{fontSize: 12, color: '#1a1a1a', lineHeight: 1.4}}>{a.note}</div>
+                      <div style={{fontSize: 11, color: '#6b7280', marginTop: 2}}>{a.date}</div>
+                    </div>
+                  </div>
+                )) : <div style={{fontSize: 12, color: '#6b7280', fontStyle: 'italic'}}>No activities recorded yet.</div>;
+              })()}
+
+              {/* Notes */}
+              <div style={{fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>Notes</div>
+              <textarea
+                defaultValue={prospectNotes[selected.id] || selected.notes || ''}
+                onChange={e => updateNote(selected.id, e.target.value)}
+                placeholder="Add notes..."
+                style={{
+                  width: '100%', padding: '10px 12px', background: '#f5f5f4', border: '1px solid #e5e5e5',
+                  borderRadius: 6, color: '#1a1a1a', fontSize: 13, fontFamily: 'inherit',
+                  resize: 'vertical', minHeight: 70, outline: 'none',
+                }} />
+
+              {/* Action Buttons */}
+              <div style={{display: 'flex', gap: 8, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5'}}>
+                {(() => {
+                  const phone = bestPhone(selected);
+                  const email = selected.emails?.[0];
+                  return (
+                    <>
+                      {phone && <a href={`tel:${phone.number}`} style={{
+                        flex: 1, padding: '10px 14px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                        textAlign: 'center', textDecoration: 'none', background: '#2d6a4f', color: '#fff', border: 'none',
+                      }}>&#x1F4DE; Call {fmtPhone(phone.number)}</a>}
+                      {email && <a href={`mailto:${email}`} style={{
+                        flex: 1, padding: '10px 14px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                        textAlign: 'center', textDecoration: 'none', background: '#2563EB', color: '#fff', border: 'none',
+                      }}>&#x2709; Email</a>}
+                      <a href={selected.google_maps_url} target="_blank" style={{
+                        flex: 1, padding: '10px 14px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                        textAlign: 'center', textDecoration: 'none', background: '#fff', color: '#6b7280',
+                        border: '1px solid #e5e5e5',
+                      }}>&#x1F5FA; Google Maps</a>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Footer ── */}
+      <footer style={{padding: '12px 32px', borderTop: '1px solid #e5e5e5', background: '#fff', display: 'flex', justifyContent: 'space-between'}}>
+        <span style={{fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#6b7280', textTransform: 'uppercase'}}>Patron Properties</span>
+        <span style={{fontSize: 11, color: '#6b7280'}}>Masters 2027 &middot; Prospect Pipeline &middot; {filtered.length} prospects shown</span>
+      </footer>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
 </body>
 </html>

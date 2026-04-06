@@ -84,6 +84,13 @@
             transition: all 0.2s ease;
             color: rgba(255,255,255,0.85);
             text-decoration: none;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            font-family: inherit;
         }
 
         .nav-item:hover {
@@ -161,216 +168,171 @@
             width: 100%;
         }
 
-        /* SECTIONS */
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        /* DASHBOARD */
-        .hero {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 2rem;
+        /* PAYOUT HERO */
+        .payout-hero {
+            background: linear-gradient(135deg, #2d5f47 0%, #3a7a5c 100%);
+            border-radius: 10px;
+            padding: 2rem 2.5rem;
             margin-bottom: 2rem;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #e8e4df;
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #d4c9b8, #c9bfa8);
+            color: #fff;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            color: #8a7a6a;
-            font-size: 0.9rem;
-        }
-
-        .hero-content {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .property-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #2d5f47;
-            margin-bottom: 0.5rem;
-        }
-
-        .property-address {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .status-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e8e4df;
-        }
-
-        .status-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .status-label {
-            font-size: 0.85rem;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .status-value {
-            font-size: 0.95rem;
-            color: #2d5f47;
-            font-weight: 600;
-        }
-
-        .status-value.success {
-            color: #4a7c5a;
-        }
-
-        .status-value.warning {
-            color: #c97a3f;
-        }
-
-        .action-items {
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #e8e4df;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .action-items-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2d5f47;
-            margin-bottom: 1rem;
-        }
-
-        .action-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
-            background: #faf8f5;
-            border-left: 4px solid #a8d5ba;
-            border-radius: 4px;
-            margin-bottom: 0.75rem;
-        }
-
-        .action-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .action-icon {
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            margin-top: 0.25rem;
-        }
-
-        .action-content {
-            flex: 1;
-        }
-
-        .action-text {
-            font-size: 0.95rem;
-            color: #3a3a3a;
-            margin-bottom: 0.25rem;
-        }
-
-        .action-button {
-            font-size: 0.85rem;
-            color: #2d5f47;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: underline;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .action-button:hover {
-            color: #1a3a2a;
-        }
-
-        .timeline {
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #e8e4df;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .timeline-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2d5f47;
-            margin-bottom: 1.5rem;
-        }
-
-        .timeline-items {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            flex-wrap: wrap;
             gap: 1.5rem;
         }
 
-        .timeline-item {
-            text-align: center;
+        .payout-main {
+            flex: 1;
+            min-width: 200px;
         }
 
-        .timeline-marker {
-            width: 40px;
-            height: 40px;
-            background: #a8d5ba;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 600;
-            margin: 0 auto 0.75rem;
-            font-size: 0.9rem;
-        }
-
-        .timeline-marker.done {
-            background: #4a7c5a;
-        }
-
-        .timeline-marker.pending {
-            background: #d4c9b8;
-            color: #666;
-        }
-
-        .timeline-label {
+        .payout-label {
             font-size: 0.85rem;
-            font-weight: 500;
-            color: #3a3a3a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
             margin-bottom: 0.25rem;
         }
 
-        .timeline-date {
+        .payout-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .payout-detail {
+            font-size: 0.9rem;
+            opacity: 0.75;
+            margin-top: 0.5rem;
+        }
+
+        .payout-breakdown {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .payout-stat {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .payout-stat-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .payout-stat-label {
             font-size: 0.8rem;
+            opacity: 0.75;
+            margin-top: 0.25rem;
+        }
+
+        /* SEASONAL STEPPER */
+        .season-stepper {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .season-stepper-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .stepper-track {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .stepper-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .stepper-dot-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .stepper-line-left, .stepper-line-right {
+            flex: 1;
+            height: 3px;
+            background: #e8e4df;
+        }
+
+        .stepper-line-left.done, .stepper-line-right.done {
+            background: #a8d5ba;
+        }
+
+        .stepper-step:first-child .stepper-line-left,
+        .stepper-step:last-child .stepper-line-right {
+            visibility: hidden;
+        }
+
+        .stepper-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #999;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
+        }
+
+        .stepper-dot.done {
+            background: #4a7c5a;
+            color: #fff;
+        }
+
+        .stepper-dot.current {
+            background: #2d5f47;
+            color: #fff;
+            border-color: #a8d5ba;
+            width: 36px;
+            height: 36px;
+            font-size: 0.85rem;
+        }
+
+        .stepper-label {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .stepper-label.current {
+            color: #2d5f47;
+            font-weight: 600;
+        }
+
+        .stepper-dates {
+            font-size: 0.7rem;
+            color: #bbb;
+            margin-top: 0.15rem;
+        }
+
+        .stepper-dates.current {
+            color: #7cb99a;
         }
 
         /* CARDS GRID */
@@ -430,6 +392,203 @@
             color: #2d5f47;
         }
 
+        /* ACTION ITEMS */
+        .action-items {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-items-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #faf8f5;
+            border-left: 4px solid #a8d5ba;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-text {
+            font-size: 0.95rem;
+            color: #3a3a3a;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-button {
+            font-size: 0.85rem;
+            color: #2d5f47;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .action-button:hover {
+            color: #1a3a2a;
+        }
+
+        /* SEASON DETAIL PANEL */
+        .season-panel {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .season-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .season-panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d5f47;
+        }
+
+        .season-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .season-badge.active {
+            background: #e8f3ec;
+            color: #2d5f47;
+        }
+
+        .season-badge.upcoming {
+            background: #fce8d8;
+            color: #c97a3f;
+        }
+
+        .season-badge.complete {
+            background: #f0ede5;
+            color: #666;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .checklist-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+        }
+
+        .checklist-progress {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .completion-bar {
+            height: 6px;
+            background: #e8e4df;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+        }
+
+        .completion-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a8d5ba, #7cb99a);
+            transition: width 0.3s ease;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0ede5;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-box {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            border: 2px solid #d4c9b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            color: transparent;
+        }
+
+        .check-box.checked {
+            background: #4a7c5a;
+            border-color: #4a7c5a;
+            color: #fff;
+        }
+
+        .checklist-label {
+            font-size: 0.95rem;
+            color: #3a3a3a;
+        }
+
+        .checklist-label.checked {
+            color: #999;
+            text-decoration: line-through;
+        }
+
         /* PROPERTY DETAILS */
         .property-grid {
             display: grid;
@@ -473,6 +632,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .btn-secondary:hover {
@@ -591,7 +751,7 @@
             color: #666;
         }
 
-        /* HOUSE INFO FORM */
+        /* FORM SECTIONS */
         .form-section {
             background: #fff;
             border-radius: 8px;
@@ -605,20 +765,6 @@
             font-weight: 600;
             color: #2d5f47;
             margin-bottom: 1rem;
-        }
-
-        .completion-bar {
-            height: 6px;
-            background: #e8e4df;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .completion-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #a8d5ba, #7cb99a);
-            transition: width 0.3s ease;
         }
 
         .completion-text {
@@ -714,6 +860,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             color: #3a3a3a;
+            font-family: inherit;
         }
 
         .calendar-btn:hover {
@@ -758,6 +905,7 @@
             font-size: 0.95rem;
             font-weight: 500;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .btn-primary:hover {
@@ -774,6 +922,7 @@
             font-size: 0.95rem;
             font-weight: 500;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .btn-outline:hover {
@@ -920,6 +1069,7 @@
             color: #2d5f47;
             font-weight: 500;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .doc-btn:hover {
@@ -927,7 +1077,7 @@
             border-color: #a8d5ba;
         }
 
-        /* POST-EVENT */
+        /* POST-EVENT / ISSUES */
         .issue-card {
             background: #fff;
             border: 1px solid #e8e4df;
@@ -979,32 +1129,27 @@
             line-height: 1.6;
         }
 
-        .issue-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem;
-            margin-bottom: 1rem;
+        .status-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
         }
 
-        .issue-image {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #faf8f5;
-            border: 1px solid #e8e4df;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.8rem;
+        .status-value {
+            font-size: 0.95rem;
+            color: #2d5f47;
+            font-weight: 600;
         }
 
-        .issue-meta {
-            font-size: 0.8rem;
-            color: #999;
+        .status-value.success {
+            color: #4a7c5a;
         }
 
-        /* RESOURCES */
+        .status-value.warning {
+            color: #c97a3f;
+        }
+
+        /* RESOURCES & FAQ */
         .resource-item {
             background: #fff;
             border: 1px solid #e8e4df;
@@ -1039,6 +1184,7 @@
             transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
+            font-family: inherit;
         }
 
         .resource-link:hover {
@@ -1087,6 +1233,7 @@
             border-top: 1px solid #e8e4df;
         }
 
+        /* HAMBURGER */
         .hamburger {
             display: none;
             position: fixed;
@@ -1141,16 +1288,22 @@
                 padding-left: 60px;
             }
 
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
             .property-grid {
                 grid-template-columns: 1fr;
             }
 
-            .timeline-items {
-                grid-template-columns: repeat(2, 1fr);
+            .stepper-track {
+                flex-wrap: wrap;
+            }
+
+            .stepper-step {
+                min-width: 30%;
+                margin-bottom: 1rem;
+            }
+
+            .payout-hero {
+                flex-direction: column;
+                text-align: center;
             }
         }
 
@@ -1163,24 +1316,20 @@
                 padding: 1rem;
             }
 
-            .hero {
-                gap: 1rem;
+            .payout-amount {
+                font-size: 2rem;
             }
 
-            .hero-image {
-                height: 250px;
-            }
-
-            .hero-content {
-                padding: 1rem;
-            }
-
-            .timeline-items {
-                grid-template-columns: 1fr;
+            .payout-breakdown {
+                justify-content: center;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .stepper-step {
+                min-width: 45%;
             }
 
             .check-buttons {
@@ -1199,6 +1348,9 @@
             const [activeSection, setActiveSection] = useState('dashboard');
             const [expandedFaq, setExpandedFaq] = useState(null);
             const [sidebarOpen, setSidebarOpen] = useState(false);
+            const [checklistState, setChecklistState] = useState({});
+
+            // -- Data --
 
             const homeowner = {
                 name: 'Margaret & David Whitfield',
@@ -1214,8 +1366,10 @@
                 rentalStatus: 'Rented for Masters 2027',
                 renter: 'Wasserman (Delta program)',
                 contractSigned: true,
-                payment1: { amount: '$8,500', status: 'Received', date: 'Mar 1' },
-                payment2: { amount: '$8,500', status: 'Due', date: 'Apr 1' },
+                grossRental: 17000,
+                patronCommission: 0.15,
+                payment1: { amount: 7225, status: 'Received', date: 'Mar 1' },
+                payment2: { amount: 7225, status: 'Due', date: 'Apr 1' },
                 houseInfoComplete: 6,
                 houseInfoTotal: 8,
                 chefAllowed: 'Yes, with restrictions (no deep frying)',
@@ -1228,17 +1382,128 @@
                 }
             };
 
-            const actionItems = [
-                { id: 1, text: 'AV setup details needed', action: 'Complete' },
-                { id: 2, text: 'Emergency HVAC contact missing', action: 'Add' },
-                { id: 3, text: 'Welcome letter sent to renter — review suggested changes', action: 'Review' }
+            const ownerPayout = homeowner.grossRental * (1 - homeowner.patronCommission);
+            const patronCut = homeowner.grossRental * homeowner.patronCommission;
+
+            // Seasonal cycle phases with date ranges
+            const seasons = [
+                { id: 'post-tournament', label: 'Post-Tournament Review', months: 'Apr-May', icon: '1' },
+                { id: 'off-season', label: 'Off-Season Maintenance', months: 'Jun-Sep', icon: '2' },
+                { id: 'pre-season', label: 'Pre-Season Prep', months: 'Oct-Dec', icon: '3' },
+                { id: 'booking', label: 'Booking Season', months: 'Jan-Feb', icon: '4' },
+                { id: 'final-prep', label: 'Final Prep', months: 'Mar', icon: '5' },
+                { id: 'tournament', label: 'Tournament Week', months: 'Apr', icon: '6' }
             ];
 
-            const timelineSteps = [
-                { label: 'Contract', date: 'Signed', done: true },
-                { label: 'Pre-Arrival', date: 'Prep', done: true },
-                { label: 'Event Week', date: 'Apr 6-13', done: false },
-                { label: 'Checkout', date: 'Post', done: false }
+            // Current date is April 6, 2026 per system context.
+            // For the Masters 2027 cycle: we are in phase 1 (Post-Tournament Review, Apr-May 2026)
+            // of the cycle leading to Masters 2027. But since the portal says "Rented for Masters 2027"
+            // and payments are in 2026, this is Final Prep phase heading into tournament.
+            // Let's set current to "final-prep" (March) since the data references Mar payments.
+            const currentSeasonIdx = 4; // Final Prep (March)
+
+            const seasonContent = {
+                'post-tournament': {
+                    title: 'Post-Tournament Review',
+                    badge: 'complete',
+                    badgeLabel: 'Complete',
+                    description: 'Review how your Masters 2026 rental went. Revenue collected, guest feedback received, and rebooking status confirmed for next year.',
+                    items: [
+                        { label: 'Revenue summary reviewed', key: 'pt-1' },
+                        { label: 'Guest feedback read', key: 'pt-2' },
+                        { label: 'Damage report submitted (if any)', key: 'pt-3' },
+                        { label: 'Rebooking intent confirmed for next year', key: 'pt-4' }
+                    ]
+                },
+                'off-season': {
+                    title: 'Off-Season Maintenance',
+                    badge: 'complete',
+                    badgeLabel: 'Complete',
+                    description: 'Summer through early fall is for property improvements. Address any deferred maintenance and consider upgrades that increase rental value.',
+                    items: [
+                        { label: 'HVAC serviced and filters replaced', key: 'os-1' },
+                        { label: 'Exterior power-washed and landscaping refreshed', key: 'os-2' },
+                        { label: 'Interior paint touch-ups completed', key: 'os-3' },
+                        { label: 'Plumbing and electrical inspected', key: 'os-4' },
+                        { label: 'Upgrade wishlist reviewed with Patron', key: 'os-5' }
+                    ]
+                },
+                'pre-season': {
+                    title: 'Pre-Season Prep',
+                    badge: 'complete',
+                    badgeLabel: 'Complete',
+                    description: 'October through December: set your pricing, update listing photos, and confirm availability for the upcoming Masters.',
+                    items: [
+                        { label: 'Pricing reviewed and approved', key: 'ps-1' },
+                        { label: 'Listing photos updated', key: 'ps-2' },
+                        { label: 'Availability confirmed for tournament week', key: 'ps-3' },
+                        { label: 'Property description refreshed', key: 'ps-4' },
+                        { label: 'Early prep checklist started', key: 'ps-5' }
+                    ]
+                },
+                'booking': {
+                    title: 'Booking Season',
+                    badge: 'complete',
+                    badgeLabel: 'Complete',
+                    description: 'January and February are peak booking months. Your property has been matched and the contract is signed.',
+                    items: [
+                        { label: 'Contract signed with renter', key: 'bs-1' },
+                        { label: 'Guest profile received', key: 'bs-2' },
+                        { label: 'First payment collected', key: 'bs-3' },
+                        { label: 'Special requests noted', key: 'bs-4' }
+                    ]
+                },
+                'final-prep': {
+                    title: 'Final Prep',
+                    badge: 'active',
+                    badgeLabel: 'Current Phase',
+                    description: 'March is your final preparation month. Complete the move-out checklist, verify staging, and coordinate handoff with Patron.',
+                    items: [
+                        { label: 'Personal items secured or removed', key: 'fp-1' },
+                        { label: 'Deep clean scheduled', key: 'fp-2' },
+                        { label: 'Linens and towels freshened (white preferred)', key: 'fp-3' },
+                        { label: 'All house info fields completed', key: 'fp-4' },
+                        { label: 'Wi-Fi tested and password confirmed', key: 'fp-5' },
+                        { label: 'AV/streaming setup verified', key: 'fp-6' },
+                        { label: 'Emergency contacts provided (HVAC, plumber, electrician)', key: 'fp-7' },
+                        { label: 'Lockbox or keypad code set', key: 'fp-8' },
+                        { label: 'Kitchen stocked (coffee, basics)', key: 'fp-9' },
+                        { label: 'Walkthrough with Patron completed', key: 'fp-10' },
+                        { label: 'Welcome binder/instructions placed', key: 'fp-11' },
+                        { label: 'Trash and recycling schedule posted', key: 'fp-12' }
+                    ]
+                },
+                'tournament': {
+                    title: 'Tournament Week',
+                    badge: 'upcoming',
+                    badgeLabel: 'Upcoming',
+                    description: 'April tournament week. Patron handles all guest communication, but you should be reachable for emergencies.',
+                    items: [
+                        { label: 'Emergency phone on and charged', key: 'tw-1' },
+                        { label: 'Patron has your travel/contact info', key: 'tw-2' },
+                        { label: 'Second payment received', key: 'tw-3' },
+                        { label: 'Post-checkout inspection scheduled', key: 'tw-4' }
+                    ]
+                }
+            };
+
+            // Current season checklist
+            const currentSeason = seasons[currentSeasonIdx];
+            const currentChecklist = seasonContent[currentSeason.id].items;
+
+            const toggleCheck = (key) => {
+                setChecklistState(prev => ({ ...prev, [key]: !prev[key] }));
+            };
+
+            const getChecklistCompletion = (items) => {
+                const done = items.filter(i => checklistState[i.key]).length;
+                return { done, total: items.length, pct: Math.round((done / items.length) * 100) };
+            };
+
+            const actionItems = [
+                { id: 1, text: 'AV setup details needed — streaming services matter to renters', action: 'Complete' },
+                { id: 2, text: 'Emergency HVAC contact missing — required before handoff', action: 'Add' },
+                { id: 3, text: 'Welcome letter sent to renter — review suggested changes', action: 'Review' }
             ];
 
             const roomDetails = [
@@ -1261,10 +1526,8 @@
             ];
 
             const calendarDays = [
-                { day: 'S', name: 'Sunday' }, { day: 'M', name: 'Monday' },
-                { day: 'T', name: 'Tuesday' }, { day: 'W', name: 'Wednesday' },
-                { day: 'T', name: 'Thursday' }, { day: 'F', name: 'Friday' },
-                { day: 'S', name: 'Saturday' }
+                { day: 'S' }, { day: 'M' }, { day: 'T' }, { day: 'W' },
+                { day: 'T' }, { day: 'F' }, { day: 'S' }
             ];
 
             const calendarData = [
@@ -1297,16 +1560,105 @@
             ];
 
             const faqs = [
-                { q: 'How much does Patron keep as commission?', a: 'Patron typically takes 15-20% of rental income depending on home type and services provided.' },
-                { q: 'When do I get paid?', a: 'Payment is made in two installments: 50% after contract is signed, 50% after the event.' },
+                { q: 'How much does Patron keep as commission?', a: 'Patron takes 15% of the gross rental income. You keep 85%. For example, on a $17,000 rental, your net payout is $14,450.' },
+                { q: 'When do I get paid?', a: 'Payment is made in two installments: 50% after contract is signed, 50% after the event. Both are your 85% share.' },
                 { q: 'What if my home is damaged?', a: 'Report damages within 48 hours of checkout. We carry insurance and will investigate.' },
                 { q: 'Can I list my home with other brokers?', a: 'Yes! You can list with Patron and other brokers. Just keep us updated on availability.' },
-                { q: 'Do I need to be home during Masters week?', a: 'No. Most homeowners are away. We arrange all check-in/check-out and handle guest issues.' }
+                { q: 'Do I need to be home during Masters week?', a: 'No. Most homeowners are away. We arrange all check-in/check-out and handle guest issues.' },
+                { q: 'What prep do I handle vs. Patron?', a: 'You handle about 85% of the prep: cleaning, staging, stocking essentials, securing personal items. Patron handles guest matching, contracts, payments, communication, and on-site coordination during tournament week.' }
             ];
 
             const navClick = (section) => {
                 setActiveSection(section);
                 setSidebarOpen(false);
+            };
+
+            const headerTitles = {
+                dashboard: 'Dashboard',
+                property: 'My Property',
+                houseinfo: 'House Information',
+                availability: 'Availability Calendar',
+                documents: 'Documents & Payments',
+                postevent: 'Post-Tournament Review',
+                resources: 'Resources & FAQ'
+            };
+
+            // -- Render helpers --
+
+            const renderSeasonStepper = () => (
+                <div className="season-stepper">
+                    <div className="season-stepper-title">Masters 2027 Cycle</div>
+                    <div className="stepper-track">
+                        {seasons.map((s, idx) => {
+                            const isDone = idx < currentSeasonIdx;
+                            const isCurrent = idx === currentSeasonIdx;
+                            return (
+                                <div key={s.id} className="stepper-step" onClick={() => setActiveSection('dashboard')}>
+                                    <div className="stepper-dot-row">
+                                        <div className={`stepper-line-left ${isDone || isCurrent ? 'done' : ''}`}></div>
+                                        <div className={`stepper-dot ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''}`}>
+                                            {isDone ? '\u2713' : s.icon}
+                                        </div>
+                                        <div className={`stepper-line-right ${isDone ? 'done' : ''}`}></div>
+                                    </div>
+                                    <div className={`stepper-label ${isCurrent ? 'current' : ''}`}>{s.label}</div>
+                                    <div className={`stepper-dates ${isCurrent ? 'current' : ''}`}>{s.months}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+
+            const renderPayoutHero = () => (
+                <div className="payout-hero">
+                    <div className="payout-main">
+                        <div className="payout-label">Your Net Payout — Masters 2027</div>
+                        <div className="payout-amount">${ownerPayout.toLocaleString()}</div>
+                        <div className="payout-detail">
+                            ${homeowner.grossRental.toLocaleString()} gross rental &minus; ${patronCut.toLocaleString()} Patron commission (15%)
+                        </div>
+                    </div>
+                    <div className="payout-breakdown">
+                        <div className="payout-stat">
+                            <div className="payout-stat-value">${homeowner.payment1.amount.toLocaleString()}</div>
+                            <div className="payout-stat-label">Payment 1 {homeowner.payment1.status === 'Received' ? '\u2713' : ''}</div>
+                        </div>
+                        <div className="payout-stat">
+                            <div className="payout-stat-value">${homeowner.payment2.amount.toLocaleString()}</div>
+                            <div className="payout-stat-label">Payment 2 &middot; Due {homeowner.payment2.date}</div>
+                        </div>
+                        <div className="payout-stat">
+                            <div className="payout-stat-value">Yr {homeowner.yearRenting}</div>
+                            <div className="payout-stat-label">With Patron</div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderChecklist = (items, title, showProgress) => {
+                const completion = getChecklistCompletion(items);
+                return (
+                    <div className="checklist">
+                        <div className="checklist-header">
+                            <div className="checklist-title">{title}</div>
+                            {showProgress && <div className="checklist-progress">{completion.done} / {completion.total} complete</div>}
+                        </div>
+                        {showProgress && (
+                            <div className="completion-bar">
+                                <div className="completion-fill" style={{width: `${completion.pct}%`}}></div>
+                            </div>
+                        )}
+                        {items.map(item => (
+                            <div key={item.key} className="checklist-item" onClick={() => toggleCheck(item.key)}>
+                                <div className={`check-box ${checklistState[item.key] ? 'checked' : ''}`}>
+                                    {checklistState[item.key] ? '\u2713' : ''}
+                                </div>
+                                <span className={`checklist-label ${checklistState[item.key] ? 'checked' : ''}`}>{item.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                );
             };
 
             return (
@@ -1341,7 +1693,7 @@
                                 Documents & Payments
                             </button>
                             <button className={`nav-item ${activeSection === 'postevent' ? 'active' : ''}`} onClick={() => navClick('postevent')}>
-                                Post-Event
+                                Post-Tournament Review
                             </button>
                         </div>
 
@@ -1355,15 +1707,7 @@
 
                     <div className="main">
                         <div className="header">
-                            <div className="header-title">
-                                {activeSection === 'dashboard' && 'Dashboard'}
-                                {activeSection === 'property' && 'My Property'}
-                                {activeSection === 'houseinfo' && 'House Information'}
-                                {activeSection === 'availability' && 'Availability Calendar'}
-                                {activeSection === 'documents' && 'Documents & Payments'}
-                                {activeSection === 'postevent' && 'Post-Event'}
-                                {activeSection === 'resources' && 'Resources & FAQ'}
-                            </div>
+                            <div className="header-title">{headerTitles[activeSection]}</div>
                             <div className="header-actions">
                                 <div className="user-menu">
                                     <div className="user-avatar">MW</div>
@@ -1376,77 +1720,55 @@
 
                             {/* DASHBOARD */}
                             {activeSection === 'dashboard' && (
-                                <div className="section active">
-                                    <div className="hero">
-                                        <div className="hero-image">Property photo</div>
-                                        <div className="hero-content">
-                                            <div>
-                                                <div className="property-title">{homeowner.property.name}</div>
-                                                <div className="property-address">{homeowner.property.address}</div>
-                                            </div>
-                                            <div className="status-group">
-                                                <div className="status-item">
-                                                    <div className="status-label">Rental Status</div>
-                                                    <div className="status-value success">{homeowner.rentalStatus}</div>
-                                                </div>
-                                                <div className="status-item">
-                                                    <div className="status-label">Renter</div>
-                                                    <div className="status-value">{homeowner.renter}</div>
-                                                </div>
-                                                <div className="status-item">
-                                                    <div className="status-label">Payment 1</div>
-                                                    <div className="status-value success">{homeowner.payment1.amount} • {homeowner.payment1.status}</div>
-                                                </div>
-                                                <div className="status-item">
-                                                    <div className="status-label">Payment 2</div>
-                                                    <div className="status-value warning">{homeowner.payment2.amount} • Due {homeowner.payment2.date}</div>
-                                                </div>
+                                <div>
+                                    {renderPayoutHero()}
+                                    {renderSeasonStepper()}
+
+                                    {/* Current Season Panel */}
+                                    <div className="season-panel">
+                                        <div className="season-panel-header">
+                                            <div className="season-panel-title">{seasonContent[currentSeason.id].title}</div>
+                                            <div className={`season-badge ${seasonContent[currentSeason.id].badge}`}>
+                                                {seasonContent[currentSeason.id].badgeLabel}
                                             </div>
                                         </div>
+                                        <p style={{fontSize: '0.95rem', color: '#666', marginBottom: '1.5rem', lineHeight: '1.6'}}>
+                                            {seasonContent[currentSeason.id].description}
+                                        </p>
                                     </div>
 
+                                    {renderChecklist(currentChecklist, 'Final Prep Checklist — You Handle 85% of Prep', true)}
+
                                     <div className="action-items">
-                                        <div className="action-items-title">⚡ {actionItems.length} Items Need Your Attention</div>
+                                        <div className="action-items-title">{actionItems.length} Items Need Your Attention</div>
                                         {actionItems.map(item => (
                                             <div key={item.id} className="action-item">
-                                                <div className="action-icon">📋</div>
                                                 <div className="action-content">
                                                     <div className="action-text">{item.text}</div>
-                                                    <button className="action-button">{item.action} →</button>
+                                                    <button className="action-button">{item.action} &rarr;</button>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="timeline">
-                                        <div className="timeline-title">Your Masters 2027 Timeline</div>
-                                        <div className="timeline-items">
-                                            {timelineSteps.map((step, idx) => (
-                                                <div key={idx} className="timeline-item">
-                                                    <div className={`timeline-marker ${step.done ? 'done' : 'pending'}`}>
-                                                        {step.done ? '✓' : idx + 1}
-                                                    </div>
-                                                    <div className="timeline-label">{step.label}</div>
-                                                    <div className="timeline-date">{step.date}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
                                     <div className="cards-grid">
                                         <div className="card">
-                                            <div className="card-title">Quick Stats</div>
+                                            <div className="card-title">Property Snapshot</div>
                                             <div className="card-stat">
-                                                <span className="card-stat-label">Years with Patron</span>
-                                                <span className="card-stat-value">{homeowner.yearRenting}</span>
+                                                <span className="card-stat-label">Address</span>
+                                                <span className="card-stat-value">{homeowner.property.name}</span>
+                                            </div>
+                                            <div className="card-stat">
+                                                <span className="card-stat-label">Beds / Baths</span>
+                                                <span className="card-stat-value">{homeowner.property.beds} / {homeowner.property.baths}</span>
                                             </div>
                                             <div className="card-stat">
                                                 <span className="card-stat-label">Home Type</span>
                                                 <span className="card-stat-value">{homeowner.homeType}</span>
                                             </div>
                                             <div className="card-stat">
-                                                <span className="card-stat-label">Total Bedrooms</span>
-                                                <span className="card-stat-value">{homeowner.property.beds}</span>
+                                                <span className="card-stat-label">Neighborhood</span>
+                                                <span className="card-stat-value">{homeowner.property.neighborhood}</span>
                                             </div>
                                         </div>
 
@@ -1461,18 +1783,38 @@
                                         </div>
 
                                         <div className="card">
-                                            <div className="card-title">You're 80% Ready</div>
+                                            <div className="card-title">House Info Status</div>
                                             <div className="card-body">
-                                                House info is {Math.round(homeowner.houseInfoComplete / homeowner.houseInfoTotal * 100)}% complete. Add the missing AV details and emergency contact to go live.
+                                                <div className="completion-bar" style={{marginBottom: '0.5rem'}}>
+                                                    <div className="completion-fill" style={{width: `${Math.round(homeowner.houseInfoComplete / homeowner.houseInfoTotal * 100)}%`}}></div>
+                                                </div>
+                                                <div style={{fontSize: '0.9rem', color: '#666', marginBottom: '0.75rem'}}>
+                                                    {homeowner.houseInfoComplete} of {homeowner.houseInfoTotal} fields complete
+                                                </div>
+                                                <div style={{fontSize: '0.9rem'}}>
+                                                    Missing: <strong>AV Setup</strong> and <strong>Emergency HVAC</strong>. Complete these before handoff.
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    {/* Upcoming Season Preview */}
+                                    <div className="season-panel" style={{background: '#faf8f5'}}>
+                                        <div className="season-panel-header">
+                                            <div className="season-panel-title">{seasonContent['tournament'].title}</div>
+                                            <div className="season-badge upcoming">{seasonContent['tournament'].badgeLabel}</div>
+                                        </div>
+                                        <p style={{fontSize: '0.95rem', color: '#666', marginBottom: '1rem', lineHeight: '1.6'}}>
+                                            {seasonContent['tournament'].description}
+                                        </p>
+                                        {renderChecklist(seasonContent['tournament'].items, 'Tournament Week Checklist', true)}
                                     </div>
                                 </div>
                             )}
 
                             {/* MY PROPERTY */}
                             {activeSection === 'property' && (
-                                <div className="section active">
+                                <div>
                                     <div className="property-grid">
                                         <div className="property-image-section">
                                             <div className="property-image">Professional photo of your home</div>
@@ -1541,14 +1883,14 @@
                                     <div className="preference-section">
                                         <div className="preference-title">Marketability Tips</div>
                                         <div className="card-body">
-                                            <strong>✓ You're doing great:</strong><br/>
-                                            • En-suite bathrooms in primary (major appeal)<br/>
-                                            • Professional photos (renters notice this)<br/>
-                                            • Host home designation (attracts higher-value renters)<br/><br/>
+                                            <strong>Doing well:</strong><br/>
+                                            - En-suite bathrooms in primary (major appeal)<br/>
+                                            - Professional photos (renters notice this)<br/>
+                                            - Host home designation (attracts higher-value renters)<br/><br/>
                                             <strong>Quick wins:</strong><br/>
-                                            • White linens are expected — consider upgrading to premium sets<br/>
-                                            • Update AV description — streaming services matter<br/>
-                                            • Highlight neighborhood (Summerville is premium)
+                                            - White linens are expected -- consider upgrading to premium sets<br/>
+                                            - Update AV description -- streaming services matter<br/>
+                                            - Highlight neighborhood (Summerville is premium)
                                         </div>
                                     </div>
                                 </div>
@@ -1556,14 +1898,14 @@
 
                             {/* HOUSE INFO FORM */}
                             {activeSection === 'houseinfo' && (
-                                <div className="section active">
+                                <div>
                                     <div className="form-section">
                                         <div className="form-title">House Information for Renters</div>
                                         <div className="completion-bar">
                                             <div className="completion-fill" style={{width: `${Math.round(homeowner.houseInfoComplete / homeowner.houseInfoTotal * 100)}%`}}></div>
                                         </div>
                                         <div className="completion-text">
-                                            {homeowner.houseInfoComplete} of {homeowner.houseInfoTotal} fields complete — {homeowner.houseInfoTotal - homeowner.houseInfoComplete} remaining
+                                            {homeowner.houseInfoComplete} of {homeowner.houseInfoTotal} fields complete -- {homeowner.houseInfoTotal - homeowner.houseInfoComplete} remaining
                                         </div>
 
                                         {houseInfoFields.map((field, idx) => (
@@ -1571,9 +1913,9 @@
                                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem'}}>
                                                     <label className="form-label">{field.name}</label>
                                                     {field.status === 'complete' ? (
-                                                        <div className="field-complete">✓ Complete</div>
+                                                        <div className="field-complete">Complete</div>
                                                     ) : (
-                                                        <div className="field-incomplete">⚠ Incomplete</div>
+                                                        <div className="field-incomplete">Incomplete</div>
                                                     )}
                                                 </div>
                                                 <input type="text" className="form-input" placeholder={`Enter ${field.name.toLowerCase()}`} />
@@ -1596,12 +1938,12 @@
 
                             {/* AVAILABILITY */}
                             {activeSection === 'availability' && (
-                                <div className="section active">
+                                <div>
                                     <div className="calendar-header">
                                         <div className="month-year">April 2027</div>
                                         <div className="calendar-nav">
-                                            <button className="calendar-btn">← Previous</button>
-                                            <button className="calendar-btn">Next →</button>
+                                            <button className="calendar-btn">&larr; Previous</button>
+                                            <button className="calendar-btn">Next &rarr;</button>
                                         </div>
                                     </div>
 
@@ -1646,18 +1988,52 @@
                                 </div>
                             )}
 
-                            {/* DOCUMENTS */}
+                            {/* DOCUMENTS & PAYMENTS */}
                             {activeSection === 'documents' && (
-                                <div className="section active">
+                                <div>
+                                    {/* Payout summary at top of documents */}
+                                    <div className="form-section" style={{background: 'linear-gradient(135deg, #f0f7f3, #faf8f5)', borderColor: '#a8d5ba'}}>
+                                        <div className="form-title">Your Payout Summary</div>
+                                        <div className="card-stat" style={{padding: '0.75rem 0'}}>
+                                            <span className="card-stat-label">Gross Rental</span>
+                                            <span className="card-stat-value">${homeowner.grossRental.toLocaleString()}</span>
+                                        </div>
+                                        <div className="card-stat" style={{padding: '0.75rem 0'}}>
+                                            <span className="card-stat-label">Patron Commission (15%)</span>
+                                            <span className="card-stat-value" style={{color: '#c97a3f'}}>-${patronCut.toLocaleString()}</span>
+                                        </div>
+                                        <div className="card-stat" style={{padding: '0.75rem 0', borderBottom: 'none'}}>
+                                            <span className="card-stat-label" style={{fontWeight: 600, color: '#2d5f47', fontSize: '1rem'}}>Your Net Payout</span>
+                                            <span className="card-stat-value" style={{fontSize: '1.3rem'}}>${ownerPayout.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Payment Tracker</div>
+                                        <div className="card-stat" style={{padding: '1rem 0'}}>
+                                            <div>
+                                                <div className="status-label">Payment 1 (50% of your payout)</div>
+                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Received {homeowner.payment1.date}, 2026</div>
+                                            </div>
+                                            <div className="status-value success">${homeowner.payment1.amount.toLocaleString()}</div>
+                                        </div>
+                                        <div className="card-stat" style={{padding: '1rem 0', borderTop: '1px solid #e8e4df'}}>
+                                            <div>
+                                                <div className="status-label">Payment 2 (50% of your payout)</div>
+                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Due {homeowner.payment2.date}, 2026</div>
+                                            </div>
+                                            <div className="status-value warning">${homeowner.payment2.amount.toLocaleString()}</div>
+                                        </div>
+                                    </div>
+
                                     <div className="form-section">
                                         <div className="form-title">Rental Agreement & Documents</div>
                                         {documents.map((doc, idx) => (
                                             <div key={idx} className="doc-item">
                                                 <div className="doc-info">
-                                                    <div className="doc-icon">📄</div>
                                                     <div className="doc-details">
                                                         <div className="doc-name">{doc.name}</div>
-                                                        <div className="doc-meta">{doc.date} • {doc.size}</div>
+                                                        <div className="doc-meta">{doc.date} &middot; {doc.size}</div>
                                                     </div>
                                                 </div>
                                                 <div className="doc-actions">
@@ -1667,50 +2043,26 @@
                                             </div>
                                         ))}
                                     </div>
-
-                                    <div className="form-section">
-                                        <div className="form-title">Payment Tracker</div>
-                                        <div className="card-stat" style={{padding: '1rem 0'}}>
-                                            <div>
-                                                <div className="status-label">Payment 1 (50%)</div>
-                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Received Mar 1, 2026</div>
-                                            </div>
-                                            <div className="status-value success">$8,500</div>
-                                        </div>
-                                        <div className="card-stat" style={{padding: '1rem 0', borderTop: '1px solid #e8e4df'}}>
-                                            <div>
-                                                <div className="status-label">Payment 2 (50%)</div>
-                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Due Apr 1, 2026</div>
-                                            </div>
-                                            <div className="status-value warning">$8,500</div>
-                                        </div>
-                                    </div>
                                 </div>
                             )}
 
-                            {/* POST-EVENT */}
+                            {/* POST-TOURNAMENT REVIEW */}
                             {activeSection === 'postevent' && (
-                                <div className="section active">
-                                    <div className="form-section">
-                                        <div className="form-title">Post-Event Checklist</div>
-                                        <div style={{marginBottom: '1.5rem'}}>
-                                            <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
-                                                <input type="checkbox" checked readOnly style={{cursor: 'pointer'}} />
-                                                <span>Home returned in acceptable condition</span>
-                                            </div>
-                                            <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
-                                                <input type="checkbox" checked readOnly style={{cursor: 'pointer'}} />
-                                                <span>Minor issues noted and reported</span>
-                                            </div>
-                                            <div style={{display: 'flex', gap: '0.75rem'}}>
-                                                <input type="checkbox" readOnly style={{cursor: 'pointer'}} />
-                                                <span>Feedback survey completed</span>
-                                            </div>
+                                <div>
+                                    <div className="season-panel">
+                                        <div className="season-panel-header">
+                                            <div className="season-panel-title">Post-Tournament Review</div>
+                                            <div className="season-badge complete">From Last Year</div>
                                         </div>
+                                        <p style={{fontSize: '0.95rem', color: '#666', lineHeight: '1.6'}}>
+                                            This section covers the post-tournament wrap-up: revenue summary, guest feedback, damage reports, and rebooking for next year.
+                                        </p>
                                     </div>
 
+                                    {renderChecklist(seasonContent['post-tournament'].items, 'Post-Tournament Checklist', true)}
+
                                     <div className="form-section">
-                                        <div className="form-title">Report Issues (within 48 hours)</div>
+                                        <div className="form-title">Report Issues (within 48 hours of checkout)</div>
                                         {issues.map(issue => (
                                             <div key={issue.id} className="issue-card">
                                                 <div className="issue-header">
@@ -1759,9 +2111,9 @@
                                 </div>
                             )}
 
-                            {/* RESOURCES */}
+                            {/* RESOURCES & FAQ */}
                             {activeSection === 'resources' && (
-                                <div className="section active">
+                                <div>
                                     <div className="form-section">
                                         <div className="form-title">Resources</div>
                                         {resources.map((res, idx) => (
@@ -1792,7 +2144,7 @@
                                             <div key={idx} className="faq-item">
                                                 <div className="faq-question" onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}>
                                                     <span>{faq.q}</span>
-                                                    <span className={`faq-toggle ${expandedFaq === idx ? 'open' : ''}`}>∨</span>
+                                                    <span className={`faq-toggle ${expandedFaq === idx ? 'open' : ''}`}>&or;</span>
                                                 </div>
                                                 {expandedFaq === idx && (
                                                     <div className="faq-answer">{faq.a}</div>

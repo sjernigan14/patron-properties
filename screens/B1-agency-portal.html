@@ -895,6 +895,306 @@
         .document-download-btn:hover {
             background: #333;
         }
+
+        /* Proposal Builder */
+        .proposal-builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .inventory-select-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .inventory-select-card:hover {
+            border-color: #4a7c6f;
+            box-shadow: 0 4px 12px rgba(74, 124, 111, 0.12);
+        }
+
+        .inventory-select-card.selected {
+            border-color: #4a7c6f;
+            background: #f0faf7;
+            box-shadow: 0 0 0 2px #4a7c6f;
+        }
+
+        .inventory-select-card .check-mark {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4a7c6f;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .proposal-preview-container {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        .proposal-preview-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .proposal-preview-body {
+            padding: 32px;
+        }
+
+        .proposal-preview-property {
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .proposal-preview-property-image {
+            height: 140px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .proposal-preview-property-body {
+            padding: 16px;
+        }
+
+        .proposal-preview-footer {
+            padding: 16px 32px;
+            background: #f5f5f4;
+            border-top: 1px solid #e8e8e8;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .proposal-note-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 48px;
+            margin-top: 8px;
+        }
+
+        .proposal-note-input:focus {
+            outline: none;
+            border-color: #4a7c6f;
+            box-shadow: 0 0 0 3px rgba(74, 124, 111, 0.1);
+        }
+
+        /* White-Label Preview */
+        .whitelabel-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+        }
+
+        .whitelabel-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .color-swatch-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-swatch.active {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1a1a1a;
+        }
+
+        .whitelabel-preview-frame {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        .whitelabel-preview-topbar {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .whitelabel-preview-content {
+            padding: 32px 24px;
+        }
+
+        .whitelabel-preview-footer {
+            padding: 12px 24px;
+            border-top: 1px solid #e8e8e8;
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .whitelabel-logo-upload {
+            width: 100%;
+            height: 80px;
+            border: 2px dashed #d0d0d0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            color: #888;
+            background: #fafafa;
+        }
+
+        .whitelabel-logo-upload:hover {
+            border-color: #4a7c6f;
+            background: #f0faf7;
+        }
+
+        /* Commission Dashboard */
+        .commission-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .commission-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .commission-card-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .commission-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .commission-card-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .commission-card-trend {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .commission-card-trend.up {
+            color: #155724;
+        }
+
+        .commission-card-trend.down {
+            color: #721c24;
+        }
+
+        .commission-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commission-table th,
+        .commission-table td {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .commission-table th {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #888;
+        }
+
+        .commission-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e8e8e8;
+            overflow: hidden;
+        }
+
+        .commission-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #4a7c6f, #5a9c8f);
+            transition: width 0.3s ease;
+        }
+
+        .satisfaction-stars {
+            display: flex;
+            gap: 2px;
+            font-size: 14px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -1164,6 +1464,21 @@
                 { id: "T002", title: "Guest pillow preference", house: "419 Cumming Rd", status: "resolved", date: "2027-04-07" },
                 { id: "T003", title: "Parking space clarification needed", house: "847 Milledge Rd", status: "open", date: "2027-04-09" },
             ]);
+
+            // Proposal Builder state
+            const [proposalSelectedIds, setProposalSelectedIds] = useState([]);
+            const [proposalNotes, setProposalNotes] = useState({});
+            const [proposalClientName, setProposalClientName] = useState("");
+            const [proposalWeek, setProposalWeek] = useState("Masters Week 2027 (April 7-13)");
+            const [showProposalPreview, setShowProposalPreview] = useState(false);
+
+            // White-label state
+            const [wlPrimaryColor, setWlPrimaryColor] = useState("#4a7c6f");
+            const [wlAgencyName, setWlAgencyName] = useState(sampleData.agency.name);
+            const [wlLogoPreview, setWlLogoPreview] = useState(null);
+
+            // Commission dashboard state
+            const [commissionPeriod, setCommissionPeriod] = useState("2027");
 
             const handleLogoUpload = (e) => {
                 const file = e.target.files[0];
@@ -1889,6 +2204,532 @@ EMERGENCY: ${house.emergencyContact}
                 </div>
             );
 
+            const toggleProposalProperty = (id) => {
+                setProposalSelectedIds(prev =>
+                    prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+                );
+            };
+
+            const getProposalProperties = () => {
+                return data.browseInventory.filter(p => proposalSelectedIds.includes(p.id));
+            };
+
+            const handleExportProposalPDF = () => {
+                alert("PDF export would generate a branded proposal document. This is a UI preview — PDF generation will be connected to a backend service.");
+            };
+
+            const handleWlLogoUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setWlLogoPreview(event.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const renderProposalBuilder = () => {
+                const selected = getProposalProperties();
+                const amenityLabels = { "pool": "Pool", "chef-allowed": "Chef Kitchen", "wine-cellar": "Wine Cellar", "pet-friendly": "Pet Friendly" };
+
+                return (
+                    <div>
+                        <div style={{ marginBottom: "32px" }}>
+                            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                                Proposal Builder
+                            </h1>
+                            <p style={{ fontSize: "14px", color: "#666" }}>
+                                Build branded proposals for your clients from available Masters Week inventory
+                            </p>
+                        </div>
+
+                        {!showProposalPreview ? (
+                            <div>
+                                <div className="form-section" style={{ marginBottom: "24px" }}>
+                                    <div className="form-section-title">Client Details</div>
+                                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                                        <div className="form-group">
+                                            <label className="form-label">Client / Company Name</label>
+                                            <input
+                                                className="form-input"
+                                                placeholder="e.g., Acme Corporation"
+                                                value={proposalClientName}
+                                                onChange={(e) => setProposalClientName(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Week</label>
+                                            <select className="form-input" value={proposalWeek} onChange={(e) => setProposalWeek(e.target.value)}>
+                                                <option>Masters Week 2027 (April 7-13)</option>
+                                                <option>Practice Rounds 2027 (April 4-6)</option>
+                                                <option>Full Tournament 2027 (April 4-13)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style={{ fontSize: "15px", fontWeight: "600", color: "#1a1a1a", marginBottom: "16px" }}>
+                                    Select Properties ({selected.length} selected)
+                                </div>
+
+                                <div className="houses-grid" style={{ marginBottom: "24px" }}>
+                                    {data.browseInventory.map((house) => {
+                                        const isSelected = proposalSelectedIds.includes(house.id);
+                                        return (
+                                            <div
+                                                key={house.id}
+                                                className={`inventory-select-card ${isSelected ? "selected" : ""}`}
+                                                onClick={() => toggleProposalProperty(house.id)}
+                                            >
+                                                {isSelected && <div className="check-mark">&#10003;</div>}
+                                                <div className="house-image" style={{ height: "120px", fontSize: "48px", background: "linear-gradient(135deg, #e8f5e9, #c8e6c9)" }}>🏠</div>
+                                                <div style={{ marginTop: "12px" }}>
+                                                    <div className="house-address">{house.address}</div>
+                                                    <div className="house-specs" style={{ marginBottom: "4px" }}>{house.beds} beds  {house.baths} baths</div>
+                                                    <div style={{ fontSize: "12px", color: "#888", marginBottom: "4px" }}>{house.neighborhood}</div>
+                                                    <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px" }}>{house.distanceToAugusta} from Gate 6, Berckman Rd</div>
+                                                    <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a", marginBottom: "6px" }}>{house.price}</div>
+                                                    <div className="proposal-amenities">
+                                                        {house.amenities.map((a) => (
+                                                            <div key={a} className="amenity-tag">{amenityLabels[a] || a}</div>
+                                                        ))}
+                                                    </div>
+                                                    {isSelected && (
+                                                        <textarea
+                                                            className="proposal-note-input"
+                                                            placeholder="Add your notes/recommendation for this property..."
+                                                            value={proposalNotes[house.id] || ""}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            onChange={(e) => {
+                                                                e.stopPropagation();
+                                                                setProposalNotes({ ...proposalNotes, [house.id]: e.target.value });
+                                                            }}
+                                                        />
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="form-actions" style={{ justifyContent: "flex-start", gap: "12px" }}>
+                                    <button
+                                        className="btn-primary"
+                                        style={{ opacity: selected.length === 0 ? 0.5 : 1, background: "#4a7c6f" }}
+                                        disabled={selected.length === 0}
+                                        onClick={() => setShowProposalPreview(true)}
+                                    >
+                                        Preview Proposal ({selected.length} {selected.length === 1 ? "property" : "properties"})
+                                    </button>
+                                    <button className="btn-secondary" onClick={() => { setProposalSelectedIds([]); setProposalNotes({}); setProposalClientName(""); }}>
+                                        Clear Selection
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div>
+                                <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
+                                    <button className="btn-secondary" onClick={() => setShowProposalPreview(false)}>
+                                        Back to Editor
+                                    </button>
+                                    <button className="btn-primary" style={{ background: "#4a7c6f" }} onClick={handleExportProposalPDF}>
+                                        Export as PDF
+                                    </button>
+                                </div>
+
+                                <div className="proposal-preview-container">
+                                    <div className="proposal-preview-header" style={{ background: wlPrimaryColor || "#4a7c6f" }}>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                            {wlLogoPreview ? (
+                                                <img src={wlLogoPreview} alt="Agency logo" style={{ height: "32px", borderRadius: "4px" }} />
+                                            ) : (
+                                                <div style={{ width: "32px", height: "32px", borderRadius: "6px", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "700" }}>
+                                                    {data.agency.name.charAt(0)}
+                                                </div>
+                                            )}
+                                            <div>
+                                                <div style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>{data.agency.name}</div>
+                                                <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Housing Proposal</div>
+                                            </div>
+                                        </div>
+                                        <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.9)" }}>
+                                            {proposalWeek}
+                                        </div>
+                                    </div>
+
+                                    <div className="proposal-preview-body">
+                                        <div style={{ marginBottom: "24px" }}>
+                                            <div style={{ fontSize: "22px", fontWeight: "700", color: "#1a1a1a", marginBottom: "4px" }}>
+                                                Masters Week Housing Proposal
+                                            </div>
+                                            {proposalClientName && (
+                                                <div style={{ fontSize: "15px", color: "#666" }}>
+                                                    Prepared for: {proposalClientName}
+                                                </div>
+                                            )}
+                                            <div style={{ fontSize: "13px", color: "#888", marginTop: "4px" }}>
+                                                {selected.length} curated {selected.length === 1 ? "property" : "properties"} near Augusta National Golf Club
+                                            </div>
+                                        </div>
+
+                                        {selected.map((house, idx) => (
+                                            <div key={house.id} className="proposal-preview-property">
+                                                <div className="proposal-preview-property-image">🏠</div>
+                                                <div className="proposal-preview-property-body">
+                                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                                                        <div>
+                                                            <div style={{ fontSize: "16px", fontWeight: "600", color: "#1a1a1a" }}>
+                                                                Option {idx + 1}: {house.address}
+                                                            </div>
+                                                            <div style={{ fontSize: "13px", color: "#666" }}>
+                                                                {house.beds} beds | {house.baths} baths | {house.neighborhood}
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ fontSize: "16px", fontWeight: "700", color: "#1a1a1a" }}>
+                                                            {house.price}
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+                                                        {house.distanceToAugusta} from Augusta National (Gate 6, Berckman Rd)
+                                                    </div>
+                                                    <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+                                                        Patron Rating: {'*'.repeat(Math.floor(house.rating))}{house.rating % 1 !== 0 ? '+' : ''} ({house.rating}/5)
+                                                    </div>
+                                                    <div className="proposal-amenities" style={{ marginBottom: "8px" }}>
+                                                        {house.amenities.map((a) => (
+                                                            <div key={a} className="amenity-tag">{amenityLabels[a] || a}</div>
+                                                        ))}
+                                                    </div>
+                                                    {proposalNotes[house.id] && (
+                                                        <div style={{ background: "#f5f5f4", padding: "10px 12px", borderRadius: "6px", fontSize: "13px", color: "#444", fontStyle: "italic", borderLeft: `3px solid ${wlPrimaryColor || "#4a7c6f"}` }}>
+                                                            <strong>Our Recommendation:</strong> {proposalNotes[house.id]}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="proposal-preview-footer">
+                                        Powered by Patron Properties | Masters Tournament Housing | Augusta, GA
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const renderWhiteLabel = () => {
+                const colorPresets = [
+                    { label: "Teal", value: "#4a7c6f" },
+                    { label: "Navy", value: "#2c3e6b" },
+                    { label: "Burgundy", value: "#6b2c3e" },
+                    { label: "Slate", value: "#4a5568" },
+                    { label: "Forest", value: "#2d5a27" },
+                    { label: "Gold", value: "#8b7029" },
+                    { label: "Charcoal", value: "#333333" },
+                    { label: "Royal", value: "#4a2d8b" },
+                ];
+
+                return (
+                    <div>
+                        <div style={{ marginBottom: "32px" }}>
+                            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                                White-Label Preview
+                            </h1>
+                            <p style={{ fontSize: "14px", color: "#666" }}>
+                                See how the portal looks with your agency branding applied
+                            </p>
+                        </div>
+
+                        <div className="whitelabel-container">
+                            <div className="whitelabel-controls">
+                                <div className="form-section">
+                                    <div className="form-section-title">Agency Logo</div>
+                                    <label className="whitelabel-logo-upload">
+                                        {wlLogoPreview ? (
+                                            <img src={wlLogoPreview} alt="Logo" style={{ maxHeight: "60px", maxWidth: "100%", objectFit: "contain" }} />
+                                        ) : (
+                                            <span>Click to upload logo</span>
+                                        )}
+                                        <input type="file" accept="image/*" style={{ display: "none" }} onChange={handleWlLogoUpload} />
+                                    </label>
+                                </div>
+
+                                <div className="form-section">
+                                    <div className="form-section-title">Agency Name</div>
+                                    <input
+                                        className="form-input"
+                                        value={wlAgencyName}
+                                        onChange={(e) => setWlAgencyName(e.target.value)}
+                                        style={{ width: "100%" }}
+                                    />
+                                </div>
+
+                                <div className="form-section">
+                                    <div className="form-section-title">Color Scheme</div>
+                                    <div className="color-swatch-row">
+                                        {colorPresets.map((c) => (
+                                            <div
+                                                key={c.value}
+                                                className={`color-swatch ${wlPrimaryColor === c.value ? "active" : ""}`}
+                                                style={{ background: c.value }}
+                                                title={c.label}
+                                                onClick={() => setWlPrimaryColor(c.value)}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div style={{ marginTop: "12px" }}>
+                                        <label className="form-label" style={{ fontSize: "12px" }}>Custom hex</label>
+                                        <input
+                                            className="form-input"
+                                            type="text"
+                                            value={wlPrimaryColor}
+                                            onChange={(e) => setWlPrimaryColor(e.target.value)}
+                                            style={{ width: "100%", marginTop: "4px", fontFamily: "monospace" }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="whitelabel-preview-frame">
+                                <div className="whitelabel-preview-topbar" style={{ background: wlPrimaryColor }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                        {wlLogoPreview ? (
+                                            <img src={wlLogoPreview} alt="Logo" style={{ height: "28px", borderRadius: "4px" }} />
+                                        ) : (
+                                            <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "700", fontSize: "13px" }}>
+                                                {wlAgencyName.charAt(0) || "A"}
+                                            </div>
+                                        )}
+                                        <div style={{ color: "#fff", fontSize: "14px", fontWeight: "600" }}>{wlAgencyName || "Agency Name"}</div>
+                                    </div>
+                                    <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>Masters Week Housing Portal</div>
+                                </div>
+
+                                <div className="whitelabel-preview-content">
+                                    <div style={{ fontSize: "20px", fontWeight: "700", color: "#1a1a1a", marginBottom: "4px" }}>
+                                        Welcome to Your Housing Portal
+                                    </div>
+                                    <div style={{ fontSize: "13px", color: "#666", marginBottom: "24px" }}>
+                                        Manage your Masters Week properties and guest accommodations
+                                    </div>
+
+                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", marginBottom: "24px" }}>
+                                        <div style={{ background: "#f5f5f4", borderRadius: "8px", padding: "16px", textAlign: "center" }}>
+                                            <div style={{ fontSize: "24px", fontWeight: "700", color: wlPrimaryColor }}>6</div>
+                                            <div style={{ fontSize: "12px", color: "#888" }}>Properties</div>
+                                        </div>
+                                        <div style={{ background: "#f5f5f4", borderRadius: "8px", padding: "16px", textAlign: "center" }}>
+                                            <div style={{ fontSize: "24px", fontWeight: "700", color: wlPrimaryColor }}>18</div>
+                                            <div style={{ fontSize: "12px", color: "#888" }}>Guests</div>
+                                        </div>
+                                        <div style={{ background: "#f5f5f4", borderRadius: "8px", padding: "16px", textAlign: "center" }}>
+                                            <div style={{ fontSize: "24px", fontWeight: "700", color: wlPrimaryColor }}>4</div>
+                                            <div style={{ fontSize: "12px", color: "#888" }}>Days to Check-in</div>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                        {["2847 Bellevue Ave", "419 Cumming Rd", "312 Wheeler Rd"].map((addr) => (
+                                            <div key={addr} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", border: "1px solid #e8e8e8", borderRadius: "8px" }}>
+                                                <div style={{ width: "40px", height: "40px", borderRadius: "6px", background: "linear-gradient(135deg, #e8f5e9, #c8e6c9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🏠</div>
+                                                <div>
+                                                    <div style={{ fontSize: "13px", fontWeight: "600", color: "#1a1a1a" }}>{addr}</div>
+                                                    <div style={{ fontSize: "11px", color: "#888" }}>Masters Week 2027</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="whitelabel-preview-footer">
+                                    Powered by Patron Properties
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderCommissionDashboard = () => {
+                const bookingHistory = [
+                    { client: "Delta Air Lines", houses: 6, guests: 18, week: "Masters 2027", revenue: "$62,400", commission: "$9,360", status: "active" },
+                    { client: "Goldman Sachs", houses: 4, guests: 14, week: "Masters 2027", revenue: "$48,000", commission: "$7,200", status: "active" },
+                    { client: "Rolex Corp", houses: 3, guests: 8, week: "Masters 2026", revenue: "$34,500", commission: "$5,175", status: "paid" },
+                    { client: "PGA Tour Partners", houses: 5, guests: 16, week: "Masters 2026", revenue: "$55,000", commission: "$8,250", status: "paid" },
+                    { client: "Mercedes-Benz USA", houses: 2, guests: 6, week: "Masters 2025", revenue: "$22,000", commission: "$3,300", status: "paid" },
+                ];
+
+                const satisfactionData = [
+                    { label: "Property Quality", score: 4.8 },
+                    { label: "Communication", score: 4.9 },
+                    { label: "Check-in Experience", score: 4.7 },
+                    { label: "Value for Money", score: 4.5 },
+                    { label: "Overall Satisfaction", score: 4.8 },
+                ];
+
+                return (
+                    <div>
+                        <div style={{ marginBottom: "32px" }}>
+                            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                                Commission & Performance
+                            </h1>
+                            <p style={{ fontSize: "14px", color: "#666" }}>
+                                Track your bookings, commissions, and client satisfaction
+                            </p>
+                        </div>
+
+                        <div className="commission-grid">
+                            <div className="commission-card">
+                                <div className="commission-card-label">Total Revenue (All Time)</div>
+                                <div className="commission-card-value">$221,900</div>
+                                <div className="commission-card-detail">Across 20 properties</div>
+                                <div className="commission-card-trend up">+28% vs prior year</div>
+                            </div>
+                            <div className="commission-card">
+                                <div className="commission-card-label">Commission Earned</div>
+                                <div className="commission-card-value">$33,285</div>
+                                <div className="commission-card-detail">15% standard rate</div>
+                                <div className="commission-card-trend up">+$16,560 pending (2027)</div>
+                            </div>
+                            <div className="commission-card">
+                                <div className="commission-card-label">Active Bookings</div>
+                                <div className="commission-card-value">10</div>
+                                <div className="commission-card-detail">Masters 2027</div>
+                                <div className="commission-card-trend up">+4 vs last year</div>
+                            </div>
+                            <div className="commission-card">
+                                <div className="commission-card-label">Client Satisfaction</div>
+                                <div className="commission-card-value">4.8</div>
+                                <div className="commission-card-detail">Out of 5.0</div>
+                                <div className="commission-card-trend up">Top 5% of partners</div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px", marginBottom: "24px" }}>
+                            <div className="form-section">
+                                <div className="form-section-title">Booking History</div>
+                                <table className="commission-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Client</th>
+                                            <th>Week</th>
+                                            <th>Houses</th>
+                                            <th>Revenue</th>
+                                            <th>Commission</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {bookingHistory.map((booking, idx) => (
+                                            <tr key={idx}>
+                                                <td style={{ fontWeight: "600", color: "#1a1a1a" }}>{booking.client}</td>
+                                                <td>{booking.week}</td>
+                                                <td>{booking.houses}</td>
+                                                <td>{booking.revenue}</td>
+                                                <td style={{ fontWeight: "600", color: "#155724" }}>{booking.commission}</td>
+                                                <td>
+                                                    <span className={`badge ${booking.status === "paid" ? "badge-complete" : "badge-pending"}`}>
+                                                        {booking.status === "paid" ? "Paid" : "Active"}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="form-section">
+                                <div className="form-section-title">Client Satisfaction</div>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    {satisfactionData.map((metric) => (
+                                        <div className="metric-row" key={metric.label}>
+                                            <div>
+                                                <div style={{ fontSize: "13px", fontWeight: "500", color: "#1a1a1a" }}>{metric.label}</div>
+                                            </div>
+                                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                <div className="commission-bar" style={{ width: "80px" }}>
+                                                    <div className="commission-bar-fill" style={{ width: `${(metric.score / 5) * 100}%` }} />
+                                                </div>
+                                                <span style={{ fontSize: "13px", fontWeight: "600", color: "#1a1a1a", minWidth: "28px" }}>{metric.score}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+                            <div className="form-section">
+                                <div className="form-section-title">Commission Structure</div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px" }}>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Standard Rate</span>
+                                        <span style={{ fontWeight: "600" }}>15% of gross rental</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Volume Bonus (10+ houses)</span>
+                                        <span style={{ fontWeight: "600" }}>+2% bonus tier</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Repeat Client Bonus</span>
+                                        <span style={{ fontWeight: "600" }}>+1% loyalty bonus</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Payout Schedule</span>
+                                        <span style={{ fontWeight: "600" }}>Net 30 post-checkout</span>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Your Current Tier</span>
+                                        <span style={{ fontWeight: "600", color: "#155724" }}>Preferred Partner (17%)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <div className="form-section-title">Year-over-Year Growth</div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px" }}>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Masters 2025</span>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                            <div className="commission-bar" style={{ width: "100px" }}>
+                                                <div className="commission-bar-fill" style={{ width: "20%" }} />
+                                            </div>
+                                            <span style={{ fontWeight: "600" }}>$22,000</span>
+                                        </div>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Masters 2026</span>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                            <div className="commission-bar" style={{ width: "100px" }}>
+                                                <div className="commission-bar-fill" style={{ width: "55%" }} />
+                                            </div>
+                                            <span style={{ fontWeight: "600" }}>$89,500</span>
+                                        </div>
+                                    </div>
+                                    <div className="metric-row">
+                                        <span style={{ color: "#666" }}>Masters 2027</span>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                            <div className="commission-bar" style={{ width: "100px" }}>
+                                                <div className="commission-bar-fill" style={{ width: "80%" }} />
+                                            </div>
+                                            <span style={{ fontWeight: "600" }}>$110,400</span>
+                                        </div>
+                                    </div>
+                                    <div className="metric-row" style={{ borderBottom: "none" }}>
+                                        <span style={{ color: "#666" }}>3-Year Total</span>
+                                        <span style={{ fontWeight: "700", fontSize: "15px" }}>$221,900</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
             const renderSupport = () => (
                 <div>
                     <div style={{ marginBottom: "32px" }}>
@@ -2046,6 +2887,36 @@ EMERGENCY: ${house.emergencyContact}
                                 Documents
                             </div>
                             <div
+                                className={`nav-item ${currentView === "proposal-builder" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("proposal-builder");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">📋</span>
+                                Proposal Builder
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "white-label" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("white-label");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">🎨</span>
+                                White-Label
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "commission" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("commission");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">💰</span>
+                                Commission
+                            </div>
+                            <div
                                 className={`nav-item ${currentView === "support" ? "active" : ""}`}
                                 onClick={() => {
                                     setCurrentView("support");
@@ -2097,6 +2968,9 @@ EMERGENCY: ${house.emergencyContact}
                             {currentView === "house-detail" && renderHouseDetail()}
                             {currentView === "guests" && renderGuests()}
                             {currentView === "documents" && renderDocuments()}
+                            {currentView === "proposal-builder" && renderProposalBuilder()}
+                            {currentView === "white-label" && renderWhiteLabel()}
+                            {currentView === "commission" && renderCommissionDashboard()}
                             {currentView === "support" && renderSupport()}
                         </div>
                     </div>

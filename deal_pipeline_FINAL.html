@@ -50,15 +50,16 @@ const TYPE_COLORS = {
   Institutional: { bg: '#F5F3FF', text: '#6D28D9', border: '#C4B5FD' },
 };
 
-/* ── Pipeline Stages ── */
+/* ── Pipeline Stages with probability weights ── */
 const STAGES = [
-  { id: 'inquiry',        label: 'Inquiry',        order: 1 },
-  { id: 'qualified',      label: 'Qualified',      order: 2 },
-  { id: 'property_visit', label: 'Property Visit', order: 3 },
-  { id: 'contract',       label: 'Contract',       order: 4 },
-  { id: 'deposit',        label: 'Deposit Paid',   order: 5 },
-  { id: 'booked',         label: 'Booked',         order: 6 },
+  { id: 'inquiry',        label: 'Inquiry',        order: 1, prob: 0.10 },
+  { id: 'qualified',      label: 'Qualified',      order: 2, prob: 0.25 },
+  { id: 'property_visit', label: 'Property Visit', order: 3, prob: 0.40 },
+  { id: 'contract',       label: 'Contract',       order: 4, prob: 0.60 },
+  { id: 'deposit',        label: 'Deposit Paid',   order: 5, prob: 0.85 },
+  { id: 'booked',         label: 'Booked',         order: 6, prob: 1.00 },
 ];
+const STALE_THRESHOLD = 7; /* days in stage before flagging */
 
 /* ── Sample Deals ── */
 const DEALS = [
@@ -96,9 +97,11 @@ function App() {
 
   const byStage = (sid) => filtered.filter(d => d.stage === sid);
   const pipe = deals.reduce((s,d) => s + d.total, 0);
+  const weighted = deals.reduce((s,d) => { const st = STAGES.find(x=>x.id===d.stage); return s + d.total * (st ? st.prob : 0); }, 0);
   const booked = deals.filter(d => d.stage==='booked'||d.stage==='deposit').reduce((s,d) => s + d.total, 0);
   const activeDeals = deals.filter(d => d.stage !== 'booked').length;
   const highPriority = deals.filter(d => d.priority === 'high').length;
+  const staleDeals = deals.filter(d => d.days > STALE_THRESHOLD && d.stage !== 'booked').length;
   const avgDealSize = Math.round(pipe / deals.filter(d => d.total > 0).length);
   const docCount = (d) => Object.values(d.docs).filter(Boolean).length;
 
@@ -142,20 +145,20 @@ function App() {
         display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 24,
       }}>
         {[
-          { label: 'Pipeline Value', value: `$${(pipe/1000).toFixed(0)}K`, sub: `${deals.length} deals`, pct: 100 },
+          { label: 'Pipeline Value', value: `$${(pipe/1000).toFixed(0)}K`, sub: `${deals.length} deals (unweighted)`, pct: 100 },
+          { label: 'Weighted Forecast', value: `$${(weighted/1000).toFixed(0)}K`, sub: 'Probability-adjusted', pct: Math.round((weighted/pipe)*100), color: '#0891B2' },
           { label: 'Booked Revenue', value: `$${(booked/1000).toFixed(0)}K`, sub: `${deals.filter(d=>d.stage==='booked'||d.stage==='deposit').length} confirmed`, pct: Math.round((booked/pipe)*100) },
-          { label: 'Active Deals', value: activeDeals, sub: 'In progress', pct: Math.round((activeDeals/deals.length)*100) },
           { label: 'High Priority', value: highPriority, sub: 'Needs attention', pct: Math.round((highPriority/deals.length)*100) },
-          { label: 'Avg Deal Size', value: `$${(avgDealSize/1000).toFixed(1)}K`, sub: 'Per deal', pct: 0 },
+          { label: 'Stale Deals', value: staleDeals, sub: `>${STALE_THRESHOLD} days in stage`, pct: staleDeals > 0 ? 100 : 0, color: staleDeals > 0 ? '#DC2626' : '#888' },
           { label: 'Conversion', value: `${Math.round((deals.filter(d=>d.stage==='booked').length/deals.length)*100)}%`, sub: 'Inquiry → Booked', pct: Math.round((deals.filter(d=>d.stage==='booked').length/deals.length)*100) },
         ].map(kpi => (
           <div key={kpi.label}>
             <div style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 700, color: '#006B54', lineHeight: 1 }}>{kpi.value}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: kpi.color || '#006B54', lineHeight: 1 }}>{kpi.value}</div>
             <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{kpi.sub}</div>
             {kpi.pct > 0 && (
               <div style={{ width: '100%', height: 5, background: '#e8f0ed', borderRadius: 3, marginTop: 8, overflow: 'hidden' }}>
-                <div style={{ width: `${Math.min(kpi.pct,100)}%`, height: '100%', background: 'linear-gradient(90deg, #006B54, #005543)', borderRadius: 3 }} />
+                <div style={{ width: `${Math.min(kpi.pct,100)}%`, height: '100%', background: kpi.color || '#006B54', borderRadius: 3 }} />
               </div>
             )}
           </div>
@@ -237,7 +240,10 @@ function App() {
                     <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{stage.label}</span>
                     <span style={{ fontSize: 11, fontWeight: 600, color: sc.text, background: sc.bg, padding: '2px 8px', borderRadius: 4, border: `1px solid ${sc.border}` }}>{cards.length}</span>
                   </div>
-                  {stageVal > 0 && <span style={{ fontSize: 11, color: '#888', fontWeight: 500 }}>${(stageVal/1000).toFixed(0)}K</span>}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    {stageVal > 0 && <span style={{ fontSize: 11, color: '#888', fontWeight: 500 }}>${(stageVal/1000).toFixed(0)}K</span>}
+                    <span style={{ fontSize: 10, color: '#aaa', fontWeight: 500 }}>{Math.round(stage.prob * 100)}%</span>
+                  </div>
                 </div>
 
                 {/* Cards */}
@@ -246,7 +252,7 @@ function App() {
                     <div style={{ padding: 20, textAlign: 'center', color: '#888', fontSize: 12, border: '1px dashed #e0e0e0', borderRadius: 8 }}>Drop here</div>
                   )}
                   {cards.map(deal => {
-                    const stale = deal.days > 7;
+                    const stale = deal.days > STALE_THRESHOLD && deal.stage !== 'booked';
                     const isExpanded = expanded === deal.id;
                     const priorityColor = deal.priority === 'high' ? '#DC2626' : deal.priority === 'medium' ? '#D97706' : '#888';
                     return (
@@ -255,9 +261,9 @@ function App() {
                         onDragEnd={() => { setDragging(null); setDragOver(null); }}
                         onClick={() => setExpanded(isExpanded ? null : deal.id)}
                         style={{
-                          background: '#fff', borderRadius: 8, padding: '14px 16px', cursor: 'grab',
-                          border: dragging === deal.id ? '1.5px solid #006B54' : '1px solid #e0e0e0',
-                          borderLeft: `4px solid ${sc.solid}`,
+                          background: stale ? '#FFFBEB' : '#fff', borderRadius: 8, padding: '14px 16px', cursor: 'grab',
+                          border: dragging === deal.id ? '1.5px solid #006B54' : stale ? '1px solid #FCD34D' : '1px solid #e0e0e0',
+                          borderLeft: `4px solid ${stale ? '#DC2626' : sc.solid}`,
                           opacity: dragging === deal.id ? 0.5 : 1, transition: 'all 0.15s',
                           boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                         }}
@@ -280,6 +286,7 @@ function App() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#888' }}>
                           <div style={{ width: 6, height: 6, borderRadius: '50%', background: priorityColor, flexShrink: 0 }} />
                           <span style={{ color: stale ? '#DC2626' : '#888', fontWeight: stale ? 600 : 400 }}>{deal.days}d</span>
+                          {stale && <span style={{ fontSize: 9, fontWeight: 700, color: '#DC2626', background: '#FEE2E2', padding: '1px 5px', borderRadius: 3, letterSpacing: 0.5 }}>STALE</span>}
                           <span>·</span>
                           <span>{docCount(deal)}/4 docs</span>
                           <span>·</span>

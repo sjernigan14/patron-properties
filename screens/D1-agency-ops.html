@@ -16,14 +16,14 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #ffffff;
+      background: #f5f5f4;
       color: #1a1a1a;
     }
 
     .app-container {
       display: flex;
       height: 100vh;
-      background: #f8f8f8;
+      background: #f5f5f4;
     }
 
     /* Navigation */
@@ -44,7 +44,7 @@
     .nav-logo {
       font-size: 14px;
       font-weight: 600;
-      color: #666;
+      color: #2d6a4f;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 4px;
@@ -76,14 +76,23 @@
     }
 
     .nav-item:hover {
-      background: #f0f0f0;
-      color: #333;
+      background: #e8f5e9;
+      color: #2d6a4f;
     }
 
     .nav-item.active {
-      background: #f0f0f0;
-      color: #000;
+      background: #e8f5e9;
+      color: #2d6a4f;
       font-weight: 600;
+    }
+
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 16px 12px 6px;
     }
 
     .nav-footer {
@@ -113,7 +122,7 @@
     .header-left h1 {
       font-size: 24px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 4px;
     }
 
@@ -153,7 +162,7 @@
     .greeting {
       font-size: 28px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 8px;
     }
 
@@ -181,7 +190,7 @@
     .stat-number {
       font-size: 32px;
       font-weight: 700;
-      color: #000;
+      color: #1a1a1a;
       line-height: 1;
     }
 
@@ -204,7 +213,7 @@
     .section-title {
       font-size: 16px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 16px;
     }
 
@@ -218,7 +227,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px;
-      background: #f8f8f8;
+      background: #fafaf9;
       border-radius: 6px;
       border-left: 4px solid #666;
       font-size: 13px;
@@ -233,7 +242,7 @@
     }
 
     .schedule-item.service {
-      border-left-color: #7ed321;
+      border-left-color: #2d6a4f;
     }
 
     .schedule-item.cleaning {
@@ -267,19 +276,29 @@
 
     .issue-card {
       padding: 16px;
-      background: #f8f8f8;
+      background: #fafaf9;
       border-radius: 6px;
       border-left: 4px solid;
     }
 
-    .issue-card.red {
+    .issue-card.red, .issue-card.urgent {
       border-left-color: #e94b3c;
       background: rgba(233, 75, 60, 0.05);
     }
 
-    .issue-card.amber {
+    .issue-card.amber, .issue-card.attention, .issue-card.high {
       border-left-color: #f5a623;
       background: rgba(245, 166, 35, 0.05);
+    }
+
+    .issue-card.normal {
+      border-left-color: #4a90e2;
+      background: rgba(74, 144, 226, 0.05);
+    }
+
+    .issue-card.low {
+      border-left-color: #999;
+      background: rgba(153, 153, 153, 0.05);
     }
 
     .issue-header {
@@ -292,7 +311,7 @@
     .issue-title {
       font-size: 13px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
     }
 
     .issue-status {
@@ -306,8 +325,16 @@
       color: #e94b3c;
     }
 
-    .issue-status.attention {
+    .issue-status.attention, .issue-status.high {
       color: #f5a623;
+    }
+
+    .issue-status.normal {
+      color: #4a90e2;
+    }
+
+    .issue-status.low {
+      color: #999;
     }
 
     .issue-desc {
@@ -338,12 +365,12 @@
     }
 
     .house-card:hover {
-      border-color: #999;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-color: #2d6a4f;
+      box-shadow: 0 2px 8px rgba(45,106,79,0.12);
     }
 
     .house-header {
-      background: #f8f8f8;
+      background: #fafaf9;
       padding: 16px;
       border-bottom: 1px solid #e0e0e0;
     }
@@ -351,7 +378,7 @@
     .house-name {
       font-size: 14px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 4px;
     }
 
@@ -378,7 +405,7 @@
 
     .house-stat-value {
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
     }
 
     .house-status {
@@ -432,7 +459,7 @@
     }
 
     .guests-table thead {
-      background: #f8f8f8;
+      background: #fafaf9;
       border-bottom: 1px solid #e0e0e0;
     }
 
@@ -459,7 +486,7 @@
 
     .guest-name {
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
     }
 
     .guest-status {
@@ -478,7 +505,7 @@
     }
 
     .guest-status.arriving {
-      background: #7ed321;
+      background: #2d6a4f;
       color: #ffffff;
     }
 
@@ -503,11 +530,11 @@
     }
 
     .day-column.today {
-      border: 2px solid #000;
+      border: 2px solid #2d6a4f;
     }
 
     .day-header {
-      background: #f8f8f8;
+      background: #fafaf9;
       padding: 12px;
       border-bottom: 1px solid #e0e0e0;
       text-align: center;
@@ -516,7 +543,7 @@
     .day-name {
       font-size: 12px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
     }
 
     .day-date {
@@ -526,7 +553,7 @@
     }
 
     .day-column.today .day-header {
-      background: #000;
+      background: #2d6a4f;
       color: #fff;
     }
 
@@ -535,7 +562,7 @@
     }
 
     .day-column.today .day-date {
-      color: #ccc;
+      color: #b7e4c7;
     }
 
     .day-events {
@@ -566,7 +593,7 @@
     }
 
     .day-event.service {
-      background: #7ed321;
+      background: #2d6a4f;
     }
 
     .day-event.cleaning {
@@ -575,7 +602,7 @@
 
     /* View: Issues */
     .issues-view {
-      max-width: 800px;
+      max-width: 900px;
     }
 
     .new-issue-form {
@@ -586,6 +613,12 @@
       margin-bottom: 24px;
     }
 
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
     .form-group {
       margin-bottom: 16px;
     }
@@ -594,7 +627,7 @@
       display: block;
       font-size: 13px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 6px;
     }
 
@@ -606,6 +639,7 @@
       border-radius: 6px;
       font-family: inherit;
       color: #333;
+      background: #fff;
     }
 
     .form-textarea {
@@ -615,8 +649,8 @@
 
     .form-input:focus, .form-select:focus, .form-textarea:focus {
       outline: none;
-      border-color: #666;
-      box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+      border-color: #2d6a4f;
+      box-shadow: 0 0 0 2px rgba(45,106,79,0.1);
     }
 
     .button-group {
@@ -636,12 +670,12 @@
     }
 
     .btn-primary {
-      background: #000;
+      background: #2d6a4f;
       color: #fff;
     }
 
     .btn-primary:hover {
-      background: #333;
+      background: #1b4332;
     }
 
     .btn-secondary {
@@ -652,6 +686,20 @@
 
     .btn-secondary:hover {
       background: #e0e0e0;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+
+    .btn-danger {
+      background: #e94b3c;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
     }
 
     .emergency-contacts {
@@ -670,20 +718,26 @@
 
     .contact-card {
       padding: 12px;
-      background: #f8f8f8;
+      background: #fafaf9;
       border-radius: 6px;
     }
 
     .contact-name {
       font-size: 13px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .contact-role {
+      font-size: 11px;
+      color: #999;
       margin-bottom: 4px;
     }
 
     .contact-phone {
       font-size: 12px;
-      color: #4a90e2;
+      color: #2d6a4f;
       text-decoration: none;
       font-weight: 500;
     }
@@ -714,12 +768,13 @@
       max-height: 90vh;
       overflow-y: auto;
       padding: 32px;
+      position: relative;
     }
 
     .modal-header {
       font-size: 20px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 16px;
     }
 
@@ -747,7 +802,7 @@
 
     .room-card {
       padding: 12px;
-      background: #f8f8f8;
+      background: #fafaf9;
       border-radius: 6px;
       border-left: 4px solid #e0e0e0;
     }
@@ -765,7 +820,7 @@
     .room-title {
       font-size: 13px;
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
       margin-bottom: 4px;
     }
 
@@ -775,7 +830,7 @@
     }
 
     .house-details {
-      background: #f8f8f8;
+      background: #fafaf9;
       padding: 12px;
       border-radius: 6px;
       margin-top: 16px;
@@ -798,7 +853,471 @@
 
     .detail-value {
       font-weight: 600;
-      color: #000;
+      color: #1a1a1a;
+    }
+
+    /* House Status Board */
+    .status-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .status-summary-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-top: 4px solid transparent;
+    }
+
+    .status-summary-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .status-summary-card.active {
+      border-color: #2d6a4f;
+      box-shadow: 0 2px 8px rgba(45,106,79,0.15);
+    }
+
+    .status-summary-card .count {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .status-summary-card .label {
+      font-size: 11px;
+      color: #666;
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-board-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-select {
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      background: #fff;
+      color: #333;
+    }
+
+    .status-board-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .status-property-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .status-property-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .status-property-banner {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-property-banner.ready {
+      background: #e8f5e9;
+      border-bottom: 2px solid #2d6a4f;
+    }
+
+    .status-property-banner.guest-in-house {
+      background: #e3f2fd;
+      border-bottom: 2px solid #4a90e2;
+    }
+
+    .status-property-banner.needs-attention {
+      background: #fff3e0;
+      border-bottom: 2px solid #f5a623;
+    }
+
+    .status-property-banner.turnover {
+      background: #fce4ec;
+      border-bottom: 2px solid #e94b3c;
+    }
+
+    .status-property-banner.issue-reported {
+      background: #f3e5f5;
+      border-bottom: 2px solid #9c27b0;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .status-badge.ready { background: #2d6a4f; }
+    .status-badge.guest-in-house { background: #4a90e2; }
+    .status-badge.needs-attention { background: #f5a623; }
+    .status-badge.turnover { background: #e94b3c; }
+    .status-badge.issue-reported { background: #9c27b0; }
+
+    .status-property-body {
+      padding: 16px;
+    }
+
+    .status-property-body .meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .status-property-body .meta-row strong {
+      color: #1a1a1a;
+    }
+
+    /* Issue Workflow */
+    .issue-workflow-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 4px solid;
+      transition: all 0.15s ease;
+    }
+
+    .issue-workflow-card:hover {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .issue-workflow-card.priority-urgent { border-left-color: #e94b3c; }
+    .issue-workflow-card.priority-high { border-left-color: #f5a623; }
+    .issue-workflow-card.priority-normal { border-left-color: #4a90e2; }
+    .issue-workflow-card.priority-low { border-left-color: #999; }
+
+    .issue-workflow-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .issue-workflow-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .issue-meta-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .meta-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-tag.category {
+      background: #e0e0e0;
+      color: #555;
+    }
+
+    .meta-tag.priority-urgent { background: #fdecea; color: #e94b3c; }
+    .meta-tag.priority-high { background: #fff3e0; color: #e68a00; }
+    .meta-tag.priority-normal { background: #e3f2fd; color: #4a90e2; }
+    .meta-tag.priority-low { background: #f5f5f5; color: #999; }
+
+    .meta-tag.status-reported { background: #fce4ec; color: #c62828; }
+    .meta-tag.status-assigned { background: #e3f2fd; color: #1565c0; }
+    .meta-tag.status-in-progress { background: #fff3e0; color: #e68a00; }
+    .meta-tag.status-resolved { background: #e8f5e9; color: #2d6a4f; }
+
+    .issue-workflow-details {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .issue-workflow-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #999;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .escalation-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: #fdecea;
+      color: #e94b3c;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      animation: pulse-bg 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-bg {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .issue-action-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .issue-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Field Logistics */
+    .logistics-section {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .route-stop {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      background: #fafaf9;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .route-stop-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2d6a4f;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .route-stop-info {
+      flex: 1;
+    }
+
+    .route-stop-name {
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .route-stop-tasks {
+      font-size: 12px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .route-stop-eta {
+      font-size: 12px;
+      font-weight: 600;
+      color: #2d6a4f;
+      white-space: nowrap;
+    }
+
+    .route-connector {
+      width: 28px;
+      display: flex;
+      justify-content: center;
+      padding: 0 0 0 0;
+    }
+
+    .route-connector-line {
+      width: 2px;
+      height: 16px;
+      background: #d0d0d0;
+    }
+
+    .supply-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .supply-table thead {
+      background: #fafaf9;
+    }
+
+    .supply-table th {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .supply-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #333;
+    }
+
+    .supply-level {
+      display: inline-block;
+      width: 60px;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    .supply-level-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .supply-level-fill.good { background: #2d6a4f; }
+    .supply-level-fill.warning { background: #f5a623; }
+    .supply-level-fill.critical { background: #e94b3c; }
+
+    .vendor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .vendor-card {
+      padding: 14px;
+      background: #fafaf9;
+      border-radius: 6px;
+      border-left: 3px solid #2d6a4f;
+    }
+
+    .vendor-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 2px;
+    }
+
+    .vendor-category {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 6px;
+    }
+
+    .vendor-phone {
+      font-size: 13px;
+      color: #2d6a4f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .vendor-phone:hover {
+      text-decoration: underline;
+    }
+
+    .vendor-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* Tabs within views */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .view-tab {
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #999;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s ease;
+    }
+
+    .view-tab:hover {
+      color: #2d6a4f;
+    }
+
+    .view-tab.active {
+      color: #2d6a4f;
+      border-bottom-color: #2d6a4f;
     }
 
     @media (max-width: 1024px) {
@@ -866,6 +1385,10 @@
         white-space: nowrap;
       }
 
+      .nav-section-label {
+        display: none;
+      }
+
       .nav-footer {
         display: none;
       }
@@ -903,6 +1426,14 @@
       .guests-table th, .guests-table td {
         padding: 8px 12px;
       }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .status-board-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -910,7 +1441,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useMemo } = React;
 
     // Sample data
     const SAMPLE_DATA = {
@@ -923,91 +1454,145 @@
           id: 1,
           name: 'Bellevue Ave',
           address: '419 Bellevue Ave, Augusta GA',
+          neighborhood: 'West Augusta',
+          propertyType: 'Single Family',
           rooms: 6,
           occupied: 4,
           vacant: 1,
           cleaning: 1,
+          houseStatus: 'guest-in-house',
           lastCleaned: 'Today 10:30 AM',
           nextCleaning: 'Tomorrow 9:00 AM',
           guests: ['John Smith', 'Jane Smith', 'Tom Wilson', 'Sarah Johnson'],
           wifiStatus: 'Connected',
           parkingSpaces: 3,
-          issues: []
+          issues: [],
+          supplies: {
+            linens: 85,
+            toiletries: 70,
+            kitchen: 90,
+            cleaning: 60
+          }
         },
         {
           id: 2,
           name: 'Cumming Rd',
           address: '427 Cumming Rd, Augusta GA',
+          neighborhood: 'Summerville',
+          propertyType: 'Single Family',
           rooms: 5,
           occupied: 3,
           vacant: 2,
           cleaning: 0,
+          houseStatus: 'issue-reported',
           lastCleaned: 'Today 8:15 AM',
           nextCleaning: 'Tomorrow 2:00 PM',
           guests: ['Mike Davis', 'Lisa Davis', 'Robert Brown'],
           wifiStatus: 'Down',
           parkingSpaces: 2,
-          issues: [{ id: 1, text: 'Wi-Fi down', status: 'In Progress' }]
+          issues: [{ id: 1, text: 'Wi-Fi down', status: 'In Progress' }],
+          supplies: {
+            linens: 50,
+            toiletries: 40,
+            kitchen: 65,
+            cleaning: 80
+          }
         },
         {
           id: 3,
           name: 'Johns Rd',
           address: '512 Johns Rd, Augusta GA',
+          neighborhood: 'West Augusta',
+          propertyType: 'Townhouse',
           rooms: 5,
           occupied: 5,
           vacant: 0,
           cleaning: 0,
+          houseStatus: 'guest-in-house',
           lastCleaned: 'Today 7:00 AM',
           nextCleaning: 'Tomorrow 10:30 AM',
           guests: ['David Lee', 'Maria Lee', 'James Taylor', 'Amanda Taylor', 'Chris Wilson'],
           wifiStatus: 'Connected',
           parkingSpaces: 2,
-          issues: []
+          issues: [],
+          supplies: {
+            linens: 30,
+            toiletries: 25,
+            kitchen: 45,
+            cleaning: 55
+          }
         },
         {
           id: 4,
           name: 'Milledge Rd',
           address: '634 Milledge Rd, Augusta GA',
+          neighborhood: 'Summerville',
+          propertyType: 'Single Family',
           rooms: 6,
           occupied: 2,
           vacant: 3,
           cleaning: 1,
+          houseStatus: 'turnover',
           lastCleaned: 'Yesterday 3:45 PM',
           nextCleaning: 'Today 3:00 PM',
           guests: ['Patricia Miller', 'George Miller'],
           wifiStatus: 'Connected',
           parkingSpaces: 4,
-          issues: [{ id: 2, text: 'Cleaning crew running 45 min late', status: 'Patron Notified' }]
+          issues: [{ id: 2, text: 'Cleaning crew running 45 min late', status: 'Patron Notified' }],
+          supplies: {
+            linens: 90,
+            toiletries: 85,
+            kitchen: 70,
+            cleaning: 95
+          }
         },
         {
           id: 5,
           name: 'Wheeler Rd',
           address: '721 Wheeler Rd, Augusta GA',
+          neighborhood: 'National Hills',
+          propertyType: 'Single Family',
           rooms: 5,
           occupied: 2,
           vacant: 3,
           cleaning: 0,
+          houseStatus: 'ready',
           lastCleaned: 'Today 11:15 AM',
           nextCleaning: 'Tomorrow 11:00 AM',
           guests: ['Kevin Anderson', 'Jennifer Anderson'],
           wifiStatus: 'Connected',
           parkingSpaces: 3,
-          issues: []
+          issues: [],
+          supplies: {
+            linens: 95,
+            toiletries: 90,
+            kitchen: 80,
+            cleaning: 85
+          }
         },
         {
           id: 6,
           name: 'Highland Ave',
           address: '814 Highland Ave, Augusta GA',
+          neighborhood: 'National Hills',
+          propertyType: 'Townhouse',
           rooms: 4,
           occupied: 2,
           vacant: 2,
           cleaning: 0,
+          houseStatus: 'needs-attention',
           lastCleaned: 'Today 9:30 AM',
           nextCleaning: 'Tomorrow 1:00 PM',
           guests: ['Jessica Martinez', 'Carlos Martinez'],
           wifiStatus: 'Connected',
           parkingSpaces: 2,
-          issues: []
+          issues: [],
+          supplies: {
+            linens: 20,
+            toiletries: 15,
+            kitchen: 30,
+            cleaning: 40
+          }
         }
       ],
       guests: [
@@ -1041,16 +1626,138 @@
         { time: '6:00 PM', type: 'service', description: 'Chef arrival — Johns Rd', house: 'Johns Rd' }
       ],
       issues: [
-        { id: 1, house: 'Cumming Rd', title: 'Wi-Fi down at 419 Cumming Rd', description: 'Internet connection down at master level and guest rooms. Called ISP, waiting for technician.', status: 'In Progress', priority: 'urgent', reported: '8:15 AM', updated: '8:45 AM' },
+        { id: 1, house: 'Cumming Rd', title: 'Wi-Fi down at 427 Cumming Rd', description: 'Internet connection down at master level and guest rooms. Called ISP, waiting for technician.', status: 'In Progress', priority: 'urgent', reported: '8:15 AM', updated: '8:45 AM' },
         { id: 2, house: 'Milledge Rd', title: 'Cleaning crew running late', description: 'Scheduled cleaning crew 45 minutes behind schedule. Patron notified. Estimated arrival 3:45 PM.', status: 'Patron Notified', priority: 'attention', reported: '9:00 AM', updated: '10:30 AM' }
+      ],
+      vendors: [
+        { name: 'Augusta Plumbing Co.', category: 'Plumbing', phone: '+17065556789', note: '24/7 emergency line' },
+        { name: 'Comfort Zone HVAC', category: 'HVAC', phone: '+17065554321', note: 'Ask for Marcus — knows our properties' },
+        { name: 'Bright Spark Electric', category: 'Electrical', phone: '+17065559876', note: 'Licensed, 2-hr response guaranteed' },
+        { name: 'Crystal Clear Windows', category: 'Cleaning', phone: '+17065555555', note: 'Booking 48hrs in advance' },
+        { name: 'AllFix Appliance', category: 'Appliance Repair', phone: '+17065557777', note: 'Samsung & LG certified' },
+        { name: 'Augusta Locksmith', category: 'Locksmith', phone: '+17065551122', note: '30-min response time' },
+        { name: 'GreenScape Lawn', category: 'Landscaping', phone: '+17065553344', note: 'Weekly service — Wed AM' },
+        { name: 'Pest-B-Gone', category: 'Pest Control', phone: '+17065558800', note: 'Same-day available' },
+        { name: 'A1 Linen Supply', category: 'Linen Service', phone: '+17065559911', note: 'Delivery: Mon/Wed/Fri by 10 AM' },
+        { name: 'Chef Augusta Catering', category: 'Catering', phone: '+17065552200', note: 'Confirm 24hrs ahead' }
       ]
+    };
+
+    // Issue workflow data
+    const INITIAL_WORKFLOW_ISSUES = [
+      {
+        id: 101,
+        house: 'Cumming Rd',
+        title: 'Wi-Fi down — entire house',
+        description: 'Internet connection down at master level and guest rooms. ISP technician dispatched.',
+        category: 'maintenance',
+        priority: 'urgent',
+        status: 'in-progress',
+        assignedTo: 'Marcus (Tech)',
+        reportedAt: '2026-04-08T08:15:00',
+        updatedAt: '2026-04-08T08:45:00',
+        resolvedAt: null,
+        escalated: true
+      },
+      {
+        id: 102,
+        house: 'Milledge Rd',
+        title: 'Cleaning crew 45 min late',
+        description: 'Crew delayed in traffic. Guest arrival at 4 PM. Need turnover complete by 3:30.',
+        category: 'maintenance',
+        priority: 'high',
+        status: 'assigned',
+        assignedTo: 'Sarah (Ops)',
+        reportedAt: '2026-04-08T09:00:00',
+        updatedAt: '2026-04-08T10:30:00',
+        resolvedAt: null,
+        escalated: false
+      },
+      {
+        id: 103,
+        house: 'Highland Ave',
+        title: 'Low toiletry supply',
+        description: 'Guest bathroom running low on shampoo, conditioner, and body wash. Only 1 set remaining.',
+        category: 'supply-shortage',
+        priority: 'normal',
+        status: 'assigned',
+        assignedTo: 'Kim (Runner)',
+        reportedAt: '2026-04-08T07:30:00',
+        updatedAt: '2026-04-08T07:45:00',
+        resolvedAt: null,
+        escalated: false
+      },
+      {
+        id: 104,
+        house: 'Johns Rd',
+        title: 'Guest locked out — back patio',
+        description: 'Guest reported patio door lock jammed. Locksmith called.',
+        category: 'access-issue',
+        priority: 'high',
+        status: 'in-progress',
+        assignedTo: 'Marcus (Tech)',
+        reportedAt: '2026-04-08T10:00:00',
+        updatedAt: '2026-04-08T10:20:00',
+        resolvedAt: null,
+        escalated: false
+      },
+      {
+        id: 105,
+        house: 'Bellevue Ave',
+        title: 'Noise complaint from neighbor',
+        description: 'Neighbor called about music volume last night. Spoke with guest — resolved amicably.',
+        category: 'guest-complaint',
+        priority: 'low',
+        status: 'resolved',
+        assignedTo: 'Sarah (Ops)',
+        reportedAt: '2026-04-07T22:30:00',
+        updatedAt: '2026-04-07T23:00:00',
+        resolvedAt: '2026-04-07T23:00:00',
+        escalated: false
+      }
+    ];
+
+    const TEAM_MEMBERS = [
+      'Sarah (Ops)',
+      'Marcus (Tech)',
+      'Kim (Runner)',
+      'Taite (Lead)',
+      'Jordan (Support)'
+    ];
+
+    const STATUS_CONFIG = {
+      'ready': { label: 'Ready', color: '#2d6a4f' },
+      'guest-in-house': { label: 'Guest In-House', color: '#4a90e2' },
+      'needs-attention': { label: 'Needs Attention', color: '#f5a623' },
+      'turnover': { label: 'Turnover In Progress', color: '#e94b3c' },
+      'issue-reported': { label: 'Issue Reported', color: '#9c27b0' }
     };
 
     const App = () => {
       const [activeView, setActiveView] = useState('today');
       const [selectedHouse, setSelectedHouse] = useState(null);
       const [showHouseModal, setShowHouseModal] = useState(false);
-      const [newIssue, setNewIssue] = useState({ house: '', description: '', priority: 'attention' });
+
+      // Issue workflow state
+      const [workflowIssues, setWorkflowIssues] = useState(INITIAL_WORKFLOW_ISSUES);
+      const [newIssue, setNewIssue] = useState({
+        house: '',
+        title: '',
+        description: '',
+        category: 'maintenance',
+        priority: 'normal',
+        assignedTo: ''
+      });
+      const [issueStatusFilter, setIssueStatusFilter] = useState('all');
+      const [issuePriorityFilter, setIssuePriorityFilter] = useState('all');
+
+      // Status board state
+      const [statusFilter, setStatusFilter] = useState('all');
+      const [neighborhoodFilter, setNeighborhoodFilter] = useState('all');
+      const [propertyTypeFilter, setPropertyTypeFilter] = useState('all');
+
+      // Logistics sub-tab
+      const [logisticsTab, setLogisticsTab] = useState('routes');
 
       const today = new Date(2026, 3, 8); // Tuesday April 8
 
@@ -1083,11 +1790,120 @@
         setShowHouseModal(true);
       };
 
+      // Status board computed values
+      const statusCounts = useMemo(() => {
+        const counts = { 'ready': 0, 'guest-in-house': 0, 'needs-attention': 0, 'turnover': 0, 'issue-reported': 0 };
+        SAMPLE_DATA.houses.forEach(h => {
+          if (counts[h.houseStatus] !== undefined) counts[h.houseStatus]++;
+        });
+        return counts;
+      }, []);
+
+      const filteredHouses = useMemo(() => {
+        return SAMPLE_DATA.houses.filter(h => {
+          if (statusFilter !== 'all' && h.houseStatus !== statusFilter) return false;
+          if (neighborhoodFilter !== 'all' && h.neighborhood !== neighborhoodFilter) return false;
+          if (propertyTypeFilter !== 'all' && h.propertyType !== propertyTypeFilter) return false;
+          return true;
+        });
+      }, [statusFilter, neighborhoodFilter, propertyTypeFilter]);
+
+      const neighborhoods = [...new Set(SAMPLE_DATA.houses.map(h => h.neighborhood))];
+      const propertyTypes = [...new Set(SAMPLE_DATA.houses.map(h => h.propertyType))];
+
+      // Issue workflow
+      const filteredWorkflowIssues = useMemo(() => {
+        return workflowIssues.filter(issue => {
+          if (issueStatusFilter !== 'all' && issue.status !== issueStatusFilter) return false;
+          if (issuePriorityFilter !== 'all' && issue.priority !== issuePriorityFilter) return false;
+          return true;
+        });
+      }, [workflowIssues, issueStatusFilter, issuePriorityFilter]);
+
       const handleSubmitIssue = () => {
-        if (newIssue.house && newIssue.description) {
-          alert('Issue submitted: ' + newIssue.description);
-          setNewIssue({ house: '', description: '', priority: 'attention' });
+        if (newIssue.house && newIssue.title && newIssue.description) {
+          const now = new Date().toISOString();
+          setWorkflowIssues(prev => [{
+            id: Date.now(),
+            house: newIssue.house,
+            title: newIssue.title,
+            description: newIssue.description,
+            category: newIssue.category,
+            priority: newIssue.priority,
+            status: newIssue.assignedTo ? 'assigned' : 'reported',
+            assignedTo: newIssue.assignedTo || 'Unassigned',
+            reportedAt: now,
+            updatedAt: now,
+            resolvedAt: null,
+            escalated: false
+          }, ...prev]);
+          setNewIssue({ house: '', title: '', description: '', category: 'maintenance', priority: 'normal', assignedTo: '' });
         }
+      };
+
+      const updateIssueStatus = (issueId, newStatus) => {
+        setWorkflowIssues(prev => prev.map(issue => {
+          if (issue.id === issueId) {
+            return {
+              ...issue,
+              status: newStatus,
+              updatedAt: new Date().toISOString(),
+              resolvedAt: newStatus === 'resolved' ? new Date().toISOString() : issue.resolvedAt
+            };
+          }
+          return issue;
+        }));
+      };
+
+      const getTimeSince = (isoString) => {
+        const reported = new Date(isoString);
+        const now = new Date(2026, 3, 8, 11, 0, 0);
+        const diffMs = now - reported;
+        const diffMins = Math.floor(diffMs / 60000);
+        if (diffMins < 60) return `${diffMins}m ago`;
+        const diffHrs = Math.floor(diffMins / 60);
+        if (diffHrs < 24) return `${diffHrs}h ${diffMins % 60}m ago`;
+        return `${Math.floor(diffHrs / 24)}d ago`;
+      };
+
+      const getResolutionTime = (issue) => {
+        if (!issue.resolvedAt) return null;
+        const start = new Date(issue.reportedAt);
+        const end = new Date(issue.resolvedAt);
+        const diffMins = Math.floor((end - start) / 60000);
+        if (diffMins < 60) return `${diffMins}m`;
+        return `${Math.floor(diffMins / 60)}h ${diffMins % 60}m`;
+      };
+
+      const isOverdue = (issue) => {
+        if (issue.status === 'resolved') return false;
+        if (issue.priority === 'urgent') {
+          const reported = new Date(issue.reportedAt);
+          const now = new Date(2026, 3, 8, 11, 0, 0);
+          return (now - reported) > 60 * 60 * 1000; // 1 hour for urgent
+        }
+        if (issue.priority === 'high') {
+          const reported = new Date(issue.reportedAt);
+          const now = new Date(2026, 3, 8, 11, 0, 0);
+          return (now - reported) > 3 * 60 * 60 * 1000; // 3 hours for high
+        }
+        return false;
+      };
+
+      // Route data
+      const routeStops = [
+        { property: 'Highland Ave', tasks: 'Restock toiletries, check linens', eta: '8:15 AM', distance: '—' },
+        { property: 'Johns Rd', tasks: 'Locksmith meet, guest check-in', eta: '8:45 AM', distance: '1.2 mi' },
+        { property: 'Cumming Rd', tasks: 'ISP technician meet, Wi-Fi check', eta: '9:30 AM', distance: '0.8 mi' },
+        { property: 'Milledge Rd', tasks: 'Cleaning crew check, turnover prep', eta: '10:15 AM', distance: '1.5 mi' },
+        { property: 'Bellevue Ave', tasks: 'Chef coordination, supply drop', eta: '11:00 AM', distance: '0.6 mi' },
+        { property: 'Wheeler Rd', tasks: 'Pre-arrival inspection', eta: '11:45 AM', distance: '2.1 mi' }
+      ];
+
+      const getSupplyLevel = (pct) => {
+        if (pct >= 60) return 'good';
+        if (pct >= 30) return 'warning';
+        return 'critical';
       };
 
       return (
@@ -1096,14 +1912,17 @@
           <nav className="nav-sidebar">
             <div className="nav-header">
               <div className="nav-logo">Patron</div>
-              <div className="nav-title">Operations</div>
+              <div className="nav-title">Tournament Ops</div>
             </div>
             <div className="nav-items">
               <button className={`nav-item ${activeView === 'today' ? 'active' : ''}`} onClick={() => setActiveView('today')}>Today</button>
+              <button className={`nav-item ${activeView === 'statusBoard' ? 'active' : ''}`} onClick={() => setActiveView('statusBoard')}>Status Board</button>
               <button className={`nav-item ${activeView === 'houses' ? 'active' : ''}`} onClick={() => setActiveView('houses')}>Houses</button>
               <button className={`nav-item ${activeView === 'guests' ? 'active' : ''}`} onClick={() => setActiveView('guests')}>Guests</button>
               <button className={`nav-item ${activeView === 'schedule' ? 'active' : ''}`} onClick={() => setActiveView('schedule')}>Schedule</button>
+              <div className="nav-section-label">Operations</div>
               <button className={`nav-item ${activeView === 'issues' ? 'active' : ''}`} onClick={() => setActiveView('issues')}>Issues</button>
+              <button className={`nav-item ${activeView === 'logistics' ? 'active' : ''}`} onClick={() => setActiveView('logistics')}>Field Logistics</button>
             </div>
             <div className="nav-footer">
               <strong>Wasserman</strong>
@@ -1117,16 +1936,17 @@
             <header className="header">
               <div className="header-left">
                 <h1>{SAMPLE_DATA.program}</h1>
-                <div className="header-subtitle">Masters Week Operations</div>
+                <div className="header-subtitle">Masters Week Operations — PM-03</div>
               </div>
               <div className="header-right">
-                <div className="weather-widget">72°F, Sunny — Perfect for the course</div>
+                <div className="weather-widget">72 F, Sunny — Perfect for the course</div>
                 <div className="time-widget">{getDayLabel(today)}, {formatDate(today)}</div>
               </div>
             </header>
 
             {/* Content Area */}
             <div className="content-area">
+              {/* ===== TODAY VIEW ===== */}
               {activeView === 'today' && (
                 <div className="today-view">
                   <div>
@@ -1149,8 +1969,12 @@
                       <div className="stat-label">Departing Today</div>
                     </div>
                     <div className="stat-card">
-                      <div className="stat-number">2</div>
+                      <div className="stat-number" style={{ color: '#e94b3c' }}>{workflowIssues.filter(i => i.status !== 'resolved').length}</div>
                       <div className="stat-label">Active Issues</div>
+                    </div>
+                    <div className="stat-card">
+                      <div className="stat-number" style={{ color: '#f5a623' }}>{workflowIssues.filter(i => isOverdue(i)).length}</div>
+                      <div className="stat-label">Overdue</div>
                     </div>
                   </div>
 
@@ -1172,14 +1996,17 @@
                   <div className="section">
                     <div className="section-title">Active Issues</div>
                     <div className="issues-list">
-                      {SAMPLE_DATA.issues.map(issue => (
+                      {workflowIssues.filter(i => i.status !== 'resolved').slice(0, 4).map(issue => (
                         <div key={issue.id} className={`issue-card ${issue.priority}`}>
                           <div className="issue-header">
                             <div className="issue-title">{issue.title}</div>
-                            <div className={`issue-status ${issue.priority}`}>{issue.status}</div>
+                            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                              {isOverdue(issue) && <span className="escalation-indicator">OVERDUE</span>}
+                              <div className={`issue-status ${issue.priority}`}>{issue.status}</div>
+                            </div>
                           </div>
                           <div className="issue-desc">{issue.description}</div>
-                          <div className="issue-time">Reported {issue.reported} • Updated {issue.updated}</div>
+                          <div className="issue-time">{issue.house} — Assigned to {issue.assignedTo} — {getTimeSince(issue.reportedAt)}</div>
                         </div>
                       ))}
                     </div>
@@ -1187,6 +2014,98 @@
                 </div>
               )}
 
+              {/* ===== STATUS BOARD VIEW ===== */}
+              {activeView === 'statusBoard' && (
+                <div>
+                  <div className="section-title" style={{ marginBottom: '20px' }}>House Status Board</div>
+
+                  {/* Dashboard summary counts */}
+                  <div className="status-dashboard">
+                    {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
+                      <div
+                        key={key}
+                        className={`status-summary-card ${statusFilter === key ? 'active' : ''}`}
+                        style={{ borderTopColor: cfg.color }}
+                        onClick={() => setStatusFilter(statusFilter === key ? 'all' : key)}
+                      >
+                        <div className="count" style={{ color: cfg.color }}>{statusCounts[key]}</div>
+                        <div className="label">{cfg.label}</div>
+                      </div>
+                    ))}
+                    <div
+                      className={`status-summary-card ${statusFilter === 'all' ? 'active' : ''}`}
+                      style={{ borderTopColor: '#666' }}
+                      onClick={() => setStatusFilter('all')}
+                    >
+                      <div className="count" style={{ color: '#1a1a1a' }}>{SAMPLE_DATA.houses.length}</div>
+                      <div className="label">All Properties</div>
+                    </div>
+                  </div>
+
+                  {/* Filters */}
+                  <div className="status-board-filters">
+                    <div className="filter-group">
+                      <label>Neighborhood:</label>
+                      <select className="filter-select" value={neighborhoodFilter} onChange={e => setNeighborhoodFilter(e.target.value)}>
+                        <option value="all">All</option>
+                        {neighborhoods.map(n => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    </div>
+                    <div className="filter-group">
+                      <label>Type:</label>
+                      <select className="filter-select" value={propertyTypeFilter} onChange={e => setPropertyTypeFilter(e.target.value)}>
+                        <option value="all">All</option>
+                        {propertyTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#999' }}>
+                      Showing {filteredHouses.length} of {SAMPLE_DATA.houses.length} properties
+                    </span>
+                  </div>
+
+                  {/* Property cards */}
+                  <div className="status-board-grid">
+                    {filteredHouses.map(house => (
+                      <div key={house.id} className="status-property-card" onClick={() => handleOpenHouseModal(house)} style={{ cursor: 'pointer' }}>
+                        <div className={`status-property-banner ${house.houseStatus}`}>
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: '15px', color: '#1a1a1a' }}>{house.name}</div>
+                            <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>{house.neighborhood}</div>
+                          </div>
+                          <span className={`status-badge ${house.houseStatus}`}>
+                            {STATUS_CONFIG[house.houseStatus]?.label || house.houseStatus}
+                          </span>
+                        </div>
+                        <div className="status-property-body">
+                          <div className="meta-row">
+                            <span>Occupancy</span>
+                            <strong>{house.occupied}/{house.rooms} rooms</strong>
+                          </div>
+                          <div className="meta-row">
+                            <span>Guests</span>
+                            <strong>{house.guests.length}</strong>
+                          </div>
+                          <div className="meta-row">
+                            <span>Wi-Fi</span>
+                            <strong style={{ color: house.wifiStatus === 'Down' ? '#e94b3c' : '#2d6a4f' }}>{house.wifiStatus}</strong>
+                          </div>
+                          <div className="meta-row">
+                            <span>Next Cleaning</span>
+                            <strong>{house.nextCleaning}</strong>
+                          </div>
+                          {house.issues.length > 0 && (
+                            <div style={{ marginTop: '8px', padding: '6px 10px', background: 'rgba(233,75,60,0.08)', borderRadius: '4px', fontSize: '11px', color: '#e94b3c', fontWeight: 600 }}>
+                              {house.issues.length} active issue{house.issues.length > 1 ? 's' : ''}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ===== HOUSES VIEW ===== */}
               {activeView === 'houses' && (
                 <div>
                   <div className="section-title" style={{ marginBottom: '20px' }}>Property Status</div>
@@ -1204,7 +2123,7 @@
                           </div>
                           <div className="house-stat">
                             <span className="house-stat-label">Wi-Fi Status</span>
-                            <span className="house-stat-value" style={{ color: house.wifiStatus === 'Down' ? '#e94b3c' : '#4a90e2' }}>{house.wifiStatus}</span>
+                            <span className="house-stat-value" style={{ color: house.wifiStatus === 'Down' ? '#e94b3c' : '#2d6a4f' }}>{house.wifiStatus}</span>
                           </div>
                           <div className="house-stat">
                             <span className="house-stat-label">Parking</span>
@@ -1231,6 +2150,7 @@
                 </div>
               )}
 
+              {/* ===== GUESTS VIEW ===== */}
               {activeView === 'guests' && (
                 <div>
                   <div className="section-title" style={{ marginBottom: '20px' }}>All Guests</div>
@@ -1251,7 +2171,7 @@
                           <td>{guest.house}</td>
                           <td>{guest.room}</td>
                           <td><span className={`guest-status ${guest.status.replace('-', '-')}`}>{guest.status.replace('-', ' ')}</span></td>
-                          <td><a href={`tel:${guest.contact}`} style={{ color: '#4a90e2', textDecoration: 'none' }}>{guest.contact}</a></td>
+                          <td><a href={`tel:${guest.contact}`} style={{ color: '#2d6a4f', textDecoration: 'none' }}>{guest.contact}</a></td>
                         </tr>
                       ))}
                     </tbody>
@@ -1259,6 +2179,7 @@
                 </div>
               )}
 
+              {/* ===== SCHEDULE VIEW ===== */}
               {activeView === 'schedule' && (
                 <div>
                   <div className="section-title" style={{ marginBottom: '20px' }}>Week at a Glance</div>
@@ -1288,36 +2209,136 @@
                 </div>
               )}
 
+              {/* ===== ISSUES VIEW (Enhanced Workflow) ===== */}
               {activeView === 'issues' && (
                 <div className="issues-view">
+                  {/* New Issue Form */}
                   <div className="new-issue-form">
-                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#000', marginBottom: '20px' }}>Report New Issue</div>
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '20px' }}>Report New Issue</div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label className="form-label">House</label>
+                        <select className="form-select" value={newIssue.house} onChange={(e) => setNewIssue({ ...newIssue, house: e.target.value })}>
+                          <option value="">Select a house</option>
+                          {SAMPLE_DATA.houses.map(h => <option key={h.id} value={h.name}>{h.name}</option>)}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Category</label>
+                        <select className="form-select" value={newIssue.category} onChange={(e) => setNewIssue({ ...newIssue, category: e.target.value })}>
+                          <option value="maintenance">Maintenance</option>
+                          <option value="guest-complaint">Guest Complaint</option>
+                          <option value="supply-shortage">Supply Shortage</option>
+                          <option value="access-issue">Access Issue</option>
+                        </select>
+                      </div>
+                    </div>
                     <div className="form-group">
-                      <label className="form-label">House</label>
-                      <select className="form-select" value={newIssue.house} onChange={(e) => setNewIssue({ ...newIssue, house: e.target.value })}>
-                        <option value="">Select a house</option>
-                        {SAMPLE_DATA.houses.map(h => <option key={h.id} value={h.name}>{h.name}</option>)}
-                      </select>
+                      <label className="form-label">Issue Title</label>
+                      <input className="form-input" type="text" placeholder="Brief summary" value={newIssue.title} onChange={(e) => setNewIssue({ ...newIssue, title: e.target.value })} />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Description</label>
-                      <textarea className="form-textarea" placeholder="What's the issue?" value={newIssue.description} onChange={(e) => setNewIssue({ ...newIssue, description: e.target.value })}></textarea>
+                      <textarea className="form-textarea" placeholder="What's the issue? Include details for the assigned team member." value={newIssue.description} onChange={(e) => setNewIssue({ ...newIssue, description: e.target.value })}></textarea>
                     </div>
-                    <div className="form-group">
-                      <label className="form-label">Priority</label>
-                      <select className="form-select" value={newIssue.priority} onChange={(e) => setNewIssue({ ...newIssue, priority: e.target.value })}>
-                        <option value="attention">Attention</option>
-                        <option value="urgent">Urgent</option>
-                      </select>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label className="form-label">Priority</label>
+                        <select className="form-select" value={newIssue.priority} onChange={(e) => setNewIssue({ ...newIssue, priority: e.target.value })}>
+                          <option value="low">Low</option>
+                          <option value="normal">Normal</option>
+                          <option value="high">High</option>
+                          <option value="urgent">Urgent</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Assign To</label>
+                        <select className="form-select" value={newIssue.assignedTo} onChange={(e) => setNewIssue({ ...newIssue, assignedTo: e.target.value })}>
+                          <option value="">Unassigned</option>
+                          {TEAM_MEMBERS.map(m => <option key={m} value={m}>{m}</option>)}
+                        </select>
+                      </div>
                     </div>
                     <div className="button-group">
-                      <button className="btn btn-secondary">Cancel</button>
+                      <button className="btn btn-secondary" onClick={() => setNewIssue({ house: '', title: '', description: '', category: 'maintenance', priority: 'normal', assignedTo: '' })}>Clear</button>
                       <button className="btn btn-primary" onClick={handleSubmitIssue}>Submit Issue</button>
                     </div>
                   </div>
 
-                  <div className="emergency-contacts">
-                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#000', marginBottom: '20px' }}>Emergency Contacts</div>
+                  {/* Issue Filters */}
+                  <div className="issue-filters">
+                    <div className="filter-group">
+                      <label>Status:</label>
+                      <select className="filter-select" value={issueStatusFilter} onChange={e => setIssueStatusFilter(e.target.value)}>
+                        <option value="all">All</option>
+                        <option value="reported">Reported</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                      </select>
+                    </div>
+                    <div className="filter-group">
+                      <label>Priority:</label>
+                      <select className="filter-select" value={issuePriorityFilter} onChange={e => setIssuePriorityFilter(e.target.value)}>
+                        <option value="all">All</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="high">High</option>
+                        <option value="normal">Normal</option>
+                        <option value="low">Low</option>
+                      </select>
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#999' }}>
+                      {filteredWorkflowIssues.length} issue{filteredWorkflowIssues.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+
+                  {/* Issue Cards */}
+                  {filteredWorkflowIssues.map(issue => (
+                    <div key={issue.id} className={`issue-workflow-card priority-${issue.priority}`}>
+                      <div className="issue-workflow-header">
+                        <div className="issue-workflow-title">{issue.title}</div>
+                        {isOverdue(issue) && <span className="escalation-indicator">ESCALATE — OVERDUE</span>}
+                      </div>
+                      <div className="issue-meta-tags">
+                        <span className={`meta-tag priority-${issue.priority}`}>{issue.priority}</span>
+                        <span className={`meta-tag status-${issue.status}`}>{issue.status.replace('-', ' ')}</span>
+                        <span className="meta-tag category">{issue.category.replace('-', ' ')}</span>
+                      </div>
+                      <div className="issue-workflow-details">
+                        {issue.description}
+                      </div>
+                      <div className="issue-workflow-footer">
+                        <div>
+                          <strong>{issue.house}</strong> — Assigned to <strong>{issue.assignedTo}</strong>
+                        </div>
+                        <div>
+                          Reported {getTimeSince(issue.reportedAt)}
+                          {issue.status === 'resolved' && getResolutionTime(issue) && (
+                            <span style={{ marginLeft: '8px', color: '#2d6a4f', fontWeight: 600 }}>
+                              Resolved in {getResolutionTime(issue)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {issue.status !== 'resolved' && (
+                        <div className="issue-action-row">
+                          {issue.status === 'reported' && (
+                            <button className="btn btn-sm btn-secondary" onClick={() => updateIssueStatus(issue.id, 'assigned')}>Assign</button>
+                          )}
+                          {issue.status === 'assigned' && (
+                            <button className="btn btn-sm btn-primary" onClick={() => updateIssueStatus(issue.id, 'in-progress')}>Start Work</button>
+                          )}
+                          {issue.status === 'in-progress' && (
+                            <button className="btn btn-sm btn-primary" style={{ background: '#2d6a4f' }} onClick={() => updateIssueStatus(issue.id, 'resolved')}>Resolve</button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Emergency Contacts */}
+                  <div className="emergency-contacts" style={{ marginTop: '24px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '20px' }}>Emergency Contacts</div>
                     <div className="contact-grid">
                       <div className="contact-card">
                         <div className="contact-name">Patron Hotline</div>
@@ -1345,22 +2366,148 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              )}
 
-                  <div className="section">
-                    <div className="section-title">Active Issues</div>
-                    <div className="issues-list">
-                      {SAMPLE_DATA.issues.map(issue => (
-                        <div key={issue.id} className={`issue-card ${issue.priority}`}>
-                          <div className="issue-header">
-                            <div className="issue-title">{issue.title}</div>
-                            <div className={`issue-status ${issue.priority}`}>{issue.status}</div>
-                          </div>
-                          <div className="issue-desc">{issue.description}</div>
-                          <div className="issue-time">Reported {issue.reported} • Updated {issue.updated}</div>
-                        </div>
-                      ))}
-                    </div>
+              {/* ===== FIELD LOGISTICS VIEW ===== */}
+              {activeView === 'logistics' && (
+                <div>
+                  <div className="section-title" style={{ marginBottom: '4px' }}>Field Logistics</div>
+                  <div style={{ fontSize: '13px', color: '#666', marginBottom: '20px' }}>Route planning, supply tracking, and vendor contacts for field staff</div>
+
+                  {/* Sub-tabs */}
+                  <div className="view-tabs">
+                    <button className={`view-tab ${logisticsTab === 'routes' ? 'active' : ''}`} onClick={() => setLogisticsTab('routes')}>Route Plan</button>
+                    <button className={`view-tab ${logisticsTab === 'supplies' ? 'active' : ''}`} onClick={() => setLogisticsTab('supplies')}>Supply Inventory</button>
+                    <button className={`view-tab ${logisticsTab === 'vendors' ? 'active' : ''}`} onClick={() => setLogisticsTab('vendors')}>Vendor Contacts</button>
                   </div>
+
+                  {/* Route Optimization */}
+                  {logisticsTab === 'routes' && (
+                    <div>
+                      <div className="logistics-section">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                          <div>
+                            <div style={{ fontSize: '15px', fontWeight: 600, color: '#1a1a1a' }}>Today's Optimized Route</div>
+                            <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>6 stops — Est. 6.2 mi total — ~3.5 hrs</div>
+                          </div>
+                          <span className={`status-badge ready`} style={{ fontSize: '11px', padding: '4px 10px' }}>ACTIVE</span>
+                        </div>
+                        <div className="route-list">
+                          {routeStops.map((stop, idx) => (
+                            <React.Fragment key={idx}>
+                              <div className="route-stop">
+                                <div className="route-stop-number">{idx + 1}</div>
+                                <div className="route-stop-info">
+                                  <div className="route-stop-name">{stop.property}</div>
+                                  <div className="route-stop-tasks">{stop.tasks}</div>
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                  <div className="route-stop-eta">{stop.eta}</div>
+                                  {stop.distance !== '—' && (
+                                    <div style={{ fontSize: '11px', color: '#999' }}>{stop.distance}</div>
+                                  )}
+                                </div>
+                              </div>
+                              {idx < routeStops.length - 1 && (
+                                <div className="route-connector">
+                                  <div className="route-connector-line"></div>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Supply Inventory */}
+                  {logisticsTab === 'supplies' && (
+                    <div>
+                      <div className="logistics-section">
+                        <div style={{ fontSize: '15px', fontWeight: 600, color: '#1a1a1a', marginBottom: '4px' }}>Supply Levels by Property</div>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '16px' }}>Levels below 30% flagged as critical — restock immediately</div>
+                        <table className="supply-table">
+                          <thead>
+                            <tr>
+                              <th>Property</th>
+                              <th>Linens</th>
+                              <th>Toiletries</th>
+                              <th>Kitchen</th>
+                              <th>Cleaning</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {SAMPLE_DATA.houses.map(house => (
+                              <tr key={house.id}>
+                                <td style={{ fontWeight: 600 }}>{house.name}</td>
+                                {['linens', 'toiletries', 'kitchen', 'cleaning'].map(cat => {
+                                  const pct = house.supplies[cat];
+                                  const level = getSupplyLevel(pct);
+                                  return (
+                                    <td key={cat}>
+                                      <div className="supply-level">
+                                        <div className={`supply-level-fill ${level}`} style={{ width: `${pct}%` }}></div>
+                                      </div>
+                                      <span style={{ fontSize: '11px', color: level === 'critical' ? '#e94b3c' : level === 'warning' ? '#e68a00' : '#666', fontWeight: level === 'critical' ? 700 : 400 }}>
+                                        {pct}%
+                                      </span>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Critical alerts */}
+                      {(() => {
+                        const criticals = [];
+                        SAMPLE_DATA.houses.forEach(h => {
+                          Object.entries(h.supplies).forEach(([cat, pct]) => {
+                            if (pct < 30) criticals.push({ house: h.name, category: cat, pct });
+                          });
+                        });
+                        if (criticals.length === 0) return null;
+                        return (
+                          <div className="logistics-section" style={{ borderLeft: '4px solid #e94b3c' }}>
+                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#e94b3c', marginBottom: '12px' }}>
+                              Critical Supply Alerts ({criticals.length})
+                            </div>
+                            {criticals.map((c, i) => (
+                              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: i < criticals.length - 1 ? '1px solid #f0f0f0' : 'none', fontSize: '13px' }}>
+                                <span><strong>{c.house}</strong> — {c.category}</span>
+                                <span style={{ color: '#e94b3c', fontWeight: 700 }}>{c.pct}%</span>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
+
+                  {/* Vendor Contacts */}
+                  {logisticsTab === 'vendors' && (
+                    <div>
+                      <div className="logistics-section">
+                        <div style={{ fontSize: '15px', fontWeight: 600, color: '#1a1a1a', marginBottom: '4px' }}>Vendor Quick-Dial List</div>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '16px' }}>Tap to call — all vendors confirmed for Masters week availability</div>
+                        <div className="vendor-grid">
+                          {SAMPLE_DATA.vendors.map((v, idx) => (
+                            <div key={idx} className="vendor-card">
+                              <div className="vendor-name">{v.name}</div>
+                              <div className="vendor-category">{v.category}</div>
+                              <a href={`tel:${v.phone}`} className="vendor-phone">
+                                {v.phone.replace(/^\+1(\d{3})(\d{3})(\d{4})$/, '+1 ($1) $2-$3')}
+                              </a>
+                              {v.note && <div className="vendor-note">{v.note}</div>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -1370,12 +2517,12 @@
           {showHouseModal && selectedHouse && (
             <div className="modal-overlay" onClick={() => setShowHouseModal(false)}>
               <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" onClick={() => setShowHouseModal(false)}>×</button>
+                <button className="modal-close" onClick={() => setShowHouseModal(false)}>x</button>
                 <div className="modal-header">{selectedHouse.name}</div>
                 <div className="modal-header" style={{ fontSize: '14px', fontWeight: '400', color: '#666', marginBottom: '24px' }}>{selectedHouse.address}</div>
 
                 <div style={{ marginBottom: '24px' }}>
-                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#000', marginBottom: '12px' }}>Room Status</div>
+                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#1a1a1a', marginBottom: '12px' }}>Room Status</div>
                   <div className="room-grid">
                     {['Master', 'Guest 1', 'Guest 2', 'Guest 3', 'Guest 4', 'Guest 5'].map((room, idx) => {
                       const occupied = idx < selectedHouse.occupied;
@@ -1397,7 +2544,7 @@
                 <div className="house-details">
                   <div className="house-detail-item">
                     <span className="detail-label">Wi-Fi Status</span>
-                    <span className="detail-value" style={{ color: selectedHouse.wifiStatus === 'Down' ? '#e94b3c' : '#4a90e2' }}>{selectedHouse.wifiStatus}</span>
+                    <span className="detail-value" style={{ color: selectedHouse.wifiStatus === 'Down' ? '#e94b3c' : '#2d6a4f' }}>{selectedHouse.wifiStatus}</span>
                   </div>
                   <div className="house-detail-item">
                     <span className="detail-label">Wi-Fi Password</span>
@@ -1417,7 +2564,7 @@
                   </div>
                   <div className="house-detail-item">
                     <span className="detail-label">Access Codes</span>
-                    <span className="detail-value">Front: 4792 • Garage: 5521</span>
+                    <span className="detail-value">Front: 4792 — Garage: 5521</span>
                   </div>
                 </div>
               </div>

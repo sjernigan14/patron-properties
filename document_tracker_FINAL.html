@@ -188,8 +188,59 @@ const DEALS = [
 ];
 
 /* ── Helpers ── */
+const REFERENCE_DATE = new Date('2027-03-01');
 const allDocs = DEALS.flatMap(d => [...d.clientDocs, ...d.homeownerDocs]);
 const docIcon = (type) => ({ 'Rental Agreement': '📝', 'DocuSign': '✍️', 'Payment': '💳', 'Corporate Auth': '🏛️', 'W-9': '📋', 'Property Agreement': '🏠', 'Insurance': '🛡️', 'Home Photos': '📸' }[type] || '📄');
+
+/* Days remaining from reference date to due date. Negative = overdue. */
+const daysUntilDue = (dueDate) => {
+  if (!dueDate) return null;
+  const due = new Date(dueDate);
+  const diffMs = due.getTime() - REFERENCE_DATE.getTime();
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+};
+
+/* Find the most urgent incomplete document for a deal */
+const getMostUrgentDoc = (deal) => {
+  const allDealDocs = [
+    ...deal.clientDocs.map(d => ({ ...d, party: 'client' })),
+    ...deal.homeownerDocs.map(d => ({ ...d, party: 'homeowner' })),
+  ];
+  const incomplete = allDealDocs.filter(d => d.status !== 'Complete' && d.status !== 'N/A' && d.dueDate);
+  if (incomplete.length === 0) return null;
+  incomplete.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  return incomplete[0];
+};
+
+/* Build next-action suggestion text */
+const buildNextAction = (deal) => {
+  const doc = getMostUrgentDoc(deal);
+  if (!doc) return null;
+  const days = daysUntilDue(doc.dueDate);
+  const contactName = doc.party === 'client'
+    ? (deal.client ? deal.client.contact : 'client')
+    : deal.homeowner.name;
+
+  if (doc.status === 'Overdue' || (days !== null && days < 0)) {
+    return { text: `Follow up with ${contactName} about ${doc.docType} (overdue ${Math.abs(days)} days)`, urgency: 'red' };
+  }
+  if (doc.status === 'Rejected') {
+    return { text: `Resubmit revised ${doc.docType} to ${contactName}`, urgency: 'red' };
+  }
+  if (doc.status === 'Requested') {
+    return { text: `Send DocuSign reminder to ${contactName}`, urgency: days !== null && days <= 7 ? 'amber' : 'green' };
+  }
+  if (doc.status === 'Pending') {
+    if (doc.docType === 'Insurance') {
+      return { text: `Request insurance renewal from ${contactName}`, urgency: days !== null && days <= 7 ? 'amber' : 'green' };
+    }
+    if (doc.docType === 'Payment') {
+      return { text: `Follow up on payment with ${contactName} — due ${new Date(doc.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`, urgency: days !== null && days <= 7 ? 'amber' : 'green' };
+    }
+    return { text: `Follow up with ${contactName} about ${doc.docType} — ${days} days remaining`, urgency: days !== null && days <= 7 ? 'amber' : 'green' };
+  }
+  return { text: `Check status of ${doc.docType} with ${contactName}`, urgency: 'green' };
+};
 
 /* ── App ── */
 function App() {
@@ -279,6 +330,74 @@ function App() {
     </div>
   );
 
+  /* Deadline Countdown Badge */
+  const DeadlineBadge = ({ dueDate, status }) => {
+    if (!dueDate || status === 'Complete' || status === 'N/A') return null;
+    const days = daysUntilDue(dueDate);
+    if (days === null) return null;
+    let bg, color, label;
+    if (days < 0) {
+      bg = 'rgba(197,48,48,0.12)'; color = '#991B1B'; label = `${Math.abs(days)} days overdue`;
+    } else if (days <= 7) {
+      bg = 'rgba(255,149,0,0.12)'; color = '#B45309'; label = `${days} day${days !== 1 ? 's' : ''} left`;
+    } else {
+      bg = 'rgba(52,199,89,0.12)'; color = '#15803D'; label = `${days} days left`;
+    }
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 10, background: bg, color, whiteSpace: 'nowrap' }}>
+        {days < 0 ? '⚠' : days <= 7 ? '⏰' : '📅'} {label}
+      </span>
+    );
+  };
+
+  /* Completion Ring (SVG circular progress) */
+  const CompletionRing = ({ done, total }) => {
+    const size = 44;
+    const strokeWidth = 4;
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const pct = total > 0 ? done / total : 0;
+    const offset = circumference * (1 - pct);
+    const ringColor = pct > 0.75 ? '#34c759' : pct >= 0.5 ? '#ff9500' : '#c53030';
+    return (
+      <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+        <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+          <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#e8f0ed" strokeWidth={strokeWidth} />
+          <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke={ringColor} strokeWidth={strokeWidth}
+            strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
+            style={{ transition: 'stroke-dashoffset 0.4s ease' }} />
+        </svg>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: ringColor, lineHeight: 1 }}>
+          {done}/{total}
+        </div>
+      </div>
+    );
+  };
+
+  /* Next Action Banner */
+  const NextActionBanner = ({ deal }) => {
+    const action = buildNextAction(deal);
+    if (!action) return (
+      <div style={{ padding: '10px 20px', background: 'rgba(52,199,89,0.05)', borderTop: '1px solid #e8f0ed', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span style={{ fontSize: 14 }}>✅</span>
+        <span style={{ fontSize: 12, fontWeight: 600, color: '#15803D' }}>All documents complete — deal is ready</span>
+      </div>
+    );
+    const colors = {
+      red:   { bg: 'rgba(197,48,48,0.05)', border: '#fca5a5', text: '#991B1B', icon: '🚨' },
+      amber: { bg: 'rgba(255,149,0,0.05)', border: '#fdba74', text: '#92400E', icon: '⚡' },
+      green: { bg: 'rgba(0,107,84,0.04)', border: '#a7f3d0', text: '#006B54', icon: '👉' },
+    };
+    const c = colors[action.urgency] || colors.green;
+    return (
+      <div style={{ padding: '10px 20px', background: c.bg, borderTop: `1px solid ${c.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span style={{ fontSize: 13 }}>{c.icon}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, color: c.text, textTransform: 'uppercase', letterSpacing: 0.5 }}>Next Action</span>
+        <span style={{ fontSize: 12, fontWeight: 500, color: c.text }}>{action.text}</span>
+      </div>
+    );
+  };
+
   /* Document Row */
   const DocRow = ({ doc, party }) => {
     const isExpanded = expandedDocs.has(doc.id);
@@ -298,8 +417,13 @@ function App() {
         </td>
         <td style={{ padding: '10px 16px' }}><Badge status={doc.status} /></td>
         <td style={{ padding: '10px 16px', fontSize: 12, color: '#555' }}>{doc.assignedTo}</td>
-        <td style={{ padding: '10px 16px', fontSize: 12, color: isOverdue ? '#c53030' : '#555', fontWeight: isOverdue ? 600 : 400 }}>
-          {doc.dueDate ? new Date(doc.dueDate).toLocaleDateString() : '—'}
+        <td style={{ padding: '10px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 12, color: isOverdue ? '#c53030' : '#555', fontWeight: isOverdue ? 600 : 400 }}>
+              {doc.dueDate ? new Date(doc.dueDate).toLocaleDateString() : '—'}
+            </span>
+            <DeadlineBadge dueDate={doc.dueDate} status={doc.status} />
+          </div>
         </td>
         <td style={{ padding: '10px 16px', fontSize: 12, color: '#888' }}>
           {doc.lastUpdated ? new Date(doc.lastUpdated).toLocaleDateString() : '—'}
@@ -502,9 +626,10 @@ function App() {
                           </div>
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                        <CompletionRing done={prog.done} total={prog.total} />
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 11, color: '#888' }}>{prog.done}/{prog.total} docs complete</div>
+                          <div style={{ fontSize: 11, color: '#888', whiteSpace: 'nowrap' }}>{prog.done}/{prog.total} docs</div>
                         </div>
                         <div style={{ width: 120 }}>
                           <ProgressBar pct={prog.pct} size="small" />
@@ -625,6 +750,9 @@ function App() {
                           </table>
                         </div>
                       )}
+
+                      {/* Next Action Suggestion */}
+                      <NextActionBanner deal={deal} />
                     </div>
                   )}
                 </div>

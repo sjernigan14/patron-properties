@@ -171,6 +171,26 @@ const PROPERTIES = [
 const NEIGHBORHOODS = ["All", "West Augusta", "National Hills", "Summerville", "Olde Town", "Lake Olmstead"];
 const ALL_AMENITIES = ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio", "Screened Porch", "Fireplace", "Lake View", "Dock", "Gym"];
 
+/* ── Booking Packages ── */
+const BOOKING_PACKAGES = [
+  { key: 'full', label: 'Full Week (Apr 5-12)', nights: 7 },
+  { key: 'practice', label: 'Practice Rounds (Apr 7-9)', nights: 2 },
+  { key: 'tournament', label: 'Tournament Days (Apr 10-13)', nights: 3 },
+  { key: 'extended', label: 'Extended Stay (Apr 3-14)', nights: 11 },
+];
+
+/* ── Best For logic ── */
+function getBestFor(p) {
+  if (p.walkable) return { label: 'Walking Distance', color: '#006B54', bg: '#D1FAE5' };
+  if (p.bedrooms >= 6) return { label: 'Corporate Entertainment', color: '#1E40AF', bg: '#DBEAFE' };
+  if (p.amenities.includes('Pool') && p.amenities.includes('Hot Tub')) return { label: 'Luxury Retreat', color: '#6D28D9', bg: '#F5F3FF' };
+  if (p.bedrooms >= 3 && p.bedrooms <= 4 && p.pricePerNight <= 2000) return { label: 'Budget-Friendly', color: '#92400E', bg: '#FEF3C7' };
+  if (p.bedrooms >= 4 && p.bedrooms <= 5 && p.pricePerNight > 2000 && p.pricePerNight <= 3500) return { label: 'Group Getaway', color: '#0E7490', bg: '#ECFEFF' };
+  return { label: 'Group Getaway', color: '#0E7490', bg: '#ECFEFF' };
+}
+
+const BEST_FOR_OPTIONS = ['All', 'Walking Distance', 'Corporate Entertainment', 'Luxury Retreat', 'Budget-Friendly', 'Group Getaway'];
+
 function PropertySearch() {
   const [hood, setHood] = useState("All");
   const [beds, setBeds] = useState(0);
@@ -186,7 +206,14 @@ function PropertySearch() {
   const [expanded, setExpanded] = useState(null);
   const [inquiryId, setInquiryId] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [viewMode, setViewMode] = useState("cards"); // cards or grid
+  const [viewMode, setViewMode] = useState("cards"); // cards, grid, or map
+  const [bookingPackage, setBookingPackage] = useState("full");
+  const [savedIds, setSavedIds] = useState([]);
+  const [showSavedOnly, setShowSavedOnly] = useState(false);
+  const [bestForFilter, setBestForFilter] = useState("All");
+
+  const toggleSaved = (id) => setSavedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  const currentPackage = BOOKING_PACKAGES.find(bp => bp.key === bookingPackage);
 
   const toggleAmenity = a => setAmenities(p => p.includes(a) ? p.filter(x => x !== a) : [...p, a]);
 
@@ -205,6 +232,8 @@ function PropertySearch() {
         const s = search.toLowerCase();
         if (![p.address, p.neighborhood, p.description, p.id].some(x => x.toLowerCase().includes(s))) return false;
       }
+      if (showSavedOnly && !savedIds.includes(p.id)) return false;
+      if (bestForFilter !== 'All' && getBestFor(p).label !== bestForFilter) return false;
       return true;
     });
     const [f, d] = sort.split("-");
@@ -214,15 +243,16 @@ function PropertySearch() {
       return d === "asc" ? va - vb : vb - va;
     });
     return r;
-  }, [hood, beds, baths, maxPrice, guests, walkOnly, amenities, search, sort, statusFilter, typeFilter]);
+  }, [hood, beds, baths, maxPrice, guests, walkOnly, amenities, search, sort, statusFilter, typeFilter, showSavedOnly, savedIds, bestForFilter]);
 
   const clearAll = () => {
     setHood("All"); setBeds(0); setBaths(0); setMaxPrice(6000);
     setGuests(0); setWalkOnly(false); setAmenities([]); setSearch("");
-    setStatusFilter("all"); setTypeFilter("all");
+    setStatusFilter("all"); setTypeFilter("all"); setShowSavedOnly(false);
+    setBestForFilter("All");
   };
 
-  const activeCount = [hood !== "All", beds > 0, baths > 0, maxPrice < 6000, guests > 0, walkOnly, statusFilter !== "all", typeFilter !== "all", amenities.length > 0, search.length > 0].filter(Boolean).length;
+  const activeCount = [hood !== "All", beds > 0, baths > 0, maxPrice < 6000, guests > 0, walkOnly, statusFilter !== "all", typeFilter !== "all", amenities.length > 0, search.length > 0, showSavedOnly, bestForFilter !== "All"].filter(Boolean).length;
 
   /* KPI calculations */
   const totalValue = PROPERTIES.reduce((s, p) => s + p.totalPrice, 0);
@@ -454,6 +484,31 @@ function PropertySearch() {
         </span>
       </div>
 
+      {/* ── Booking Package Selector ── */}
+      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>BOOKING PACKAGE</span>
+            {BOOKING_PACKAGES.map(bp => {
+              const isActive = bookingPackage === bp.key;
+              return (
+                <button key={bp.key} onClick={() => setBookingPackage(bp.key)} style={{
+                  padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
+                  background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
+                  display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
+                }}>
+                  {bp.label}
+                  {bp.key === 'full' && !isActive && (
+                    <span style={{ background: '#D1FAE5', color: '#065F46', padding: '1px 6px', borderRadius: 8, fontSize: 10, fontWeight: 700 }}>85%</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* ── Filter Buttons Row ── */}
       <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
         <div style={{ maxWidth: 1400, margin: '0 auto' }}>
@@ -488,6 +543,26 @@ function PropertySearch() {
               }} />
             <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 15, opacity: 0.35 }}>🔍</span>
           </div>
+          {/* Saved filter pill */}
+          <button onClick={() => setShowSavedOnly(!showSavedOnly)} style={{
+            padding: '10px 16px', borderRadius: 8,
+            border: showSavedOnly ? '2px solid #c53030' : '1px solid #e0e0e0',
+            background: showSavedOnly ? '#FEF2F2' : '#fafafa',
+            color: showSavedOnly ? '#c53030' : '#555', fontSize: 13, fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
+          }}>
+            {showSavedOnly ? '♥' : '♡'} Saved{savedIds.length > 0 ? ` (${savedIds.length})` : ''}
+          </button>
+          {/* Best For dropdown */}
+          <select value={bestForFilter} onChange={e => setBestForFilter(e.target.value)} style={{
+            padding: '10px 32px 10px 12px', borderRadius: 8, border: bestForFilter !== 'All' ? '2px solid #006B54' : '1px solid #e0e0e0',
+            fontSize: 13, fontWeight: 500, background: bestForFilter !== 'All' ? 'rgba(0,107,84,0.08)' : '#fafafa', cursor: 'pointer', fontFamily: 'inherit',
+            color: bestForFilter !== 'All' ? '#006B54' : '#555'
+          }}>
+            {BEST_FOR_OPTIONS.map(opt => (
+              <option key={opt} value={opt}>{opt === 'All' ? 'Best For: All' : `Best For: ${opt}`}</option>
+            ))}
+          </select>
           <select value={sort} onChange={e => setSort(e.target.value)} style={{
             padding: '10px 32px 10px 12px', borderRadius: 8, border: '1px solid #e0e0e0',
             fontSize: 13, fontWeight: 500, background: '#fafafa', cursor: 'pointer', fontFamily: 'inherit'
@@ -521,6 +596,10 @@ function PropertySearch() {
               padding: '8px 12px', border: 'none', cursor: 'pointer',
               background: viewMode === 'grid' ? '#006B54' : '#fafafa', color: viewMode === 'grid' ? '#fff' : '#888', fontSize: 14
             }}>▦</button>
+            <button onClick={() => setViewMode('map')} style={{
+              padding: '8px 12px', border: 'none', cursor: 'pointer',
+              background: viewMode === 'map' ? '#006B54' : '#fafafa', color: viewMode === 'map' ? '#fff' : '#888', fontSize: 14
+            }} title="Map View">◉</button>
           </div>
         </div>
       </div>
@@ -636,6 +715,7 @@ function PropertySearch() {
         <div style={{ fontSize: 13, color: '#888', fontWeight: 500, marginBottom: 16 }}>
           Showing <strong style={{ color: '#111' }}>{filtered.length}</strong> of {PROPERTIES.length} properties
           {activeCount > 0 && <span> · {activeCount} filter{activeCount !== 1 && 's'} active</span>}
+          <span> · Package: <strong style={{ color: '#006B54' }}>{currentPackage.label}</strong></span>
         </div>
 
         {filtered.length === 0 ? (
@@ -643,6 +723,45 @@ function PropertySearch() {
             <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 600 }}>No properties found</h3>
             <p style={{ margin: '0 0 24px', color: '#888', fontSize: 14 }}>Adjust your filters to see more results.</p>
             <button onClick={clearAll} style={{ padding: '12px 28px', borderRadius: 8, background: '#006B54', color: '#fff', border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Clear All Filters</button>
+          </div>
+        ) : viewMode === 'map' ? (
+          /* ── Map View Placeholder ── */
+          <div style={{
+            background: '#fff', borderRadius: 12, border: '1px solid #e0e0e0', overflow: 'hidden',
+            minHeight: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            position: 'relative'
+          }}>
+            {/* Map-like background pattern */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.06,
+              backgroundImage: `
+                linear-gradient(0deg, #006B54 1px, transparent 1px),
+                linear-gradient(90deg, #006B54 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px'
+            }} />
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.03,
+              backgroundImage: `
+                linear-gradient(45deg, #006B54 1px, transparent 1px),
+                linear-gradient(-45deg, #006B54 1px, transparent 1px)
+              `,
+              backgroundSize: '120px 120px'
+            }} />
+            <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: 40 }}>
+              <div style={{ fontSize: 48, marginBottom: 16, opacity: 0.3 }}>🗺️</div>
+              <h3 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#006B54' }}>Map View — Coming Soon</h3>
+              <p style={{ margin: '0 0 16px', color: '#888', fontSize: 14, lineHeight: 1.6, maxWidth: 480 }}>
+                Properties will be shown relative to <strong>Gate 6, Berckmans Road</strong><br/>
+                (Augusta National tournament entrance)
+              </p>
+              <div style={{
+                display: 'inline-block', padding: '10px 20px', borderRadius: 8,
+                background: 'rgba(0,107,84,0.08)', color: '#006B54', fontSize: 13, fontWeight: 600
+              }}>
+                {filtered.length} properties ready to map · Distances range from {Math.min(...filtered.map(p => p.distanceMi))} to {Math.max(...filtered.map(p => p.distanceMi))} miles
+              </div>
+            </div>
           </div>
         ) : viewMode === 'grid' ? (
           /* ── Grid View ── */
@@ -660,7 +779,16 @@ function PropertySearch() {
                   onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
                   onClick={() => setExpanded(expanded === p.id ? null : p.id)}
                 >
-                  <PropertyImage p={p} size="grid" />
+                  <div style={{ position: 'relative' }}>
+                    <PropertyImage p={p} size="grid" />
+                    <button onClick={(e) => { e.stopPropagation(); toggleSaved(p.id); }} style={{
+                      position: 'absolute', top: 12, right: 12, zIndex: 2, background: 'rgba(255,255,255,0.9)',
+                      border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 16, color: savedIds.includes(p.id) ? '#c53030' : '#888',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.15)', transition: 'all 0.2s'
+                    }}>{savedIds.includes(p.id) ? '♥' : '♡'}</button>
+                  </div>
                   <div style={{ padding: 16 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                       <div>
@@ -672,10 +800,18 @@ function PropertySearch() {
                     <div style={{ display: 'flex', gap: 12, marginBottom: 12, fontSize: 12, color: '#555' }}>
                       <span>{p.bedrooms} BD</span><span>{p.bathrooms} BA</span><span>{p.maxGuests} Guests</span><span>{p.sqft.toLocaleString()} sf</span>
                     </div>
+                    {(() => { const bf = getBestFor(p); return (
+                      <div style={{ marginBottom: 8 }}>
+                        <span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: bf.bg, color: bf.color, border: `1px solid ${bf.color}22` }}>
+                          {bf.label}
+                        </span>
+                      </div>
+                    ); })()}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
                         <span style={{ fontSize: 20, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
                         <span style={{ fontSize: 12, color: '#888' }}>/night</span>
+                        <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>${(p.pricePerNight * currentPackage.nights).toLocaleString()} total ({currentPackage.nights} nights)</div>
                       </div>
                       <div style={{ fontSize: 12, color: '#888' }}>★ {p.rating} ({p.reviews})</div>
                     </div>
@@ -701,8 +837,17 @@ function PropertySearch() {
                   onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
                 >
                   <div style={{ display: 'flex' }}>
-                    {/* Image */}
-                    <PropertyImage p={p} size="list" />
+                    {/* Image with Save button */}
+                    <div style={{ position: 'relative', flexShrink: 0 }}>
+                      <PropertyImage p={p} size="list" />
+                      <button onClick={(e) => { e.stopPropagation(); toggleSaved(p.id); }} style={{
+                        position: 'absolute', top: 12, right: 12, zIndex: 2, background: 'rgba(255,255,255,0.9)',
+                        border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 16, color: savedIds.includes(p.id) ? '#c53030' : '#888',
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.15)', transition: 'all 0.2s'
+                      }}>{savedIds.includes(p.id) ? '♥' : '♡'}</button>
+                    </div>
 
                     {/* Content */}
                     <div style={{ flex: 1, padding: '16px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -726,12 +871,19 @@ function PropertySearch() {
                             ✦ {p.highlight}
                           </div>
                         )}
+                        {(() => { const bf = getBestFor(p); return (
+                          <div style={{ marginTop: 6 }}>
+                            <span style={{ padding: '3px 10px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: bf.bg, color: bf.color, border: `1px solid ${bf.color}22` }}>
+                              {bf.label}
+                            </span>
+                          </div>
+                        ); })()}
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 10 }}>
                         <div>
                           <span style={{ fontSize: 24, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
                           <span style={{ fontSize: 13, color: '#888' }}>/night</span>
-                          <div style={{ fontSize: 12, color: '#aaa', marginTop: 2 }}>${p.totalPrice.toLocaleString()} total (7 nights)</div>
+                          <div style={{ fontSize: 12, color: '#aaa', marginTop: 2 }}>${(p.pricePerNight * currentPackage.nights).toLocaleString()} total ({currentPackage.nights} nights)</div>
                         </div>
                         <div style={{ display: 'flex', gap: 8 }}>
                           <button onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : p.id); }} style={{

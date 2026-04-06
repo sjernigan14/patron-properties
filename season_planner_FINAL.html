@@ -106,26 +106,38 @@ const issues = [
 ];
 
 function generateCalendarData() {
+  // DETERMINISTIC data — hand-crafted to tell a realistic Masters-week story.
+  // Key:  b=booked, a=available, n=notRented, p=prep, t=turnover, x=blocked
+  const shortMap = { b:'booked', a:'available', n:'notRented', p:'prep', t:'turnover', x:'blocked' };
+  const patterns = {
+    //                              Apr: 1   2   3   4   5   6   7   8   9  10  11  12  13  14
+    '1847 Berkman Dr':              'n   p   p   p   b   b   b   b   b   b   b   t   t   n'.split(/\s+/),  // $5,500 premium — booked solid
+    '205 Walton Way':               'n   n   p   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $3,200
+    '412 Highland Ave':             'n   p   p   b   b   b   b   b   b   b   b   b   t   n'.split(/\s+/),  // $4,100 — early arrival Apr 4
+    '628 Forest Hills Dr':          'n   n   n   p   b   b   b   b   b   a   a   t   n   n'.split(/\s+/),  // $2,800 — gaps Apr 10-11
+    '734 Laurel Ave':               'n   n   p   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $3,500
+    '845 Regent Dr':                'n   n   n   p   b   b   b   a   a   a   b   t   n   n'.split(/\s+/),  // $2,000 — 3-night gap Apr 8-10
+    '956 Azalea Dr':                'n   n   p   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $2,600
+    '1067 Magnolia Rd':             'n   p   p   b   b   b   b   b   b   b   b   b   t   n'.split(/\s+/),  // $4,200 — early arrival Apr 4, late checkout Apr 12
+    '1178 Dogwood Dr':              'n   n   n   p   a   b   b   b   a   a   b   t   n   n'.split(/\s+/),  // $1,800 — gaps Apr 5, Apr 9-10
+    '1289 Ivy Lane':                'n   n   p   p   b   b   b   b   b   b   b   t   b   n'.split(/\s+/),  // $3,100 — extended stay Apr 12
+    '1390 Oak Ridge Rd':            'n   n   n   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $2,500
+    '1401 Peach Tree Dr':           'p   p   p   b   b   b   b   b   b   b   b   b   b   t'.split(/\s+/),  // $5,800 premium — early+late
+    '1502 Quail Run Ln':            'n   n   n   p   b   b   b   b   a   b   b   t   n   n'.split(/\s+/),  // $1,900 — 1-night gap Apr 9
+    '1613 Rose Garden Dr':          'n   n   p   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $3,400
+    '1724 Sunnyvale Rd':            'n   n   n   p   b   b   b   a   a   b   b   t   n   n'.split(/\s+/),  // $2,700 — 2-night gap Apr 8-9
+    '1835 Timber Ridge':            'n   p   p   b   b   b   b   b   b   b   b   t   t   n'.split(/\s+/),  // $4,000 — early arrival
+    '1946 Utopia Ave':              'n   n   n   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $2,100
+    '2057 Valley View Dr':          'n   n   p   p   b   b   b   b   b   b   b   b   t   n'.split(/\s+/),  // $3,300 — late checkout Apr 12
+    '2168 Walnut Way':              'n   n   n   p   b   b   b   b   b   a   b   t   n   n'.split(/\s+/),  // $2,400 — 1-night gap Apr 10
+    '2279 Xavier Dr':               'n   n   p   p   b   b   b   b   b   b   b   t   n   n'.split(/\s+/),  // $3,900
+  };
   const data = {};
   properties.forEach(p => {
     data[p.addr] = {};
-    dates.forEach(day => {
-      const rand = Math.random();
-      const isMasters = day >= MASTERS_START && day <= MASTERS_END;
-      if (isMasters) {
-        // Masters week: mostly booked, some prep, rare blocked
-        if (rand > 0.12) data[p.addr][day] = 'booked';
-        else if (rand > 0.05) data[p.addr][day] = 'prep';
-        else data[p.addr][day] = 'blocked';
-      } else {
-        // Outside Masters: ~90% not rented, small chance of other statuses
-        if (rand > 0.90) data[p.addr][day] = 'booked';
-        else if (rand > 0.85) data[p.addr][day] = 'available';
-        else if (rand > 0.80) data[p.addr][day] = 'prep';
-        else if (rand > 0.78) data[p.addr][day] = 'turnover';
-        else if (rand > 0.76) data[p.addr][day] = 'blocked';
-        else data[p.addr][day] = 'notRented';
-      }
+    const row = patterns[p.addr];
+    dates.forEach((day, i) => {
+      data[p.addr][day] = shortMap[row[i]];
     });
   });
   return data;
@@ -173,13 +185,60 @@ function SeasonPlanner() {
     return rev;
   }, [calendarData]);
 
+  // Per-property revenue across visible window
+  const propertyRevenue = useMemo(() => {
+    const rev = {};
+    properties.forEach(p => {
+      let total = 0;
+      dates.forEach(d => { if (calendarData[p.addr][d] === 'booked') total += p.rate; });
+      rev[p.addr] = total;
+    });
+    return rev;
+  }, [calendarData]);
+
+  const portfolioRevenue = useMemo(() => {
+    return Object.values(propertyRevenue).reduce((s, v) => s + v, 0);
+  }, [propertyRevenue]);
+
+  // Gap analysis: available/unbooked nights during Masters week
+  const gapAlerts = useMemo(() => {
+    const alerts = [];
+    properties.forEach(p => {
+      const gaps = [];
+      for (let d = MASTERS_START; d <= MASTERS_END; d++) {
+        if (calendarData[p.addr][d] === 'available') gaps.push(d);
+      }
+      if (gaps.length > 0) {
+        // Group consecutive days into ranges
+        const ranges = [];
+        let start = gaps[0], end = gaps[0];
+        for (let i = 1; i < gaps.length; i++) {
+          if (gaps[i] === end + 1) { end = gaps[i]; }
+          else { ranges.push([start, end]); start = gaps[i]; end = gaps[i]; }
+        }
+        ranges.push([start, end]);
+        ranges.forEach(([s, e]) => {
+          const nights = e - s + 1;
+          const atRisk = nights * p.rate;
+          const rangeStr = s === e ? `Apr ${s}` : `Apr ${s}–${e}`;
+          alerts.push({ addr: p.addr, nights, rangeStr, atRisk, rate: p.rate });
+        });
+      }
+    });
+    return alerts;
+  }, [calendarData]);
+
+  const totalAtRisk = useMemo(() => gapAlerts.reduce((s, a) => s + a.atRisk, 0), [gapAlerts]);
+
   const isMasters = (d) => d >= MASTERS_START && d <= MASTERS_END;
 
   const getTooltip = (addr, day, status) => {
     const p = properties.find(x => x.addr === addr);
     if (status === 'booked') {
-      const r = renters[Math.floor(Math.random() * renters.length)];
-      return `${r.name} · ${r.company}\n${r.checkIn} – ${r.checkOut}\n${r.rate}`;
+      // Deterministic renter assignment based on property index
+      const pIdx = properties.findIndex(x => x.addr === addr);
+      const r = renters[pIdx % renters.length];
+      return `${r.name} · ${r.company}\n${r.checkIn} – ${r.checkOut}\n$${p.rate.toLocaleString()}/nt`;
     }
     if (status === 'available') return `Available for booking\n${p.beds}BR · $${p.rate.toLocaleString()}/nt`;
     if (status === 'notRented') return `Not rented — off-season\n${p.beds}BR · ${p.nbhd}`;
@@ -296,6 +355,12 @@ function SeasonPlanner() {
                       <div>Apr {d}</div>
                     </th>
                   ))}
+                  <th style={{
+                    position: 'sticky', top: 0, right: 0, zIndex: 15,
+                    padding: '8px 10px', textAlign: 'right', fontSize: 11, fontWeight: 600,
+                    color: '#006B54', background: '#f4f4f3',
+                    borderBottom: '2px solid #d0d0d0', borderLeft: '2px solid #d0d0d0', minWidth: 90,
+                  }}>Revenue</th>
                 </tr>
               </thead>
               <tbody>
@@ -342,9 +407,35 @@ function SeasonPlanner() {
                         </td>
                       );
                     })}
+                    <td style={{
+                      position: 'sticky', right: 0, zIndex: 10,
+                      background: idx % 2 === 0 ? '#fff' : '#fafaf9',
+                      padding: '8px 10px', borderBottom: '1px solid #e8e8e8', borderLeft: '2px solid #d0d0d0',
+                      fontSize: 13, fontWeight: 700, color: '#006B54', textAlign: 'right', whiteSpace: 'nowrap',
+                    }}>
+                      ${propertyRevenue[prop.addr].toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td style={{
+                    position: 'sticky', left: 0, zIndex: 10, background: '#e8f5f0',
+                    padding: '10px 12px', borderTop: '2px solid #006B54', fontSize: 13, fontWeight: 700, color: '#006B54',
+                  }}>Portfolio Total</td>
+                  {dates.map(d => (
+                    <td key={d} style={{ borderTop: '2px solid #006B54', background: '#e8f5f0' }} />
+                  ))}
+                  <td style={{
+                    position: 'sticky', right: 0, zIndex: 10, background: '#e8f5f0',
+                    padding: '10px 10px', borderTop: '2px solid #006B54', borderLeft: '2px solid #d0d0d0',
+                    fontSize: 14, fontWeight: 800, color: '#006B54', textAlign: 'right', whiteSpace: 'nowrap',
+                  }}>
+                    ${portfolioRevenue.toLocaleString()}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
@@ -454,6 +545,32 @@ function SeasonPlanner() {
           </div>
         </div>
       </div>
+
+      {/* ── Revenue at Risk — Gap Analysis ──────────────────── */}
+      {gapAlerts.length > 0 && (
+        <div style={{ margin: '0 32px 16px', background: '#FFFBEB', border: '1px solid #F59E0B', borderLeft: '4px solid #F59E0B', borderRadius: 8, padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 18 }}>&#9888;</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: '#92400E' }}>Revenue at Risk — Masters Week Gaps</span>
+            </div>
+            <span style={{ fontSize: 14, fontWeight: 800, color: '#92400E' }}>${totalAtRisk.toLocaleString()} at risk</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {gapAlerts.map((alert, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: '#FEF3C7', borderRadius: 6 }}>
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{alert.addr}</span>
+                  <span style={{ fontSize: 12, color: '#78716C', marginLeft: 8 }}>
+                    {alert.nights} night{alert.nights > 1 ? 's' : ''} available {alert.rangeStr}
+                  </span>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#B45309' }}>${alert.atRisk.toLocaleString()} at risk</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer style={{ padding: '12px 32px', borderTop: '1px solid #e0e0e0', background: '#fff', display: 'flex', justifyContent: 'space-between' }}>
