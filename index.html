@@ -6,13 +6,15 @@
 <title>Patron Properties — Platform Prototype</title>
 <style>
   :root {
-    --primary: #006B54;
-    --primary-dark: #004D3B;
-    --gold: #C49A2A;
     --bg: #f5f5f4;
     --surface: #ffffff;
     --text: #1a1a1a;
     --text-secondary: #555;
+    --gold: #C49A2A;
+    --operator: #1a2332;
+    --program: #0d7377;
+    --agency: #8B6914;
+    --homeowner: #2d6a4f;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -21,279 +23,535 @@
     color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
+
+  /* HEADER */
   .header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    padding: 48px 40px 40px;
+    background: linear-gradient(135deg, #006B54 0%, #004D3B 100%);
+    padding: 44px 40px 36px;
     text-align: center;
   }
   .header h1 {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 700;
     color: #fff;
     letter-spacing: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .header p {
     color: var(--gold);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     letter-spacing: 1px;
   }
   .masters-banner {
     background: linear-gradient(90deg, #b8860b, #daa520, #b8860b);
     text-align: center;
-    padding: 10px 20px;
-    font-size: 13px;
+    padding: 9px 20px;
+    font-size: 12px;
     font-weight: 600;
     color: #1a1a1a;
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
+
+  /* CONTENT */
   .content {
-    max-width: 1100px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 48px 24px 64px;
+    padding: 36px 24px 64px;
   }
-  .intro {
-    text-align: center;
-    margin-bottom: 48px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .intro h2 {
-    font-family: Georgia, serif;
-    font-size: 26px;
-    color: var(--primary);
-    margin-bottom: 12px;
-  }
-  .intro p {
-    color: var(--text-secondary);
-    font-size: 15px;
-    line-height: 1.6;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-  }
-  .card {
-    background: var(--surface);
+
+  /* SEGMENT */
+  .segment {
+    margin-bottom: 32px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    color: inherit;
-    display: block;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   }
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-  }
-  .card-header {
-    background: var(--primary);
-    padding: 16px 20px;
+  .segment-header {
+    padding: 16px 24px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
   }
-  .card-num {
+  .segment-header h2 {
     font-family: Georgia, serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .card-title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
+    letter-spacing: 1px;
   }
-  .card-body { padding: 20px; }
-  .card-desc {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-  .card-features { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag {
-    background: #e8f5f0;
-    color: var(--primary);
-    font-size: 11px;
+  .segment-header .count {
+    font-size: 12px;
     font-weight: 600;
-    padding: 4px 10px;
+    color: rgba(255,255,255,0.5);
+    margin-left: auto;
+  }
+  .segment-header .desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .seg-operator .segment-header { background: var(--operator); }
+  .seg-program .segment-header { background: var(--program); }
+  .seg-agency .segment-header { background: var(--agency); }
+  .seg-agency .segment-header h2 { color: #fff; }
+  .seg-homeowner .segment-header { background: var(--homeowner); }
+
+  .segment-body {
+    background: var(--surface);
+    padding: 20px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 16px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+
+  .card-color-bar { height: 4px; }
+  .seg-operator .card-color-bar { background: var(--operator); }
+  .seg-program .card-color-bar { background: var(--program); }
+  .seg-agency .card-color-bar { background: var(--agency); }
+  .seg-homeowner .card-color-bar { background: var(--homeowner); }
+
+  .card:hover .card-color-bar { height: 5px; }
+
+  .card-body { padding: 18px 20px 16px; flex: 1; }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .seg-operator .card-label { color: #4a6fa5; }
+  .seg-program .card-label { color: var(--program); }
+  .seg-agency .card-label { color: #a07d1c; }
+  .seg-homeowner .card-label { color: var(--homeowner); }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .card-features { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  .seg-operator .tag { background: #e8eef6; color: #2c4a7c; }
+  .seg-program .tag { background: #e0f5f5; color: #096c6c; }
+  .seg-agency .tag { background: #faf3e0; color: #7a5f10; }
+  .seg-homeowner .tag { background: #e4f0e8; color: #245a3e; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
     border-radius: 20px;
   }
+
   .card-cta {
     display: block;
     text-align: center;
-    padding: 14px 20px;
-    background: #f8f8f7;
+    padding: 12px 20px;
+    background: #fafafa;
     border-top: 1px solid #eee;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    color: var(--primary);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
   }
-  .card:hover .card-cta { background: #e8f5f0; }
+  .seg-operator .card-cta { color: #2c4a7c; }
+  .seg-program .card-cta { color: var(--program); }
+  .seg-agency .card-cta { color: #8B6914; }
+  .seg-homeowner .card-cta { color: var(--homeowner); }
+
+  .seg-operator .card:hover { border-color: #4a6fa5; }
+  .seg-program .card:hover { border-color: var(--program); }
+  .seg-agency .card:hover { border-color: #a07d1c; }
+  .seg-homeowner .card:hover { border-color: var(--homeowner); }
+
+  .card:hover .card-cta { background: #f0f0ef; }
+
+  /* PLANNED CARDS */
+  .card.planned {
+    opacity: 0.45;
+    cursor: default;
+    border-style: dashed;
+  }
+  .card.planned:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #e5e5e5;
+  }
+  .card.planned .card-cta { color: #999; }
+  .planned-badge {
+    font-size: 10px;
+    font-weight: 600;
+    color: #999;
+    border: 1px dashed #ccc;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* DATA ROW */
+  .data-section {
+    margin-top: 8px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .data-section h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    margin-bottom: 14px;
+  }
+  .data-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .data-chip {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .data-chip:hover { border-color: #006B54; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .data-chip strong { color: var(--text); display: block; margin-bottom: 2px; }
+  .data-chip .sub { font-size: 11px; color: #999; }
+  .chip-icon { font-size: 20px; }
+
+  /* FOOTER */
   .footer {
     text-align: center;
-    padding: 32px 24px;
-    color: var(--text-secondary);
-    font-size: 13px;
+    padding: 28px 24px;
+    color: #999;
+    font-size: 12px;
     border-top: 1px solid #e0e0e0;
-    margin-top: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    .header { padding: 28px 20px 24px; }
+    .header h1 { font-size: 28px; }
+    .segment-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .segment-header .count { margin-left: 0; }
+    .data-row { flex-direction: column; }
   }
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>PATRON PROPERTIES</h1>
   <p>Masters Tournament 2027 — Platform Prototype</p>
 </div>
 <div class="masters-banner">
-  Practice Rounds Apr 7–9 · Tournament Apr 10–13, 2027 · Augusta National Golf Club
+  Practice Rounds Apr 7–9 &middot; Tournament Apr 10–13, 2027 &middot; Augusta National Golf Club
 </div>
+
 <div class="content">
-  <div class="intro">
-    <h2>Interactive Prototype Screens</h2>
-    <p>Click any card below to open the full interactive prototype. Each screen is a working demo with filters, buttons, and sample data — built for luxury rental management during the Masters Tournament.</p>
-  </div>
-  <div class="grid">
-    <a href="season_planner_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">01</span><span class="card-title">Season Planner</span></div>
-      <div class="card-body">
-        <div class="card-desc">Calendar view of all properties across the Masters Tournament window. Track occupancy, booking status, and assign unmatched renters to available homes.</div>
-        <div class="card-features"><span class="tag">Calendar View</span><span class="tag">Occupancy KPIs</span><span class="tag">Renter Assignment</span></div>
+
+  <!-- ===== OPERATOR (Navy) ===== -->
+  <div class="segment seg-operator">
+    <div class="segment-header">
+      <h2>Operator</h2>
+      <span class="desc">Internal tools — prospecting, pipeline, command center</span>
+      <span class="count">5 screens</span>
+    </div>
+    <div class="segment-body">
+      <div class="grid">
+
+        <a href="screens/A3-prospect-pipeline.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">A3 — Prospect Pipeline</div>
+            <div class="card-title">Property Prospecting CRM</div>
+            <div class="card-desc">110 Tier 1 prospects with Google Street View, Patron Score, bed/bath/value/sqft filters, clean outreach toggle, click-to-call, detail modals.</div>
+            <div class="card-features"><span class="tag">Street View</span><span class="tag">110 Records</span><span class="tag">Click-to-Call</span><span class="tag">Filters</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="screens/A2-workflow-board.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">A2 — Workflow Board</div>
+            <div class="card-title">Acquisition Pipeline</div>
+            <div class="card-desc">13-stage Kanban — Lead to Closed. Task queue with triggers, homeowner outreach tracker, season dashboard.</div>
+            <div class="card-features"><span class="tag">Kanban</span><span class="tag">13 Stages</span><span class="tag">Task Queue</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="screens/B2-patron-command-center.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">B2 — Command Center</div>
+            <div class="card-title">Property Command Center</div>
+            <div class="card-desc">Internal ops hub — homeowner status, pre-arrival info, contract/payment tracking, damage queue, housekeeping, quality scoring.</div>
+            <div class="card-features"><span class="tag">Ops Hub</span><span class="tag">Payments</span><span class="tag">Quality Scoring</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="screens/D1-agency-ops.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">D1 — Event-Week Ops</div>
+            <div class="card-title">Masters Week Ops</div>
+            <div class="card-desc">iPad tool for hospitality directors. Daily ops, house status board, guest list, week timeline, issue triage.</div>
+            <div class="card-features"><span class="tag">iPad</span><span class="tag">Daily Ops</span><span class="tag">Issue Triage</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <div class="card planned">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">D2 — Patron Live</div>
+            <div class="card-title">Live Command Center</div>
+            <div class="card-desc">Internal war room — all 180+ homes on one screen during event week.</div>
+            <span class="planned-badge">Planned</span>
+          </div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
       </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="renter_crm_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">02</span><span class="card-title">Renter CRM</span></div>
-      <div class="card-body">
-        <div class="card-desc">Complete renter database with qualification status, booking history, property preferences, and star ratings. Filter by status, type, and tier.</div>
-        <div class="card-features"><span class="tag">Renter Profiles</span><span class="tag">Status Tracking</span><span class="tag">Star Ratings</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="deal_pipeline_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">03</span><span class="card-title">Deal Pipeline</span></div>
-      <div class="card-body">
-        <div class="card-desc">Kanban-style deal tracking from initial inquiry through confirmation. Revenue projections, stage analytics, and deal value at every step.</div>
-        <div class="card-features"><span class="tag">Kanban Board</span><span class="tag">Revenue Forecast</span><span class="tag">Stage Analytics</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="property_search_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">04</span><span class="card-title">Property Search</span></div>
-      <div class="card-body">
-        <div class="card-desc">Filterable property inventory with proximity to Augusta National, bedrooms, amenities, and nightly pricing. Quick-scan cards for fast comparison.</div>
-        <div class="card-features"><span class="tag">Property Filters</span><span class="tag">Proximity Data</span><span class="tag">Quick Compare</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="property_detail_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">05</span><span class="card-title">Property Detail</span></div>
-      <div class="card-body">
-        <div class="card-desc">Deep-dive property profile with photos, amenities, pricing tiers, availability calendar, and full booking history for each home.</div>
-        <div class="card-features"><span class="tag">Photo Gallery</span><span class="tag">Pricing Tiers</span><span class="tag">Booking History</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="homeowner_intake_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">06</span><span class="card-title">Homeowner Intake</span></div>
-      <div class="card-body">
-        <div class="card-desc">Multi-step onboarding form for new homeowner properties. Capture property details, photos, availability preferences, and agreement terms.</div>
-        <div class="card-features"><span class="tag">Multi-Step Form</span><span class="tag">Photo Upload</span><span class="tag">Agreements</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="document_tracker_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">07</span><span class="card-title">Document Tracker</span></div>
-      <div class="card-body">
-        <div class="card-desc">Two-party document management tracking client and homeowner paperwork status per deal. Upload, review, and verify all required documents.</div>
-        <div class="card-features"><span class="tag">Client Docs</span><span class="tag">Homeowner Docs</span><span class="tag">Status Tracking</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="pricing_calculator_FINAL.html" class="card">
-      <div class="card-header"><span class="card-num">08</span><span class="card-title">Pricing Calculator</span></div>
-      <div class="card-body">
-        <div class="card-desc">Dynamic pricing tool with tournament and practice round rate multipliers, 7/8/10-night rental packages, and commission modeling for homeowner net revenue.</div>
-        <div class="card-features"><span class="tag">Rate Multipliers</span><span class="tag">Rental Packages</span><span class="tag">Commission Model</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
+    </div>
   </div>
 
-  <div class="intro" style="margin-top:56px;">
-    <h2>Prospecting &amp; Operations</h2>
-    <p>Property acquisition pipeline, back-office operations, and field tools. Built on 110 enriched prospects with skip-traced contact data and Google Street View.</p>
+  <!-- ===== PROGRAM MANAGEMENT (Teal) ===== -->
+  <div class="segment seg-program">
+    <div class="segment-header">
+      <h2>Program Management</h2>
+      <span class="desc">Season planning, deal flow, pricing, compliance</span>
+      <span class="count">4 screens</span>
+    </div>
+    <div class="segment-body">
+      <div class="grid">
+
+        <a href="season_planner_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Season Planner</div>
+            <div class="card-title">Masters Week Calendar</div>
+            <div class="card-desc">Calendar view of all properties across the tournament window. Track occupancy, booking status, assign renters to homes.</div>
+            <div class="card-features"><span class="tag">Calendar</span><span class="tag">Occupancy KPIs</span><span class="tag">Renter Assignment</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="deal_pipeline_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Deal Pipeline</div>
+            <div class="card-title">Deal Flow Kanban</div>
+            <div class="card-desc">6-stage funnel: Inquiry &rarr; Booked. Revenue projections, stage analytics, deal cards with full contact and document status.</div>
+            <div class="card-features"><span class="tag">Kanban</span><span class="tag">Revenue Forecast</span><span class="tag">Stage Analytics</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="pricing_calculator_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Pricing Calculator</div>
+            <div class="card-title">Rate Modeling</div>
+            <div class="card-desc">Tournament multipliers, 7/8/10-night packages, commission splits, homeowner net revenue — real-time calculations.</div>
+            <div class="card-features"><span class="tag">Rate Multipliers</span><span class="tag">Packages</span><span class="tag">Commission</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="document_tracker_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Document Tracker</div>
+            <div class="card-title">Compliance &amp; Docs</div>
+            <div class="card-desc">Two-party document management — client and homeowner paperwork per deal. Upload, review, verify status tracking.</div>
+            <div class="card-features"><span class="tag">Client Docs</span><span class="tag">Owner Docs</span><span class="tag">Status Tracking</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+      </div>
+    </div>
   </div>
-  <div class="grid">
-    <a href="screens/A3-prospect-pipeline.html" class="card">
-      <div class="card-header"><span class="card-num">09</span><span class="card-title">Prospect Pipeline</span></div>
-      <div class="card-body">
-        <div class="card-desc">Card-grid CRM with Google Street View photos for all 110 Tier 1 prospects. Patron Score ranking, bed/bath/value/sqft filters, clean outreach toggle, click-to-call, and detail modals with scoring breakdowns.</div>
-        <div class="card-features"><span class="tag">Street View</span><span class="tag">110 Prospects</span><span class="tag">Click-to-Call</span><span class="tag">Property Filters</span></div>
+
+  <!-- ===== AGENCY (Gold) ===== -->
+  <div class="segment seg-agency">
+    <div class="segment-header">
+      <h2>Agency</h2>
+      <span class="desc">Guest-facing — property search, renter CRM, booking</span>
+      <span class="count">4 screens</span>
+    </div>
+    <div class="segment-body">
+      <div class="grid">
+
+        <a href="renter_crm_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Renter CRM</div>
+            <div class="card-title">Guest Database</div>
+            <div class="card-desc">Complete renter profiles — qualification status, booking history, property preferences, star ratings. Filter by status, type, tier.</div>
+            <div class="card-features"><span class="tag">Renter Profiles</span><span class="tag">Status Tracking</span><span class="tag">Star Ratings</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="property_search_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Property Search</div>
+            <div class="card-title">Inventory Search</div>
+            <div class="card-desc">Filterable property cards — proximity to Augusta National, bedrooms, amenities, nightly pricing. Quick-scan for comparison.</div>
+            <div class="card-features"><span class="tag">Filters</span><span class="tag">Proximity</span><span class="tag">Quick Compare</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="property_detail_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Property Detail</div>
+            <div class="card-title">Property Deep Dive</div>
+            <div class="card-desc">Full profile — photos, amenities, pricing tiers, availability calendar, booking history, similar properties.</div>
+            <div class="card-features"><span class="tag">Gallery</span><span class="tag">Pricing Tiers</span><span class="tag">Booking History</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="screens/B1-agency-portal.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">B1 — Agency Portal</div>
+            <div class="card-title">White-Label Portal</div>
+            <div class="card-desc">Managed + browse modes, curated proposals, dual payment model, housekeeping matrix, pre-arrival info export.</div>
+            <div class="card-features"><span class="tag">White-Label</span><span class="tag">Proposals</span><span class="tag">Payments</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
       </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="screens/A1-homeowner-portal.html" class="card">
-      <div class="card-header"><span class="card-num">10</span><span class="card-title">Homeowner Portal</span></div>
-      <div class="card-body">
-        <div class="card-desc">Owner-facing dashboard showing their property status, rental income, upcoming bookings, and communication log with the Patron team.</div>
-        <div class="card-features"><span class="tag">Owner View</span><span class="tag">Income Tracking</span><span class="tag">Comms Log</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="screens/A2-workflow-board.html" class="card">
-      <div class="card-header"><span class="card-num">11</span><span class="card-title">Workflow Board</span></div>
-      <div class="card-body">
-        <div class="card-desc">Kanban-style task board for managing property onboarding, prep, and operational workflows across the acquisition pipeline.</div>
-        <div class="card-features"><span class="tag">Kanban Tasks</span><span class="tag">Onboarding</span><span class="tag">Team Workflow</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="screens/B1-agency-portal.html" class="card">
-      <div class="card-header"><span class="card-num">12</span><span class="card-title">Agency Portal</span></div>
-      <div class="card-body">
-        <div class="card-desc">Internal agency view for managing all properties, owners, and operational status. Overview dashboards with portfolio-level metrics.</div>
-        <div class="card-features"><span class="tag">Portfolio View</span><span class="tag">Owner Mgmt</span><span class="tag">Ops Dashboard</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="screens/B2-patron-command-center.html" class="card">
-      <div class="card-header"><span class="card-num">13</span><span class="card-title">Command Center</span></div>
-      <div class="card-body">
-        <div class="card-desc">Real-time command center for Masters week operations. Property status, guest check-in tracking, issue escalation, and team coordination.</div>
-        <div class="card-features"><span class="tag">Real-Time Ops</span><span class="tag">Issue Tracking</span><span class="tag">Team View</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="screens/D1-agency-ops.html" class="card">
-      <div class="card-header"><span class="card-num">14</span><span class="card-title">Agency Ops</span></div>
-      <div class="card-body">
-        <div class="card-desc">Day-to-day agency operations — vendor management, supply tracking, maintenance scheduling, and property readiness checklists.</div>
-        <div class="card-features"><span class="tag">Vendor Mgmt</span><span class="tag">Maintenance</span><span class="tag">Checklists</span></div>
-      </div>
-      <div class="card-cta">Open Prototype →</div>
-    </a>
-    <a href="reports/Patron_Prospecting_Pilot_Report.html" class="card">
-      <div class="card-header"><span class="card-num">15</span><span class="card-title">Prospecting Report</span></div>
-      <div class="card-body">
-        <div class="card-desc">Full pilot report on the 110-prospect pipeline — scoring methodology, skip trace results, DNC analysis, and outreach strategy recommendations.</div>
-        <div class="card-features"><span class="tag">Pilot Report</span><span class="tag">Scoring Model</span><span class="tag">Outreach Strategy</span></div>
-      </div>
-      <div class="card-cta">Open Report →</div>
-    </a>
+    </div>
   </div>
+
+  <!-- ===== HOMEOWNER (Green) ===== -->
+  <div class="segment seg-homeowner">
+    <div class="segment-header">
+      <h2>Homeowner</h2>
+      <span class="desc">Owner-facing — onboarding, portal, post-event</span>
+      <span class="count">4 screens</span>
+    </div>
+    <div class="segment-body">
+      <div class="grid">
+
+        <a href="screens/A1-homeowner-portal.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">A1 — Homeowner Portal</div>
+            <div class="card-title">Owner Dashboard</div>
+            <div class="card-desc">Homeowner-facing portal — property listing, house info form, availability calendar, damage ticketing, payment tracking.</div>
+            <div class="card-features"><span class="tag">Owner View</span><span class="tag">Calendar</span><span class="tag">Payments</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <a href="homeowner_intake_FINAL.html" class="card">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">Homeowner Intake</div>
+            <div class="card-title">Onboarding Wizard</div>
+            <div class="card-desc">5-step form — property basics, photos, amenities, availability preferences, terms &amp; agreements.</div>
+            <div class="card-features"><span class="tag">5-Step Form</span><span class="tag">Photo Upload</span><span class="tag">Agreements</span></div>
+          </div>
+          <div class="card-cta">Open Prototype &rarr;</div>
+        </a>
+
+        <div class="card planned">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">C1 / C2 — Load-In</div>
+            <div class="card-title">Pre-Masters Prep</div>
+            <div class="card-desc">Key handoff, linen delivery, staging, inspections.</div>
+            <span class="planned-badge">Planned</span>
+          </div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+        <div class="card planned">
+          <div class="card-color-bar"></div>
+          <div class="card-body">
+            <div class="card-label">E1 / E2 — Post-Event</div>
+            <div class="card-title">Checkout &amp; Reconciliation</div>
+            <div class="card-desc">Damage reporting, settlement workflow, financial reconciliation, owner reporting.</div>
+            <span class="planned-badge">Planned</span>
+          </div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA & REPORTS -->
+  <div class="data-section">
+    <h3>Data &amp; Reports</h3>
+    <div class="data-row">
+      <a class="data-chip" href="reports/Patron_Prospecting_Pilot_Report.html">
+        <span class="chip-icon">&#x1F4CA;</span>
+        <div><strong>Prospecting Pilot Report</strong><span class="sub">KPIs, street breakdowns, outreach strategy</span></div>
+      </a>
+      <a class="data-chip" href="reports/milledge_rd_pilot_results.md">
+        <span class="chip-icon">&#x1F4DD;</span>
+        <div><strong>Milledge Rd Pilot</strong><span class="sub">Field results &amp; learnings</span></div>
+      </a>
+      <a class="data-chip" href="data/tier1_enriched.json">
+        <span class="chip-icon">&#x1F4BE;</span>
+        <div><strong>tier1_enriched.json</strong><span class="sub">110 prospects — full contact + scoring</span></div>
+      </a>
+    </div>
+  </div>
+
 </div>
+
 <div class="footer">
-  Patron Properties · Masters Tournament 2027 · Augusta, Georgia<br>
-  Interactive prototypes — click any screen above to explore
+  Patron Properties &middot; Masters Tournament 2027 &middot; Augusta, Georgia &middot; 15 Screens &middot; 4 Segments
 </div>
+
 </body>
 </html>
