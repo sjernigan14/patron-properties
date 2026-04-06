@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patron Properties — Internal Workflow Board</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #0f1419;
+            color: #e0e6ed;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #1a1f28;
+            border-right: 1px solid #2a3142;
+            padding: 24px 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 24px 20px;
+            border-bottom: 1px solid #2a3142;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8892a8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-section {
+            padding: 0 12px 24px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5a6370;
+            text-transform: uppercase;
+            padding: 8px 8px 12px 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 10px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #a0aab8;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #252d38;
+            color: #e0e6ed;
+        }
+
+        .nav-item.active {
+            background: #1e3a5f;
+            color: #60a5fa;
+            border-left-color: #60a5fa;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a1f28;
+            border-bottom: 1px solid #2a3142;
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 12px;
+            background: #252d38;
+            border: 1px solid #3a4451;
+            border-radius: 4px;
+            color: #a0aab8;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #2a3342;
+            color: #e0e6ed;
+        }
+
+        .filter-btn.active {
+            background: #1e3a5f;
+            border-color: #60a5fa;
+            color: #60a5fa;
+        }
+
+        .view-content {
+            flex: 1;
+            overflow: auto;
+            padding: 32px;
+        }
+
+        /* Pipeline Board */
+        .pipeline-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            height: 100%;
+        }
+
+        .pipeline-column {
+            display: flex;
+            flex-direction: column;
+            background: #1a1f28;
+            border-radius: 8px;
+            border: 1px solid #2a3142;
+            overflow: hidden;
+        }
+
+        .column-header {
+            padding: 16px;
+            background: #252d38;
+            border-bottom: 1px solid #2a3142;
+        }
+
+        .column-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .column-count {
+            font-size: 12px;
+            color: #5a6370;
+        }
+
+        .column-cards {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .deal-card {
+            padding: 14px;
+            background: #1e2530;
+            border-radius: 6px;
+            border-left: 3px solid;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .deal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .deal-card.status-green {
+            border-left-color: #10b981;
+        }
+
+        .deal-card.status-amber {
+            border-left-color: #f59e0b;
+        }
+
+        .deal-card.status-red {
+            border-left-color: #ef4444;
+        }
+
+        .card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 8px;
+        }
+
+        .card-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .card-meta-item {
+            color: #8892a8;
+        }
+
+        .card-meta-label {
+            color: #5a6370;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #2a3142;
+        }
+
+        .card-assignee {
+            font-size: 11px;
+            background: #252d38;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: #a0aab8;
+        }
+
+        .card-days {
+            font-size: 11px;
+            color: #5a6370;
+        }
+
+        /* Task Queue */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            padding: 14px;
+            background: #1e2530;
+            border-radius: 6px;
+            border-left: 3px solid;
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .task-item.overdue {
+            border-left-color: #ef4444;
+        }
+
+        .task-item.due-today {
+            border-left-color: #f59e0b;
+        }
+
+        .task-item.upcoming {
+            border-left-color: #10b981;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .task-desc {
+            font-size: 12px;
+            color: #8892a8;
+            margin-bottom: 4px;
+        }
+
+        .task-meta {
+            font-size: 11px;
+            color: #5a6370;
+        }
+
+        .task-assigned {
+            font-size: 12px;
+            background: #252d38;
+            padding: 6px 10px;
+            border-radius: 4px;
+            color: #a0aab8;
+        }
+
+        .task-due {
+            font-size: 12px;
+            color: #8892a8;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .task-status-btn {
+            padding: 6px 10px;
+            background: #252d38;
+            border: 1px solid #3a4451;
+            border-radius: 4px;
+            color: #a0aab8;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .task-status-btn:hover {
+            background: #2a3342;
+        }
+
+        /* Deal Detail Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #1a1f28;
+            border: 1px solid #2a3142;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #2a3142;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #8892a8;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #e0e6ed;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .deal-header-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #252d38;
+            border-radius: 6px;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #5a6370;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #2a3142;
+            padding-bottom: 8px;
+        }
+
+        .houses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+
+        .house-item {
+            padding: 12px;
+            background: #1e2530;
+            border-radius: 6px;
+            border-left: 3px solid #10b981;
+        }
+
+        .house-address {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 6px;
+        }
+
+        .house-status {
+            font-size: 11px;
+            color: #8892a8;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;;
+            background: #60a5fa;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-action {
+            font-size: 13px;
+            color: #e0e6ed;
+            margin-bottom: 2px;
+        }
+
+        .timeline-date {
+            font-size: 11px;
+            color: #5a6370;
+        }
+
+        .notes-box {
+            background: #1e2530;
+            border: 1px solid #2a3142;
+            border-radius: 6px;
+            padding: 12px;
+            color: #8892a8;
+            font-size: 13px;
+            min-height: 80px;
+        }
+
+        /* Homeowner Tracker */
+        .homeowner-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .homeowner-table th {
+            background: #252d38;
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a0aab8;
+            text-transform: uppercase;
+            border-bottom: 1px solid #2a3142;
+        }
+
+        .homeowner-table td {
+            padding: 12px;
+            border-bottom: 1px solid #2a3142;
+            font-size: 13px;
+        }
+
+        .homeowner-table tbody tr:hover {
+            background: #1e2530;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-unavailable {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        /* Season Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: #1e2530;
+            border: 1px solid #2a3142;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: #8892a8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        .kpi-change.negative {
+            color: #ef4444;
+        }
+
+        .milestones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .milestone-item {
+            padding: 12px;
+            background: #1e2530;
+            border-left: 3px solid #60a5fa;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .milestone-text {
+            flex: 1;
+        }
+
+        .milestone-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 2px;
+        }
+
+        .milestone-date {
+            font-size: 12px;
+            color: #8892a8;
+        }
+
+        .milestone-badge {
+            font-size: 11px;
+            background: #252d38;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: #a0aab8;
+            white-space: nowrap;
+        }
+
+        .workload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .workload-card {
+            background: #1e2530;
+            border: 1px solid #2a3142;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .workload-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 12px;
+        }
+
+        .workload-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #2a3142;
+            font-size: 13px;
+        }
+
+        .workload-item:last-child {
+            border-bottom: none;
+        }
+
+        .workload-label {
+            color: #8892a8;
+        }
+
+        .workload-value {
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a4451;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a5561;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Sample data
+        const deals = [
+            {
+                id: 1,
+                agency: 'Wasserman',
+                renter: 'Wasserman Sports',
+                stage: 'Contract Signed',
+                homes: 6,
+                value: 450000,
+                daysInStage: 3,
+                assignedTo: 'Taite',
+                status: 'green',
+                houses: [
+                    { address: '2501 Magnolia Dr', status: 'Contract Signed' },
+                    { address: '2507 Magnolia Dr', status: 'Contract Signed' },
+                    { address: '2510 Azalea Dr', status: 'Contract Signed' },
+                    { address: '2515 Azalea Dr', status: 'Contract Signed' },
+                    { address: '2520 Magnolia Dr', status: 'Contract Signed' },
+                    { address: '2525 Azalea Dr', status: 'Contract Signed' }
+                ],
+                timeline: [
+                    { action: 'Contract fully signed', date: '2026-04-02' },
+                    { action: 'Contract sent to both parties', date: '2026-03-28' },
+                    { action: 'Contracts drafted by Katie', date: '2026-03-25' },
+                    { action: 'Houses selected', date: '2026-03-22' }
+                ]
+            },
+            {
+                id: 2,
+                agency: 'CBS',
+                renter: 'CBS Sports',
+                stage: 'Invoiced',
+                homes: 40,
+                value: 2800000,
+                daysInStage: 1,
+                assignedTo: 'Taite',
+                status: 'green',
+                houses: Array(40).fill().map((_, i) => ({ address: `CBS Property ${i+1}`, status: 'Invoiced' })),
+                timeline: [
+                    { action: 'Invoice sent to CBS Sports', date: '2026-04-03' },
+                    { action: 'All 40 contracts fully signed', date: '2026-04-01' }
+                ]
+            },
+            {
+                id: 3,
+                agency: 'On Location',
+                renter: 'On Location Experiences',
+                stage: 'Proposal Sent',
+                homes: 12,
+                value: 840000,
+                daysInStage: 8,
+                assignedTo: 'Katie',
+                status: 'amber',
+                houses: Array(12).fill().map((_, i) => ({ address: `On Location Property ${i+1}`, status: 'Proposal Sent' })),
+                timeline: [
+                    { action: 'Proposal sent to client', date: '2026-03-27' },
+                    { action: 'Discovery call completed', date: '2026-03-24' }
+                ]
+            },
+            {
+                id: 4,
+                agency: 'ProLink Sports',
+                renter: 'ProLink Sports',
+                stage: 'Houses Selected',
+                homes: 4,
+                value: 280000,
+                daysInStage: 2,
+                assignedTo: 'Katie',
+                status: 'green',
+                houses: Array(4).fill().map((_, i) => ({ address: `ProLink Property ${i+1}`, status: 'Houses Selected' })),
+                timeline: [
+                    { action: 'Houses selected by client', date: '2026-04-02' },
+                    { action: 'Proposal accepted', date: '2026-03-31' }
+                ]
+            },
+            {
+                id: 5,
+                agency: 'Ames Capital',
+                renter: 'Ames Capital (Direct)',
+                stage: 'Lead',
+                homes: 2,
+                value: 140000,
+                daysInStage: 5,
+                assignedTo: 'Taite',
+                status: 'amber',
+                houses: Array(2).fill().map((_, i) => ({ address: `Ames Property ${i+1}`, status: 'Lead' })),
+                timeline: [
+                    { action: 'Initial contact received', date: '2026-03-30' }
+                ]
+            },
+            {
+                id: 6,
+                agency: 'Nakamura Group',
+                renter: 'Nakamura Group',
+                stage: 'Contract Drafting',
+                homes: 3,
+                value: 210000,
+                daysInStage: 1,
+                assignedTo: 'Katie',
+                status: 'green',
+                houses: Array(3).fill().map((_, i) => ({ address: `Nakamura Property ${i+1}`, status: 'Contract Drafting' })),
+                timeline: [
+                    { action: 'Houses selected', date: '2026-04-03' },
+                    { action: 'Proposal accepted', date: '2026-04-02' }
+                ]
+            },
+            {
+                id: 7,
+                agency: 'Direct',
+                renter: 'Pre-Arrival Phase',
+                stage: 'Pre-Arrival',
+                homes: 8,
+                value: 560000,
+                daysInStage: 14,
+                assignedTo: 'Jackie',
+                status: 'green',
+                houses: Array(8).fill().map((_, i) => ({ address: `Pre-Arrival Property ${i+1}`, status: 'Pre-Arrival' })),
+                timeline: [
+                    { action: 'Guest info gathering in progress', date: '2026-04-01' },
+                    { action: 'Payment 1 received', date: '2026-03-20' }
+                ]
+            },
+            {
+                id: 8,
+                agency: 'Event Week',
+                renter: 'Active Rental Period',
+                stage: 'Event Week',
+                homes: 5,
+                value: 350000,
+                daysInStage: 3,
+                assignedTo: 'Jackie',
+                status: 'green',
+                houses: Array(5).fill().map((_, i) => ({ address: `Event Week Property ${i+1}`, status: 'Event Week' })),
+                timeline: [
+                    { action: 'Event week in progress', date: '2026-04-03' },
+                    { action: 'Pre-arrival info confirmed', date: '2026-03-28' }
+                ]
+            }
+        ];
+
+        const tasks = [
+            {
+                id: 1,
+                title: 'Draft contracts for 3 homes',
+                description: 'Nakamura Group selected 3 homes — draft and prepare for signature',
+                assignedTo: 'Katie',
+                dueDate: '2026-04-04',
+                status: 'To Do',
+                priority: 'overdue',
+                linkedDeal: 6
+            },
+            {
+                id: 2,
+                title: 'Follow up: On Location proposal response',
+                description: 'Check in with On Location — 8 days since proposal sent',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-04',
+                status: 'To Do',
+                priority: 'due-today',
+                linkedDeal: 3
+            },
+            {
+                id: 3,
+                title: 'Generate invoice for Wasserman',
+                description: 'Wasserman contracts signed — prepare invoice + W-9s',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-04',
+                status: 'In Progress',
+                priority: 'due-today',
+                linkedDeal: 1
+            },
+            {
+                id: 4,
+                title: 'CBS contract execution follow-up',
+                description: 'Confirm all 40 contracts fully signed and saved to OneDrive',
+                assignedTo: 'Katie',
+                dueDate: '2026-04-04',
+                status: 'Done',
+                priority: 'upcoming',
+                linkedDeal: 2
+            },
+            {
+                id: 5,
+                title: 'Send pre-arrival info forms',
+                description: 'Pre-Arrival: Send guest details, housekeeping needs, check-in info',
+                assignedTo: 'Jackie',
+                dueDate: '2026-04-05',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 7
+            },
+            {
+                id: 6,
+                title: 'Homeowner confirmation: Available homes',
+                description: 'Confirm availability for 15 homes for 2026 Masters week',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-06',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: null
+            },
+            {
+                id: 7,
+                title: 'Ames Capital discovery call',
+                description: 'Schedule & conduct discovery for Ames — 2 homes needed',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-07',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 5
+            },
+            {
+                id: 8,
+                title: 'Send W-9s to homeowners (Wasserman)',
+                description: 'Attach W-9s to Wasserman invoice package',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-05',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 1
+            },
+            {
+                id: 9,
+                title: 'ProLink: Draft 4 contracts',
+                description: 'Houses selected — draft contracts for ProLink 4-home deal',
+                assignedTo: 'Katie',
+                dueDate: '2026-04-05',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 4
+            },
+            {
+                id: 10,
+                title: 'Payment reminder: CBS Sports',
+                description: 'Send reminder to CBS re: payment 1 due date (4/10)',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-08',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 2
+            },
+            {
+                id: 11,
+                title: 'Event Week checkout — damage report forms',
+                description: 'Send damage report template to Event Week properties',
+                assignedTo: 'Jackie',
+                dueDate: '2026-04-07',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 8
+            },
+            {
+                id: 12,
+                title: 'Update homeowner contact log',
+                description: 'Log contact attempts + availability confirmations this week',
+                assignedTo: 'Jackie',
+                dueDate: '2026-04-05',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: null
+            },
+            {
+                id: 13,
+                title: '30-day pre-Masters outreach',
+                description: 'Send pre-arrival checklists to all 169 homes under contract',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-20',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: null
+            },
+            {
+                id: 14,
+                title: 'Wasserman: Confirm payment 1 receipt',
+                description: 'Record payment received + send homeowner confirmation',
+                assignedTo: 'Taite',
+                dueDate: '2026-04-10',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: 1
+            },
+            {
+                id: 15,
+                title: 'Homeowner follow-up: 30+ days no contact',
+                description: 'Reach out to 8 homeowners not confirmed in 30+ days',
+                assignedTo: 'Jackie',
+                dueDate: '2026-04-05',
+                status: 'To Do',
+                priority: 'upcoming',
+                linkedDeal: null
+            }
+        ];
+
+        const homeowners = [
+            { id: 1, name: 'David & Susan Mitchell', address: '2501 Magnolia Dr', lastContact: '2026-04-02', status: 'Available', method: 'Phone', new: false },
+            { id: 2, name: 'James & Patricia Brown', address: '2507 Magnolia Dr', lastContact: '2026-04-01', status: 'Available', method: 'Email', new: false },
+            { id: 3, name: 'Robert Collins', address: '2510 Azalea Dr', lastContact: '2026-03-15', status: 'Pending Confirmation', method: 'SMS', new: false },
+            { id: 4, name: 'Emma & Michael Torres', address: '2515 Azalea Dr', lastContact: '2026-02-28', status: 'Unavailable', method: 'Phone', new: false },
+            { id: 5, name: 'Jennifer & Charles Martinez', address: '2520 Magnolia Dr', lastContact: '2026-03-20', status: 'Available', method: 'Email', new: true },
+            { id: 6, name: 'William & Lisa Anderson', address: '2525 Azalea Dr', lastContact: '2026-03-10', status: 'Pending Confirmation', method: 'SMS', new: false },
+            { id: 7, name: 'Sarah & David White', address: '2530 Magnolia Dr', lastContact: '2026-01-15', status: 'Unavailable', method: 'Email', new: false },
+            { id: 8, name: 'Jennifer & Thomas Lee', address: '2535 Azalea Dr', lastContact: '2026-04-03', status: 'Available', method: 'Phone', new: false },
+        ];
+
+        const stages = ['Lead', 'Discovery', 'Proposal Sent', 'Houses Selected', 'Contract Drafting', 'Contract Out', 'Contract Signed', 'Invoiced', 'Payment 1 Received', 'Pre-Arrival', 'Event Week', 'Post-Event', 'Closed'];
+
+        function App() {
+            const [view, setView] = useState('pipeline');
+            const [selectedDeal, setSelectedDeal] = useState(null);
+            const [filterAssignee, setFilterAssignee] = useState(null);
+            const [myTasksFilter, setMyTasksFilter] = useState(false);
+
+            const pipelineDeals = stages.map(stage => ({
+                stage,
+                deals: deals.filter(d => d.stage === stage)
+            })).filter(group => group.deals.length > 0);
+
+            const getDealById = (id) => deals.find(d => d.id === id);
+
+            const filteredTasks = tasks.filter(t => {
+                if (myTasksFilter && t.assignedTo !== 'Katie') return false; // Change based on current user
+                return true;
+            });
+
+            const openDealDetail = (dealId) => {
+                setSelectedDeal(getDealById(dealId));
+            };
+
+            const closeDealDetail = () => {
+                setSelectedDeal(null);
+            };
+
+            return (
+                <div className="app-container">
+                    {/* Sidebar */}
+                    <div className="sidebar">
+                        <div className="sidebar-header">
+                            <div className="sidebar-title">Patron Properties</div>
+                        </div>
+
+                        <div className="nav-section">
+                            <div className="nav-section-title">Views</div>
+                            <button
+                                className={`nav-item ${view === 'pipeline' ? 'active' : ''}`}
+                                onClick={() => setView('pipeline')}
+                            >
+                                Pipeline Board
+                            </button>
+                            <button
+                                className={`nav-item ${view === 'tasks' ? 'active' : ''}`}
+                                onClick={() => setView('tasks')}
+                            >
+                                Task Queue
+                            </button>
+                            <button
+                                className={`nav-item ${view === 'homeowners' ? 'active' : ''}`}
+                                onClick={() => setView('homeowners')}
+                            >
+                                Homeowner Tracker
+                            </button>
+                            <button
+                                className={`nav-item ${view === 'dashboard' ? 'active' : ''}`}
+                                onClick={() => setView('dashboard')}
+                            >
+                                Season Dashboard
+                            </button>
+                        </div>
+
+                        <div className="nav-section" style={{ marginTop: 'auto', paddingBottom: '24px', borderTop: '1px solid #2a3142', paddingTop: '24px' }}>
+                            <div className="nav-section-title">Team</div>
+                            <button className="nav-item">Taite</button>
+                            <button className="nav-item">Katie</button>
+                            <button className="nav-item">Jackie (Temp)</button>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="main-content">
+                        {/* Header */}
+                        <div className="header">
+                            <div className="header-title">
+                                {view === 'pipeline' && 'Pipeline Board'}
+                                {view === 'tasks' && 'Task Queue'}
+                                {view === 'homeowners' && 'Homeowner Outreach Tracker'}
+                                {view === 'dashboard' && 'Season Dashboard'}
+                            </div>
+                            <div className="header-controls">
+                                {view === 'tasks' && (
+                                    <button
+                                        className={`filter-btn ${myTasksFilter ? 'active' : ''}`}
+                                        onClick={() => setMyTasksFilter(!myTasksFilter)}
+                                    >
+                                        My Tasks
+                                    </button>
+                                )}
+                                {view === 'pipeline' && (
+                                    <div className="filter-group">
+                                        <button className="filter-btn">All Stages</button>
+                                        <button className="filter-btn">By Assignee</button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* View Content */}
+                        <div className="view-content">
+                            {view === 'pipeline' && (
+                                <div className="pipeline-board">
+                                    {pipelineDeals.map(group => (
+                                        <div key={group.stage} className="pipeline-column">
+                                            <div className="column-header">
+                                                <div className="column-title">{group.stage}</div>
+                                                <div className="column-count">{group.deals.length} deal{group.deals.length !== 1 ? 's' : ''}</div>
+                                            </div>
+                                            <div className="column-cards">
+                                                {group.deals.map(deal => (
+                                                    <div
+                                                        key={deal.id}
+                                                        className={`deal-card status-${deal.status}`}
+                                                        onClick={() => openDealDetail(deal.id)}
+                                                    >
+                                                        <div className="card-name">{deal.agency}</div>
+                                                        <div className="card-meta">
+                                                            <div className="card-meta-item">
+                                                                <div className="card-meta-label">Homes</div>
+                                                                {deal.homes}
+                                                            </div>
+                                                            <div className="card-meta-item">
+                                                                <div className="card-meta-label">Value</div>
+                                                                ${(deal.value / 1000).toFixed(0)}K
+                                                            </div>
+                                                        </div>
+                                                        <div className="card-footer">
+                                                            <div className="card-assignee">{deal.assignedTo}</div>
+                                                            <div className="card-days">{deal.daysInStage}d in stage</div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {view === 'tasks' && (
+                                <div className="task-list">
+                                    {filteredTasks.map(task => (
+                                        <div key={task.id} className={`task-item ${task.priority}`}>
+                                            <div className="task-content">
+                                                <div className="task-title">{task.title}</div>
+                                                <div className="task-desc">{task.description}</div>
+                                                <div className="task-meta">
+                                                    {task.linkedDeal && `Deal: ${getDealById(task.linkedDeal)?.agency || ''}`}
+                                                </div>
+                                            </div>
+                                            <div className="task-assigned">{task.assignedTo}</div>
+                                            <div className="task-due">{task.dueDate}</div>
+                                            <button className="task-status-btn">{task.status}</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {view === 'homeowners' && (
+                                <table className="homeowner-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Address</th>
+                                            <th>Last Contact</th>
+                                            <th>Status</th>
+                                            <th>Method</th>
+                                            <th>New (2020+)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {homeowners.map(hw => (
+                                            <tr key={hw.id}>
+                                                <td>{hw.name}</td>
+                                                <td>{hw.address}</td>
+                                                <td>{hw.lastContact}</td>
+                                                <td>
+                                                    <span className={`status-badge status-${hw.status.toLowerCase().replace(' ', '-')}`}>
+                                                        {hw.status}
+                                                    </span>
+                                                </td>
+                                                <td>{hw.method}</td>
+                                                <td>{hw.new ? '✓' : '—'}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+
+                            {view === 'dashboard' && (
+                                <>
+                                    {/* KPI Cards */}
+                                    <div className="dashboard-grid">
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Homes Under Contract</div>
+                                            <div className="kpi-value">169</div>
+                                            <div className="kpi-change">Goal: 200 (+18.4%)</div>
+                                        </div>
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Total Deal Value</div>
+                                            <div className="kpi-value">$2.1M</div>
+                                            <div className="kpi-change">+31% vs prior year</div>
+                                        </div>
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Homes Available</div>
+                                            <div className="kpi-value">21</div>
+                                            <div className="kpi-change">From 190+ total</div>
+                                        </div>
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Pre-Arrival Info %</div>
+                                            <div className="kpi-value">73%</div>
+                                            <div className="kpi-change negative">-2% (target: 95%)</div>
+                                        </div>
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Payments Outstanding</div>
+                                            <div className="kpi-value">$847K</div>
+                                            <div className="kpi-change">Mostly due by 4/15</div>
+                                        </div>
+                                        <div className="kpi-card">
+                                            <div className="kpi-label">Days to Masters</div>
+                                            <div className="kpi-value">24</div>
+                                            <div className="kpi-change">April 7-13</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Upcoming Milestones */}
+                                    <div className="section">
+                                        <div className="section-title">Upcoming Milestones</div>
+                                        <div className="milestones-list">
+                                            <div className="milestone-item">
+                                                <div className="milestone-text">
+                                                    <div className="milestone-title">CBS Housekeeping Needs Due</div>
+                                                    <div className="milestone-date">April 5, 2026</div>
+                                                </div>
+                                                <div className="milestone-badge">CBS (40 homes)</div>
+                                            </div>
+                                            <div className="milestone-item">
+                                                <div className="milestone-text">
+                                                    <div className="milestone-title">On Location Contract Deadline</div>
+                                                    <div className="milestone-date">April 8, 2026</div>
+                                                </div>
+                                                <div className="milestone-badge">On Location (12 homes)</div>
+                                            </div>
+                                            <div className="milestone-item">
+                                                <div className="milestone-text">
+                                                    <div className="milestone-title">30-Day Pre-Masters Outreach</div>
+                                                    <div className="milestone-date">April 7, 2026</div>
+                                                </div>
+                                                <div className="milestone-badge">169 homes</div>
+                                            </div>
+                                            <div className="milestone-item">
+                                                <div className="milestone-text">
+                                                    <div className="milestone-title">Masters Week Begins</div>
+                                                    <div className="milestone-date">April 7-13, 2026</div>
+                                                </div>
+                                                <div className="milestone-badge">Peak operations</div>
+                                            </div>
+                                            <div className="milestone-item">
+                                                <div className="milestone-text">
+                                                    <div className="milestone-title">Post-Masters Checkout Period</div>
+                                                    <div className="milestone-date">April 14-20, 2026</div>
+                                                </div>
+                                                <div className="milestone-badge">Damage reports due</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Team Workload */}
+                                    <div className="section">
+                                        <div className="section-title">Team Workload</div>
+                                        <div className="workload-grid">
+                                            <div className="workload-card">
+                                                <div className="workload-name">Taite</div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Active Deals</span>
+                                                    <span className="workload-value">4</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Tasks Assigned</span>
+                                                    <span className="workload-value">8</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Overdue Tasks</span>
+                                                    <span className="workload-value">1</span>
+                                                </div>
+                                            </div>
+                                            <div className="workload-card">
+                                                <div className="workload-name">Katie</div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Active Deals</span>
+                                                    <span className="workload-value">3</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Tasks Assigned</span>
+                                                    <span className="workload-value">5</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Contracts to Draft</span>
+                                                    <span className="workload-value">7 homes</span>
+                                                </div>
+                                            </div>
+                                            <div className="workload-card">
+                                                <div className="workload-name">Jackie (Temp)</div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Active Deals</span>
+                                                    <span className="workload-value">2</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Tasks Assigned</span>
+                                                    <span className="workload-value">4</span>
+                                                </div>
+                                                <div className="workload-item">
+                                                    <span className="workload-label">Follow-ups Due</span>
+                                                    <span className="workload-value">2</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Deal Detail Modal */}
+                    {selectedDeal && (
+                        <div className="modal-backdrop" onClick={closeDealDetail}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div>
+                                        <div className="modal-title">{selectedDeal.renter}</div>
+                                        <div style={{ fontSize: '13px', color: '#8892a8', marginTop: '4px' }}>{selectedDeal.agency}</div>
+                                    </div>
+                                    <button className="modal-close" onClick={closeDealDetail}>×</button>
+                                </div>
+
+                                <div className="modal-body">
+                                    {/* Deal Header Info */}
+                                    <div className="deal-header-info">
+                                        <div className="info-block">
+                                            <div className="info-label">Stage</div>
+                                            <div className="info-value">{selectedDeal.stage}</div>
+                                        </div>
+                                        <div className="info-block">
+                                            <div className="info-label">Homes</div>
+                                            <div className="info-value">{selectedDeal.homes}</div>
+                                        </div>
+                                        <div className="info-block">
+                                            <div className="info-label">Deal Value</div>
+                                            <div className="info-value">${(selectedDeal.value / 1000).toFixed(0)}K</div>
+                                        </div>
+                                        <div className="info-block">
+                                            <div className="info-label">Assigned To</div>
+                                            <div className="info-value">{selectedDeal.assignedTo}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Houses */}
+                                    <div className="section">
+                                        <div className="section-title">Properties in Deal</div>
+                                        <div className="houses-grid">
+                                            {selectedDeal.houses.map((house, idx) => (
+                                                <div key={idx} className="house-item">
+                                                    <div className="house-address">{house.address}</div>
+                                                    <div className="house-status">{house.status}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Activity Timeline */}
+                                    <div className="section">
+                                        <div className="section-title">Activity Timeline</div>
+                                        <div className="timeline">
+                                            {selectedDeal.timeline.map((item, idx) => (
+                                                <div key={idx} className="timeline-item">
+                                                    <div className="timeline-dot"></div>
+                                                    <div className="timeline-content">
+                                                        <div className="timeline-action">{item.action}</div>
+                                                        <div className="timeline-date">{item.date}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Notes */}
+                                    <div className="section">
+                                        <div className="section-title">Internal Notes</div>
+                                        <div className="notes-box">
+                                            {selectedDeal.agency === 'CBS' && 'CBS Sports coordinated directly with Taite. All 40 properties confirmed. Payment due by 4/15.'}
+                                            {selectedDeal.agency === 'Wasserman' && 'Wasserman satisfied with home selection. All 6 contracts executed. Invoice ready for dispatch.'}
+                                            {selectedDeal.agency === 'On Location' && 'Waiting on final confirmation. Follow up if no response by 4/4. Contact: Jordan Smith.'}
+                                            {selectedDeal.agency === 'ProLink Sports' && 'Confirmed all 4 homes. Ready to move to contract drafting phase.'}
+                                            {selectedDeal.agency === 'Ames Capital' && 'Initial inquiry for 2 homes. Schedule discovery call this week. Budget: $140K.'}
+                                            {selectedDeal.agency === 'Nakamura Group' && 'Client very engaged. 3 homes selected. Katie drafting contracts today.'}
+                                            {selectedDeal.agency === 'Direct' && 'Pre-Arrival Phase: 8 homes. Guest info gathering in progress. All homeowners notified.'}
+                                            {selectedDeal.agency === 'Event Week' && 'Active rental in progress. Daily check-ins with guests. All systems running smoothly.'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

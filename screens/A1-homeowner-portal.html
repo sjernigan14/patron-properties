@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patron Properties — Homeowner Portal</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background-color: #faf8f5;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+            gap: 0;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: linear-gradient(180deg, #2d5f47 0%, #245240 100%);
+            color: #fff;
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #f0e8de;
+        }
+
+        .homeowner-name {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255,255,255,0.15);
+            color: #fff;
+            border-left-color: #a8d5ba;
+            font-weight: 500;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            background-color: #faf8f5;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #e8e4df;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #2d5f47;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background-color: #f5f2ed;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #3a3a3a;
+            border: 1px solid #e8e4df;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a8d5ba, #7cb99a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* SECTIONS */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* DASHBOARD */
+        .hero {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e8e4df;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #d4c9b8, #c9bfa8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8a7a6a;
+            font-size: 0.9rem;
+        }
+
+        .hero-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .property-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-address {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e8e4df;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .status-value {
+            font-size: 0.95rem;
+            color: #2d5f47;
+            font-weight: 600;
+        }
+
+        .status-value.success {
+            color: #4a7c5a;
+        }
+
+        .status-value.warning {
+            color: #c97a3f;
+        }
+
+        .action-items {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-items-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #faf8f5;
+            border-left: 4px solid #a8d5ba;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-text {
+            font-size: 0.95rem;
+            color: #3a3a3a;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-button {
+            font-size: 0.85rem;
+            color: #2d5f47;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .action-button:hover {
+            color: #1a3a2a;
+        }
+
+        .timeline {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .timeline-item {
+            text-align: center;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: #a8d5ba;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            margin: 0 auto 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .timeline-marker.done {
+            background: #4a7c5a;
+        }
+
+        .timeline-marker.pending {
+            background: #d4c9b8;
+            color: #666;
+        }
+
+        .timeline-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3a3a3a;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #a8d5ba;
+            box-shadow: 0 2px 8px rgba(45, 95, 71, 0.08);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            font-size: 0.95rem;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .card-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e8e4df;
+        }
+
+        .card-stat:last-child {
+            border-bottom: none;
+        }
+
+        .card-stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .card-stat-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2d5f47;
+        }
+
+        /* PROPERTY DETAILS */
+        .property-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .property-image-section {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            overflow: hidden;
+        }
+
+        .property-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #d4c9b8, #c9bfa8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8a7a6a;
+            font-size: 0.9rem;
+        }
+
+        .image-controls {
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d4c9b8;
+            border-radius: 6px;
+            background: #fff;
+            color: #2d5f47;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f2ed;
+            border-color: #a8d5ba;
+        }
+
+        .property-specs {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+        }
+
+        .spec-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .spec-value {
+            font-size: 1rem;
+            color: #3a3a3a;
+            font-weight: 500;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .room-card {
+            background: #faf8f5;
+            border: 1px solid #e8e4df;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .room-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 0.75rem;
+        }
+
+        .room-detail {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .preference-section {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preference-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .preference-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e8e4df;
+        }
+
+        .preference-row:last-child {
+            border-bottom: none;
+        }
+
+        .preference-label {
+            font-size: 0.95rem;
+            color: #3a3a3a;
+        }
+
+        .preference-value {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .preference-value.yes {
+            background: #e8f3ec;
+            color: #4a7c5a;
+        }
+
+        .preference-value.no {
+            background: #f5e8e0;
+            color: #c97a3f;
+        }
+
+        .preference-value.flexible {
+            background: #f0ede5;
+            color: #666;
+        }
+
+        /* HOUSE INFO FORM */
+        .form-section {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .completion-bar {
+            height: 6px;
+            background: #e8e4df;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a8d5ba, #7cb99a);
+            transition: width 0.3s ease;
+        }
+
+        .completion-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #3a3a3a;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d4c9b8;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: #3a3a3a;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #a8d5ba;
+            box-shadow: 0 0 0 3px rgba(168, 213, 186, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .field-complete {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #e8f3ec;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #4a7c5a;
+            font-weight: 500;
+        }
+
+        .field-incomplete {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f5e8e0;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #c97a3f;
+            font-weight: 500;
+        }
+
+        /* CALENDAR */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .calendar-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d4c9b8;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #3a3a3a;
+        }
+
+        .calendar-btn:hover {
+            background: #f5f2ed;
+        }
+
+        .month-year {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5f47;
+        }
+
+        .calendar-check {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .check-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d5f47;
+            margin-bottom: 1rem;
+        }
+
+        .check-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            padding: 0.75rem 1.5rem;
+            background: #2d5f47;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a3a2a;
+        }
+
+        .btn-outline {
+            padding: 0.75rem 1.5rem;
+            background: #fff;
+            color: #2d5f47;
+            border: 1px solid #d4c9b8;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background: #f5f2ed;
+            border-color: #a8d5ba;
+        }
+
+        .mini-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+        }
+
+        .cal-day-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #999;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #3a3a3a;
+            border: 1px solid #e8e4df;
+        }
+
+        .cal-day.empty {
+            background: #faf8f5;
+            color: #ccc;
+            border: none;
+        }
+
+        .cal-day.available {
+            background: #e8f3ec;
+            color: #2d5f47;
+            font-weight: 500;
+        }
+
+        .cal-day.rented {
+            background: #a8d5ba;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .cal-day.other {
+            background: #f5e8e0;
+            color: #c97a3f;
+            font-weight: 500;
+        }
+
+        .cal-day.blocked {
+            background: #e8e4df;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e8e4df;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid #e8e4df;
+        }
+
+        /* DOCUMENTS */
+        .doc-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #faf8f5;
+            border: 1px solid #e8e4df;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .doc-icon {
+            font-size: 1.5rem;
+        }
+
+        .doc-details {
+            flex: 1;
+        }
+
+        .doc-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #3a3a3a;
+        }
+
+        .doc-meta {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 0.25rem;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .doc-btn {
+            padding: 0.5rem 1rem;
+            background: #fff;
+            border: 1px solid #d4c9b8;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #2d5f47;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .doc-btn:hover {
+            background: #f5f2ed;
+            border-color: #a8d5ba;
+        }
+
+        /* POST-EVENT */
+        .issue-card {
+            background: #fff;
+            border: 1px solid #e8e4df;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .issue-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d5f47;
+        }
+
+        .issue-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-submitted {
+            background: #f0ede5;
+            color: #666;
+        }
+
+        .status-review {
+            background: #fce8d8;
+            color: #c97a3f;
+        }
+
+        .status-resolved {
+            background: #e8f3ec;
+            color: #4a7c5a;
+        }
+
+        .issue-description {
+            font-size: 0.9rem;
+            color: #3a3a3a;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .issue-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .issue-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #faf8f5;
+            border: 1px solid #e8e4df;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .issue-meta {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* RESOURCES */
+        .resource-item {
+            background: #fff;
+            border: 1px solid #e8e4df;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resource-info h3 {
+            font-size: 1rem;
+            color: #2d5f47;
+            margin-bottom: 0.25rem;
+        }
+
+        .resource-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .resource-link {
+            padding: 0.5rem 1.25rem;
+            background: #2d5f47;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .resource-link:hover {
+            background: #1a3a2a;
+        }
+
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e8e4df;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1rem 1.5rem;
+            background: #faf8f5;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: #2d5f47;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background: #f5f2ed;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .faq-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            color: #3a3a3a;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-top: 1px solid #e8e4df;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                width: 260px;
+                height: 100vh;
+                z-index: 100;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 100%;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .hero {
+                gap: 1rem;
+            }
+
+            .hero-image {
+                height: 250px;
+            }
+
+            .hero-content {
+                padding: 1rem;
+            }
+
+            .timeline-items {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .check-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function App() {
+            const [activeSection, setActiveSection] = useState('dashboard');
+            const [expandedFaq, setExpandedFaq] = useState(null);
+
+            const homeowner = {
+                name: 'Margaret & David Whitfield',
+                property: {
+                    name: '2847 Bellevue Ave',
+                    address: 'Augusta, GA 30904',
+                    beds: 5,
+                    baths: 4,
+                    sqft: 3200,
+                    yearBuilt: 1992,
+                    neighborhood: 'Summerville'
+                },
+                rentalStatus: 'Rented for Masters 2027',
+                renter: 'Wasserman (Delta program)',
+                contractSigned: true,
+                payment1: { amount: '$8,500', status: 'Received', date: 'Mar 1' },
+                payment2: { amount: '$8,500', status: 'Due', date: 'Apr 1' },
+                houseInfoComplete: 6,
+                houseInfoTotal: 8,
+                chefAllowed: 'Yes, with restrictions (no deep frying)',
+                homeType: 'Host Home',
+                yearRenting: 3,
+                emergency: {
+                    hvac: 'Pending',
+                    plumber: 'Complete',
+                    electrician: 'Complete'
+                }
+            };
+
+            const actionItems = [
+                { id: 1, text: 'AV setup details needed', action: 'Complete' },
+                { id: 2, text: 'Emergency HVAC contact missing', action: 'Add' },
+                { id: 3, text: 'Welcome letter sent to renter — review suggested changes', action: 'Review' }
+            ];
+
+            const timelineSteps = [
+                { label: 'Contract', date: 'Signed', done: true },
+                { label: 'Pre-Arrival', date: 'Prep', done: true },
+                { label: 'Event Week', date: 'Apr 6-13', done: false },
+                { label: 'Checkout', date: 'Post', done: false }
+            ];
+
+            const roomDetails = [
+                { name: 'Primary Bedroom', type: 'King bed, en-suite bath' },
+                { name: 'Bedroom 2', type: 'Queen bed, shared bath' },
+                { name: 'Bedroom 3', type: 'Queen bed, shared bath' },
+                { name: 'Bedroom 4', type: '2 Twin beds' },
+                { name: 'Bedroom 5', type: 'Sofa bed' }
+            ];
+
+            const houseInfoFields = [
+                { name: 'Wi-Fi & Password', status: 'complete' },
+                { name: 'Door & Gate Codes', status: 'complete' },
+                { name: 'AV Setup Instructions', status: 'incomplete' },
+                { name: 'Trash Pickup Day', status: 'complete' },
+                { name: 'Coffee Maker Type', status: 'complete' },
+                { name: 'Parking Instructions', status: 'complete' },
+                { name: 'Emergency HVAC Contact', status: 'incomplete' },
+                { name: 'Special Guest Instructions', status: 'complete' }
+            ];
+
+            const calendarDays = [
+                { day: 'S', name: 'Sunday' }, { day: 'M', name: 'Monday' },
+                { day: 'T', name: 'Tuesday' }, { day: 'W', name: 'Wednesday' },
+                { day: 'T', name: 'Thursday' }, { day: 'F', name: 'Friday' },
+                { day: 'S', name: 'Saturday' }
+            ];
+
+            const calendarData = [
+                ...Array(3).fill(null),
+                { num: 1, type: 'available' }, { num: 2, type: 'available' }, { num: 3, type: 'available' }, { num: 4, type: 'available' },
+                { num: 5, type: 'available' }, { num: 6, type: 'rented' }, { num: 7, type: 'rented' }, { num: 8, type: 'rented' },
+                { num: 9, type: 'rented' }, { num: 10, type: 'rented' }, { num: 11, type: 'rented' }, { num: 12, type: 'rented' },
+                { num: 13, type: 'rented' }, { num: 14, type: 'available' }, { num: 15, type: 'available' }, { num: 16, type: 'available' },
+                { num: 17, type: 'available' }, { num: 18, type: 'blocked' }, { num: 19, type: 'blocked' }, { num: 20, type: 'available' },
+                { num: 21, type: 'available' }, { num: 22, type: 'available' }, { num: 23, type: 'other' }, { num: 24, type: 'other' },
+                { num: 25, type: 'available' }, { num: 26, type: 'available' }, { num: 27, type: 'available' }, { num: 28, type: 'available' },
+                { num: 29, type: 'available' }, { num: 30, type: 'available' }
+            ];
+
+            const documents = [
+                { name: 'Rental Agreement 2027', type: 'PDF', date: 'Mar 1, 2026', size: '245 KB' },
+                { name: 'W-9 Form', type: 'PDF', date: 'Feb 15, 2026', size: '180 KB' },
+                { name: 'Banking Information', type: 'Secure', date: 'Feb 15, 2026', size: 'Encrypted' }
+            ];
+
+            const issues = [
+                { id: 1, title: 'Minor kitchen cabinet scratch', status: 'submitted', desc: 'Small scratch on cabinet door above sink, likely from moving rental items.', date: 'Apr 15' },
+                { id: 2, title: 'Guest feedback: excellent experience', status: 'resolved', desc: 'Guests were very happy with property condition and amenities. Praised cleanliness and comfort.', date: 'Apr 14' }
+            ];
+
+            const resources = [
+                { title: 'Home Preparation Guide', desc: 'Best practices for Masters week rentals' },
+                { title: 'Marketability Tips', desc: 'How to photograph and describe your home' },
+                { title: 'Augusta Rental Tax Guide', desc: '14-day rule and tax-free income basics' }
+            ];
+
+            const faqs = [
+                { q: 'How much does Patron keep as commission?', a: 'Patron typically takes 15-20% of rental income depending on home type and services provided.' },
+                { q: 'When do I get paid?', a: 'Payment is made in two installments: 50% after contract is signed, 50% after the event.' },
+                { q: 'What if my home is damaged?', a: 'Report damages within 48 hours of checkout. We carry insurance and will investigate.' },
+                { q: 'Can I list my home with other brokers?', a: 'Yes! You can list with Patron and other brokers. Just keep us updated on availability.' },
+                { q: 'Do I need to be home during Masters week?', a: 'No. Most homeowners are away. We arrange all check-in/check-out and handle guest issues.' }
+            ];
+
+            return (
+                <div className="container">
+                    <div className="sidebar">
+                        <div className="sidebar-header">
+                            <div className="logo">Patron Properties</div>
+                            <div className="homeowner-name">{homeowner.name}</div>
+                        </div>
+
+                        <div className="nav-section">
+                            <span className="nav-label">Main</span>
+                            <button className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveSection('dashboard')}>
+                                Dashboard
+                            </button>
+                            <button className={`nav-item ${activeSection === 'property' ? 'active' : ''}`} onClick={() => setActiveSection('property')}>
+                                My Property
+                            </button>
+                            <button className={`nav-item ${activeSection === 'houseinfo' ? 'active' : ''}`} onClick={() => setActiveSection('houseinfo')}>
+                                House Info Form
+                            </button>
+                        </div>
+
+                        <div className="nav-section">
+                            <span className="nav-label">Rental</span>
+                            <button className={`nav-item ${activeSection === 'availability' ? 'active' : ''}`} onClick={() => setActiveSection('availability')}>
+                                Availability
+                            </button>
+                            <button className={`nav-item ${activeSection === 'documents' ? 'active' : ''}`} onClick={() => setActiveSection('documents')}>
+                                Documents & Payments
+                            </button>
+                            <button className={`nav-item ${activeSection === 'postevent' ? 'active' : ''}`} onClick={() => setActiveSection('postevent')}>
+                                Post-Event
+                            </button>
+                        </div>
+
+                        <div className="nav-section">
+                            <span className="nav-label">Support</span>
+                            <button className={`nav-item ${activeSection === 'resources' ? 'active' : ''}`} onClick={() => setActiveSection('resources')}>
+                                Resources & FAQ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="main">
+                        <div className="header">
+                            <div className="header-title">
+                                {activeSection === 'dashboard' && 'Dashboard'}
+                                {activeSection === 'property' && 'My Property'}
+                                {activeSection === 'houseinfo' && 'House Information'}
+                                {activeSection === 'availability' && 'Availability Calendar'}
+                                {activeSection === 'documents' && 'Documents & Payments'}
+                                {activeSection === 'postevent' && 'Post-Event'}
+                                {activeSection === 'resources' && 'Resources & FAQ'}
+                            </div>
+                            <div className="header-actions">
+                                <div className="user-menu">
+                                    <div className="user-avatar">MW</div>
+                                    <span>Margaret W.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="content">
+
+                            {/* DASHBOARD */}
+                            {activeSection === 'dashboard' && (
+                                <div className="section active">
+                                    <div className="hero">
+                                        <div className="hero-image">Property photo</div>
+                                        <div className="hero-content">
+                                            <div>
+                                                <div className="property-title">{homeowner.property.name}</div>
+                                                <div className="property-address">{homeowner.property.address}</div>
+                                            </div>
+                                            <div className="status-group">
+                                                <div className="status-item">
+                                                    <div className="status-label">Rental Status</div>
+                                                    <div className="status-value success">{homeowner.rentalStatus}</div>
+                                                </div>
+                                                <div className="status-item">
+                                                    <div className="status-label">Renter</div>
+                                                    <div className="status-value">{homeowner.renter}</div>
+                                                </div>
+                                                <div className="status-item">
+                                                    <div className="status-label">Payment 1</div>
+                                                    <div className="status-value success">{homeowner.payment1.amount} • {homeowner.payment1.status}</div>
+                                                </div>
+                                                <div className="status-item">
+                                                    <div className="status-label">Payment 2</div>
+                                                    <div className="status-value warning">{homeowner.payment2.amount} • Due {homeowner.payment2.date}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="action-items">
+                                        <div className="action-items-title">⚡ {actionItems.length} Items Need Your Attention</div>
+                                        {actionItems.map(item => (
+                                            <div key={item.id} className="action-item">
+                                                <div className="action-icon">📋</div>
+                                                <div className="action-content">
+                                                    <div className="action-text">{item.text}</div>
+                                                    <button className="action-button">{item.action} →</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="timeline">
+                                        <div className="timeline-title">Your Masters 2027 Timeline</div>
+                                        <div className="timeline-items">
+                                            {timelineSteps.map((step, idx) => (
+                                                <div key={idx} className="timeline-item">
+                                                    <div className={`timeline-marker ${step.done ? 'done' : 'pending'}`}>
+                                                        {step.done ? '✓' : idx + 1}
+                                                    </div>
+                                                    <div className="timeline-label">{step.label}</div>
+                                                    <div className="timeline-date">{step.date}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="cards-grid">
+                                        <div className="card">
+                                            <div className="card-title">Quick Stats</div>
+                                            <div className="card-stat">
+                                                <span className="card-stat-label">Years with Patron</span>
+                                                <span className="card-stat-value">{homeowner.yearRenting}</span>
+                                            </div>
+                                            <div className="card-stat">
+                                                <span className="card-stat-label">Home Type</span>
+                                                <span className="card-stat-value">{homeowner.homeType}</span>
+                                            </div>
+                                            <div className="card-stat">
+                                                <span className="card-stat-label">Total Bedrooms</span>
+                                                <span className="card-stat-value">{homeowner.property.beds}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="card">
+                                            <div className="card-title">Renter Details</div>
+                                            <div className="card-body">
+                                                <strong>{homeowner.renter}</strong><br />
+                                                Masters week (Apr 6-13)<br />
+                                                8 nights<br />
+                                                Professional rental management
+                                            </div>
+                                        </div>
+
+                                        <div className="card">
+                                            <div className="card-title">You're 80% Ready</div>
+                                            <div className="card-body">
+                                                House info is {Math.round(homeowner.houseInfoComplete / homeowner.houseInfoTotal * 100)}% complete. Add the missing AV details and emergency contact to go live.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* MY PROPERTY */}
+                            {activeSection === 'property' && (
+                                <div className="section active">
+                                    <div className="property-grid">
+                                        <div className="property-image-section">
+                                            <div className="property-image">Professional photo of your home</div>
+                                            <div className="image-controls">
+                                                <button className="btn-secondary">Upload Photo</button>
+                                                <button className="btn-secondary">Manage Photos</button>
+                                            </div>
+                                        </div>
+
+                                        <div className="property-specs">
+                                            <div className="spec-group">
+                                                <span className="spec-label">Address</span>
+                                                <div className="spec-value">{homeowner.property.address}</div>
+                                            </div>
+                                            <div className="spec-group">
+                                                <span className="spec-label">Bedrooms & Bathrooms</span>
+                                                <div className="spec-value">{homeowner.property.beds} bed / {homeowner.property.baths} bath</div>
+                                            </div>
+                                            <div className="spec-group">
+                                                <span className="spec-label">Square Footage</span>
+                                                <div className="spec-value">{homeowner.property.sqft.toLocaleString()} sq ft</div>
+                                            </div>
+                                            <div className="spec-group">
+                                                <span className="spec-label">Year Built</span>
+                                                <div className="spec-value">{homeowner.property.yearBuilt}</div>
+                                            </div>
+                                            <div className="spec-group">
+                                                <span className="spec-label">Neighborhood</span>
+                                                <div className="spec-value">{homeowner.property.neighborhood}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="preference-section">
+                                        <div className="preference-title">Room Details</div>
+                                        <div className="room-grid">
+                                            {roomDetails.map((room, idx) => (
+                                                <div key={idx} className="room-card">
+                                                    <div className="room-name">{room.name}</div>
+                                                    <div className="room-detail">{room.type}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="preference-section">
+                                        <div className="preference-title">Usage Preferences</div>
+                                        <div className="preference-row">
+                                            <span className="preference-label">Chef Allowed</span>
+                                            <span className="preference-value yes">Yes, with restrictions</span>
+                                        </div>
+                                        <div className="preference-row">
+                                            <span className="preference-label">Events Allowed</span>
+                                            <span className="preference-value yes">Small gatherings</span>
+                                        </div>
+                                        <div className="preference-row">
+                                            <span className="preference-label">Locked Areas</span>
+                                            <span className="preference-value flexible">Master closet, wine rack</span>
+                                        </div>
+                                        <div className="preference-row">
+                                            <span className="preference-label">Home Type</span>
+                                            <span className="preference-value">{homeowner.homeType}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="preference-section">
+                                        <div className="preference-title">Marketability Tips</div>
+                                        <div className="card-body">
+                                            <strong>✓ You're doing great:</strong><br/>
+                                            • En-suite bathrooms in primary (major appeal)<br/>
+                                            • Professional photos (renters notice this)<br/>
+                                            • Host home designation (attracts higher-value renters)<br/><br/>
+                                            <strong>Quick wins:</strong><br/>
+                                            • White linens are expected — consider upgrading to premium sets<br/>
+                                            • Update AV description — streaming services matter<br/>
+                                            • Highlight neighborhood (Summerville is premium)
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* HOUSE INFO FORM */}
+                            {activeSection === 'houseinfo' && (
+                                <div className="section active">
+                                    <div className="form-section">
+                                        <div className="form-title">House Information for Renters</div>
+                                        <div className="completion-bar">
+                                            <div className="completion-fill" style={{width: `${Math.round(homeowner.houseInfoComplete / homeowner.houseInfoTotal * 100)}%`}}></div>
+                                        </div>
+                                        <div className="completion-text">
+                                            {homeowner.houseInfoComplete} of {homeowner.houseInfoTotal} fields complete — {homeowner.houseInfoTotal - homeowner.houseInfoComplete} remaining
+                                        </div>
+
+                                        {houseInfoFields.map((field, idx) => (
+                                            <div key={idx} className="form-field">
+                                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem'}}>
+                                                    <label className="form-label">{field.name}</label>
+                                                    {field.status === 'complete' ? (
+                                                        <div className="field-complete">✓ Complete</div>
+                                                    ) : (
+                                                        <div className="field-incomplete">⚠ Incomplete</div>
+                                                    )}
+                                                </div>
+                                                <input type="text" className="form-input" placeholder={`Enter ${field.name.toLowerCase()}`} />
+                                            </div>
+                                        ))}
+
+                                        <button className="btn-primary" style={{marginTop: '1.5rem'}}>Save Changes</button>
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Special Instructions for Guests</div>
+                                        <div className="form-field">
+                                            <label className="form-label">Add any special notes for your renter</label>
+                                            <textarea className="form-textarea" placeholder="E.g., 'Please don't use the guest bath on the second floor', 'Coffee is in the pantry on the left'..."></textarea>
+                                        </div>
+                                        <button className="btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* AVAILABILITY */}
+                            {activeSection === 'availability' && (
+                                <div className="section active">
+                                    <div className="calendar-header">
+                                        <div className="month-year">April 2027</div>
+                                        <div className="calendar-nav">
+                                            <button className="calendar-btn">← Previous</button>
+                                            <button className="calendar-btn">Next →</button>
+                                        </div>
+                                    </div>
+
+                                    <div className="calendar-check">
+                                        <div className="check-title">Is your home still available for Masters 2027?</div>
+                                        <div style={{marginBottom: '1rem', fontSize: '0.9rem', color: '#666'}}>Last updated: Mar 15, 2026</div>
+                                        <div className="check-buttons">
+                                            <button className="btn-primary">Yes, confirmed</button>
+                                            <button className="btn-outline">Need to update</button>
+                                        </div>
+                                    </div>
+
+                                    <div className="mini-calendar">
+                                        {calendarDays.map((day, idx) => (
+                                            <div key={idx} className="cal-day-name">{day.day}</div>
+                                        ))}
+                                        {calendarData.map((item, idx) => (
+                                            <div key={idx} className={item ? `cal-day ${item.type}` : 'cal-day empty'}>
+                                                {item ? item.num : ''}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="legend">
+                                        <div className="legend-item">
+                                            <div className="legend-color" style={{background: '#e8f3ec'}}></div>
+                                            <span>Available</span>
+                                        </div>
+                                        <div className="legend-item">
+                                            <div className="legend-color" style={{background: '#a8d5ba'}}></div>
+                                            <span>Rented (Patron)</span>
+                                        </div>
+                                        <div className="legend-item">
+                                            <div className="legend-color" style={{background: '#f5e8e0'}}></div>
+                                            <span>Rented (Other broker)</span>
+                                        </div>
+                                        <div className="legend-item">
+                                            <div className="legend-color" style={{background: '#e8e4df'}}></div>
+                                            <span>Blocked (Personal use)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* DOCUMENTS */}
+                            {activeSection === 'documents' && (
+                                <div className="section active">
+                                    <div className="form-section">
+                                        <div className="form-title">Rental Agreement & Documents</div>
+                                        {documents.map((doc, idx) => (
+                                            <div key={idx} className="doc-item">
+                                                <div className="doc-info">
+                                                    <div className="doc-icon">📄</div>
+                                                    <div className="doc-details">
+                                                        <div className="doc-name">{doc.name}</div>
+                                                        <div className="doc-meta">{doc.date} • {doc.size}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="doc-actions">
+                                                    <button className="doc-btn">View</button>
+                                                    <button className="doc-btn">Download</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Payment Tracker</div>
+                                        <div className="card-stat" style={{padding: '1rem 0'}}>
+                                            <div>
+                                                <div className="status-label">Payment 1 (50%)</div>
+                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Received Mar 1, 2026</div>
+                                            </div>
+                                            <div className="status-value success">$8,500</div>
+                                        </div>
+                                        <div className="card-stat" style={{padding: '1rem 0', borderTop: '1px solid #e8e4df'}}>
+                                            <div>
+                                                <div className="status-label">Payment 2 (50%)</div>
+                                                <div style={{marginTop: '0.25rem', fontSize: '0.9rem', color: '#666'}}>Due Apr 1, 2026</div>
+                                            </div>
+                                            <div className="status-value warning">$8,500</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* POST-EVENT */}
+                            {activeSection === 'postevent' && (
+                                <div className="section active">
+                                    <div className="form-section">
+                                        <div className="form-title">Post-Event Checklist</div>
+                                        <div style={{marginBottom: '1.5rem'}}>
+                                            <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
+                                                <input type="checkbox" checked readOnly style={{cursor: 'pointer'}} />
+                                                <span>Home returned in acceptable condition</span>
+                                            </div>
+                                            <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
+                                                <input type="checkbox" checked readOnly style={{cursor: 'pointer'}} />
+                                                <span>Minor issues noted and reported</span>
+                                            </div>
+                                            <div style={{display: 'flex', gap: '0.75rem'}}>
+                                                <input type="checkbox" readOnly style={{cursor: 'pointer'}} />
+                                                <span>Feedback survey completed</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Report Issues (within 48 hours)</div>
+                                        {issues.map(issue => (
+                                            <div key={issue.id} className="issue-card">
+                                                <div className="issue-header">
+                                                    <div>
+                                                        <div className="issue-title">{issue.title}</div>
+                                                        <div style={{fontSize: '0.8rem', color: '#999', marginTop: '0.25rem'}}>Reported {issue.date}</div>
+                                                    </div>
+                                                    <div className={`issue-status status-${issue.status}`}>
+                                                        {issue.status === 'submitted' ? 'Submitted' : 'Resolved'}
+                                                    </div>
+                                                </div>
+                                                <div className="issue-description">{issue.desc}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Report New Issue</div>
+                                        <div className="form-field">
+                                            <label className="form-label">Issue Description</label>
+                                            <textarea className="form-textarea" placeholder="Describe any damage or issues found after renter checkout..."></textarea>
+                                        </div>
+                                        <div className="form-field">
+                                            <label className="form-label">Upload Photos</label>
+                                            <button className="btn-secondary" style={{width: '100%', padding: '1rem'}}>Choose files</button>
+                                        </div>
+                                        <div className="form-field">
+                                            <label className="form-label">Priority</label>
+                                            <select className="form-input">
+                                                <option>Low (cosmetic)</option>
+                                                <option>Medium (functional)</option>
+                                                <option>High (urgent repair needed)</option>
+                                            </select>
+                                        </div>
+                                        <button className="btn-primary">Submit Issue Report</button>
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Renter Feedback</div>
+                                        <div className="form-field">
+                                            <label className="form-label">How was your experience with this renter?</label>
+                                            <textarea className="form-textarea" placeholder="Optional: share feedback to help us match you with future renters..."></textarea>
+                                        </div>
+                                        <button className="btn-primary">Submit Feedback</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* RESOURCES */}
+                            {activeSection === 'resources' && (
+                                <div className="section active">
+                                    <div className="form-section">
+                                        <div className="form-title">Resources</div>
+                                        {resources.map((res, idx) => (
+                                            <div key={idx} className="resource-item">
+                                                <div className="resource-info">
+                                                    <h3>{res.title}</h3>
+                                                    <div className="resource-desc">{res.desc}</div>
+                                                </div>
+                                                <button className="resource-link">Download</button>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Contact Information</div>
+                                        <div style={{lineHeight: '1.8'}}>
+                                            <strong>Taite Williams</strong><br/>
+                                            Patron Properties<br/>
+                                            Email: taite@patronproperties.com<br/>
+                                            Phone: (706) 555-0147<br/><br/>
+                                            <em>Best time to reach: Monday-Friday, 9am-5pm ET</em>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-section">
+                                        <div className="form-title">Frequently Asked Questions</div>
+                                        {faqs.map((faq, idx) => (
+                                            <div key={idx} className="faq-item">
+                                                <div className="faq-question" onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}>
+                                                    <span>{faq.q}</span>
+                                                    <span className={`faq-toggle ${expandedFaq === idx ? 'open' : ''}`}>∨</span>
+                                                </div>
+                                                {expandedFaq === idx && (
+                                                    <div className="faq-answer">{faq.a}</div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>

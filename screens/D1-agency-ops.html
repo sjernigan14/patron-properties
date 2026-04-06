@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patron Properties — Agency Operations</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    .app-container {
+      display: flex;
+      height: 100vh;
+      background: #f8f8f8;
+    }
+
+    /* Navigation */
+    .nav-sidebar {
+      width: 220px;
+      background: #ffffff;
+      border-right: 1px solid #e0e0e0;
+      padding: 24px 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-header {
+      margin-bottom: 32px;
+    }
+
+    .nav-logo {
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .nav-title {
+      font-size: 13px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    .nav-items {
+      flex: 1;
+    }
+
+    .nav-item {
+      padding: 12px 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s ease;
+      border: none;
+      background: transparent;
+      text-align: left;
+      width: 100%;
+    }
+
+    .nav-item:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .nav-item.active {
+      background: #f0f0f0;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .nav-footer {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 16px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .weather-widget {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .time-widget {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px;
+    }
+
+    /* View: Today */
+    .today-view {
+      display: grid;
+      gap: 24px;
+    }
+
+    .greeting {
+      font-size: 28px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .day-indicator {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .schedule-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #f8f8f8;
+      border-radius: 6px;
+      border-left: 4px solid #666;
+      font-size: 13px;
+    }
+
+    .schedule-item.arrival {
+      border-left-color: #4a90e2;
+    }
+
+    .schedule-item.departure {
+      border-left-color: #e94b3c;
+    }
+
+    .schedule-item.service {
+      border-left-color: #7ed321;
+    }
+
+    .schedule-item.cleaning {
+      border-left-color: #f5a623;
+    }
+
+    .schedule-time {
+      font-weight: 600;
+      color: #333;
+      min-width: 60px;
+    }
+
+    .schedule-desc {
+      flex: 1;
+      margin-left: 16px;
+      color: #666;
+    }
+
+    .schedule-house {
+      font-size: 11px;
+      color: #999;
+      background: rgba(0,0,0,0.04);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .issues-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .issue-card {
+      padding: 16px;
+      background: #f8f8f8;
+      border-radius: 6px;
+      border-left: 4px solid;
+    }
+
+    .issue-card.red {
+      border-left-color: #e94b3c;
+      background: rgba(233, 75, 60, 0.05);
+    }
+
+    .issue-card.amber {
+      border-left-color: #f5a623;
+      background: rgba(245, 166, 35, 0.05);
+    }
+
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .issue-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .issue-status {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .issue-status.urgent {
+      color: #e94b3c;
+    }
+
+    .issue-status.attention {
+      color: #f5a623;
+    }
+
+    .issue-desc {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .issue-time {
+      font-size: 11px;
+      color: #999;
+    }
+
+    /* View: Houses */
+    .houses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .house-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .house-card:hover {
+      border-color: #999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .house-header {
+      background: #f8f8f8;
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .house-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .house-address {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .house-body {
+      padding: 16px;
+    }
+
+    .house-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .house-stat-label {
+      color: #666;
+    }
+
+    .house-stat-value {
+      font-weight: 600;
+      color: #000;
+    }
+
+    .house-status {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .room-indicator {
+      text-align: center;
+      padding: 8px 4px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .room-indicator.occupied {
+      background: #4a90e2;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .room-indicator.vacant {
+      background: #f0f0f0;
+      color: #999;
+    }
+
+    .room-indicator.cleaning {
+      background: #f5a623;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .room-label {
+      display: block;
+      font-size: 9px;
+      margin-top: 2px;
+    }
+
+    /* View: Guests */
+    .guests-table {
+      width: 100%;
+      background: #ffffff;
+      border-collapse: collapse;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .guests-table thead {
+      background: #f8f8f8;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .guests-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .guests-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #333;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .guests-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .guest-name {
+      font-weight: 600;
+      color: #000;
+    }
+
+    .guest-status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .guest-status.in-house {
+      background: #4a90e2;
+      color: #ffffff;
+    }
+
+    .guest-status.arriving {
+      background: #7ed321;
+      color: #ffffff;
+    }
+
+    .guest-status.departing {
+      background: #e94b3c;
+      color: #ffffff;
+    }
+
+    /* View: Schedule */
+    .week-timeline {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .day-column {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .day-column.today {
+      border: 2px solid #000;
+    }
+
+    .day-header {
+      background: #f8f8f8;
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: center;
+    }
+
+    .day-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .day-date {
+      font-size: 11px;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .day-column.today .day-header {
+      background: #000;
+      color: #fff;
+    }
+
+    .day-column.today .day-name {
+      color: #fff;
+    }
+
+    .day-column.today .day-date {
+      color: #ccc;
+    }
+
+    .day-events {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 200px;
+    }
+
+    .day-event {
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #ffffff;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .day-event.arrival {
+      background: #4a90e2;
+    }
+
+    .day-event.departure {
+      background: #e94b3c;
+    }
+
+    .day-event.service {
+      background: #7ed321;
+    }
+
+    .day-event.cleaning {
+      background: #f5a623;
+    }
+
+    /* View: Issues */
+    .issues-view {
+      max-width: 800px;
+    }
+
+    .new-issue-form {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 13px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-family: inherit;
+      color: #333;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #666;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #333;
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .emergency-contacts {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .contact-card {
+      padding: 12px;
+      background: #f8f8f8;
+      border-radius: 6px;
+    }
+
+    .contact-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .contact-phone {
+      font-size: 12px;
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-phone:hover {
+      text-decoration: underline;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-close:hover {
+      color: #333;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .room-card {
+      padding: 12px;
+      background: #f8f8f8;
+      border-radius: 6px;
+      border-left: 4px solid #e0e0e0;
+    }
+
+    .room-card.occupied {
+      background: rgba(74, 144, 226, 0.1);
+      border-left-color: #4a90e2;
+    }
+
+    .room-card.cleaning {
+      background: rgba(245, 166, 35, 0.1);
+      border-left-color: #f5a623;
+    }
+
+    .room-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .room-info {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .house-details {
+      background: #f8f8f8;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 16px;
+      font-size: 12px;
+    }
+
+    .house-detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .house-detail-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      color: #666;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      color: #000;
+    }
+
+    @media (max-width: 1024px) {
+      .nav-sidebar {
+        width: 180px;
+        padding: 16px 12px;
+      }
+
+      .content-area {
+        padding: 16px;
+      }
+
+      .header {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        text-align: left;
+        margin-top: 12px;
+      }
+
+      .houses-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      }
+
+      .week-timeline {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+
+      .nav-sidebar {
+        width: 100%;
+        padding: 12px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        max-height: 60px;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        overflow-x: auto;
+      }
+
+      .nav-header {
+        margin-bottom: 0;
+        margin-right: 24px;
+      }
+
+      .nav-items {
+        display: flex;
+        gap: 0;
+        flex: 1;
+      }
+
+      .nav-item {
+        margin-bottom: 0;
+        margin-right: 8px;
+        padding: 8px;
+        white-space: nowrap;
+      }
+
+      .nav-footer {
+        display: none;
+      }
+
+      .main-content {
+        height: calc(100vh - 60px);
+      }
+
+      .header {
+        flex-direction: column;
+        padding: 12px;
+      }
+
+      .greeting {
+        font-size: 20px;
+      }
+
+      .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .houses-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .week-timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .guests-table {
+        font-size: 12px;
+      }
+
+      .guests-table th, .guests-table td {
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Sample data
+    const SAMPLE_DATA = {
+      agency: 'Wasserman',
+      program: 'Delta Corporate — Masters 2027',
+      eventStart: new Date(2026, 3, 6), // April 6, 2026
+      currentDay: 2, // Day 3 (Tuesday)
+      houses: [
+        {
+          id: 1,
+          name: 'Bellevue Ave',
+          address: '419 Bellevue Ave, Augusta GA',
+          rooms: 6,
+          occupied: 4,
+          vacant: 1,
+          cleaning: 1,
+          lastCleaned: 'Today 10:30 AM',
+          nextCleaning: 'Tomorrow 9:00 AM',
+          guests: ['John Smith', 'Jane Smith', 'Tom Wilson', 'Sarah Johnson'],
+          wifiStatus: 'Connected',
+          parkingSpaces: 3,
+          issues: []
+        },
+        {
+          id: 2,
+          name: 'Cumming Rd',
+          address: '427 Cumming Rd, Augusta GA',
+          rooms: 5,
+          occupied: 3,
+          vacant: 2,
+          cleaning: 0,
+          lastCleaned: 'Today 8:15 AM',
+          nextCleaning: 'Tomorrow 2:00 PM',
+          guests: ['Mike Davis', 'Lisa Davis', 'Robert Brown'],
+          wifiStatus: 'Down',
+          parkingSpaces: 2,
+          issues: [{ id: 1, text: 'Wi-Fi down', status: 'In Progress' }]
+        },
+        {
+          id: 3,
+          name: 'Johns Rd',
+          address: '512 Johns Rd, Augusta GA',
+          rooms: 5,
+          occupied: 5,
+          vacant: 0,
+          cleaning: 0,
+          lastCleaned: 'Today 7:00 AM',
+          nextCleaning: 'Tomorrow 10:30 AM',
+          guests: ['David Lee', 'Maria Lee', 'James Taylor', 'Amanda Taylor', 'Chris Wilson'],
+          wifiStatus: 'Connected',
+          parkingSpaces: 2,
+          issues: []
+        },
+        {
+          id: 4,
+          name: 'Milledge Rd',
+          address: '634 Milledge Rd, Augusta GA',
+          rooms: 6,
+          occupied: 2,
+          vacant: 3,
+          cleaning: 1,
+          lastCleaned: 'Yesterday 3:45 PM',
+          nextCleaning: 'Today 3:00 PM',
+          guests: ['Patricia Miller', 'George Miller'],
+          wifiStatus: 'Connected',
+          parkingSpaces: 4,
+          issues: [{ id: 2, text: 'Cleaning crew running 45 min late', status: 'Patron Notified' }]
+        },
+        {
+          id: 5,
+          name: 'Wheeler Rd',
+          address: '721 Wheeler Rd, Augusta GA',
+          rooms: 5,
+          occupied: 2,
+          vacant: 3,
+          cleaning: 0,
+          lastCleaned: 'Today 11:15 AM',
+          nextCleaning: 'Tomorrow 11:00 AM',
+          guests: ['Kevin Anderson', 'Jennifer Anderson'],
+          wifiStatus: 'Connected',
+          parkingSpaces: 3,
+          issues: []
+        },
+        {
+          id: 6,
+          name: 'Highland Ave',
+          address: '814 Highland Ave, Augusta GA',
+          rooms: 4,
+          occupied: 2,
+          vacant: 2,
+          cleaning: 0,
+          lastCleaned: 'Today 9:30 AM',
+          nextCleaning: 'Tomorrow 1:00 PM',
+          guests: ['Jessica Martinez', 'Carlos Martinez'],
+          wifiStatus: 'Connected',
+          parkingSpaces: 2,
+          issues: []
+        }
+      ],
+      guests: [
+        { id: 1, name: 'John Smith', house: 'Bellevue Ave', room: 'Master', status: 'in-house', contact: '(678) 555-0101', dietary: 'None' },
+        { id: 2, name: 'Jane Smith', house: 'Bellevue Ave', room: 'Guest 1', status: 'in-house', contact: '(678) 555-0102', dietary: 'Vegetarian' },
+        { id: 3, name: 'Tom Wilson', house: 'Bellevue Ave', room: 'Guest 2', status: 'in-house', contact: '(678) 555-0103', dietary: 'None' },
+        { id: 4, name: 'Sarah Johnson', house: 'Bellevue Ave', room: 'Guest 3', status: 'in-house', contact: '(678) 555-0104', dietary: 'None' },
+        { id: 5, name: 'Mike Davis', house: 'Cumming Rd', room: 'Master', status: 'in-house', contact: '(770) 555-0201', dietary: 'None' },
+        { id: 6, name: 'Lisa Davis', house: 'Cumming Rd', room: 'Guest 1', status: 'in-house', contact: '(770) 555-0202', dietary: 'Gluten-free' },
+        { id: 7, name: 'Robert Brown', house: 'Cumming Rd', room: 'Guest 2', status: 'in-house', contact: '(770) 555-0203', dietary: 'None' },
+        { id: 8, name: 'David Lee', house: 'Johns Rd', room: 'Master', status: 'in-house', contact: '(404) 555-0301', dietary: 'None' },
+        { id: 9, name: 'Maria Lee', house: 'Johns Rd', room: 'Guest 1', status: 'in-house', contact: '(404) 555-0302', dietary: 'None' },
+        { id: 10, name: 'James Taylor', house: 'Johns Rd', room: 'Guest 2', status: 'in-house', contact: '(404) 555-0303', dietary: 'None' },
+        { id: 11, name: 'Amanda Taylor', house: 'Johns Rd', room: 'Guest 3', status: 'in-house', contact: '(404) 555-0304', dietary: 'None' },
+        { id: 12, name: 'Chris Wilson', house: 'Johns Rd', room: 'Guest 4', status: 'in-house', contact: '(404) 555-0305', dietary: 'None' },
+        { id: 13, name: 'Patricia Miller', house: 'Milledge Rd', room: 'Master', status: 'in-house', contact: '(706) 555-0401', dietary: 'None' },
+        { id: 14, name: 'George Miller', house: 'Milledge Rd', room: 'Guest 1', status: 'in-house', contact: '(706) 555-0402', dietary: 'None' },
+        { id: 15, name: 'Kevin Anderson', house: 'Wheeler Rd', room: 'Master', status: 'in-house', contact: '(803) 555-0501', dietary: 'None' },
+        { id: 16, name: 'Jennifer Anderson', house: 'Wheeler Rd', room: 'Guest 1', status: 'in-house', contact: '(803) 555-0502', dietary: 'None' },
+        { id: 17, name: 'Jessica Martinez', house: 'Highland Ave', room: 'Master', status: 'in-house', contact: '(864) 555-0601', dietary: 'None' },
+        { id: 18, name: 'Carlos Martinez', house: 'Highland Ave', room: 'Guest 1', status: 'in-house', contact: '(864) 555-0602', dietary: 'None' }
+      ],
+      scheduleItems: [
+        { time: '7:30 AM', type: 'service', description: 'Car service pickup — Bellevue Ave (2 guests)', house: 'Bellevue Ave' },
+        { time: '8:00 AM', type: 'service', description: 'Car service pickup — Johns Rd (1 guest)', house: 'Johns Rd' },
+        { time: '9:00 AM', type: 'cleaning', description: 'House cleaning — Milledge Rd', house: 'Milledge Rd' },
+        { time: '10:00 AM', type: 'service', description: 'Car service pickup — Cumming Rd (2 guests)', house: 'Cumming Rd' },
+        { time: '12:00 PM', type: 'service', description: 'Chef arrival — Bellevue Ave', house: 'Bellevue Ave' },
+        { time: '1:00 PM', type: 'service', description: 'Linen delivery — All houses', house: 'All' },
+        { time: '3:30 PM', type: 'arrival', description: 'New guest arrival — Wheeler Rd', house: 'Wheeler Rd' },
+        { time: '6:00 PM', type: 'service', description: 'Chef arrival — Johns Rd', house: 'Johns Rd' }
+      ],
+      issues: [
+        { id: 1, house: 'Cumming Rd', title: 'Wi-Fi down at 419 Cumming Rd', description: 'Internet connection down at master level and guest rooms. Called ISP, waiting for technician.', status: 'In Progress', priority: 'urgent', reported: '8:15 AM', updated: '8:45 AM' },
+        { id: 2, house: 'Milledge Rd', title: 'Cleaning crew running late', description: 'Scheduled cleaning crew 45 minutes behind schedule. Patron notified. Estimated arrival 3:45 PM.', status: 'Patron Notified', priority: 'attention', reported: '9:00 AM', updated: '10:30 AM' }
+      ]
+    };
+
+    const App = () => {
+      const [activeView, setActiveView] = useState('today');
+      const [selectedHouse, setSelectedHouse] = useState(null);
+      const [showHouseModal, setShowHouseModal] = useState(false);
+      const [newIssue, setNewIssue] = useState({ house: '', description: '', priority: 'attention' });
+
+      const today = new Date(2026, 3, 8); // Tuesday April 8
+
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      const formatDate = (date) => {
+        return `${monthsOfYear[date.getMonth()]} ${date.getDate()}`;
+      };
+
+      const getDayLabel = (date) => {
+        return daysOfWeek[date.getDay()];
+      };
+
+      const getWeekDates = () => {
+        const week = [];
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(startOfWeek);
+          d.setDate(d.getDate() + i);
+          week.push(d);
+        }
+        return week;
+      };
+
+      const handleOpenHouseModal = (house) => {
+        setSelectedHouse(house);
+        setShowHouseModal(true);
+      };
+
+      const handleSubmitIssue = () => {
+        if (newIssue.house && newIssue.description) {
+          alert('Issue submitted: ' + newIssue.description);
+          setNewIssue({ house: '', description: '', priority: 'attention' });
+        }
+      };
+
+      return (
+        <div className="app-container">
+          {/* Sidebar Navigation */}
+          <nav className="nav-sidebar">
+            <div className="nav-header">
+              <div className="nav-logo">Patron</div>
+              <div className="nav-title">Operations</div>
+            </div>
+            <div className="nav-items">
+              <button className={`nav-item ${activeView === 'today' ? 'active' : ''}`} onClick={() => setActiveView('today')}>Today</button>
+              <button className={`nav-item ${activeView === 'houses' ? 'active' : ''}`} onClick={() => setActiveView('houses')}>Houses</button>
+              <button className={`nav-item ${activeView === 'guests' ? 'active' : ''}`} onClick={() => setActiveView('guests')}>Guests</button>
+              <button className={`nav-item ${activeView === 'schedule' ? 'active' : ''}`} onClick={() => setActiveView('schedule')}>Schedule</button>
+              <button className={`nav-item ${activeView === 'issues' ? 'active' : ''}`} onClick={() => setActiveView('issues')}>Issues</button>
+            </div>
+            <div className="nav-footer">
+              <strong>Wasserman</strong>
+              <br />Delta Corporate
+            </div>
+          </nav>
+
+          {/* Main Content */}
+          <div className="main-content">
+            {/* Header */}
+            <header className="header">
+              <div className="header-left">
+                <h1>{SAMPLE_DATA.program}</h1>
+                <div className="header-subtitle">Masters Week Operations</div>
+              </div>
+              <div className="header-right">
+                <div className="weather-widget">72°F, Sunny — Perfect for the course</div>
+                <div className="time-widget">{getDayLabel(today)}, {formatDate(today)}</div>
+              </div>
+            </header>
+
+            {/* Content Area */}
+            <div className="content-area">
+              {activeView === 'today' && (
+                <div className="today-view">
+                  <div>
+                    <div className="greeting">Good morning, Sarah.</div>
+                    <div className="day-indicator">Tuesday, April 8 — Day 3 of 7</div>
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="quick-stats">
+                    <div className="stat-card">
+                      <div className="stat-number">18</div>
+                      <div className="stat-label">Guests In-House</div>
+                    </div>
+                    <div className="stat-card">
+                      <div className="stat-number">3</div>
+                      <div className="stat-label">Arriving Today</div>
+                    </div>
+                    <div className="stat-card">
+                      <div className="stat-number">1</div>
+                      <div className="stat-label">Departing Today</div>
+                    </div>
+                    <div className="stat-card">
+                      <div className="stat-number">2</div>
+                      <div className="stat-label">Active Issues</div>
+                    </div>
+                  </div>
+
+                  {/* Today's Schedule */}
+                  <div className="section">
+                    <div className="section-title">Today's Schedule</div>
+                    <div className="schedule-grid">
+                      {SAMPLE_DATA.scheduleItems.map((item, idx) => (
+                        <div key={idx} className={`schedule-item ${item.type}`}>
+                          <div className="schedule-time">{item.time}</div>
+                          <div className="schedule-desc">{item.description}</div>
+                          <div className="schedule-house">{item.house}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Active Issues */}
+                  <div className="section">
+                    <div className="section-title">Active Issues</div>
+                    <div className="issues-list">
+                      {SAMPLE_DATA.issues.map(issue => (
+                        <div key={issue.id} className={`issue-card ${issue.priority}`}>
+                          <div className="issue-header">
+                            <div className="issue-title">{issue.title}</div>
+                            <div className={`issue-status ${issue.priority}`}>{issue.status}</div>
+                          </div>
+                          <div className="issue-desc">{issue.description}</div>
+                          <div className="issue-time">Reported {issue.reported} • Updated {issue.updated}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeView === 'houses' && (
+                <div>
+                  <div className="section-title" style={{ marginBottom: '20px' }}>Property Status</div>
+                  <div className="houses-grid">
+                    {SAMPLE_DATA.houses.map(house => (
+                      <div key={house.id} className="house-card" onClick={() => handleOpenHouseModal(house)}>
+                        <div className="house-header">
+                          <div className="house-name">{house.name}</div>
+                          <div className="house-address">{house.address}</div>
+                        </div>
+                        <div className="house-body">
+                          <div className="house-stat">
+                            <span className="house-stat-label">Occupancy</span>
+                            <span className="house-stat-value">{house.occupied}/{house.rooms} rooms</span>
+                          </div>
+                          <div className="house-stat">
+                            <span className="house-stat-label">Wi-Fi Status</span>
+                            <span className="house-stat-value" style={{ color: house.wifiStatus === 'Down' ? '#e94b3c' : '#4a90e2' }}>{house.wifiStatus}</span>
+                          </div>
+                          <div className="house-stat">
+                            <span className="house-stat-label">Parking</span>
+                            <span className="house-stat-value">{house.parkingSpaces} spaces available</span>
+                          </div>
+                          <div className="house-status">
+                            <div className={`room-indicator ${house.occupied > 0 ? 'occupied' : 'vacant'}`}>
+                              <span>{house.occupied}</span>
+                              <span className="room-label">Occupied</span>
+                            </div>
+                            <div className={`room-indicator ${house.vacant > 0 ? 'vacant' : ''}`}>
+                              <span>{house.vacant}</span>
+                              <span className="room-label">Vacant</span>
+                            </div>
+                            <div className={`room-indicator ${house.cleaning > 0 ? 'cleaning' : 'vacant'}`}>
+                              <span>{house.cleaning}</span>
+                              <span className="room-label">Cleaning</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeView === 'guests' && (
+                <div>
+                  <div className="section-title" style={{ marginBottom: '20px' }}>All Guests</div>
+                  <table className="guests-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>House</th>
+                        <th>Room</th>
+                        <th>Status</th>
+                        <th>Contact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SAMPLE_DATA.guests.map(guest => (
+                        <tr key={guest.id}>
+                          <td className="guest-name">{guest.name}</td>
+                          <td>{guest.house}</td>
+                          <td>{guest.room}</td>
+                          <td><span className={`guest-status ${guest.status.replace('-', '-')}`}>{guest.status.replace('-', ' ')}</span></td>
+                          <td><a href={`tel:${guest.contact}`} style={{ color: '#4a90e2', textDecoration: 'none' }}>{guest.contact}</a></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {activeView === 'schedule' && (
+                <div>
+                  <div className="section-title" style={{ marginBottom: '20px' }}>Week at a Glance</div>
+                  <div className="week-timeline">
+                    {getWeekDates().map((date, idx) => (
+                      <div key={idx} className={`day-column ${date.toDateString() === today.toDateString() ? 'today' : ''}`}>
+                        <div className="day-header">
+                          <div className="day-name">{getDayLabel(date)}</div>
+                          <div className="day-date">{date.getDate()}</div>
+                        </div>
+                        <div className="day-events">
+                          {date.toDateString() === today.toDateString() && (
+                            <>
+                              <div className="day-event arrival">Arrivals: 3</div>
+                              <div className="day-event departure">Departures: 1</div>
+                              <div className="day-event cleaning">Cleaning: 2</div>
+                              <div className="day-event service">Chef: 2x</div>
+                            </>
+                          )}
+                          {date.getDate() === 9 && <div className="day-event arrival">Arrivals: 2</div>}
+                          {date.getDate() === 10 && <div className="day-event departure">Departures: 2</div>}
+                          {date.getDate() === 11 && <div className="day-event service">Chef: 3x</div>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeView === 'issues' && (
+                <div className="issues-view">
+                  <div className="new-issue-form">
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#000', marginBottom: '20px' }}>Report New Issue</div>
+                    <div className="form-group">
+                      <label className="form-label">House</label>
+                      <select className="form-select" value={newIssue.house} onChange={(e) => setNewIssue({ ...newIssue, house: e.target.value })}>
+                        <option value="">Select a house</option>
+                        {SAMPLE_DATA.houses.map(h => <option key={h.id} value={h.name}>{h.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Description</label>
+                      <textarea className="form-textarea" placeholder="What's the issue?" value={newIssue.description} onChange={(e) => setNewIssue({ ...newIssue, description: e.target.value })}></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Priority</label>
+                      <select className="form-select" value={newIssue.priority} onChange={(e) => setNewIssue({ ...newIssue, priority: e.target.value })}>
+                        <option value="attention">Attention</option>
+                        <option value="urgent">Urgent</option>
+                      </select>
+                    </div>
+                    <div className="button-group">
+                      <button className="btn btn-secondary">Cancel</button>
+                      <button className="btn btn-primary" onClick={handleSubmitIssue}>Submit Issue</button>
+                    </div>
+                  </div>
+
+                  <div className="emergency-contacts">
+                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#000', marginBottom: '20px' }}>Emergency Contacts</div>
+                    <div className="contact-grid">
+                      <div className="contact-card">
+                        <div className="contact-name">Patron Hotline</div>
+                        <a href="tel:+17065551234" className="contact-phone">+1 (706) 555-1234</a>
+                      </div>
+                      <div className="contact-card">
+                        <div className="contact-name">Local Plumber</div>
+                        <a href="tel:+17065556789" className="contact-phone">+1 (706) 555-6789</a>
+                      </div>
+                      <div className="contact-card">
+                        <div className="contact-name">HVAC Emergency</div>
+                        <a href="tel:+17065554321" className="contact-phone">+1 (706) 555-4321</a>
+                      </div>
+                      <div className="contact-card">
+                        <div className="contact-name">Electrician</div>
+                        <a href="tel:+17065559876" className="contact-phone">+1 (706) 555-9876</a>
+                      </div>
+                      <div className="contact-card">
+                        <div className="contact-name">Window Cleaning</div>
+                        <a href="tel:+17065555555" className="contact-phone">+1 (706) 555-5555</a>
+                      </div>
+                      <div className="contact-card">
+                        <div className="contact-name">Appliance Repair</div>
+                        <a href="tel:+17065557777" className="contact-phone">+1 (706) 555-7777</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <div className="section-title">Active Issues</div>
+                    <div className="issues-list">
+                      {SAMPLE_DATA.issues.map(issue => (
+                        <div key={issue.id} className={`issue-card ${issue.priority}`}>
+                          <div className="issue-header">
+                            <div className="issue-title">{issue.title}</div>
+                            <div className={`issue-status ${issue.priority}`}>{issue.status}</div>
+                          </div>
+                          <div className="issue-desc">{issue.description}</div>
+                          <div className="issue-time">Reported {issue.reported} • Updated {issue.updated}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* House Detail Modal */}
+          {showHouseModal && selectedHouse && (
+            <div className="modal-overlay" onClick={() => setShowHouseModal(false)}>
+              <div className="modal" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close" onClick={() => setShowHouseModal(false)}>×</button>
+                <div className="modal-header">{selectedHouse.name}</div>
+                <div className="modal-header" style={{ fontSize: '14px', fontWeight: '400', color: '#666', marginBottom: '24px' }}>{selectedHouse.address}</div>
+
+                <div style={{ marginBottom: '24px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#000', marginBottom: '12px' }}>Room Status</div>
+                  <div className="room-grid">
+                    {['Master', 'Guest 1', 'Guest 2', 'Guest 3', 'Guest 4', 'Guest 5'].map((room, idx) => {
+                      const occupied = idx < selectedHouse.occupied;
+                      const cleaning = idx === selectedHouse.occupied && selectedHouse.cleaning > 0;
+                      return (
+                        <div key={idx} className={`room-card ${occupied ? 'occupied' : cleaning ? 'cleaning' : ''}`}>
+                          <div className="room-title">{room}</div>
+                          <div className="room-info">
+                            {occupied && selectedHouse.guests[idx] && selectedHouse.guests[idx]}
+                            {cleaning && 'Being cleaned'}
+                            {!occupied && !cleaning && 'Vacant'}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="house-details">
+                  <div className="house-detail-item">
+                    <span className="detail-label">Wi-Fi Status</span>
+                    <span className="detail-value" style={{ color: selectedHouse.wifiStatus === 'Down' ? '#e94b3c' : '#4a90e2' }}>{selectedHouse.wifiStatus}</span>
+                  </div>
+                  <div className="house-detail-item">
+                    <span className="detail-label">Wi-Fi Password</span>
+                    <span className="detail-value">Delta2027!</span>
+                  </div>
+                  <div className="house-detail-item">
+                    <span className="detail-label">Parking Spaces</span>
+                    <span className="detail-value">{selectedHouse.parkingSpaces} available</span>
+                  </div>
+                  <div className="house-detail-item">
+                    <span className="detail-label">Last Cleaned</span>
+                    <span className="detail-value">{selectedHouse.lastCleaned}</span>
+                  </div>
+                  <div className="house-detail-item">
+                    <span className="detail-label">Next Cleaning</span>
+                    <span className="detail-value">{selectedHouse.nextCleaning}</span>
+                  </div>
+                  <div className="house-detail-item">
+                    <span className="detail-label">Access Codes</span>
+                    <span className="detail-value">Front: 4792 • Garage: 5521</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

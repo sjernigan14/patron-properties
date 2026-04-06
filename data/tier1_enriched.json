@@ -1,0 +1,6983 @@
+[
+  {
+    "patron_score": 100,
+    "property_address": "2150 Battle Row",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Zachary Wolff",
+    "owner_2_name": "",
+    "mailing_address": "2150 Battle Row",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "6.0",
+    "sqft": "9416",
+    "lot_sqft": "2.0",
+    "est_value": 1420000,
+    "est_equity": 544672,
+    "ltv_pct": 61.643,
+    "year_built": 1988,
+    "last_sale_price": 1300000,
+    "last_sale_date": "2022-03-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "5618919538",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7722913154",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "3307186882",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "3307186884",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "5673023701",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "couchy420@gmail.com",
+      "wolffie85@gmail.com",
+      "zacharywolff@netzero.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2150%20Battle%20Row%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2229 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Parrish Webber",
+    "owner_2_name": "Sadler Lee",
+    "mailing_address": "2229 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "8.0",
+    "sqft": "7796",
+    "lot_sqft": "21344.0",
+    "est_value": 1490000,
+    "est_equity": 1490000,
+    "ltv_pct": 0.0,
+    "year_built": 1998,
+    "last_sale_price": 750000,
+    "last_sale_date": "2022-01-10",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062940431",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067330312",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067330313",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067364750",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067330328",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "dburton3@bellsouth.net",
+      "davidaburton@gmail.com",
+      "paxrocks56@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2229%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2248 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Uros Pct",
+    "owner_2_name": "Uros Dorminey",
+    "mailing_address": "2248 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "10.0",
+    "sqft": "9600",
+    "lot_sqft": "91040.0",
+    "est_value": 2527000,
+    "est_equity": 1140724,
+    "ltv_pct": 54.859,
+    "year_built": 1988,
+    "last_sale_price": 2300000,
+    "last_sale_date": "2022-04-05",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7065952885",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067362899",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065952807",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7065979373",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "hopkinsfarms@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2248%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2259 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Anderson Rofs",
+    "owner_2_name": "Anderson Rofs",
+    "mailing_address": "2259 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "10",
+    "baths": "7.5",
+    "sqft": "10690",
+    "lot_sqft": "125453.0",
+    "est_value": 3213000,
+    "est_equity": 3213000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 2300000,
+    "last_sale_date": "2018-09-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067378191",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067366062",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065496327",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "stine_anderson@hotmail.com",
+      "frankieandy55@gmail.com",
+      "frank_anderson@rbwlogistics.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2259%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2324 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Yawn Rofs",
+    "owner_2_name": "Yawn Rofs",
+    "mailing_address": "2324 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "5.5",
+    "sqft": "4866",
+    "lot_sqft": "23958.0",
+    "est_value": 1388000,
+    "est_equity": 1220944,
+    "ltv_pct": 12.036,
+    "year_built": 2005,
+    "last_sale_price": 605000,
+    "last_sale_date": "2014-05-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "9126383547",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9126346836",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7069558641",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7069559461",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "saraayawn@gmail.com",
+      "sara_allgood@hotmail.com",
+      "sara.allgood@tampabay.rr.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2324%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2346 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Jeffery Richards",
+    "owner_2_name": "",
+    "mailing_address": "2346 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "6.0",
+    "sqft": "5912",
+    "lot_sqft": "36155.0",
+    "est_value": 1382000,
+    "est_equity": 817422,
+    "ltv_pct": 40.852,
+    "year_built": 2000,
+    "last_sale_price": 899000,
+    "last_sale_date": "2018-04-20",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068772125",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068630123",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068634226",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7069450235",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7064811980",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "richardsjeffery@hotmail.com",
+      "jeffrey.richards@southeasternmotors.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2346%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2429 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "John Mills",
+    "owner_2_name": "",
+    "mailing_address": "2429 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "5.0",
+    "sqft": "6517",
+    "lot_sqft": "1.0",
+    "est_value": 1371000,
+    "est_equity": 1371000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 1133000,
+    "last_sale_date": "2023-05-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063734557",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3154375828",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "johngmills@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2429%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "2627 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Burch Rofs",
+    "owner_2_name": "Burch Rofs",
+    "mailing_address": "2627 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "4.0",
+    "sqft": "6016",
+    "lot_sqft": "43996.0",
+    "est_value": 1281000,
+    "est_equity": 820345,
+    "ltv_pct": 35.961,
+    "year_built": 1988,
+    "last_sale_price": 1130000,
+    "last_sale_date": "2004-05-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8037134856",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7066646060",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "8435775594",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "5734720606",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jenriley64@hotmail.com",
+      "jenriley1@yahoo.com",
+      "rmburchjr@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2627%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "708 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "John Weaver",
+    "owner_2_name": "Claire Weaver",
+    "mailing_address": "708 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "6.0",
+    "sqft": "5110",
+    "lot_sqft": "44431.0",
+    "est_value": 1253000,
+    "est_equity": 808135,
+    "ltv_pct": 35.504,
+    "year_built": 1988,
+    "last_sale_price": 500000,
+    "last_sale_date": "2016-07-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6786999176",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4782972407",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "6787148672",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "4787551683",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8639693824",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "john.weaver.hxbg@statefarm.com",
+      "jweaverphd@gmail.com",
+      "jweaver@aug.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/708%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "808 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Beverly Dolan",
+    "owner_2_name": "",
+    "mailing_address": "808 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "5.5",
+    "sqft": "9820",
+    "lot_sqft": "102802.0",
+    "est_value": 3214000,
+    "est_equity": 2032613,
+    "ltv_pct": 36.758,
+    "year_built": 1988,
+    "last_sale_price": 2100000,
+    "last_sale_date": "2016-10-31",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063731874",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068369415",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067369998",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "5146370513",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067906066",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "adolan76@gmail.com",
+      "dolan@eagleproducts.us",
+      "cd11792@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/808%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 100,
+    "property_address": "920 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Rhodes James Brian Living Trust",
+    "owner_2_name": "",
+    "mailing_address": "920 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "7.0",
+    "sqft": "10759",
+    "lot_sqft": "3.0",
+    "est_value": 2396000,
+    "est_equity": 2396000,
+    "ltv_pct": 0.0,
+    "year_built": 1995,
+    "last_sale_price": 1350000,
+    "last_sale_date": "2018-12-05",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063736350",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067994660",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068312562",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068682333",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068550350",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "palmer.clark@gmail.com",
+      "rhodesjames40@gmail.com",
+      "rhoden_j@bellsouth.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/920%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "1109 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Jerry Ashmore",
+    "owner_2_name": "",
+    "mailing_address": "1109 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "4182",
+    "lot_sqft": "17860.0",
+    "est_value": 1030000,
+    "est_equity": 640512,
+    "ltv_pct": 37.814,
+    "year_built": 1990,
+    "last_sale_price": 619900,
+    "last_sale_date": "2018-07-27",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063391028",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068606084",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8036440298",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "jerryashmore@gmail.com",
+      "jerry.ashmore@gmail.com",
+      "jta@ashmoreconcrete.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1109%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "1205 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Senn Rofs",
+    "owner_2_name": "Senn Rofs",
+    "mailing_address": "1205 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4405",
+    "lot_sqft": "20038.0",
+    "est_value": 1211000,
+    "est_equity": 580472,
+    "ltv_pct": 52.067,
+    "year_built": 1988,
+    "last_sale_price": 663914,
+    "last_sale_date": "2017-08-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "4045165376",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7068635811",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063647072",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "2053668737",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "6787950233",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "stephaniemsenn@gmail.com",
+      "stephanieamayfield@gmail.com",
+      "smayfield44@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1205%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "2417 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Hsu Rofs",
+    "owner_2_name": "Yang Rofs",
+    "mailing_address": "2417 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4949",
+    "lot_sqft": "20038.0",
+    "est_value": 4285000,
+    "est_equity": 3215184,
+    "ltv_pct": 24.967,
+    "year_built": 2000,
+    "last_sale_price": 850000,
+    "last_sale_date": "2017-11-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7069082811",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4045567250",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4045434455",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4049066609",
+        "type": "Cell",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "kulguy94@gmail.com",
+      "diensiehsu@gmail.com",
+      "projectlumi@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2417%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "2511 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Roche Rofs",
+    "owner_2_name": "Roche Rofs",
+    "mailing_address": "2511 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "6.0",
+    "sqft": "5112",
+    "lot_sqft": "1.0",
+    "est_value": 1301000,
+    "est_equity": 1301000,
+    "ltv_pct": 0.0,
+    "year_built": 1997,
+    "last_sale_price": 1150000,
+    "last_sale_date": "2022-10-24",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "2819741924",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4047058616",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7703945570",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7065464587",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "seanroche71@gmail.com",
+      "seanroche@bellsouth.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2511%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "2561 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Dittus Gloria Anne Revocable Trust",
+    "owner_2_name": "",
+    "mailing_address": "2561 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "4234",
+    "lot_sqft": "24829.0",
+    "est_value": 1308000,
+    "est_equity": 1308000,
+    "ltv_pct": 0.0,
+    "year_built": 1991,
+    "last_sale_price": 0,
+    "last_sale_date": "2016-04-01",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "2024138489",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4049643941",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2026251561",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2029866760",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2027067800",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "gloriadittus@gmail.com",
+      "gloria.dittus@gmail.com",
+      "gdittus@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2561%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "2624 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Georgianna Malchow",
+    "owner_2_name": "Leland Malchow",
+    "mailing_address": "2624 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "7.0",
+    "sqft": "5363",
+    "lot_sqft": "16553.0",
+    "est_value": 1318000,
+    "est_equity": 609305,
+    "ltv_pct": 53.77,
+    "year_built": 1988,
+    "last_sale_price": 610000,
+    "last_sale_date": "2017-03-08",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063998890",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067383068",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067248890",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3308477062",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067335284",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "malchowgtm@aol.com",
+      "silvieg77@hotmail.com",
+      "malchow@csranet.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2624%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "2636 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bassali Reda W Living Trust",
+    "owner_2_name": "Kaldas Eman L Living Trust",
+    "mailing_address": "2636 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4532",
+    "lot_sqft": "63162.0",
+    "est_value": 1654000,
+    "est_equity": 1127255,
+    "ltv_pct": 31.847,
+    "year_built": 1988,
+    "last_sale_price": 755000,
+    "last_sale_date": "2012-06-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "2292720322",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "9127765465",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "2297765465",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "2297768396",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "sofaxme@msn.com",
+      "sofame@hotmail.com",
+      "sofaxme@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2636%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 98,
+    "property_address": "728 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Eric Smith",
+    "owner_2_name": "",
+    "mailing_address": "728 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.0",
+    "sqft": "5357",
+    "lot_sqft": "36590.0",
+    "est_value": 1330000,
+    "est_equity": 1330000,
+    "ltv_pct": 0.0,
+    "year_built": 1993,
+    "last_sale_price": 750000,
+    "last_sale_date": "2007-08-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8037075355",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067319676",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8035354994",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "8037556482",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "esmith@gulbrandsen.com",
+      "saintaquilla@gmail.com",
+      "scanton120@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/728%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 96,
+    "property_address": "2333 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Roger Delappe",
+    "owner_2_name": "",
+    "mailing_address": "2333 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.5",
+    "sqft": "3886",
+    "lot_sqft": "31799.0",
+    "est_value": 1402000,
+    "est_equity": 584025,
+    "ltv_pct": 58.343,
+    "year_built": 2000,
+    "last_sale_price": 990000,
+    "last_sale_date": "2020-11-02",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6784715788",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4044059500",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7709239873",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "radelappe@gmail.com",
+      "roger.s.delappe@vanderbilt.edu"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2333%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 96,
+    "property_address": "2638 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bennett Rofs",
+    "owner_2_name": "Bennett Rofs",
+    "mailing_address": "2638 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3543",
+    "lot_sqft": "29621.0",
+    "est_value": 1132000,
+    "est_equity": 845569,
+    "ltv_pct": 25.303,
+    "year_built": 1990,
+    "last_sale_price": 524000,
+    "last_sale_date": "2016-03-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062889508",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067364606",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3523818551",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067336721",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7705340800",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "wlb319@gmail.com",
+      "leebennett02@yahoo.com",
+      "bennett@bennett-ross.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2638%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "1103 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Weimer Rofs",
+    "owner_2_name": "Weimer Rofs",
+    "mailing_address": "1103 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "4100",
+    "lot_sqft": "",
+    "est_value": 1041000,
+    "est_equity": 482090,
+    "ltv_pct": 53.69,
+    "year_built": 2000,
+    "last_sale_price": 575000,
+    "last_sale_date": "2019-04-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "9375249488",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "9374747070",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "9375068219",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9373358756",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9375244948",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "weimer1994@hotmail.com",
+      "jweimer1970@gmail.com",
+      "ohasan@bellsouth.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1103%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "2231 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Goldberg Rofs",
+    "owner_2_name": "Goldberg Rofs",
+    "mailing_address": "2231 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "5.0",
+    "sqft": "4169",
+    "lot_sqft": "34848.0",
+    "est_value": 1516000,
+    "est_equity": 1411893,
+    "ltv_pct": 6.867,
+    "year_built": 1988,
+    "last_sale_price": 775000,
+    "last_sale_date": "2018-05-11",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068338535",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7068338922",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067267822",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067338922",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068145717",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "sneadmegan@gmail.com",
+      "megan.snead@hotmail.com",
+      "wink986@att.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2231%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "2559 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Heussner Rofs",
+    "owner_2_name": "Heussner Rofs",
+    "mailing_address": "2559 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.5",
+    "sqft": "4300",
+    "lot_sqft": "18731.0",
+    "est_value": 1627000,
+    "est_equity": 833795,
+    "ltv_pct": 48.753,
+    "year_built": 2005,
+    "last_sale_price": 890000,
+    "last_sale_date": "2022-07-12",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7192840362",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7174225552",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "5802488168",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "9136516547",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "linda.heussner@yahoo.com",
+      "beverly.gutierrez@yahoo.com",
+      "todd.heussner@goarmy.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2559%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "2560 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Howington Heather Whitt Trust",
+    "owner_2_name": "",
+    "mailing_address": "2560 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "5602",
+    "lot_sqft": "40946.0",
+    "est_value": 2598000,
+    "est_equity": 2396763,
+    "ltv_pct": 7.746,
+    "year_built": 2000,
+    "last_sale_price": 1100000,
+    "last_sale_date": "2017-03-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068772434",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067335774",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2059300666",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067535774",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067212971",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "hwhowington@aol.com",
+      "jedweems@aol.com",
+      "jedweems@comcast.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2560%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "2609 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Justin Bundy",
+    "owner_2_name": "",
+    "mailing_address": "2609 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "4520",
+    "lot_sqft": "47916.0",
+    "est_value": 1569000,
+    "est_equity": 801293,
+    "ltv_pct": 48.93,
+    "year_built": 2000,
+    "last_sale_price": 0,
+    "last_sale_date": "1996-08-02",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068140636",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7068639797",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068235929",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067372240",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "justinbundy@att.net",
+      "samanthabundy@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2609%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "2637 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Martino Rofs",
+    "owner_2_name": "Martino Rofs",
+    "mailing_address": "2637 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "4693",
+    "lot_sqft": "1.0",
+    "est_value": 1806000,
+    "est_equity": 1066540,
+    "ltv_pct": 40.945,
+    "year_built": 2000,
+    "last_sale_price": 1060000,
+    "last_sale_date": "2019-12-16",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068338016",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068332363",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068338020",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067366842",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068630375",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "liljohnson@concentric.net",
+      "demeyers.larry@gmail.com",
+      "ldemeyers@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2637%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "815 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Michael Polatty",
+    "owner_2_name": "",
+    "mailing_address": "815 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "5.5",
+    "sqft": "5030",
+    "lot_sqft": "27007.0",
+    "est_value": 1443000,
+    "est_equity": 1443000,
+    "ltv_pct": 0.0,
+    "year_built": 1997,
+    "last_sale_price": 0,
+    "last_sale_date": "2025-08-05",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7272046337",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7064810880",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7064819524",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068636926",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "lmeybohm@yahoo.com",
+      "meybohm@yahoo.com",
+      "lmeybohm1@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/815%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 95,
+    "property_address": "912 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Walker Hopkins",
+    "owner_2_name": "Melissa Hopkins",
+    "mailing_address": "912 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.5",
+    "sqft": "4224",
+    "lot_sqft": "41382.0",
+    "est_value": 1351000,
+    "est_equity": 690316,
+    "ltv_pct": 48.903,
+    "year_built": 2002,
+    "last_sale_price": 950000,
+    "last_sale_date": "2016-12-12",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062548067",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7065838599",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067384536",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063647428",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "walkerbgh@gmail.com",
+      "hopkinsbrotherspainting@gmail.com",
+      "walker@riversandglen.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/912%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 94,
+    "property_address": "1004 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Samuel Crislip",
+    "owner_2_name": "Lisa Crislip",
+    "mailing_address": "1004 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "4.0",
+    "sqft": "4595",
+    "lot_sqft": "42689.0",
+    "est_value": 871000,
+    "est_equity": 467702,
+    "ltv_pct": 46.303,
+    "year_built": 1988,
+    "last_sale_price": 574000,
+    "last_sale_date": "2021-01-29",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "4108648158",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4103157609",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "scrislip@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 20,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1004%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 93,
+    "property_address": "1020 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mcdonough Mary Helen Living Trust",
+    "owner_2_name": "",
+    "mailing_address": "1020 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "3514",
+    "lot_sqft": "33106.0",
+    "est_value": 1007000,
+    "est_equity": 555278,
+    "ltv_pct": 44.858,
+    "year_built": 1990,
+    "last_sale_price": 515000,
+    "last_sale_date": "2017-06-09",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063940986",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "5409405560",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "5404292311",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "5409400949",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067382825",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "n_arff@hotmail.com",
+      "bmarilyn66@gmail.com",
+      "mtate030@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1020%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 93,
+    "property_address": "1131 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Patterson Rofs",
+    "owner_2_name": "Patterson Rofs",
+    "mailing_address": "1131 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3660",
+    "lot_sqft": "12632.0",
+    "est_value": 959000,
+    "est_equity": 644638,
+    "ltv_pct": 32.78,
+    "year_built": 1988,
+    "last_sale_price": 489900,
+    "last_sale_date": "2017-08-11",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6785257181",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068603510",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063529197",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7706969644",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "2295750648",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "mark2patterson@hotmail.com",
+      "mark1patterson@hotmail.com",
+      "mark2patterson@comcast.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1131%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 93,
+    "property_address": "2306 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Wilson Allgood",
+    "owner_2_name": "",
+    "mailing_address": "2306 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3698",
+    "lot_sqft": "28750.0",
+    "est_value": 799000,
+    "est_equity": 518959,
+    "ltv_pct": 35.049,
+    "year_built": 2000,
+    "last_sale_price": 300000,
+    "last_sale_date": "2014-10-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067142700",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7069559041",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "kirbyyawn@gmail.com",
+      "wilsonaugusta@outlook.com",
+      "wallgood@allgoodllc.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2306%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 93,
+    "property_address": "828 Milledge Rd #A3",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Gerald Woods",
+    "owner_2_name": "",
+    "mailing_address": "828 Milledge Rd #A3",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "3336",
+    "lot_sqft": "6098.0",
+    "est_value": 1338000,
+    "est_equity": 1338000,
+    "ltv_pct": 0.0,
+    "year_built": 1990,
+    "last_sale_price": 499900,
+    "last_sale_date": "2013-04-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7064144411",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067382011",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068234224",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067375455",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067242622",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "gwwoods@bellsouth.net",
+      "geraldwoods@mindspring.com",
+      "gwoods@kilpatrickstockton.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/828%20Milledge%20Rd%20%23A3%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 92,
+    "property_address": "1001 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bryant Pendergass",
+    "owner_2_name": "Pendergrass Sabrina Neff Rofs",
+    "mailing_address": "1001 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4012",
+    "lot_sqft": "20473.0",
+    "est_value": 927000,
+    "est_equity": 447483,
+    "ltv_pct": 51.728,
+    "year_built": 2000,
+    "last_sale_price": 765000,
+    "last_sale_date": "2021-07-29",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063020879",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067379295",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "esnp@mac.com",
+      "tmusser0301@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1001%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 92,
+    "property_address": "1125 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "May Rofs",
+    "owner_2_name": "May Rofs",
+    "mailing_address": "1125 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "5.0",
+    "sqft": "5450",
+    "lot_sqft": "1.0",
+    "est_value": 1379000,
+    "est_equity": 475334,
+    "ltv_pct": 65.531,
+    "year_built": 1988,
+    "last_sale_price": 850000,
+    "last_sale_date": "2023-05-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7343085516",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7172981291",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "5734470027",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4123157081",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7172986055",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "may.jason@aol.com",
+      "medicineman@mindspring.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1125%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 92,
+    "property_address": "2222 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mahoney Rofs",
+    "owner_2_name": "Mahoney Rofs",
+    "mailing_address": "2222 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "5573",
+    "lot_sqft": "",
+    "est_value": 1366000,
+    "est_equity": 453068,
+    "ltv_pct": 66.833,
+    "year_built": 2005,
+    "last_sale_price": 1150000,
+    "last_sale_date": "2021-02-26",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8036717125",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067333215",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067339061",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8285260469",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7196834243",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "ccmerry@earthlink.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2222%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 92,
+    "property_address": "914 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Schwartz Rofs",
+    "owner_2_name": "Schwartz Rofs",
+    "mailing_address": "914 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "4470",
+    "lot_sqft": "1.0",
+    "est_value": 1025000,
+    "est_equity": 404099,
+    "ltv_pct": 60.576,
+    "year_built": 1988,
+    "last_sale_price": 732000,
+    "last_sale_date": "2020-01-13",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062948849",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7063949631",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067374322",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068264713",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "5048383960",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "msfiveleven77@gmail.com",
+      "carolyndolen@mac.com",
+      "bdolen@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/914%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 91,
+    "property_address": "946 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Kay Rofs",
+    "owner_2_name": "Kay Rofs",
+    "mailing_address": "946 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.5",
+    "sqft": "5750",
+    "lot_sqft": "46783.0",
+    "est_value": 627000,
+    "est_equity": 627000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 1080000,
+    "last_sale_date": "2023-06-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "4017427868",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "5088467752",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "5082287868",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4015218847",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2023384004",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "mitramix@gmail.com",
+      "janekay3@gmail.com",
+      "ackjane@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/946%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "1302 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Preis Rofs",
+    "owner_2_name": "Preis Rofs",
+    "mailing_address": "1302 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "3909",
+    "lot_sqft": "22216.0",
+    "est_value": 1003000,
+    "est_equity": 225404,
+    "ltv_pct": 77.527,
+    "year_built": 2000,
+    "last_sale_price": 725000,
+    "last_sale_date": "2020-12-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7708886575",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7708449761",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7708886579",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7708886584",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "emilykaypierce2019@gmail.com",
+      "preisscott@live.com",
+      "preisscott@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1302%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "2237 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Kimberly Overstreet",
+    "owner_2_name": "",
+    "mailing_address": "2237 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.5",
+    "sqft": "4363",
+    "lot_sqft": "22216.0",
+    "est_value": 1211000,
+    "est_equity": 901223,
+    "ltv_pct": 25.58,
+    "year_built": 1988,
+    "last_sale_price": 611000,
+    "last_sale_date": "2014-01-08",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "4192120749",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7063735702",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067381013",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067339897",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065710435",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "devlina_saveche30@yahoo.com",
+      "koverstreet@knology.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2237%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "2401 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "William Gibbs",
+    "owner_2_name": "",
+    "mailing_address": "2401 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.5",
+    "sqft": "3247",
+    "lot_sqft": "10890.0",
+    "est_value": 902000,
+    "est_equity": 561684,
+    "ltv_pct": 37.729,
+    "year_built": 2016,
+    "last_sale_price": 125000,
+    "last_sale_date": "2015-02-23",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063391299",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7069559095",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068636515",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8032781349",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067330504",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "williamg2238@yahoo.com",
+      "dgibbs5121@juno.com",
+      "wgibbs3880@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2401%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "2513 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Revell Rofs",
+    "owner_2_name": "Revell Rofs",
+    "mailing_address": "2513 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3422",
+    "lot_sqft": "1.0",
+    "est_value": 971000,
+    "est_equity": 917969,
+    "ltv_pct": 5.461,
+    "year_built": 1995,
+    "last_sale_price": 715000,
+    "last_sale_date": "2021-04-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068402980",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068602466",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065430216",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "2025267662",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068602879",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "harryarevell@yahoo.com",
+      "hrevell@gabn.net",
+      "sheilarevell@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2513%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "803 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Robbins Rofs",
+    "owner_2_name": "Robbins Rofs",
+    "mailing_address": "803 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3854",
+    "lot_sqft": "1.0",
+    "est_value": 1036000,
+    "est_equity": 219309,
+    "ltv_pct": 78.831,
+    "year_built": 1988,
+    "last_sale_price": 775000,
+    "last_sale_date": "2021-05-14",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "9199231282",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2529038340",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7043659248",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2524436204",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067384231",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "handygals@aol.com",
+      "lauren.p.robbins@gmail.com",
+      "laurenprobbins@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/803%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "820 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Caison Rofs",
+    "owner_2_name": "Caison Int",
+    "mailing_address": "820 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.0",
+    "sqft": "5998",
+    "lot_sqft": "43560.0",
+    "est_value": 1436000,
+    "est_equity": 1436000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 0,
+    "last_sale_date": "2023-11-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068339939",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068689608",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067363375",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068551141",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067332652",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "dkwate@yahoo.com",
+      "baileyscustglass@aol.com",
+      "cstone@meybohm.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/820%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "934 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Kinsey Rofs",
+    "owner_2_name": "Kinsey Rofs",
+    "mailing_address": "934 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "7.0",
+    "sqft": "6326",
+    "lot_sqft": "45302.0",
+    "est_value": 1387000,
+    "est_equity": 895226,
+    "ltv_pct": 35.456,
+    "year_built": 1988,
+    "last_sale_price": 720000,
+    "last_sale_date": "2017-03-08",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067994276",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7047583957",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7063642107",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jane.m.kinsey@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/934%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 90,
+    "property_address": "949 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mcknight Rofs",
+    "owner_2_name": "Mcknight Rofs",
+    "mailing_address": "949 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "5.5",
+    "sqft": "5721",
+    "lot_sqft": "50094.0",
+    "est_value": 1478000,
+    "est_equity": 1127898,
+    "ltv_pct": 23.688,
+    "year_built": 1988,
+    "last_sale_price": 850000,
+    "last_sale_date": "2020-09-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7065644284",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8502844603",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067368080",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "mamcknight@gmail.com",
+      "accmatt@yahoo.com",
+      "masonmcknight@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/949%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 89,
+    "property_address": "711 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "David Volpitto",
+    "owner_2_name": "Hailie Volpitto",
+    "mailing_address": "711 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "5.0",
+    "sqft": "4282",
+    "lot_sqft": "1.0",
+    "est_value": 1290000,
+    "est_equity": 235427,
+    "ltv_pct": 81.75,
+    "year_built": 1988,
+    "last_sale_price": 1200000,
+    "last_sale_date": "2022-04-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "5617587896",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2142382393",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "4693727060",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "2147749919",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "5617442131",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "dvolpitto@yahoo.com",
+      "svolpitto@aol.com",
+      "dvolpitto@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 15,
+      "equity": 9,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/711%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 89,
+    "property_address": "820 Fleming Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lindsey Swartzbaugh",
+    "owner_2_name": "Jonathan Rovansek",
+    "mailing_address": "450 Cmr 445",
+    "mailing_city": "Apo",
+    "mailing_state": "",
+    "mailing_zip": "",
+    "mail_address_same": true,
+    "beds": "4",
+    "baths": "3.5",
+    "sqft": "4350",
+    "lot_sqft": "25265.0",
+    "est_value": 809000,
+    "est_equity": 370621,
+    "ltv_pct": 54.188,
+    "year_built": 1995,
+    "last_sale_price": 445000,
+    "last_sale_date": "2019-11-14",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8036409826",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8035100155",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4078307130",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8034414143",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "lindz255@yahoo.com",
+      "lswartzbaugh@cs.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/820%20Fleming%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 89,
+    "property_address": "960 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Robertson Rofs",
+    "owner_2_name": "Robertson Rofs",
+    "mailing_address": "960 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "4388",
+    "lot_sqft": "30928.0",
+    "est_value": 751000,
+    "est_equity": 323966,
+    "ltv_pct": 56.862,
+    "year_built": 1988,
+    "last_sale_price": 261096,
+    "last_sale_date": "2014-02-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068322443",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067221588",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067386469",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067384212",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4045049556",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "leerobson@bellsouth.net",
+      "heardrobertson@gmail.com",
+      "thomasheardrobertson@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/960%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 88,
+    "property_address": "1106 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Doyle Rofs",
+    "owner_2_name": "Doyle Rofs",
+    "mailing_address": "1106 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "6.0",
+    "sqft": "6637",
+    "lot_sqft": "1.0",
+    "est_value": 3452000,
+    "est_equity": 3452000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 1112000,
+    "last_sale_date": "2021-06-14",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7039196525",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7038516153",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7033985268",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7037570649",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7037570687",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "doylem3@gmail.com",
+      "m_doyle1@comcast.net",
+      "doylemjd@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1106%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 88,
+    "property_address": "1121 Monte Sano Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Hudson Rofs",
+    "owner_2_name": "Hudson Rofs",
+    "mailing_address": "1121 Monte Sano Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4674",
+    "lot_sqft": "22651.0",
+    "est_value": 1287000,
+    "est_equity": 1287000,
+    "ltv_pct": 0.0,
+    "year_built": 1990,
+    "last_sale_price": 0,
+    "last_sale_date": "2021-07-20",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062849847",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2173691884",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2392071302",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067374393",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7062109091",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "brookshudson@gmail.com",
+      "bhudson@hullbarrett.com",
+      "4brookshudson@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1121%20Monte%20Sano%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 88,
+    "property_address": "2403 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Anna Vallotton",
+    "owner_2_name": "",
+    "mailing_address": "2403 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.5",
+    "sqft": "3231",
+    "lot_sqft": "7841.0",
+    "est_value": 1281000,
+    "est_equity": 1281000,
+    "ltv_pct": 0.0,
+    "year_built": 2016,
+    "last_sale_price": 910000,
+    "last_sale_date": "2021-08-16",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063390006",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067331920",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8438385555",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067901200",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067335016",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "jvallotton@yahoo.com",
+      "dwjvallotton20@cs.com",
+      "jvallotton@cs.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2403%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 88,
+    "property_address": "703 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Philip Forys",
+    "owner_2_name": "Samantha Osteen",
+    "mailing_address": "703 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "6.0",
+    "sqft": "6422",
+    "lot_sqft": "",
+    "est_value": 1131000,
+    "est_equity": 30114,
+    "ltv_pct": 97.337,
+    "year_built": 2000,
+    "last_sale_price": 1250000,
+    "last_sale_date": "2025-09-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7734207232",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8475180299",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8476925997",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "pforys@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 20,
+      "equity": 3,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/703%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 88,
+    "property_address": "801 Fleming Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Reeves Rofs",
+    "owner_2_name": "Reeves Rofs",
+    "mailing_address": "801 Fleming Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.0",
+    "sqft": "4173",
+    "lot_sqft": "22216.0",
+    "est_value": 688000,
+    "est_equity": 479144,
+    "ltv_pct": 30.357,
+    "year_built": 1985,
+    "last_sale_price": 174900,
+    "last_sale_date": "2005-01-03",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063946733",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7063944673",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067387597",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065469842",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "6412282740",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "julieo1@hotmail.com",
+      "julieo99@aol.com",
+      "jordelt@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/801%20Fleming%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 87,
+    "property_address": "510 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Rushing Rofs",
+    "owner_2_name": "Smalls Rofs",
+    "mailing_address": "510 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "3543",
+    "lot_sqft": "17424.0",
+    "est_value": 899000,
+    "est_equity": 205954,
+    "ltv_pct": 77.091,
+    "year_built": 2005,
+    "last_sale_price": 749900,
+    "last_sale_date": "2022-03-22",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6788520242",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4044525752",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4044242765",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "6156498110",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "6783446164",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "evan_rushing@yahoo.com",
+      "natasha.rushing@hotmail.com",
+      "kokogyrl@hotmil.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/510%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 86,
+    "property_address": "1006 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Robert Geoffroy",
+    "owner_2_name": "",
+    "mailing_address": "1006 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "5196",
+    "lot_sqft": "",
+    "est_value": 1191000,
+    "est_equity": -67383,
+    "ltv_pct": 105.658,
+    "year_built": 2000,
+    "last_sale_price": 645000,
+    "last_sale_date": "2019-04-24",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6789859175",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2034459696",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2032594832",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "6179269212",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "rgeoffroy@sbcglobal.net",
+      "r.geoffroy@yahoo.com",
+      "robertgeoffroy@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 3,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1006%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 86,
+    "property_address": "2318 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Tara Montroy",
+    "owner_2_name": "Brett Montroy",
+    "mailing_address": "2318 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "2919",
+    "lot_sqft": "21780.0",
+    "est_value": 868000,
+    "est_equity": 400740,
+    "ltv_pct": 53.832,
+    "year_built": 1988,
+    "last_sale_price": 775000,
+    "last_sale_date": "2024-11-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "3343320351",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3344371058",
+        "type": "Cell",
+        "dnc": true
+      }
+    ],
+    "emails": [],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2318%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 86,
+    "property_address": "2609 Central Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mary Kilpatrick",
+    "owner_2_name": "",
+    "mailing_address": "2609 Central Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "6.0",
+    "sqft": "3064",
+    "lot_sqft": "20473.0",
+    "est_value": 1250000,
+    "est_equity": 770286,
+    "ltv_pct": 38.377,
+    "year_built": 1999,
+    "last_sale_price": 840000,
+    "last_sale_date": "2021-04-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068365382",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8039171780",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067373003",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8034180462",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8034697629",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "hmmargreter77@aol.com",
+      "margrete3@netscape.net",
+      "mmargrete@bellsouth.net"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2609%20Central%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 86,
+    "property_address": "2615 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Daniel Dunstan",
+    "owner_2_name": "",
+    "mailing_address": "2615 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.5",
+    "sqft": "4624",
+    "lot_sqft": "37026.0",
+    "est_value": 1278000,
+    "est_equity": -140382,
+    "ltv_pct": 110.985,
+    "year_built": 1983,
+    "last_sale_price": 619830,
+    "last_sale_date": "2017-09-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062943442",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "8034423721",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7065500880",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8034422150",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "milesdunstan@yahoo.com",
+      "milesdunston@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 18,
+      "equity": 3,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2615%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 86,
+    "property_address": "600 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Maria Rivell",
+    "owner_2_name": "",
+    "mailing_address": "600 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.5",
+    "sqft": "3434",
+    "lot_sqft": "67213.0",
+    "est_value": 719000,
+    "est_equity": 719000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 0,
+    "last_sale_date": "",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7065132583",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068683150",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067330380",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068685044",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7709567998",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "drrivell@gmail.com",
+      "louamaral@msn.com",
+      "mrivell@centurytel.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/600%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 85,
+    "property_address": "2407 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Kuhlke Rofs",
+    "owner_2_name": "Kuhlke Rofs",
+    "mailing_address": "2407 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.5",
+    "sqft": "3540",
+    "lot_sqft": "13068.0",
+    "est_value": 976000,
+    "est_equity": 561857,
+    "ltv_pct": 42.433,
+    "year_built": 2016,
+    "last_sale_price": 190000,
+    "last_sale_date": "2014-06-12",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7069517462",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067387467",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068549887",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "dkul101@aol.com",
+      "williamkuhlke@icqmail.com",
+      "william@tsagolf.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2407%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 85,
+    "property_address": "2423 Central Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Stahl Rofs",
+    "owner_2_name": "Stahl Rofs",
+    "mailing_address": "2423 Central Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "4674",
+    "lot_sqft": "1.0",
+    "est_value": 883000,
+    "est_equity": 521356,
+    "ltv_pct": 40.956,
+    "year_built": 1988,
+    "last_sale_price": 565000,
+    "last_sale_date": "2021-02-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6462814846",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "9045659186",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9044516086",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "9049976969",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9046428981",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "peteradstahl@gmail.com",
+      "dalanstahl@csiengineering.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 18,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2423%20Central%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 84,
+    "property_address": "2405 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Andrea Elliott",
+    "owner_2_name": "Richard Elliott",
+    "mailing_address": "2405 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.5",
+    "sqft": "2885",
+    "lot_sqft": "7841.0",
+    "est_value": 773000,
+    "est_equity": 773000,
+    "ltv_pct": 0.0,
+    "year_built": 2016,
+    "last_sale_price": 125000,
+    "last_sale_date": "2015-10-02",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8036252407",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067365381",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068685381",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7066676656",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "andreaelliottgoyai@live.com",
+      "aelliott57@embarqmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2405%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 84,
+    "property_address": "2421 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Charles Knox",
+    "owner_2_name": "Julia Knox",
+    "mailing_address": "2421 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3047",
+    "lot_sqft": "",
+    "est_value": 909000,
+    "est_equity": 206711,
+    "ltv_pct": 77.26,
+    "year_built": 1998,
+    "last_sale_price": 920000,
+    "last_sale_date": "2024-04-23",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063990876",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067362999",
+        "type": "Cell",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "ceknox98@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 15,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2421%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 84,
+    "property_address": "974 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Moran Rofs",
+    "owner_2_name": "Ellisworth-Moran Rofs",
+    "mailing_address": "974 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "7",
+    "baths": "5.0",
+    "sqft": "5138",
+    "lot_sqft": "8276.0",
+    "est_value": 890000,
+    "est_equity": 452155,
+    "ltv_pct": 49.196,
+    "year_built": 2000,
+    "last_sale_price": 504990,
+    "last_sale_date": "2019-08-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7042010893",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7042431050",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7042431049",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7045423851",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7045420300",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 20,
+      "equity": 12,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/974%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 83,
+    "property_address": "1121 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Trotter Griffis",
+    "owner_2_name": "",
+    "mailing_address": "1121 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3370",
+    "lot_sqft": "40946.0",
+    "est_value": 1927000,
+    "est_equity": 1589030,
+    "ltv_pct": 17.539,
+    "year_built": 1988,
+    "last_sale_price": 2391500,
+    "last_sale_date": "2024-10-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062679554",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8438104933",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067362701",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8438865885",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3018401128",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "beverly.howard@comcast.net",
+      "beverlyahoward@address.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 25,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1121%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 83,
+    "property_address": "1314 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Julia Hauenstein",
+    "owner_2_name": "",
+    "mailing_address": "1314 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "2.0",
+    "sqft": "2464",
+    "lot_sqft": "18731.0",
+    "est_value": 616000,
+    "est_equity": 616000,
+    "ltv_pct": 0.0,
+    "year_built": 1990,
+    "last_sale_price": 20000,
+    "last_sale_date": "2020-03-27",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067995850",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3013575840",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067338144",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067388804",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067338149",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jph48@bellsouth.net",
+      "juliaaandrews@gmail.com",
+      "juliaaandrews@adelphia.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 5
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1314%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 83,
+    "property_address": "2258 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Soleta Baird",
+    "owner_2_name": "",
+    "mailing_address": "2258 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.5",
+    "sqft": "4067",
+    "lot_sqft": "27007.0",
+    "est_value": 709000,
+    "est_equity": 709000,
+    "ltv_pct": 0.0,
+    "year_built": 1997,
+    "last_sale_price": 0,
+    "last_sale_date": "2023-11-09",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062846658",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067360669",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065466064",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "soletab@aol.com",
+      "snoopy3412@aol.com",
+      "paulblankenship902@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2258%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 83,
+    "property_address": "2423 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Brian Mears",
+    "owner_2_name": "",
+    "mailing_address": "2423 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "6.0",
+    "sqft": "4378",
+    "lot_sqft": "",
+    "est_value": 969000,
+    "est_equity": 66496,
+    "ltv_pct": 93.138,
+    "year_built": 1988,
+    "last_sale_price": 935000,
+    "last_sale_date": "2023-05-16",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "4787191537",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4787318582",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4784740626",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4788362466",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4129201337",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "bmears24@gmail.com",
+      "cmears65@aol.com",
+      "bmears962@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 18,
+      "equity": 3,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2423%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 83,
+    "property_address": "939 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "John Flythe",
+    "owner_2_name": "",
+    "mailing_address": "939 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.5",
+    "sqft": "3237",
+    "lot_sqft": "58370.0",
+    "est_value": 662625,
+    "est_equity": 329412,
+    "ltv_pct": 50.287,
+    "year_built": 2000,
+    "last_sale_price": 250000,
+    "last_sale_date": "2017-12-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6146073500",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067375116",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8032791965",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068555363",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "mandyflythe@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/939%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 82,
+    "property_address": "1015 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Werrick Rofs",
+    "owner_2_name": "Werrick Rofs",
+    "mailing_address": "1015 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.5",
+    "sqft": "3152",
+    "lot_sqft": "31799.0",
+    "est_value": 808000,
+    "est_equity": 417464,
+    "ltv_pct": 48.334,
+    "year_built": 1988,
+    "last_sale_price": 750000,
+    "last_sale_date": "2023-12-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068314051",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068313856",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068603172",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3103740314",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7182724817",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "lsv615@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 10,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1015%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 82,
+    "property_address": "1108 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Russell Stephens",
+    "owner_2_name": "",
+    "mailing_address": "1108 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "2.0",
+    "sqft": "3029",
+    "lot_sqft": "14810.0",
+    "est_value": 459000,
+    "est_equity": 459000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 214500,
+    "last_sale_date": "2001-09-04",
+    "owner_occupied": "Yes",
+    "phones": [],
+    "emails": [],
+    "scoring": {
+      "proximity": 30,
+      "value": 14,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1108%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 82,
+    "property_address": "2249 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lee Rofs",
+    "owner_2_name": "Lee Rofs",
+    "mailing_address": "2249 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.0",
+    "sqft": "3005",
+    "lot_sqft": "",
+    "est_value": 844000,
+    "est_equity": 334811,
+    "ltv_pct": 60.33,
+    "year_built": 1988,
+    "last_sale_price": 580000,
+    "last_sale_date": "2020-12-21",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "3149719853",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "3149719850",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3125320207",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "6304168260",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3147163266",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "rpepelea@gmail.com",
+      "abenahawker@gmail.com",
+      "kazimsavas@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 22,
+      "beds": 10,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2249%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 82,
+    "property_address": "802 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Clark Rofs",
+    "owner_2_name": "Marceaux Rofs",
+    "mailing_address": "802 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.0",
+    "sqft": "2853",
+    "lot_sqft": "19166.0",
+    "est_value": 597000,
+    "est_equity": 244136,
+    "ltv_pct": 59.106,
+    "year_built": 1988,
+    "last_sale_price": 385000,
+    "last_sale_date": "2021-05-12",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7066271373",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067296580",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067390785",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068636767",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067231833",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "courtneyjames1992@yahoo.com",
+      "merrybeckham@yahoo.com",
+      "amajudy@earthlink.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/802%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 82,
+    "property_address": "998 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Cullinane Sara M Trust",
+    "owner_2_name": "",
+    "mailing_address": "998 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "2559",
+    "lot_sqft": "",
+    "est_value": 587000,
+    "est_equity": 377049,
+    "ltv_pct": 35.767,
+    "year_built": 1990,
+    "last_sale_price": 465750,
+    "last_sale_date": "2021-11-19",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6267990772",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/998%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 81,
+    "property_address": "2602 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mosley Living Trust",
+    "owner_2_name": "",
+    "mailing_address": "2602 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "4.0",
+    "sqft": "3376",
+    "lot_sqft": "24829.0",
+    "est_value": 564000,
+    "est_equity": 564000,
+    "ltv_pct": 0.0,
+    "year_built": 1986,
+    "last_sale_price": 135000,
+    "last_sale_date": "1984-05-01",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063644099",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067383391",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067367971",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7064328287",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "frankamosely@netzero.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2602%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "1315 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Robert Barnes",
+    "owner_2_name": "Maureen Barnes",
+    "mailing_address": "1315 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.0",
+    "sqft": "2654",
+    "lot_sqft": "",
+    "est_value": 583000,
+    "est_equity": 583000,
+    "ltv_pct": 0.0,
+    "year_built": 1990,
+    "last_sale_price": 332500,
+    "last_sale_date": "2019-03-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6784722300",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3143913355",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7148133485",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7704479470",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7708894758",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "scaldw0295@aol.com",
+      "robert.barnes3@gmail.com",
+      "robertbarnes3@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1315%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "1422 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "James Collins",
+    "owner_2_name": "Tori Lineberry",
+    "mailing_address": "1422 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "5.0",
+    "sqft": "3800",
+    "lot_sqft": "14810.0",
+    "est_value": 913000,
+    "est_equity": 581500,
+    "ltv_pct": 36.309,
+    "year_built": 1985,
+    "last_sale_price": 428000,
+    "last_sale_date": "2015-11-24",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "2529169296",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2529273699",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "2529273827",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "4804603854",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "super_romie@yahoo.com",
+      "super_saiyajin3@hotmail.com",
+      "ojcollhins376781@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1422%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "2119 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bryan Broach",
+    "owner_2_name": "",
+    "mailing_address": "2119 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3363",
+    "lot_sqft": "",
+    "est_value": 734000,
+    "est_equity": 214147,
+    "ltv_pct": 70.825,
+    "year_built": 1994,
+    "last_sale_price": 625000,
+    "last_sale_date": "2022-04-01",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "3614423438",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "3613347968",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3619860910",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3619941019",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "9792338210",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "s_veronica_99@hotmail.com",
+      "veronicas00@swbell.net",
+      "veronicas00@wmconnect.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2119%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "2123 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Phillip Blumenfield",
+    "owner_2_name": "",
+    "mailing_address": "2123 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "2.5",
+    "sqft": "2753",
+    "lot_sqft": "8712.0",
+    "est_value": 507000,
+    "est_equity": 507000,
+    "ltv_pct": 0.0,
+    "year_built": 1992,
+    "last_sale_price": 0,
+    "last_sale_date": "2024-01-09",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "3126237400",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "6617144467",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067369415",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "3123869600",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "saganpsb@comcast.net",
+      "vertels@aol.com",
+      "terryevans74@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2123%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "2333 Central Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Jeffrey Turner",
+    "owner_2_name": "",
+    "mailing_address": "2333 Central Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3012",
+    "lot_sqft": "11761.0",
+    "est_value": 806000,
+    "est_equity": 534695,
+    "ltv_pct": 33.661,
+    "year_built": 1988,
+    "last_sale_price": 365000,
+    "last_sale_date": "2011-11-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062316079",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "6018252957",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063646783",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "8164716789",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9128977253",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jeff_m_turner@yahoo.com",
+      "nursegirl412@yahoo.com",
+      "asmith4412@aol.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2333%20Central%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 80,
+    "property_address": "602 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Caye Giddings",
+    "owner_2_name": "",
+    "mailing_address": "602 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.5",
+    "sqft": "4693",
+    "lot_sqft": "44867.0",
+    "est_value": 1172000,
+    "est_equity": 0,
+    "ltv_pct": 0,
+    "year_built": 2000,
+    "last_sale_price": 1250000,
+    "last_sale_date": "2021-09-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6784283529",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067991631",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068322083",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8285263095",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "ccaye@mailcity.com",
+      "ccaye@peoplepc.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 25,
+      "beds": 10,
+      "equity": 5,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/602%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 79,
+    "property_address": "1106 Milledge Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Tanner Ticknor",
+    "owner_2_name": "",
+    "mailing_address": "1106 Milledge Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "2900",
+    "lot_sqft": "",
+    "est_value": 699000,
+    "est_equity": 233673,
+    "ltv_pct": 66.57,
+    "year_built": 2000,
+    "last_sale_price": 545000,
+    "last_sale_date": "2022-03-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8177891138",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8173015667",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8172832685",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "8175892563",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8174814443",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "tannertick@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 9,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1106%20Milledge%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 79,
+    "property_address": "933 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "David Evans",
+    "owner_2_name": "",
+    "mailing_address": "933 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3258",
+    "lot_sqft": "10019.0",
+    "est_value": 450000,
+    "est_equity": 298164,
+    "ltv_pct": 33.741,
+    "year_built": 1985,
+    "last_sale_price": 194050,
+    "last_sale_date": "2015-06-11",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063079412",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2107447313",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7062346590",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "dennispw@yahoo.com",
+      "iamdevans5@gmail.com",
+      "greggc43@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 14,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/933%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 78,
+    "property_address": "1102 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Hight Rofs",
+    "owner_2_name": "Newton Rofs",
+    "mailing_address": "1102 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "2794",
+    "lot_sqft": "13939.0",
+    "est_value": 484000,
+    "est_equity": 382431,
+    "ltv_pct": 20.985,
+    "year_built": 1990,
+    "last_sale_price": 269900,
+    "last_sale_date": "2008-08-26",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7069555924",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7063643440",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8037833948",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068637226",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068552222",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "tanewton@gmail.com",
+      "aurena1@att.net",
+      "aurena1@gmort.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 14,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1102%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 78,
+    "property_address": "1104 Hickman Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Merz Rofs",
+    "owner_2_name": "Merz Rofs",
+    "mailing_address": "1104 Hickman Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "2726",
+    "lot_sqft": "16988.0",
+    "est_value": 487000,
+    "est_equity": 407824,
+    "ltv_pct": 16.258,
+    "year_built": 1990,
+    "last_sale_price": 124900,
+    "last_sale_date": "2001-01-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062512096",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7063943009",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067360998",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063642388",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067969998",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jim.merz@controlsouthern.com",
+      "fg6677@aol.com",
+      "fg6677@comcast.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 14,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1104%20Hickman%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 78,
+    "property_address": "1304 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lee Abolghassem",
+    "owner_2_name": "",
+    "mailing_address": "1304 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.0",
+    "sqft": "2108",
+    "lot_sqft": "13504.0",
+    "est_value": 537000,
+    "est_equity": 537000,
+    "ltv_pct": 0.0,
+    "year_built": 2000,
+    "last_sale_price": 319000,
+    "last_sale_date": "2017-08-10",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "9126580265",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "9125929210",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "9127391394",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "9127398874",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "9127397824",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "carlyhorton88@gmail.com",
+      "carly.horton@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 5
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1304%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 78,
+    "property_address": "1316 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Neville Pavri",
+    "owner_2_name": "Reena Thomas",
+    "mailing_address": "1316 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.0",
+    "sqft": "2472",
+    "lot_sqft": "12197.0",
+    "est_value": 506000,
+    "est_equity": 506000,
+    "ltv_pct": 0.0,
+    "year_built": 2000,
+    "last_sale_price": 510000,
+    "last_sale_date": "2024-07-26",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7064145538",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7062101258",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7738785905",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "5042825268",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "5042836976",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "nppchem@yahoo.com",
+      "neville.pavri@webtv.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 5
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1316%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 78,
+    "property_address": "1318 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mary Senn",
+    "owner_2_name": "",
+    "mailing_address": "1318 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "2.0",
+    "sqft": "2280",
+    "lot_sqft": "15682.0",
+    "est_value": 571000,
+    "est_equity": 571000,
+    "ltv_pct": 0.0,
+    "year_built": 2000,
+    "last_sale_price": 290000,
+    "last_sale_date": "2016-10-11",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068315098",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068635811",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8433632690",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "msenn127@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 5
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1318%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 77,
+    "property_address": "1404 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Christine Nelson",
+    "owner_2_name": "Gregory Nelson",
+    "mailing_address": "1404 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "3391",
+    "lot_sqft": "",
+    "est_value": 505000,
+    "est_equity": 124086,
+    "ltv_pct": 75.429,
+    "year_built": 1990,
+    "last_sale_price": 490000,
+    "last_sale_date": "2023-08-30",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "8082652685",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "8086852474",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7164844010",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7166654191",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "8084844010",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "christineinhawaii@msn.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 15,
+      "equity": 6,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1404%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 77,
+    "property_address": "2125 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Alexandra Skiles",
+    "owner_2_name": "Brandon Skiles",
+    "mailing_address": "2125 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "5.0",
+    "sqft": "3104",
+    "lot_sqft": "",
+    "est_value": 540000,
+    "est_equity": 53342,
+    "ltv_pct": 90.122,
+    "year_built": 2000,
+    "last_sale_price": 500000,
+    "last_sale_date": "2025-05-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7066173599",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7066153403",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7063936589",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7066105302",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7066109890",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "steffymarie@ymail.com",
+      "lexymariesantos@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 18,
+      "equity": 3,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2125%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 77,
+    "property_address": "711 Montrose Ct",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Jerry Greenway",
+    "owner_2_name": "",
+    "mailing_address": "711 Montrose Ct",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "2.5",
+    "sqft": "4702",
+    "lot_sqft": "24394.0",
+    "est_value": 984000,
+    "est_equity": 593243,
+    "ltv_pct": 39.711,
+    "year_built": 2014,
+    "last_sale_price": 515000,
+    "last_sale_date": "2014-10-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7062840362",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068600308",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068680983",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "4786250685",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7069558942",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jerry.greenwayjr@gmail.com",
+      "spreadhead16@aol.com",
+      "greenway459@hotmail.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/711%20Montrose%20Ct%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 77,
+    "property_address": "915 Johns Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bowers Rofs",
+    "owner_2_name": "Bowers Rofs",
+    "mailing_address": "915 Johns Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "4.0",
+    "sqft": "3552",
+    "lot_sqft": "9583.0",
+    "est_value": 844000,
+    "est_equity": 214237,
+    "ltv_pct": 74.616,
+    "year_built": 2000,
+    "last_sale_price": 525000,
+    "last_sale_date": "2020-06-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7064952389",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067365878",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7063649620",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7066506658",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067331670",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "bennettbowers2@gmail.com",
+      "c5bbowers@yahoo.com",
+      "xibbowers1@cox.net"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 22,
+      "beds": 18,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/915%20Johns%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "1335 Monte Sano Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Mark Tribby",
+    "owner_2_name": "Catherine Meehan",
+    "mailing_address": "1335 Monte Sano Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "3368",
+    "lot_sqft": "17860.0",
+    "est_value": 585000,
+    "est_equity": 508664,
+    "ltv_pct": 13.049,
+    "year_built": 1990,
+    "last_sale_price": 0,
+    "last_sale_date": "2010-10-18",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6784850442",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067336825",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068606617",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7706647387",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7707400311",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "mtribby@comcast.net",
+      "mtribby@yahoo.com",
+      "marktribby@sbcglobal.net"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1335%20Monte%20Sano%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "2218 Cumming Rd",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "William Mcknight",
+    "owner_2_name": "",
+    "mailing_address": "2218 Cumming Rd",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "2.5",
+    "sqft": "1892",
+    "lot_sqft": "12632.0",
+    "est_value": 613000,
+    "est_equity": 613000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 475000,
+    "last_sale_date": "2022-03-16",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "2293824362",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067337584",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067330530",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067335479",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "tonyaddington@bellsouth.net",
+      "kathleenmckie@yahoo.com",
+      "erinaddington@bellsouth.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 15,
+      "sqft": 3
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2218%20Cumming%20Rd%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "813 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Cathcart Rofs",
+    "owner_2_name": "Cathcart Rofs",
+    "mailing_address": "813 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.5",
+    "sqft": "3661",
+    "lot_sqft": "22216.0",
+    "est_value": 664000,
+    "est_equity": 363397,
+    "ltv_pct": 45.272,
+    "year_built": 2000,
+    "last_sale_price": 355000,
+    "last_sale_date": "2019-10-16",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7622187262",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7622187260",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "4693235503",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "4693239136",
+        "type": "Cell",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "kledwards1948@gmail.com",
+      "stephanie.cathcart@yahoo.com",
+      "foreverdadsgirl@yahoo.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/813%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "821 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Danny Mcconnell",
+    "owner_2_name": "Sharon Mcconnell",
+    "mailing_address": "821 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "4.0",
+    "sqft": "3711",
+    "lot_sqft": "16553.0",
+    "est_value": 511000,
+    "est_equity": 504856,
+    "ltv_pct": 1.202,
+    "year_built": 1988,
+    "last_sale_price": 290000,
+    "last_sale_date": "2007-12-06",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068403958",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068405224",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7064968355",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7069229601",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7068698445",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "skcm1957@hotmail.com",
+      "dmcconnell@thefamilyy.org",
+      "dan.mcconnell@thefamilyy.org"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/821%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "915 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Samson Rofs",
+    "owner_2_name": "Sharmin Rofs",
+    "mailing_address": "915 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "5",
+    "baths": "3.0",
+    "sqft": "3503",
+    "lot_sqft": "1.0",
+    "est_value": 595000,
+    "est_equity": 305234,
+    "ltv_pct": 48.7,
+    "year_built": 1988,
+    "last_sale_price": 508000,
+    "last_sale_date": "2023-04-11",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7063645448",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7064968753",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067380174",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7132705877",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "corkirish33@gmail.com",
+      "katpatjj666@gmail.com",
+      "corkirish@aol.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 18,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/915%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 76,
+    "property_address": "957 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Diane Vangiesen",
+    "owner_2_name": "George Barrett",
+    "mailing_address": "957 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "3074",
+    "lot_sqft": "30492.0",
+    "est_value": 542000,
+    "est_equity": 542000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 94800,
+    "last_sale_date": "2013-10-28",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068337109",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067375354",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7068682986",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "dianesparky123@gmail.com",
+      "dianevangiesen@aol.com",
+      "dianeag5@knology.net"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/957%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "1135 Monte Sano Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Edwin Pollock",
+    "owner_2_name": "",
+    "mailing_address": "1135 Monte Sano Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.5",
+    "sqft": "2706",
+    "lot_sqft": "15682.0",
+    "est_value": 616000,
+    "est_equity": 616000,
+    "ltv_pct": 0.0,
+    "year_built": 1990,
+    "last_sale_price": 300000,
+    "last_sale_date": "2017-10-02",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068314922",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068314422",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067388234",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067333303",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "ebpollock@yahoo.com",
+      "pollockeb@appstate.edu"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1135%20Monte%20Sano%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "1203 Highland Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Bruce Campbell",
+    "owner_2_name": "",
+    "mailing_address": "1203 Highland Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "2.0",
+    "sqft": "3389",
+    "lot_sqft": "20473.0",
+    "est_value": 382000,
+    "est_equity": 382000,
+    "ltv_pct": 0.0,
+    "year_built": 1985,
+    "last_sale_price": 389900,
+    "last_sale_date": "2025-08-05",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068409388",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067381258",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067335010",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "4787438360",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "wilkesjc1203@gmail.com",
+      "jane.crawford.wilkes@live.mercer.edu",
+      "crystalunderhill@outlook.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 10,
+      "beds": 15,
+      "equity": 12,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/1203%20Highland%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "2229 Mcdowell St",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Hopkins Cunningham",
+    "owner_2_name": "Hopkis Knox",
+    "mailing_address": "2229 Mcdowell St",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "5.0",
+    "sqft": "4949",
+    "lot_sqft": "1.0",
+    "est_value": 3224000,
+    "est_equity": 3224000,
+    "ltv_pct": 0.0,
+    "year_built": 1988,
+    "last_sale_price": 1080000,
+    "last_sale_date": "2022-01-25",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7065642961",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7065952885",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067362899",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067362844",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7065952807",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "hopkinsfarms@aol.com",
+      "hopkinsfarms@msn.com",
+      "northface@msn.com"
+    ],
+    "scoring": {
+      "proximity": 5,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2229%20Mcdowell%20St%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "2321 Kings Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Wills Rofs",
+    "owner_2_name": "Wills Rofs",
+    "mailing_address": "2321 Kings Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "5.0",
+    "sqft": "6278",
+    "lot_sqft": "1.0",
+    "est_value": 1526000,
+    "est_equity": 726570,
+    "ltv_pct": 52.387,
+    "year_built": 1995,
+    "last_sale_price": 1030000,
+    "last_sale_date": "2019-09-27",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6142641155",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "6142680057",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "6145232561",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "6147939527",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "6142302493",
+        "type": "Landline",
+        "dnc": false
+      }
+    ],
+    "emails": [
+      "jcwatson59@gmail.com",
+      "jwatson@mwspublications.com",
+      "jane.wisehart@aol.com"
+    ],
+    "scoring": {
+      "proximity": 5,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2321%20Kings%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "2347 Walton Way",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lauren Lowell",
+    "owner_2_name": "Daniel Sweeney",
+    "mailing_address": "2347 Walton Way",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.0",
+    "sqft": "2483",
+    "lot_sqft": "20038.0",
+    "est_value": 581000,
+    "est_equity": 346606,
+    "ltv_pct": 40.343,
+    "year_built": 1988,
+    "last_sale_price": 550000,
+    "last_sale_date": "2025-10-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067997497",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067361929",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7067339937",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "ehagler@wmconnect.com",
+      "emilyhagler@gmail.com",
+      "crazyem@aol.com"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 12,
+      "sqft": 5
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2347%20Walton%20Way%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "2623 Henry St",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Nathan Heigle",
+    "owner_2_name": "Davis Heigle",
+    "mailing_address": "2623 Henry St",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "5.5",
+    "sqft": "4835",
+    "lot_sqft": "54886.0",
+    "est_value": 1310000,
+    "est_equity": 508836,
+    "ltv_pct": 61.158,
+    "year_built": 1990,
+    "last_sale_price": 1450000,
+    "last_sale_date": "2025-05-21",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "6786376677",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7066500641",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "7066500961",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "nsheigle@gmail.com",
+      "brock.melanie@gmail.com",
+      "nathanheigle@juno.com"
+    ],
+    "scoring": {
+      "proximity": 5,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": true,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2623%20Henry%20St%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "2644 Henry St",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "William Knapik",
+    "owner_2_name": "Lucy Knapik",
+    "mailing_address": "2644 Henry St",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "6.0",
+    "sqft": "7180",
+    "lot_sqft": "1.0",
+    "est_value": 6101000,
+    "est_equity": 6101000,
+    "ltv_pct": 0.0,
+    "year_built": 2004,
+    "last_sale_price": 1800000,
+    "last_sale_date": "2022-07-15",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7708157682",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7708151682",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "2813701887",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "william.knapik@gmail.com",
+      "williamknapik@gmail.com",
+      "knapik8214@aol.com"
+    ],
+    "scoring": {
+      "proximity": 5,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/2644%20Henry%20St%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "822 Fleming Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lee Booker",
+    "owner_2_name": "",
+    "mailing_address": "822 Fleming Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "3",
+    "baths": "3.0",
+    "sqft": "3139",
+    "lot_sqft": "",
+    "est_value": 507000,
+    "est_equity": 229218,
+    "ltv_pct": 54.789,
+    "year_built": 1990,
+    "last_sale_price": 379900,
+    "last_sale_date": "2022-02-17",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067262184",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7067379013",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "csfleetfeet@gmail.com",
+      "leecatherinebooker@gmail.com",
+      "shwelter@gte.net"
+    ],
+    "scoring": {
+      "proximity": 30,
+      "value": 18,
+      "beds": 10,
+      "equity": 9,
+      "sqft": 8
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/822%20Fleming%20Ave%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "933 Meigs St",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Rust Rofs",
+    "owner_2_name": "Barrett-Johnson Rofs",
+    "mailing_address": "933 Meigs St",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "6",
+    "baths": "6.0",
+    "sqft": "6736",
+    "lot_sqft": "34412.0",
+    "est_value": 2216000,
+    "est_equity": 1886132,
+    "ltv_pct": 14.886,
+    "year_built": 1988,
+    "last_sale_price": 707500,
+    "last_sale_date": "2020-12-08",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7068310048",
+        "type": "Cell",
+        "dnc": true
+      },
+      {
+        "number": "7068310042",
+        "type": "Cell",
+        "dnc": false
+      },
+      {
+        "number": "7067387043",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8305960978",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "katherineawhite@gmail.com"
+    ],
+    "scoring": {
+      "proximity": 5,
+      "value": 25,
+      "beds": 20,
+      "equity": 15,
+      "sqft": 10
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/933%20Meigs%20St%2C%20Augusta%2C%20GA%2030904"
+  },
+  {
+    "patron_score": 75,
+    "property_address": "951 Heard Ave",
+    "city": "Augusta",
+    "state": "GA",
+    "zip": "30904",
+    "owner_name": "Lirette Rofs",
+    "owner_2_name": "Lirette Rofs",
+    "mailing_address": "951 Heard Ave",
+    "mailing_city": "Augusta",
+    "mailing_state": "GA",
+    "mailing_zip": "30904",
+    "mail_address_same": false,
+    "beds": "4",
+    "baths": "3.0",
+    "sqft": "2903",
+    "lot_sqft": "33106.0",
+    "est_value": 721000,
+    "est_equity": 721000,
+    "ltv_pct": 0.0,
+    "year_built": 2000,
+    "last_sale_price": 229900,
+    "last_sale_date": "2018-03-07",
+    "owner_occupied": "Yes",
+    "phones": [
+      {
+        "number": "7067310601",
+        "type": "Landline",
+        "dnc": true
+      },
+      {
+        "number": "8289664754",
+        "type": "Landline",
+        "dnc": false
+      },
+      {
+        "number": "7067968486",
+        "type": "Landline",
+        "dnc": true
+      }
+    ],
+    "emails": [
+      "lirette4@aol.com"
+    ],
+    "scoring": {
+      "proximity": 20,
+      "value": 18,
+      "beds": 15,
+      "equity": 15,
+      "sqft": 7
+    },
+    "is_clean_cell_no_dnc": false,
+    "status": "New",
+    "notes": "",
+    "google_maps_url": "https://www.google.com/maps/place/951%20Heard%20Ave%2C%20Augusta%2C%20GA%2030904"
+  }
+]

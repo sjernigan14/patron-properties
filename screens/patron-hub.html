@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patron Properties — Prototype Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
+
+  .header { padding: 48px 40px 32px; border-bottom: 1px solid #21262d; }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .sub { color: #8b949e; font-size: 14px; margin-top: 6px; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 32px 24px 60px; }
+
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; font-weight: 600; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 24px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+  .card:hover { border-color: #58a6ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(88,166,255,0.1); }
+
+  .card .code { font-size: 12px; font-weight: 700; color: #58a6ff; margin-bottom: 6px; }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: #8b949e; line-height: 1.5; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-top: 10px; }
+  .badge.internal { background: #1f2937; color: #a78bfa; }
+  .badge.client { background: #1a2e1a; color: #7ee787; }
+  .badge.report { background: #2a1f0e; color: #f0b429; }
+  .badge.data { background: #1a1f2e; color: #79c0ff; }
+
+  .footer { text-align: center; color: #484f58; font-size: 12px; padding: 40px 0 24px; }
+
+  .propstream-banner { background: linear-gradient(135deg, #1a2332 0%, #1e3a5f 100%); border: 1px solid #30475e; border-radius: 10px; padding: 20px 24px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; }
+  .propstream-banner .text { font-size: 14px; color: #c9d1d9; }
+  .propstream-banner .text strong { color: #fff; }
+  .propstream-banner a { background: #58a6ff; color: #0d1117; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; white-space: nowrap; }
+  .propstream-banner a:hover { background: #79b8ff; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Patron Properties</h1>
+  <div class="sub">Prototype Hub &nbsp;|&nbsp; April 4, 2026 &nbsp;|&nbsp; Click any card to open</div>
+</div>
+
+<div class="container">
+
+  <div class="propstream-banner">
+    <div class="text"><strong>PropStream Free Trial</strong> — 7 days, 50 free leads. Pull Augusta Country Club radius.</div>
+    <a href="https://www.propstream.com/pricing" target="_blank">Sign Up &rarr;</a>
+  </div>
+
+  <div class="section-label">A — Year-Round Screens</div>
+  <div class="grid">
+    <a class="card" href="A1-homeowner-portal.html">
+      <div class="code">A1</div>
+      <h3>Homeowner Portal</h3>
+      <p>Homeowner-facing portal. Property listing, house info form, availability calendar with SMS, damage ticketing, dual-payment tracking.</p>
+      <span class="badge client">Client-Facing</span>
+    </a>
+    <a class="card" href="A2-workflow-board.html">
+      <div class="code">A2</div>
+      <h3>Workflow Board</h3>
+      <p>Internal 13-stage Kanban pipeline. Lead → Closed. Task queue with triggers, homeowner outreach tracker, season dashboard.</p>
+      <span class="badge internal">Internal Ops</span>
+    </a>
+    <a class="card" href="A3-prospect-pipeline.html" style="border-color: #7ee787;">
+      <div class="code">A3 ✦ NEW</div>
+      <h3>Prospect Pipeline</h3>
+      <p>110 Tier 1 homeowner prospects scored by Patron Fit (proximity, value, beds, equity, sqft). Live data from PropStream. Searchable, sortable, with status tracking.</p>
+      <span class="badge data">Live Data — 110 Records</span>
+    </a>
+  </div>
+
+  <div class="section-label">B — Pre-Tournament Screens</div>
+  <div class="grid">
+    <a class="card" href="B1-agency-portal.html">
+      <div class="code">B1</div>
+      <h3>Agency Portal</h3>
+      <p>White-label agency portal. Managed + Browse modes, curated proposals, dual payment model, housekeeping matrix, pre-arrival info export.</p>
+      <span class="badge client">Client-Facing</span>
+    </a>
+    <a class="card" href="B2-patron-command-center.html">
+      <div class="code">B2</div>
+      <h3>Property Command Center</h3>
+      <p>Internal ops hub. Homeowner status, pre-arrival info, contract/payment tracking (Model A + B), damage queue, housekeeping, quality scoring.</p>
+      <span class="badge internal">Internal Ops</span>
+    </a>
+  </div>
+
+  <div class="section-label">D — Event-Week Screens</div>
+  <div class="grid">
+    <a class="card" href="D1-agency-ops.html">
+      <div class="code">D1</div>
+      <h3>Agency Event-Week Ops</h3>
+      <p>iPad tool for hospitality directors during Masters week. Daily ops, house status board, guest list, week timeline, issue triage.</p>
+      <span class="badge client">Client-Facing</span>
+    </a>
+  </div>
+
+  <div class="section-label">Not Yet Built (Post-Tournament)</div>
+  <div class="grid">
+    <div class="card" style="opacity:0.4;cursor:default;border-style:dashed;">
+      <div class="code">C1 / C2</div>
+      <h3>Load-In Phase</h3>
+      <p>Key handoff, linen delivery, staging, inspections. Waiting on Taite Q&A.</p>
+    </div>
+    <div class="card" style="opacity:0.4;cursor:default;border-style:dashed;">
+      <div class="code">D2</div>
+      <h3>Patron Live Command Center</h3>
+      <p>Internal war room — all 180+ homes on one screen during event week. Waiting on Taite Q&A.</p>
+    </div>
+    <div class="card" style="opacity:0.4;cursor:default;border-style:dashed;">
+      <div class="code">E1 / E2</div>
+      <h3>Post-Event</h3>
+      <p>Damage reporting, settlement workflow, financial reconciliation. Waiting on Taite Q&A.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Prospecting & Reports</div>
+  <div class="grid">
+    <a class="card" href="Patron_Prospecting_Pilot_Report.html">
+      <div class="code">REPORT</div>
+      <h3>Prospecting Pilot Report</h3>
+      <p>Visual dashboard: KPIs, Washington Rd vs. Milledge Rd, street breakdown, top prospects, data quality, $2K decision framework.</p>
+      <span class="badge report">Report</span>
+    </a>
+    <a class="card" href="Patron_Homeowner_Prospects_Augusta_CC.xlsx">
+      <div class="code">DATA</div>
+      <h3>40-Prospect Spreadsheet</h3>
+      <p>16 Tier-1, 24 Tier-2 properties near Augusta Country Club. 18 columns per property. Downloads as Excel.</p>
+      <span class="badge data">Spreadsheet</span>
+    </a>
+  </div>
+
+</div>
+
+<div class="footer">
+  Patron Properties &nbsp;|&nbsp; Scott Jernigan &nbsp;|&nbsp; Built April 4, 2026
+</div>
+
+</body>
+</html>

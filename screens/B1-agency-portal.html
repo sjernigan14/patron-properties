@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Portal — Patron Properties</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+                "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        input, select, textarea {
+            font-family: inherit;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 10px 12px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4a5568;
+            box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e8e8e8;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 20px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        /* Sidebar Styling */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+        }
+
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .nav-item.active {
+            background: #f0f0f0;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+        }
+
+        /* Top Bar */
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .agency-branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .agency-logo-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            border: 2px dashed #d0d0d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .agency-logo-placeholder:hover {
+            border-color: #4a5568;
+            background: #f8f8f8;
+        }
+
+        .agency-logo-placeholder.has-logo {
+            border-style: solid;
+            background: #fff;
+            font-size: 24px;
+        }
+
+        .agency-info h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .agency-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .status-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .status-card:hover {
+            border-color: #d0d0d0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-card-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .status-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .status-card-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Tabs */
+        .tab-container {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #e8e8e8;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 0;
+            margin-right: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab:hover {
+            color: #1a1a1a;
+        }
+
+        .tab.active {
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-complete {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-overdue {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-signed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-pending-sig {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* House Grid */
+        .houses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .house-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .house-card:hover {
+            border-color: #d0d0d0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .house-image {
+            width: 100%;
+            height: 160px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+
+        .house-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .house-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .house-specs {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .house-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .house-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .house-actions button {
+            flex: 1;
+            padding: 8px 12px;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        .house-actions button:hover {
+            background: #e8e8e8;
+        }
+
+        /* Proposal Card */
+        .proposal-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .proposal-card:hover {
+            border-color: #d0d0d0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .proposal-image {
+            width: 100%;
+            height: 180px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+
+        .proposal-content {
+            padding: 16px;
+        }
+
+        .proposal-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .proposal-specs {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .proposal-neighborhood {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .proposal-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .proposal-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .amenity-tag {
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .proposal-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .proposal-distance {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .proposal-curator {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .proposal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .proposal-actions button {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .proposal-actions button:hover {
+            background: #e8e8e8;
+        }
+
+        .proposal-actions button.primary {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .proposal-actions button.primary:hover {
+            background: #333;
+        }
+
+        /* Browse Filters */
+        .browse-filters {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 0.3px;
+        }
+
+        .browse-disclaimer {
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Form Sections */
+        .form-section {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .form-input {
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        /* Housekeeping Matrix */
+        .housekeeping-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #ffffff;
+        }
+
+        .housekeeping-matrix th,
+        .housekeeping-matrix td {
+            border: 1px solid #e8e8e8;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .housekeeping-matrix th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .housekeeping-matrix td {
+            color: #666;
+        }
+
+        .housekeeping-matrix select {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .housekeeping-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin: 12px 0;
+        }
+
+        .housekeeping-status.submitted {
+            color: #155724;
+        }
+
+        .housekeeping-status.not-submitted {
+            color: #721c24;
+        }
+
+        /* Payment Tracker */
+        .payment-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .payment-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .payment-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            white-space: nowrap;
+            font-size: 11px;
+        }
+
+        .payment-badge.complete {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .payment-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-arrow {
+            color: #d0d0d0;
+            font-size: 16px;
+        }
+
+        /* Payment Model Badge */
+        .payment-model {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            background: #e8f4f8;
+            color: #0c5460;
+            margin-bottom: 12px;
+        }
+
+        .payment-model.model-b {
+            background: #f0e8f8;
+            color: #450c60;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            min-width: 80px;
+        }
+
+        .timeline-title {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .timeline-item.complete .timeline-title {
+            color: #155724;
+        }
+
+        .timeline-item.pending .timeline-title {
+            color: #1a1a1a;
+        }
+
+        /* Action Items */
+        .action-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .action-items-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .action-item {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .action-item.pending {
+            border-color: #ffe0b2;
+            background: #fffaf0;
+        }
+
+        .action-item.info {
+            border-color: #e0f2f1;
+            background: #f0fffe;
+        }
+
+        .action-icon {
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .action-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Support */
+        .tickets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ticket-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .ticket-info {
+            flex: 1;
+        }
+
+        .ticket-id {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .ticket-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .ticket-house {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .ticket-status {
+            text-align: right;
+        }
+
+        /* Document Download Section */
+        .document-download {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f5f5f5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .document-download-text {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .document-download-btn {
+            padding: 6px 12px;
+            background: #1a1a1a;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        .document-download-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Sample Data
+        const sampleData = {
+            agency: {
+                name: "Wasserman",
+                program: "Delta Corporate — Masters 2027",
+                year: 2027,
+                logo: null,
+            },
+            houses: [
+                {
+                    id: 1,
+                    address: "2847 Bellevue Ave",
+                    beds: 4,
+                    baths: 3,
+                    status: "contracted",
+                    paymentModel: "A",
+                    contractDate: "2026-03-15",
+                    guests: ["Michael Chen", "Sarah Martinez", "David Lee"],
+                    neighborhood: "Summerville",
+                    distanceToAugusta: "2.3 miles",
+                    patronRating: 5,
+                    bedrooms: [
+                        { id: 1, name: "Master", capacity: 2, assigned: ["Michael Chen"] },
+                        { id: 2, name: "Guest Suite", capacity: 2, assigned: ["Sarah Martinez"] },
+                        { id: 3, name: "Pool House", capacity: 1, assigned: ["David Lee"] },
+                        { id: 4, name: "Powder Room", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "BellevueHouse-5G",
+                    wifiPass: "DeltaElite2027!",
+                    doorCode: "4891",
+                    parkingNotes: "3-car garage + 2 street spaces",
+                    trashDay: "Tuesday morning",
+                    emergencyContact: "Sarah (678) 555-0101",
+                    housekeeping: "Daily turndown, Monday deep clean",
+                    housekeepingSubmitted: true,
+                    paymentStatus: "Payment 2 Due",
+                    amenities: ["pool", "chef-allowed", "wine-cellar"],
+                },
+                {
+                    id: 2,
+                    address: "419 Cumming Rd",
+                    beds: 5,
+                    baths: 4,
+                    status: "signed",
+                    paymentModel: "B",
+                    contractDate: "2026-03-22",
+                    guests: ["Jennifer Park", "Tom Bradley", "Lisa Wong", "James Garcia", "Emma Thompson"],
+                    neighborhood: "West Augusta",
+                    distanceToAugusta: "1.8 miles",
+                    patronRating: 4.5,
+                    bedrooms: [
+                        { id: 1, name: "Master", capacity: 2, assigned: ["Jennifer Park", "Tom Bradley"] },
+                        { id: 2, name: "East Wing", capacity: 2, assigned: ["Lisa Wong"] },
+                        { id: 3, name: "West Wing", capacity: 2, assigned: ["James Garcia"] },
+                        { id: 4, name: "Guest Cottage", capacity: 1, assigned: ["Emma Thompson"] },
+                        { id: 5, name: "Study", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "CummingRd-Luxury",
+                    wifiPass: "SecureWiFi2027#",
+                    doorCode: "7392",
+                    parkingNotes: "6-car circular driveway",
+                    trashDay: "Wednesday morning",
+                    emergencyContact: "Front Gate Security: (706) 555-0102",
+                    housekeeping: "Daily service, Saturday full turnover",
+                    housekeepingSubmitted: false,
+                    paymentStatus: "Signed",
+                    amenities: ["pool", "chef-allowed", "pet-friendly"],
+                },
+                {
+                    id: 3,
+                    address: "1523 Johns Rd",
+                    beds: 3,
+                    baths: 2.5,
+                    status: "pending",
+                    paymentModel: "A",
+                    contractDate: null,
+                    guests: ["Robert Mitchell"],
+                    neighborhood: "Summerville",
+                    distanceToAugusta: "2.1 miles",
+                    patronRating: 4,
+                    bedrooms: [
+                        { id: 1, name: "Master", capacity: 2, assigned: ["Robert Mitchell"] },
+                        { id: 2, name: "Guest 1", capacity: 1, assigned: [] },
+                        { id: 3, name: "Guest 2", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "JohnsRd-Net",
+                    wifiPass: "Delta2027Welcome",
+                    doorCode: "1829",
+                    parkingNotes: "2-car garage",
+                    trashDay: "Thursday morning",
+                    emergencyContact: "Homeowner: (706) 555-0103",
+                    housekeeping: "As needed",
+                    housekeepingSubmitted: false,
+                    paymentStatus: "Pending",
+                    amenities: ["pool", "pet-friendly"],
+                },
+                {
+                    id: 4,
+                    address: "847 Milledge Rd",
+                    beds: 4,
+                    baths: 3,
+                    status: "contracted",
+                    paymentModel: "B",
+                    contractDate: "2026-03-10",
+                    guests: ["Patricia Davis", "Marcus Johnson", "Nicole White"],
+                    neighborhood: "National Hills",
+                    distanceToAugusta: "3.0 miles",
+                    patronRating: 4.5,
+                    bedrooms: [
+                        { id: 1, name: "Primary", capacity: 2, assigned: ["Patricia Davis"] },
+                        { id: 2, name: "Secondary", capacity: 2, assigned: ["Marcus Johnson"] },
+                        { id: 3, name: "Third", capacity: 1, assigned: ["Nicole White"] },
+                        { id: 4, name: "Powder", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "MilledgeNet",
+                    wifiPass: "MilledgeAccess2027",
+                    doorCode: "5746",
+                    parkingNotes: "Driveway + 1 guest spot",
+                    trashDay: "Monday evening",
+                    emergencyContact: "Manager: (706) 555-0104",
+                    housekeeping: "Tuesday & Friday",
+                    housekeepingSubmitted: true,
+                    paymentStatus: "Payment 1 Received",
+                    amenities: ["chef-allowed", "wine-cellar"],
+                },
+                {
+                    id: 5,
+                    address: "312 Wheeler Rd",
+                    beds: 6,
+                    baths: 4,
+                    status: "signed",
+                    paymentModel: "A",
+                    contractDate: "2026-02-28",
+                    guests: ["Rachel Green", "Andrew King", "Sophie Turner", "Nathan Scott", "Olivia Brown", "Chris Anderson"],
+                    neighborhood: "West Augusta",
+                    distanceToAugusta: "1.5 miles",
+                    patronRating: 5,
+                    bedrooms: [
+                        { id: 1, name: "Grand Master", capacity: 2, assigned: ["Rachel Green", "Andrew King"] },
+                        { id: 2, name: "East Suite", capacity: 2, assigned: ["Sophie Turner"] },
+                        { id: 3, name: "West Suite", capacity: 2, assigned: ["Nathan Scott"] },
+                        { id: 4, name: "North Wing", capacity: 1, assigned: ["Olivia Brown"] },
+                        { id: 5, name: "South Wing", capacity: 1, assigned: ["Chris Anderson"] },
+                        { id: 6, name: "Sunroom", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "WheelerRd-WiFi",
+                    wifiPass: "WheelerPrestige2027!",
+                    doorCode: "9384",
+                    parkingNotes: "Circular drive + overflow lot",
+                    trashDay: "Wednesday evening",
+                    emergencyContact: "Estate Manager: (706) 555-0105",
+                    housekeeping: "Daily, Saturday deep clean + laundry",
+                    housekeepingSubmitted: true,
+                    paymentStatus: "Payment 1 Received",
+                    amenities: ["pool", "chef-allowed", "wine-cellar", "pet-friendly"],
+                },
+                {
+                    id: 6,
+                    address: "1105 Highland Ave",
+                    beds: 3,
+                    baths: 2,
+                    status: "pending",
+                    paymentModel: "B",
+                    contractDate: null,
+                    guests: [],
+                    neighborhood: "Summerville",
+                    distanceToAugusta: "2.5 miles",
+                    patronRating: 4,
+                    bedrooms: [
+                        { id: 1, name: "Master", capacity: 2, assigned: [] },
+                        { id: 2, name: "Guest", capacity: 1, assigned: [] },
+                        { id: 3, name: "Den", capacity: 1, assigned: [] },
+                    ],
+                    wifiName: "HighlandAve-Guest",
+                    wifiPass: "SecureNet2027",
+                    doorCode: "3021",
+                    parkingNotes: "Single car garage + driveway",
+                    trashDay: "Friday morning",
+                    emergencyContact: "Property Team: (706) 555-0106",
+                    housekeeping: "Wednesday service",
+                    housekeepingSubmitted: false,
+                    paymentStatus: "Pending",
+                    amenities: ["pool"],
+                },
+            ],
+            browseInventory: [
+                { id: 101, address: "523 Heatherwood Lane", beds: 4, baths: 3, neighborhood: "Summerville", price: "$8,500-9,500/wk", rating: 4.5, amenities: ["pool", "chef-allowed"], distanceToAugusta: "2.2 miles" },
+                { id: 102, address: "118 Cherokee Trail", beds: 5, baths: 4, neighborhood: "West Augusta", price: "$12,000-14,000/wk", rating: 5, amenities: ["pool", "chef-allowed", "wine-cellar", "pet-friendly"], distanceToAugusta: "1.7 miles" },
+                { id: 103, address: "2301 Lakeshore Drive", beds: 3, baths: 2.5, neighborhood: "National Hills", price: "$6,000-7,000/wk", rating: 4, amenities: ["pet-friendly"], distanceToAugusta: "3.1 miles" },
+                { id: 104, address: "749 Forrest Avenue", beds: 4, baths: 3.5, neighborhood: "Summerville", price: "$9,000-10,500/wk", rating: 4.5, amenities: ["pool", "chef-allowed"], distanceToAugusta: "2.4 miles" },
+                { id: 105, address: "1847 Woodhaven Drive", beds: 6, baths: 4, neighborhood: "West Augusta", price: "$14,000-16,000/wk", rating: 5, amenities: ["pool", "chef-allowed", "wine-cellar"], distanceToAugusta: "1.9 miles" },
+                { id: 106, address: "504 Peach Blossom Lane", beds: 3, baths: 2, neighborhood: "National Hills", price: "$5,500-6,500/wk", rating: 3.5, amenities: ["pet-friendly"], distanceToAugusta: "3.3 miles" },
+                { id: 107, address: "2100 River Bend Road", beds: 5, baths: 3.5, neighborhood: "Summerville", price: "$10,000-12,000/wk", rating: 4, amenities: ["pool", "pet-friendly"], distanceToAugusta: "2.6 miles" },
+                { id: 108, address: "1205 Monument Circle", beds: 4, baths: 3, neighborhood: "West Augusta", price: "$8,500-10,000/wk", rating: 4.5, amenities: ["pool", "chef-allowed"], distanceToAugusta: "1.6 miles" },
+            ],
+            proposals: [
+                {
+                    id: 201,
+                    address: "2847 Bellevue Ave",
+                    beds: 4,
+                    baths: 3,
+                    neighborhood: "Summerville",
+                    price: "$8,500-9,500/week",
+                    rating: 5,
+                    amenities: ["pool", "chef-allowed", "wine-cellar"],
+                    curator: "Taite",
+                    curatedDate: "March 15, 2027",
+                    distanceToAugusta: "2.3 miles",
+                    status: "proposed",
+                },
+                {
+                    id: 202,
+                    address: "312 Wheeler Rd",
+                    beds: 6,
+                    baths: 4,
+                    neighborhood: "West Augusta",
+                    price: "$14,000-16,000/week",
+                    rating: 5,
+                    amenities: ["pool", "chef-allowed", "wine-cellar", "pet-friendly"],
+                    curator: "Taite",
+                    curatedDate: "March 18, 2027",
+                    distanceToAugusta: "1.5 miles",
+                    status: "proposed",
+                },
+            ],
+            documents: [
+                { id: 1, name: "Master Agreement", house: "All", type: "contract", status: "signed", date: "2026-03-01" },
+                { id: 2, name: "W-9 Form", house: "All", type: "w9", status: "received", date: "2026-03-05" },
+                { id: 3, name: "Wiring Instructions", house: "All", type: "banking", status: "sent", date: "2026-03-08" },
+                { id: 4, name: "Invoice - Payment 1", house: "All", type: "invoice", status: "paid", date: "2026-03-15" },
+                { id: 5, name: "Insurance Certificate", house: "All", type: "insurance", status: "received", date: "2026-03-10" },
+            ],
+            timeline: [
+                { date: "2026-04-06", title: "Check-in Opens", status: "complete" },
+                { date: "2026-04-13", title: "Event Week", status: "complete" },
+                { date: "2026-04-20", title: "Final Payment Due", status: "pending" },
+                { date: "2026-05-01", title: "Post-Event Reconciliation", status: "pending" },
+            ],
+        };
+
+        function AgencyPortal() {
+            const [currentView, setCurrentView] = useState("dashboard");
+            const [data, setData] = useState(sampleData);
+            const [selectedHouse, setSelectedHouse] = useState(null);
+            const [activeTab, setActiveTab] = useState("overview");
+            const [supportTab, setSupportTab] = useState("requests");
+            const [logoPreview, setLogoPreview] = useState(null);
+            const [showLogoUpload, setShowLogoUpload] = useState(false);
+            const [housesTab, setHousesTab] = useState("managed");
+            const [browseFilters, setBrowseFilters] = useState({
+                beds: "",
+                baths: "",
+                neighborhood: "",
+                budget: "",
+                amenities: [],
+            });
+            const [tickets, setTickets] = useState([
+                { id: "T001", title: "AC temperature fluctuation", house: "2847 Bellevue Ave", status: "open", date: "2027-04-08" },
+                { id: "T002", title: "Guest pillow preference", house: "419 Cumming Rd", status: "resolved", date: "2027-04-07" },
+                { id: "T003", title: "Parking space clarification needed", house: "847 Milledge Rd", status: "open", date: "2027-04-09" },
+            ]);
+
+            const handleLogoUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setLogoPreview(event.target.result);
+                        setData({ ...data, agency: { ...data.agency, logo: event.target.result } });
+                        setShowLogoUpload(false);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const downloadHouseInfo = (house) => {
+                const info = `HOUSE INFO SHEET
+${house.address}
+${house.beds} beds | ${house.baths} baths
+
+WI-FI
+Network: ${house.wifiName}
+Password: ${house.wifiPass}
+
+DOOR CODE
+${house.doorCode}
+
+PARKING
+${house.parkingNotes}
+
+TRASH DAY
+${house.trashDay}
+
+EMERGENCY CONTACT
+${house.emergencyContact}
+
+HOUSEKEEPING
+${house.housekeeping}
+`;
+                const blob = new Blob([info], { type: "text/plain" });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${house.address.replace(/\s+/g, "-")}-info.txt`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            };
+
+            const downloadAllHouseInfo = () => {
+                const confirmedHouses = data.houses.filter(h => h.status === "contracted" || h.status === "signed");
+                let allInfo = "";
+                confirmedHouses.forEach((house) => {
+                    allInfo += `HOUSE INFO SHEET
+${house.address}
+${house.beds} beds | ${house.baths} baths
+
+WI-FI: ${house.wifiName} / ${house.wifiPass}
+DOOR CODE: ${house.doorCode}
+PARKING: ${house.parkingNotes}
+TRASH DAY: ${house.trashDay}
+EMERGENCY: ${house.emergencyContact}
+
+---
+
+`;
+                });
+                const blob = new Blob([allInfo], { type: "text/plain" });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "all-house-info-sheets.txt";
+                a.click();
+                window.URL.revokeObjectURL(url);
+            };
+
+            const renderDashboard = () => (
+                <div>
+                    <div style={{ marginBottom: "32px" }}>
+                        <h1 style={{ fontSize: "32px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                            {data.agency.program} • {data.agency.year}
+                        </h1>
+                        <p style={{ fontSize: "15px", color: "#666" }}>
+                            Manage your complete housing program for Masters Week.
+                        </p>
+                    </div>
+
+                    <div className="dashboard-grid">
+                        <div className="status-card">
+                            <div className="status-card-label">Houses Secured</div>
+                            <div className="status-card-value">{data.houses.length}</div>
+                            <div className="status-card-detail">All 6 properties confirmed</div>
+                        </div>
+                        <div className="status-card">
+                            <div className="status-card-label">Contracts Signed</div>
+                            <div className="status-card-value">
+                                {data.houses.filter((h) => h.status === "signed" || h.status === "contracted").length}
+                            </div>
+                            <div className="status-card-detail">
+                                {data.houses.filter((h) => h.status === "pending").length} pending
+                            </div>
+                        </div>
+                        <div className="status-card">
+                            <div className="status-card-label">Guests Assigned</div>
+                            <div className="status-card-value">
+                                {data.houses.reduce((sum, h) => sum + h.guests.length, 0)}
+                            </div>
+                            <div className="status-card-detail">Of 18 total guests</div>
+                        </div>
+                        <div className="status-card">
+                            <div className="status-card-label">Payment Status</div>
+                            <div className="status-card-value">60%</div>
+                            <div className="status-card-detail">Payment 1 received</div>
+                        </div>
+                    </div>
+
+                    <div className="action-items">
+                        <div className="action-items-title">Action Items</div>
+
+                        <div className="action-item">
+                            <div className="action-icon">⚠️</div>
+                            <div className="action-content">
+                                <div className="action-title">2 Contracts Pending Signature</div>
+                                <div className="action-detail">
+                                    1523 Johns Rd and 1105 Highland Ave need execution by April 3
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="action-item pending">
+                            <div className="action-icon">🛏️</div>
+                            <div className="action-content">
+                                <div className="action-title">Guest List Complete</div>
+                                <div className="action-detail">18 guests assigned across 6 houses</div>
+                            </div>
+                        </div>
+
+                        <div className="action-item info">
+                            <div className="action-icon">💳</div>
+                            <div className="action-content">
+                                <div className="action-title">Payment 2 Due by April 20</div>
+                                <div className="action-detail">Final payments across all properties</div>
+                            </div>
+                        </div>
+
+                        <div className="action-item info">
+                            <div className="action-icon">🏠</div>
+                            <div className="action-content">
+                                <div className="action-title">Pre-Arrival Packages Ready</div>
+                                <div className="action-detail">Wi-Fi, codes, and house details available for all properties</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+                        <div className="form-section">
+                            <div className="form-section-title">Timeline</div>
+                            <div className="timeline">
+                                {data.timeline.map((item) => (
+                                    <div key={item.date} className={`timeline-item ${item.status}`}>
+                                        <div className="timeline-date">{item.date}</div>
+                                        <div className="timeline-title">{item.title}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="form-section">
+                            <div className="form-section-title">Quick Stats</div>
+                            <div style={{ fontSize: "14px", lineHeight: "1.8" }}>
+                                <div style={{ marginBottom: "12px" }}>
+                                    <strong>Rental Period:</strong> April 6-13, 2027
+                                </div>
+                                <div style={{ marginBottom: "12px" }}>
+                                    <strong>Program Value:</strong> ~$680,000 gross
+                                </div>
+                                <div style={{ marginBottom: "12px" }}>
+                                    <strong>Average House:</strong> 4.2 beds / 3.1 baths
+                                </div>
+                                <div>
+                                    <strong>Avg Party Size:</strong> 3 guests per house
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderMyHouses = () => (
+                <div>
+                    <div style={{ marginBottom: "24px" }}>
+                        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                            My Houses
+                        </h1>
+                        <p style={{ fontSize: "14px", color: "#666" }}>
+                            {data.houses.length} properties secured for your program
+                        </p>
+                    </div>
+
+                    <div className="tab-container">
+                        <div className={`tab ${housesTab === "managed" ? "active" : ""}`} onClick={() => setHousesTab("managed")}>
+                            Managed (Proposals & Confirmed)
+                        </div>
+                        <div className={`tab ${housesTab === "browse" ? "active" : ""}`} onClick={() => setHousesTab("browse")}>
+                            Browse (Self-Service)
+                        </div>
+                    </div>
+
+                    {housesTab === "managed" && (
+                        <div>
+                            <div style={{ marginBottom: "32px" }}>
+                                <div style={{ fontSize: "15px", fontWeight: "600", color: "#1a1a1a", marginBottom: "16px" }}>
+                                    Proposals (Patron Recommendations)
+                                </div>
+                                {data.proposals.length > 0 ? (
+                                    <div className="houses-grid">
+                                        {data.proposals.map((prop) => (
+                                            <div key={prop.id} className="proposal-card">
+                                                <div className="proposal-image">🏠</div>
+                                                <div className="proposal-content">
+                                                    <div className="proposal-address">{prop.address}</div>
+                                                    <div className="proposal-specs">{prop.beds} bed{prop.beds > 1 ? "s" : ""} • {prop.baths} bath{prop.baths > 1 ? "s" : ""}</div>
+                                                    <div className="proposal-neighborhood">{prop.neighborhood}</div>
+                                                    <div className="proposal-rating">
+                                                        {'⭐'.repeat(Math.floor(prop.rating))} {prop.rating}
+                                                    </div>
+                                                    <div className="proposal-distance">{prop.distanceToAugusta} from Augusta National</div>
+                                                    <div className="proposal-price">{prop.price}</div>
+                                                    <div className="proposal-amenities">
+                                                        {prop.amenities.map((a) => (
+                                                            <div key={a} className="amenity-tag">{a}</div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="proposal-curator">
+                                                        Curated by {prop.curator} • {prop.curatedDate}
+                                                    </div>
+                                                    <div className="proposal-actions">
+                                                        <button className="primary">Request Contract</button>
+                                                        <button>Ask Questions</button>
+                                                        <button>Remove</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div style={{ color: "#666", fontSize: "14px" }}>No proposals at this time.</div>
+                                )}
+                            </div>
+
+                            <div>
+                                <div style={{ fontSize: "15px", fontWeight: "600", color: "#1a1a1a", marginBottom: "16px" }}>
+                                    Confirmed (Under Contract)
+                                </div>
+                                <div className="houses-grid">
+                                    {data.houses.filter(h => h.status === "contracted" || h.status === "signed").map((house) => (
+                                        <div key={house.id} className="house-card" onClick={() => {
+                                            setSelectedHouse(house);
+                                            setCurrentView("house-detail");
+                                            setActiveTab("overview");
+                                        }}>
+                                            <div className="house-image">🏠</div>
+                                            <div className="house-content">
+                                                <div className="house-address">{house.address}</div>
+                                                <div className="house-specs">
+                                                    <span>{house.beds} bed{house.beds > 1 ? "s" : ""}</span>
+                                                    <span>•</span>
+                                                    <span>{house.baths} bath{house.baths > 1 ? "s" : ""}</span>
+                                                </div>
+                                                <div style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+                                                    {house.neighborhood}
+                                                </div>
+                                                <div className="house-status">
+                                                    <span className={`badge badge-${house.status === "contracted" ? "complete" : "signed"}`}>
+                                                        {house.status === "contracted" ? "Contracted" : "Signed"}
+                                                    </span>
+                                                    <span className={`payment-model ${house.paymentModel === "B" ? "model-b" : ""}`}>
+                                                        Model {house.paymentModel}
+                                                    </span>
+                                                </div>
+                                                <div style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>
+                                                    {house.guests.length} guests
+                                                </div>
+                                                <div className="house-actions">
+                                                    <button onClick={(e) => { e.stopPropagation(); setSelectedHouse(house); setCurrentView("house-detail"); setActiveTab("overview"); }}>
+                                                        View
+                                                    </button>
+                                                    <button onClick={(e) => { e.stopPropagation(); setSelectedHouse(house); setCurrentView("house-detail"); setActiveTab("documents"); }}>
+                                                        Docs
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {housesTab === "browse" && (
+                        <div>
+                            <div className="browse-disclaimer">
+                                ℹ️ Browse available inventory to find additional properties. Availability subject to confirmation.
+                            </div>
+
+                            <div className="browse-filters">
+                                <div className="filter-group">
+                                    <label className="filter-label">Bedrooms</label>
+                                    <select value={browseFilters.beds} onChange={(e) => setBrowseFilters({ ...browseFilters, beds: e.target.value })}>
+                                        <option value="">All</option>
+                                        <option value="3">3+</option>
+                                        <option value="4">4+</option>
+                                        <option value="5">5+</option>
+                                        <option value="6">6+</option>
+                                    </select>
+                                </div>
+                                <div className="filter-group">
+                                    <label className="filter-label">Bathrooms</label>
+                                    <select value={browseFilters.baths} onChange={(e) => setBrowseFilters({ ...browseFilters, baths: e.target.value })}>
+                                        <option value="">All</option>
+                                        <option value="2">2+</option>
+                                        <option value="3">3+</option>
+                                        <option value="4">4+</option>
+                                    </select>
+                                </div>
+                                <div className="filter-group">
+                                    <label className="filter-label">Neighborhood</label>
+                                    <select value={browseFilters.neighborhood} onChange={(e) => setBrowseFilters({ ...browseFilters, neighborhood: e.target.value })}>
+                                        <option value="">All</option>
+                                        <option value="Summerville">Summerville</option>
+                                        <option value="West Augusta">West Augusta</option>
+                                        <option value="National Hills">National Hills</option>
+                                    </select>
+                                </div>
+                                <div className="filter-group">
+                                    <label className="filter-label">Budget/Week</label>
+                                    <select value={browseFilters.budget} onChange={(e) => setBrowseFilters({ ...browseFilters, budget: e.target.value })}>
+                                        <option value="">All</option>
+                                        <option value="under-7k">Under $7K</option>
+                                        <option value="7k-10k">$7K–10K</option>
+                                        <option value="10k-15k">$10K–15K</option>
+                                        <option value="over-15k">Over $15K</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="houses-grid">
+                                {data.browseInventory.map((house) => (
+                                    <div key={house.id} className="proposal-card">
+                                        <div className="proposal-image">🏠</div>
+                                        <div className="proposal-content">
+                                            <div className="proposal-address">{house.address}</div>
+                                            <div className="proposal-specs">{house.beds} bed{house.beds > 1 ? "s" : ""} • {house.baths} bath{house.baths > 1 ? "s" : ""}</div>
+                                            <div className="proposal-neighborhood">{house.neighborhood}</div>
+                                            <div className="proposal-rating">
+                                                {'⭐'.repeat(Math.floor(house.rating))} {house.rating}
+                                            </div>
+                                            <div className="proposal-distance">{house.distanceToAugusta} from Augusta National</div>
+                                            <div className="proposal-price">{house.price}</div>
+                                            <div className="proposal-amenities">
+                                                {house.amenities.map((a) => (
+                                                    <div key={a} className="amenity-tag">{a}</div>
+                                                ))}
+                                            </div>
+                                            <div className="proposal-actions">
+                                                <button className="primary">Inquire</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+
+            const renderHouseDetail = () => {
+                if (!selectedHouse) return null;
+
+                return (
+                    <div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+                            <div>
+                                <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "4px" }}>
+                                    {selectedHouse.address}
+                                </h1>
+                                <p style={{ fontSize: "14px", color: "#666" }}>
+                                    {selectedHouse.beds} bed{selectedHouse.beds > 1 ? "s" : ""} • {selectedHouse.baths} bath{selectedHouse.baths > 1 ? "s" : ""} • {selectedHouse.neighborhood}
+                                </p>
+                            </div>
+                            <button className="btn-secondary" onClick={() => setCurrentView("my-houses")}>
+                                Back to Houses
+                            </button>
+                        </div>
+
+                        <div className="tab-container">
+                            <div className={`tab ${activeTab === "overview" ? "active" : ""}`} onClick={() => setActiveTab("overview")}>
+                                Overview
+                            </div>
+                            <div className={`tab ${activeTab === "guests" ? "active" : ""}`} onClick={() => setActiveTab("guests")}>
+                                Guests
+                            </div>
+                            <div className={`tab ${activeTab === "housekeeping" ? "active" : ""}`} onClick={() => setActiveTab("housekeeping")}>
+                                Housekeeping
+                            </div>
+                            <div className={`tab ${activeTab === "documents" ? "active" : ""}`} onClick={() => setActiveTab("documents")}>
+                                Documents & Payment
+                            </div>
+                        </div>
+
+                        {activeTab === "overview" && (
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+                                <div className="form-section">
+                                    <div className="form-section-title">House Information</div>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "16px", fontSize: "13px" }}>
+                                        <div>
+                                            <div style={{ fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>Status</div>
+                                            <span className={`badge badge-${selectedHouse.status === "contracted" ? "complete" : selectedHouse.status === "signed" ? "signed" : "pending-sig"}`}>
+                                                {selectedHouse.status.charAt(0).toUpperCase() + selectedHouse.status.slice(1)}
+                                            </span>
+                                            <span className={`payment-model ${selectedHouse.paymentModel === "B" ? "model-b" : ""}`} style={{ marginLeft: "8px" }}>
+                                                Model {selectedHouse.paymentModel}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>Guests Assigned</div>
+                                            {selectedHouse.guests.length > 0 ? selectedHouse.guests.join(", ") : "No guests assigned"}
+                                        </div>
+                                        <div>
+                                            <div style={{ fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>Distance to Augusta National</div>
+                                            {selectedHouse.distanceToAugusta}
+                                        </div>
+                                        <div>
+                                            <div style={{ fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>Patron Quality Rating</div>
+                                            {'⭐'.repeat(Math.floor(selectedHouse.patronRating))} {selectedHouse.patronRating}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="form-section">
+                                    <div className="form-section-title">Quick Access</div>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                        <div>
+                                            <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", marginBottom: "4px" }}>Wi-Fi</div>
+                                            <div style={{ fontSize: "13px", color: "#1a1a1a" }}>
+                                                <strong>{selectedHouse.wifiName}</strong> / {selectedHouse.wifiPass}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", marginBottom: "4px" }}>Door Code</div>
+                                            <div style={{ fontSize: "13px", color: "#1a1a1a", fontFamily: "monospace" }}>{selectedHouse.doorCode}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", marginBottom: "4px" }}>Parking</div>
+                                            <div style={{ fontSize: "13px", color: "#1a1a1a" }}>{selectedHouse.parkingNotes}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", marginBottom: "4px" }}>Trash Day</div>
+                                            <div style={{ fontSize: "13px", color: "#1a1a1a" }}>{selectedHouse.trashDay}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", marginBottom: "4px" }}>Emergency Contact</div>
+                                            <div style={{ fontSize: "13px", color: "#1a1a1a" }}>{selectedHouse.emergencyContact}</div>
+                                        </div>
+                                    </div>
+                                    <div className="document-download">
+                                        <span className="document-download-text">Download pre-arrival info sheet</span>
+                                        <button className="document-download-btn" onClick={() => downloadHouseInfo(selectedHouse)}>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "guests" && (
+                            <div className="form-section">
+                                <div className="form-section-title">Assigned Guests & Rooms</div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                                    {selectedHouse.bedrooms.map((room) => (
+                                        <div key={room.id} style={{ borderBottom: "1px solid #e8e8e8", paddingBottom: "12px" }}>
+                                            <div style={{ fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>
+                                                {room.name} (Capacity: {room.capacity})
+                                            </div>
+                                            <div style={{ fontSize: "13px", color: "#666" }}>
+                                                {room.assigned.length > 0 ? room.assigned.join(", ") : "Unassigned"}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "housekeeping" && (
+                            <div className="form-section">
+                                <div className="form-section-title">Housekeeping Schedule</div>
+                                <p style={{ fontSize: "13px", color: "#666", marginBottom: "16px" }}>
+                                    Set housekeeping preferences for your entire rental period (April 6–13).
+                                </p>
+                                <table className="housekeeping-matrix">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Service Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
+                                            <tr key={day}>
+                                                <td><strong>{day}</strong></td>
+                                                <td>
+                                                    <select>
+                                                        <option value="no-service">No Service</option>
+                                                        <option value="light-refresh">Light Refresh</option>
+                                                        <option value="full-turn">Full Turn</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div className={`housekeeping-status ${selectedHouse.housekeepingSubmitted ? "submitted" : "not-submitted"}`}>
+                                    {selectedHouse.housekeepingSubmitted ? (
+                                        <span>✓ Submitted — Patron team has your schedule</span>
+                                    ) : (
+                                        <span>⚠ Not yet submitted — 3 days until check-in</span>
+                                    )}
+                                </div>
+                                <div className="form-actions">
+                                    <button className="btn-primary">Submit Housekeeping Schedule</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "documents" && (
+                            <div>
+                                <div className="form-section">
+                                    <div className="form-section-title">Payment Model & Documents</div>
+                                    <p style={{ fontSize: "13px", color: "#666", marginBottom: "16px" }}>
+                                        This property uses <strong>Model {selectedHouse.paymentModel}</strong>.
+                                        {selectedHouse.paymentModel === "A"
+                                            ? " Two separate payment streams: direct to homeowner + Patron fee."
+                                            : " Single invoice from Patron (housing + fee combined)."}
+                                    </p>
+
+                                    {selectedHouse.paymentModel === "A" && (
+                                        <div style={{ marginBottom: "20px" }}>
+                                            <div style={{ fontSize: "13px", fontWeight: "600", color: "#1a1a1a", marginBottom: "12px" }}>
+                                                Stream 1: Homeowner Payment
+                                            </div>
+                                            <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+                                                Documents: Homeowner W-9, homeowner wiring instructions, executed contract
+                                            </div>
+                                            <div className="payment-flow">
+                                                <div className="payment-step">
+                                                    <div className="payment-badge">Sent</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Signed</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Payment 1 Received</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge pending">Payment 2 Due</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {selectedHouse.paymentModel === "A" && (
+                                        <div>
+                                            <div style={{ fontSize: "13px", fontWeight: "600", color: "#1a1a1a", marginBottom: "12px" }}>
+                                                Stream 2: Patron Fee
+                                            </div>
+                                            <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+                                                Documents: Patron W-9, Patron invoice, contract
+                                            </div>
+                                            <div className="payment-flow">
+                                                <div className="payment-step">
+                                                    <div className="payment-badge">Sent</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Signed</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Payment 1 Received</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge pending">Payment 2 Due</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {selectedHouse.paymentModel === "B" && (
+                                        <div>
+                                            <div style={{ fontSize: "13px", fontWeight: "600", color: "#1a1a1a", marginBottom: "12px" }}>
+                                                Single Stream: Patron Invoice
+                                            </div>
+                                            <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+                                                One invoice for housing + Patron fee. Contract with Patron.
+                                            </div>
+                                            <div className="payment-flow">
+                                                <div className="payment-step">
+                                                    <div className="payment-badge">Sent</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Signed</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge complete">Payment 1 Received</div>
+                                                </div>
+                                                <div className="payment-arrow">→</div>
+                                                <div className="payment-step">
+                                                    <div className="payment-badge">Complete</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const renderGuests = () => (
+                <div>
+                    <div style={{ marginBottom: "32px" }}>
+                        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                            Guests
+                        </h1>
+                        <p style={{ fontSize: "14px", color: "#666" }}>
+                            18 guests assigned across 6 houses
+                        </p>
+                    </div>
+
+                    <div className="form-section">
+                        <div className="form-section-title">Guest Manifest</div>
+                        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                            <thead>
+                                <tr style={{ borderBottom: "2px solid #e8e8e8" }}>
+                                    <th style={{ textAlign: "left", padding: "12px", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", color: "#888" }}>Guest Name</th>
+                                    <th style={{ textAlign: "left", padding: "12px", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", color: "#888" }}>House</th>
+                                    <th style={{ textAlign: "left", padding: "12px", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", color: "#888" }}>Room</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.houses.map((house) =>
+                                    house.bedrooms.map((room) =>
+                                        room.assigned.map((guest, idx) => (
+                                            <tr key={`${house.id}-${room.id}-${idx}`} style={{ borderBottom: "1px solid #e8e8e8" }}>
+                                                <td style={{ padding: "12px", fontSize: "13px", color: "#1a1a1a" }}>{guest}</td>
+                                                <td style={{ padding: "12px", fontSize: "13px", color: "#666" }}>{house.address}</td>
+                                                <td style={{ padding: "12px", fontSize: "13px", color: "#666" }}>{room.name}</td>
+                                            </tr>
+                                        ))
+                                    )
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+
+            const renderDocuments = () => (
+                <div>
+                    <div style={{ marginBottom: "32px" }}>
+                        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                            Documents
+                        </h1>
+                        <p style={{ fontSize: "14px", color: "#666" }}>
+                            Program-level agreements and payment tracking
+                        </p>
+                    </div>
+
+                    <div className="form-section">
+                        <div className="form-section-title">Program Documents</div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {data.documents.map((doc) => (
+                                <div key={doc.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px", borderBottom: "1px solid #e8e8e8" }}>
+                                    <div>
+                                        <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a" }}>{doc.name}</div>
+                                        <div style={{ fontSize: "12px", color: "#888" }}>{doc.date}</div>
+                                    </div>
+                                    <span className={`badge badge-${doc.status === "signed" ? "complete" : doc.status === "paid" ? "complete" : doc.status === "sent" ? "pending" : "complete"}`}>
+                                        {doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-section">
+                        <div className="form-section-title">Pre-Arrival Info Sheets</div>
+                        <p style={{ fontSize: "13px", color: "#666", marginBottom: "16px" }}>
+                            Download house information for your guests (Wi-Fi, codes, emergency contacts).
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {data.houses.filter(h => h.status === "contracted" || h.status === "signed").map((house) => (
+                                <div key={house.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px", background: "#f5f5f5", borderRadius: "8px" }}>
+                                    <div>
+                                        <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a" }}>{house.address}</div>
+                                        <div style={{ fontSize: "12px", color: "#888" }}>Printable house info card</div>
+                                    </div>
+                                    <button className="document-download-btn" onClick={() => downloadHouseInfo(house)}>
+                                        Download
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="btn-primary" style={{ marginTop: "16px", width: "100%" }} onClick={downloadAllHouseInfo}>
+                            Download All House Info Sheets
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderSupport = () => (
+                <div>
+                    <div style={{ marginBottom: "32px" }}>
+                        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1a1a", marginBottom: "8px" }}>
+                            Support
+                        </h1>
+                        <p style={{ fontSize: "14px", color: "#666" }}>
+                            Manage support requests and get answers to common questions
+                        </p>
+                    </div>
+
+                    <div className="tab-container">
+                        <div className={`tab ${supportTab === "requests" ? "active" : ""}`} onClick={() => setSupportTab("requests")}>
+                            Support Requests
+                        </div>
+                        <div className={`tab ${supportTab === "faq" ? "active" : ""}`} onClick={() => setSupportTab("faq")}>
+                            FAQ & Contact
+                        </div>
+                    </div>
+
+                    {supportTab === "requests" && (
+                        <div className="tickets-list">
+                            {tickets.map((ticket) => (
+                                <div key={ticket.id} className="ticket-card">
+                                    <div className="ticket-info">
+                                        <div className="ticket-id">{ticket.id}</div>
+                                        <div className="ticket-title">{ticket.title}</div>
+                                        <div className="ticket-house">{ticket.house}</div>
+                                    </div>
+                                    <div className="ticket-status">
+                                        <span className={`badge badge-${ticket.status === "resolved" ? "complete" : "pending"}`}>
+                                            {ticket.status === "resolved" ? "Resolved" : "Open"}
+                                        </span>
+                                        <div style={{ fontSize: "12px", color: "#888", marginTop: "4px" }}>{ticket.date}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {supportTab === "faq" && (
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+                            <div className="form-section">
+                                <div className="form-section-title">Frequently Asked Questions</div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                                    <div>
+                                        <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>
+                                            What time is check-in?
+                                        </div>
+                                        <div style={{ fontSize: "13px", color: "#666" }}>
+                                            Check-in begins at 3 PM on April 6. Early check-in may be available upon request.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>
+                                            What's included in housekeeping?
+                                        </div>
+                                        <div style={{ fontSize: "13px", color: "#666" }}>
+                                            Daily service includes tidying, bathroom refresh, and trash. Full turnover available upon request.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: "14px", fontWeight: "600", color: "#1a1a1a", marginBottom: "4px" }}>
+                                            How do I report an emergency?
+                                        </div>
+                                        <div style={{ fontSize: "13px", color: "#666" }}>
+                                            Call the emergency contact number provided in your house details immediately.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <div className="form-section-title">Contact Support</div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                                    <div>
+                                        <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", textTransform: "uppercase", marginBottom: "4px" }}>
+                                            Email
+                                        </div>
+                                        <div style={{ fontSize: "14px", color: "#1a1a1a" }}>
+                                            support@patronproperties.com
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", textTransform: "uppercase", marginBottom: "4px" }}>
+                                            Phone
+                                        </div>
+                                        <div style={{ fontSize: "14px", color: "#1a1a1a" }}>
+                                            +1 (706) 555-0100
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: "12px", fontWeight: "600", color: "#888", textTransform: "uppercase", marginBottom: "4px" }}>
+                                            Hours
+                                        </div>
+                                        <div style={{ fontSize: "14px", color: "#1a1a1a" }}>
+                                            24/7 during event week
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+
+            return (
+                <div className="app-container">
+                    <div className="sidebar">
+                        <div className="sidebar-header">
+                            <div className="sidebar-logo">P</div>
+                            Portal
+                        </div>
+
+                        <div className="sidebar-nav">
+                            <div
+                                className={`nav-item ${currentView === "dashboard" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("dashboard");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">📊</span>
+                                Dashboard
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "my-houses" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("my-houses");
+                                    setSelectedHouse(null);
+                                    setHousesTab("managed");
+                                }}
+                            >
+                                <span className="nav-icon">🏠</span>
+                                My Houses
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "guests" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("guests");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">👥</span>
+                                Guests
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "documents" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("documents");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">📄</span>
+                                Documents
+                            </div>
+                            <div
+                                className={`nav-item ${currentView === "support" ? "active" : ""}`}
+                                onClick={() => {
+                                    setCurrentView("support");
+                                    setSelectedHouse(null);
+                                }}
+                            >
+                                <span className="nav-icon">💬</span>
+                                Support
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="main-content">
+                        <div className="top-bar">
+                            <div className="top-bar-left">
+                                <div className="agency-branding">
+                                    <div
+                                        className={`agency-logo-placeholder ${data.agency.logo ? "has-logo" : ""}`}
+                                        onClick={() => setShowLogoUpload(!showLogoUpload)}
+                                        title="Click to upload agency logo"
+                                    >
+                                        {data.agency.logo ? "🎯" : "+"}
+                                    </div>
+                                    <div className="agency-info">
+                                        <h1>{data.agency.name}</h1>
+                                        <p>{data.agency.program}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ fontSize: "13px", color: "#888" }}>
+                                Masters Week {data.agency.year}
+                            </div>
+                        </div>
+
+                        {showLogoUpload && (
+                            <div style={{ background: "#f5f5f5", padding: "16px 32px", borderBottom: "1px solid #e8e8e8" }}>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleLogoUpload}
+                                    style={{ cursor: "pointer" }}
+                                />
+                            </div>
+                        )}
+
+                        <div className="content-area">
+                            {currentView === "dashboard" && renderDashboard()}
+                            {currentView === "my-houses" && renderMyHouses()}
+                            {currentView === "house-detail" && renderHouseDetail()}
+                            {currentView === "guests" && renderGuests()}
+                            {currentView === "documents" && renderDocuments()}
+                            {currentView === "support" && renderSupport()}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<AgencyPortal />);
+    </script>
+</body>
+</html>
