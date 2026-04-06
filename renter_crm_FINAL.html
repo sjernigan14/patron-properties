@@ -262,31 +262,30 @@ function App() {
 
       {/* ── Filter Bar: Clickable Status + Type Buttons ── */}
       <div style={{ background: '#fff', padding: '16px 32px', borderBottom: '1px solid #e0e0e0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {/* Search */}
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search renters…"
-            style={{ width: 220, padding: '8px 12px', fontSize: 13, border: '1px solid #e0e0e0', borderRadius: 6, outline: 'none', background: '#f5f5f4', color: '#1a1a1a' }} />
+            style={{ width: 220, padding: '8px 12px', fontSize: 13, border: '1px solid #e0e0e0', borderRadius: 6, outline: 'none', background: '#f5f5f4', color: '#1a1a1a', alignSelf: 'flex-start', marginTop: 4 }} />
 
-          <div style={{ width: 1, height: 28, background: '#e0e0e0' }} />
+          {/* Status + Type stacked */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+            {/* Status buttons */}
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginRight: 4, minWidth: 52 }}>Status:</span>
+              <StatusButton value="all" label="All" count={RENTERS.length} color="#006B54" />
+              {Object.entries(STATUS).map(([key, s]) => (
+                <StatusButton key={key} value={key} label={s.label} count={statusCounts[key]} color={s.solid} />
+              ))}
+            </div>
 
-          {/* Status buttons */}
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginRight: 4 }}>Status:</span>
-            <StatusButton value="all" label="All" count={RENTERS.length} color="#006B54" />
-            {Object.entries(STATUS).map(([key, s]) => (
-              <StatusButton key={key} value={key} label={s.label} count={statusCounts[key]} color={s.solid} />
-            ))}
-          </div>
-
-          <div style={{ width: 1, height: 28, background: '#e0e0e0' }} />
-
-          {/* Type buttons */}
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginRight: 4 }}>Type:</span>
-            <TypeButton value="all" label="All" count={RENTERS.length} />
-            {Object.keys(TYPE_COLORS).map(t => (
-              <TypeButton key={t} value={t} label={t} count={typeCounts[t]} />
-            ))}
+            {/* Type buttons */}
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginRight: 4, minWidth: 52 }}>Type:</span>
+              <TypeButton value="all" label="All" count={RENTERS.length} />
+              {Object.keys(TYPE_COLORS).map(t => (
+                <TypeButton key={t} value={t} label={t} count={typeCounts[t]} />
+              ))}
+            </div>
           </div>
 
           <div style={{ flex: 1 }} />
