@@ -1,945 +1,1173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Patron Properties — Property Search</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-<style>
-  :root {
-    --primary: #006B54;
-    --primary-dark: #004D3B;
-    --primary-light: rgba(0,107,84,0.08);
-    --bg: #f5f5f4;
-    --surface: #ffffff;
-    --text: #111111;
-    --text-secondary: #555555;
-    --text-tertiary: #888888;
-    --border: #e0e0e0;
-    --red: #c53030;
-    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masters Week 2027 — Patron Properties</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: var(--font); background: var(--bg); color: var(--text); }
-  input:focus, select:focus { outline: none; border-color: var(--primary) !important; }
+    :root {
+      --bg: #fafaf7;
+      --surface: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --accent-green: #2d5016;
+      --patron-green: #2d6a4f;
+      --gold: #c4a35a;
+      --accent-light: #f2f5ef;
+      --divider: #e8e8e3;
+      --font: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+    }
 
-  input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
-    background: var(--primary); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  }
-</style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 1.0625rem;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 600; line-height: 1.05; }
+    h2 { font-size: clamp(1.75rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.15; }
+    h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 600; line-height: 1.25; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 3px; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 80vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80') center/cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 40%, transparent 60%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 2rem 6rem;
+      max-width: 800px;
+    }
+    .hero-content h1 {
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+    }
+    .hero-content p {
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      opacity: 0.9;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.8);
+      background: transparent;
+      color: #fff;
+      padding: 1rem 2.5rem;
+      font-size: 0.8125rem;
+      font-family: var(--font);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .hero-cta:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: #fff;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    .scroll-indicator svg { width: 20px; height: 20px; }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(4px); }
+    }
+
+    /* ── Sections ── */
+    .section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem); }
+    .section-narrow { max-width: 720px; margin: 0 auto; }
+    .section-standard { max-width: 980px; margin: 0 auto; }
+    .section-wide { max-width: 1200px; margin: 0 auto; }
+
+    /* ── Intake ── */
+    .intake-section { background: var(--surface); border-bottom: 1px solid var(--divider); }
+    .intake-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    @media (max-width: 768px) { .intake-steps { grid-template-columns: 1fr; } }
+    .intake-step-label {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .intake-step-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent-green); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.625rem; font-weight: 600;
+    }
+    .pill-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--divider);
+      background: var(--bg);
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-family: var(--font);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .pill:hover { border-color: var(--text-tertiary); }
+    .pill.active { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+    .toggle-pill {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--divider);
+      background: var(--bg);
+      border-radius: 100px;
+      font-size: 0.8125rem;
+      font-family: var(--font);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .toggle-pill:hover { border-color: var(--text-tertiary); }
+    .toggle-pill.active { background: var(--accent-light); color: var(--accent-green); border-color: var(--patron-green); }
+    .intake-result {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--divider);
+      font-size: 1rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    .intake-result strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ── Collections ── */
+    .collection-section { border-top: 1px solid var(--divider); }
+    .collection-header { margin-bottom: 2.5rem; }
+    .collection-header h2 { margin-bottom: 0.5rem; }
+    .collection-editorial {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    /* ── Card Grids ── */
+    .cards-grid-entertainer {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+    }
+    .cards-grid-entertainer .card:first-child { grid-row: 1 / 3; }
+    @media (max-width: 900px) {
+      .cards-grid-entertainer { grid-template-columns: 1fr; }
+      .cards-grid-entertainer .card:first-child { grid-row: auto; }
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card-img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+    .card-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 6s ease;
+    }
+    .card:hover .card-img-wrap img { transform: scale(1.05); }
+    .card-badge-type {
+      position: absolute; top: 1rem; left: 1rem;
+      background: rgba(0,0,0,0.6); color: #fff;
+      font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.35rem 0.75rem; border-radius: 100px;
+      backdrop-filter: blur(8px);
+    }
+    .card-avail-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      display: flex; align-items: center; gap: 0.35rem;
+      background: rgba(0,0,0,0.5); color: #fff;
+      font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.3rem 0.7rem; border-radius: 100px;
+      backdrop-filter: blur(8px);
+    }
+    .avail-dot { width: 6px; height: 6px; border-radius: 50%; background: #34c759; }
+    .avail-dot.pending { background: #ff9f0a; }
+    .card-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .card-address { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .card-neighborhood { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 0.75rem; }
+    .card-facts { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .card-facts span { white-space: nowrap; }
+    .card-facts .sep { margin: 0 0.4rem; opacity: 0.4; }
+    .card-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--divider);
+    }
+    .card-price { font-size: 1.25rem; font-weight: 600; color: var(--gold); }
+    .card-price-label {
+      font-size: 0.6875rem; color: var(--text-tertiary);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .card-verified {
+      display: flex; align-items: center; gap: 0.35rem;
+      font-size: 0.6875rem; color: var(--patron-green); letter-spacing: 0.02em;
+    }
+    .card-verified svg { width: 14px; height: 14px; }
+    .card-track { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.35rem; }
+
+    /* ── Quick View Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--surface);
+      border-radius: 16px;
+      max-width: 960px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: none; background: rgba(0,0,0,0.5);
+      color: #fff; font-size: 1.125rem;
+      cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.7); }
+    .modal-hero { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .modal-hero img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-thumbnails { display: flex; gap: 0.5rem; padding: 0.75rem 2rem; overflow-x: auto; }
+    .modal-thumb {
+      width: 80px; height: 60px; border-radius: 8px;
+      overflow: hidden; cursor: pointer; opacity: 0.6;
+      transition: opacity 0.2s; flex-shrink: 0;
+    }
+    .modal-thumb.active, .modal-thumb:hover { opacity: 1; }
+    .modal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-body { padding: 2rem; }
+    .modal-title-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem;
+    }
+    .modal-title { font-size: 1.75rem; font-weight: 600; }
+    .modal-type-badge {
+      font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--patron-green); background: var(--accent-light);
+      padding: 0.35rem 0.75rem; border-radius: 100px;
+    }
+    .modal-price-tag { font-size: 1.5rem; font-weight: 600; color: var(--gold); }
+    .modal-neighborhood { font-size: 0.9375rem; color: var(--text-tertiary); margin-bottom: 1.5rem; }
+    .modal-avail {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8125rem; color: var(--patron-green); margin-bottom: 1.5rem;
+    }
+    .modal-editorial {
+      font-size: 1.0625rem; color: var(--text-secondary);
+      line-height: 1.75; margin-bottom: 2rem; max-width: 640px;
+    }
+    .modal-facts-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem; margin-bottom: 2rem; padding: 1.25rem;
+      background: var(--bg); border-radius: 12px;
+    }
+    .modal-fact-item { text-align: center; }
+    .modal-fact-value { font-size: 1.25rem; font-weight: 600; }
+    .modal-fact-label { font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
+    .modal-amenities-title {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-tertiary); margin-bottom: 0.75rem;
+    }
+    .modal-amenities {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem; margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) { .modal-amenities { grid-template-columns: 1fr 1fr; } }
+    .modal-amenity {
+      font-size: 0.875rem; color: var(--text-secondary);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .modal-amenity-icon { color: var(--patron-green); font-size: 0.75rem; }
+    .modal-distance {
+      font-size: 0.9375rem; color: var(--text-secondary); font-style: italic;
+      margin-bottom: 2rem; padding: 1rem 1.25rem;
+      background: var(--accent-light); border-radius: 8px;
+    }
+    .modal-packages { margin-bottom: 2rem; }
+    .modal-packages-title {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-tertiary); margin-bottom: 0.75rem;
+    }
+    .package-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--divider);
+      font-size: 0.9375rem;
+    }
+    .package-row:last-child { border-bottom: none; }
+    .package-name { color: var(--text-primary); }
+    .package-dates { color: var(--text-tertiary); font-size: 0.8125rem; }
+    .package-price { color: var(--gold); font-weight: 600; }
+    .modal-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-request {
+      padding: 1rem 2.5rem; background: var(--accent-green); color: #fff;
+      border: none; border-radius: 8px; font-size: 0.875rem;
+      font-family: var(--font); font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-request:hover { background: #1f3d0f; }
+    .btn-compare {
+      padding: 1rem 2rem; background: transparent; color: var(--text-secondary);
+      border: 1px solid var(--divider); border-radius: 8px;
+      font-size: 0.875rem; font-family: var(--font);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-compare:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
+    .btn-compare.added { background: var(--accent-light); border-color: var(--patron-green); color: var(--patron-green); }
+
+    /* ── Compare Bar ── */
+    .compare-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--surface); border-top: 1px solid var(--divider);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: center; gap: 1rem;
+      z-index: 900; animation: slideBarUp 0.3s ease;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    }
+    @keyframes slideBarUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .compare-thumbs { display: flex; gap: 0.5rem; }
+    .compare-thumb-circle {
+      width: 40px; height: 40px; border-radius: 50%;
+      overflow: hidden; border: 2px solid var(--patron-green);
+    }
+    .compare-thumb-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .compare-bar-text { font-size: 0.9375rem; color: var(--text-secondary); }
+    .compare-bar-btn {
+      padding: 0.75rem 1.5rem; background: var(--accent-green); color: #fff;
+      border: none; border-radius: 8px; font-size: 0.8125rem;
+      font-family: var(--font); text-transform: uppercase;
+      letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s;
+    }
+    .compare-bar-btn:hover { background: #1f3d0f; }
+    .compare-clear {
+      background: none; border: none; color: var(--text-tertiary);
+      font-size: 0.8125rem; cursor: pointer; font-family: var(--font);
+    }
+    .compare-clear:hover { color: var(--text-primary); }
+
+    /* ── Compare Modal ── */
+    .compare-modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    @media (max-width: 768px) { .compare-modal-body { grid-template-columns: 1fr; } }
+    .compare-col { border-right: 1px solid var(--divider); }
+    .compare-col:last-child { border-right: none; }
+    .compare-col-img { aspect-ratio: 16/10; overflow: hidden; }
+    .compare-col-img img { width: 100%; height: 100%; object-fit: cover; }
+    .compare-col-body { padding: 1.5rem; }
+    .compare-col-name { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .compare-col-price { font-size: 1.125rem; color: var(--gold); font-weight: 600; margin-bottom: 1rem; }
+    .compare-row {
+      display: flex; justify-content: space-between;
+      padding: 0.6rem 0; border-bottom: 1px solid var(--divider); font-size: 0.875rem;
+    }
+    .compare-row.diff { background: var(--accent-light); margin: 0 -1.5rem; padding: 0.6rem 1.5rem; }
+    .compare-row-label { color: var(--text-tertiary); }
+    .compare-row-value { color: var(--text-primary); font-weight: 500; }
+
+    /* ── Concierge Sidebar ── */
+    .concierge-sidebar {
+      position: fixed; right: 2rem; top: 50%; transform: translateY(-50%);
+      background: var(--surface); border-radius: 16px; padding: 1.5rem;
+      width: 220px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      z-index: 800; display: none;
+    }
+    @media (min-width: 1400px) { .concierge-sidebar { display: block; } }
+    .concierge-photo {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; color: var(--patron-green);
+      font-size: 1.25rem; font-weight: 600;
+    }
+    .concierge-label {
+      font-size: 0.6875rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 0.25rem;
+    }
+    .concierge-name { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .concierge-detail { font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 0.35rem; }
+    .concierge-btn {
+      margin-top: 1rem; width: 100%; padding: 0.75rem;
+      background: var(--accent-green); color: #fff; border: none;
+      border-radius: 8px; font-size: 0.8125rem; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s;
+    }
+    .concierge-btn:hover { background: #1f3d0f; }
+    .concierge-response {
+      font-size: 0.6875rem; color: var(--text-tertiary);
+      text-align: center; margin-top: 0.75rem;
+    }
+
+    /* Mobile concierge */
+    .concierge-mobile {
+      display: block; background: var(--surface); border-radius: 12px;
+      padding: 2rem; text-align: center; margin-top: 2rem;
+    }
+    @media (min-width: 1400px) { .concierge-mobile { display: none; } }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center; padding: 3rem 2rem;
+      border-top: 1px solid var(--divider);
+      color: var(--text-tertiary); font-size: 0.8125rem;
+    }
+    .site-footer .footer-brand {
+      font-size: 0.9375rem; color: var(--text-secondary); margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useMemo } = React;
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useMemo, useRef } = React;
 
-/* ── House placeholder image (base64) for PP-1001 sizing example ── */
-const HOUSE_IMG = 'data:image/jpeg;base64,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';
+    // ── Property Data (from patron-demo-universe.md) ──
+    const PROPERTIES = [
+      {
+        id: 'PP-1001', address: '142 Berckmans Dr',
+        beds: 7, baths: 5, sleeps: 18, nightlyRate: 5500,
+        owner: 'Margaret Ashford', neighborhood: 'West Augusta',
+        type: 'Entertainer Home', distanceToGate6: 0.3,
+        status: 'available', mastersYears: 3, renter: 'Goldman Sachs',
+        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+          'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80',
+        ],
+        editorial: "You'll find yourself steps from Gate 6 in this seven-bedroom estate on Berckmans Drive, the most coveted address in Masters week housing. The catering kitchen, resort-style pool, and covered entertaining terraces make this home the centerpiece of three consecutive years of Goldman Sachs hospitality programs.",
+        amenities: {
+          entertaining: ['Catering Kitchen', 'Event Terrace', 'Resort Pool', 'Outdoor Dining for 20'],
+          comfort: ['7 En-Suite Bedrooms', 'Home Theater', 'Wine Storage', 'Smart Home System'],
+          logistics: ['6-Car Parking', 'Gated Entry', 'Golf Cart Garage', 'Staff Quarters'],
+        },
+        kitchenTier: 'Commercial Catering', pool: true, staffQuarters: true, walkingDistance: true,
+      },
+      {
+        id: 'PP-1002', address: '308 Wheeler Rd',
+        beds: 5, baths: 3, sleeps: 12, nightlyRate: 3200,
+        owner: 'Dr. Kevin & Amy Rhodes', neighborhood: 'National Hills',
+        type: 'Executive Retreat', distanceToGate6: 1.1,
+        status: 'available', mastersYears: 2, renter: 'Direct Booking',
+        img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80',
+        ],
+        editorial: "You'll appreciate the quiet professionalism of this National Hills residence, meticulously maintained by the Rhodes family. Five well-appointed bedrooms, a chef-ready kitchen, and a screened porch overlooking mature landscaping create the ideal setting for partner dinners and executive retreats.",
+        amenities: {
+          entertaining: ['Chef-Ready Kitchen', 'Screened Porch', 'Formal Dining (12)', 'Wet Bar'],
+          comfort: ['5 Bedrooms', 'Master Suite', 'Home Office', 'Linen Concierge'],
+          logistics: ['4-Car Driveway', 'Covered Entry', 'Quiet Street', 'Fast WiFi'],
+        },
+        kitchenTier: 'Chef-Ready', pool: false, staffQuarters: false, walkingDistance: false,
+      },
+      {
+        id: 'PP-1003', address: '1547 Monte Sano Ave',
+        beds: 6, baths: 4, sleeps: 14, nightlyRate: 4100,
+        owner: 'William & June Parker', neighborhood: 'Summerville',
+        type: 'Entertainer Home', distanceToGate6: 1.8,
+        status: 'available', mastersYears: 2, renter: 'Berkshire Investment Group',
+        img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+        ],
+        editorial: "You'll discover this Summerville gem nestled among century-old live oaks, with six bedrooms spread across two levels. The Parkers have curated a home that balances entertainment scale with Southern charm \u2014 a wraparound porch, heated pool, and a kitchen designed for private chef service.",
+        amenities: {
+          entertaining: ['Heated Pool', 'Wraparound Porch', 'Private Chef Kitchen', 'Sound System'],
+          comfort: ['6 Bedrooms', 'Double Master', 'Library', 'Fireplace Lounge'],
+          logistics: ['Shuttle-Friendly Drive', '3-Car Garage', 'EV Charger', 'Package Lockbox'],
+        },
+        kitchenTier: 'Private Chef', pool: true, staffQuarters: false, walkingDistance: false,
+      },
+      {
+        id: 'PP-1004', address: '2205 Henry St',
+        beds: 4, baths: 2, sleeps: 8, nightlyRate: 1800,
+        owner: 'James & Carol Bennett', neighborhood: 'Olde Town',
+        type: 'Golfer Cottage', distanceToGate6: 2.4,
+        status: 'pending', mastersYears: 0, renter: 'Thompson Family (pending)',
+        img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
+          'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+        ],
+        editorial: "You'll feel at home in this character-rich Olde Town cottage, a four-bedroom retreat with original hardwood floors and a deep front porch made for morning coffee before the first tee. Ideal for a tight-knit group that values authenticity over excess.",
+        amenities: {
+          entertaining: ['Deep Front Porch', 'Backyard Grill', 'Open Kitchen', 'Breakfast Nook'],
+          comfort: ['4 Bedrooms', 'Original Hardwoods', 'Window AC + Fans', 'Garden Tub'],
+          logistics: ['Street Parking', 'Walk to Restaurants', 'Bike Storage', 'Keypad Entry'],
+        },
+        kitchenTier: 'Home Kitchen', pool: false, staffQuarters: false, walkingDistance: false,
+      },
+      {
+        id: 'PP-1005', address: '789 Milledge Rd',
+        beds: 5, baths: 3, sleeps: 12, nightlyRate: 3400,
+        owner: 'Robert & Linda Hayes', neighborhood: 'West Augusta',
+        type: 'Executive Retreat', distanceToGate6: 0.7,
+        status: 'available', mastersYears: 2, renter: 'Walsh Family',
+        img: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+        ],
+        editorial: "You'll wake up less than a mile from the gates of Augusta National in this lovingly maintained West Augusta residence. The Hayes family's 28 years of care show in every detail \u2014 from the manicured gardens to the professional-grade kitchen where your private chef will feel right at home.",
+        amenities: {
+          entertaining: ['Professional Kitchen', 'Covered Patio', 'Formal Dining (14)', 'Bar Area'],
+          comfort: ['5 Bedrooms', 'Luxury Linens', 'Spa Bath', 'Reading Room'],
+          logistics: ['4-Car Parking', 'Short Drive to Gate 6', 'Alarm System', 'Concierge WiFi'],
+        },
+        kitchenTier: 'Professional', pool: false, staffQuarters: false, walkingDistance: true,
+      },
+      {
+        id: 'PP-1006', address: '411 Cumming Rd',
+        beds: 6, baths: 4, sleeps: 16, nightlyRate: 4200,
+        owner: 'Daniel & Christine Moore', neighborhood: 'National Hills',
+        type: 'Entertainer Home', distanceToGate6: 0.9,
+        status: 'available', mastersYears: 2, renter: 'BlackRock',
+        img: 'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80',
+        ],
+        editorial: "You'll command an exceptional National Hills property that was purpose-built for corporate entertaining. Six bedrooms, a resort pool, and a catering kitchen with dual ovens and commercial refrigeration \u2014 all under a mile from Gate 6. BlackRock's extended stay program calls this home for good reason.",
+        amenities: {
+          entertaining: ['Catering Kitchen', 'Resort Pool', 'Fire Pit Terrace', 'AV System'],
+          comfort: ['6 Bedrooms', 'Heated Floors', 'Dual Master', 'Blackout Suites'],
+          logistics: ['5-Car Parking', 'Gated Entry', 'Security Cameras', 'High-Speed WiFi'],
+        },
+        kitchenTier: 'Commercial Catering', pool: true, staffQuarters: false, walkingDistance: true,
+      },
+      {
+        id: 'PP-1007', address: '925 Lake Olmstead Dr',
+        beds: 4, baths: 3, sleeps: 10, nightlyRate: 2200,
+        owner: 'Patricia & George Sullivan', neighborhood: 'Lake Olmstead',
+        type: 'Dinner Home', distanceToGate6: 2.1,
+        status: 'available', mastersYears: 1, renter: 'Morgan Stanley',
+        img: 'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+        ],
+        editorial: "You'll host unforgettable client dinners in this lakefront property on Lake Olmstead. The open-plan dining room seats twelve with water views, and the screened veranda extends the entertaining space into the evening. Morgan Stanley's Patricia Wells called it 'better than the Four Seasons setup.'",
+        amenities: {
+          entertaining: ['Lake-View Dining (12)', 'Screened Veranda', 'Wine Cellar', 'Outdoor Kitchen'],
+          comfort: ['4 Bedrooms', 'Lake Views', 'Spa Bathroom', 'Morning Room'],
+          logistics: ['Private Dock', '3-Car Parking', 'Quiet Location', 'Catering Access'],
+        },
+        kitchenTier: 'Chef-Ready', pool: false, staffQuarters: false, walkingDistance: false,
+      },
+      {
+        id: 'PP-1008', address: '1803 Highland Ave',
+        beds: 5, baths: 3, sleeps: 12, nightlyRate: 3500,
+        owner: 'Richard & Ellen Foster', neighborhood: 'Summerville',
+        type: 'Executive Retreat', distanceToGate6: 1.5,
+        status: 'available', mastersYears: 1, renter: 'Augusta University',
+        img: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80',
+        ],
+        editorial: "You'll settle into the refined comfort of this Summerville retreat, where five spacious bedrooms and a study make for ideal executive accommodations. The Fosters' attention to detail extends to custom built-ins, a private garden, and a kitchen that has served everything from faculty receptions to quiet partner dinners.",
+        amenities: {
+          entertaining: ['Formal Dining (10)', 'Garden Terrace', 'Study/Office', 'Butler Pantry'],
+          comfort: ['5 Bedrooms', 'Custom Built-Ins', 'Heated Sunroom', 'Premium Mattresses'],
+          logistics: ['3-Car Garage', 'Summerville Location', 'Private Garden', 'Dedicated WiFi'],
+        },
+        kitchenTier: 'Chef-Ready', pool: false, staffQuarters: false, walkingDistance: false,
+      },
+      {
+        id: 'PP-1009', address: '556 Berckmans Rd',
+        beds: 7, baths: 6, sleeps: 20, nightlyRate: 5800,
+        owner: 'Catherine Harwell', neighborhood: 'West Augusta',
+        type: 'Entertainer Home', distanceToGate6: 0.2,
+        status: 'available', mastersYears: 1, renter: 'Delta Air Lines',
+        img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80',
+          'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&q=80',
+        ],
+        editorial: "You'll occupy the crown jewel of Patron's Masters portfolio \u2014 the closest home to Gate 6 at just 0.2 miles. Featured in Augusta Magazine, Catherine Harwell's seven-bedroom estate offers six full bathrooms, a commercial kitchen, and grounds that have hosted Delta Air Lines' executive hospitality program. This is not simply a rental \u2014 it is an invitation.",
+        amenities: {
+          entertaining: ['Commercial Kitchen', 'Grand Pool', 'Event Lawn', 'Outdoor Bar + Lounge'],
+          comfort: ['7 Bedrooms / 6 Full Baths', 'Grand Suite', 'Library', 'Climate-Controlled Wine Room'],
+          logistics: ['8-Car Parking', 'Private Gate', 'Staff Wing', 'Airport Transfer Staging'],
+        },
+        kitchenTier: 'Commercial Catering', pool: true, staffQuarters: true, walkingDistance: true,
+      },
+      {
+        id: 'PP-1010', address: '2100 Walton Way',
+        beds: 3, baths: 2, sleeps: 6, nightlyRate: 2000,
+        owner: 'Thomas & Maria Nguyen', neighborhood: 'Summerville',
+        type: 'Staff Housing', distanceToGate6: 1.9,
+        status: 'available', mastersYears: 1, renter: 'Staff Overflow',
+        img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80',
+        imgs: [
+          'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80',
+          'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80',
+          'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&q=80',
+        ],
+        editorial: "You'll find practical comfort on leafy Walton Way in Summerville \u2014 three bedrooms, clean lines, and everything your support team needs. Ideal as a staff or overflow property when your group spans multiple homes, or as a smart-value base for a small, dedicated golf crew.",
+        amenities: {
+          entertaining: ['Open Kitchen', 'Back Deck', 'Dining for 6', 'Grill'],
+          comfort: ['3 Bedrooms', 'Queen Beds', 'Washer/Dryer', 'Central Air'],
+          logistics: ['2-Car Driveway', 'Keypad Entry', 'Street-Level Access', 'Fast WiFi'],
+        },
+        kitchenTier: 'Home Kitchen', pool: false, staffQuarters: false, walkingDistance: false,
+      },
+    ];
 
-/* ── Master Color System ── */
-const STATUS_COLORS = {
-  available: { label: 'Available', bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', solid: '#006B54' },
-  on_hold:   { label: 'On Hold',   bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', solid: '#D97706' },
-  booked:    { label: 'Booked',    bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD', solid: '#2563EB' },
-};
+    const COLLECTIONS = [
+      {
+        key: 'entertainer', title: 'Built for Entertaining',
+        editorial: 'Full-scale hosting with catering kitchens, event-ready outdoor spaces, and room for your entire party.',
+        propertyIds: ['PP-1001', 'PP-1003', 'PP-1006', 'PP-1009'],
+        layout: 'entertainer',
+      },
+      {
+        key: 'executive', title: 'Executive Retreats',
+        editorial: 'Refined finishes for C-suite gatherings and partner dinners.',
+        propertyIds: ['PP-1005', 'PP-1002', 'PP-1008'],
+        layout: 'grid',
+      },
+      {
+        key: 'classic', title: 'Classic Augusta',
+        editorial: 'Intimate settings for small groups and dedicated golf crews.',
+        propertyIds: ['PP-1004', 'PP-1007', 'PP-1010'],
+        layout: 'grid',
+      },
+    ];
 
-const TYPE_COLORS = {
-  Corporate:     { bg: '#F1F5F9', text: '#475569', border: '#94A3B8' },
-  Private:       { bg: '#FEF7ED', text: '#92400E', border: '#FDBA74' },
-  Local:         { bg: '#ECFEFF', text: '#0E7490', border: '#67E8F9' },
-  Institutional: { bg: '#F5F3FF', text: '#6D28D9', border: '#C4B5FD' },
-};
+    const EXPERIENCE_TYPES = [
+      { key: 'entertainer', label: 'The Entertainer', types: ['Entertainer Home'] },
+      { key: 'executive', label: 'The Executive Retreat', types: ['Executive Retreat'] },
+      { key: 'golfer', label: "The Golfer's Lodge", types: ['Golfer Cottage', 'Dinner Home'] },
+      { key: 'staff', label: 'Staff Quarters', types: ['Staff Housing'] },
+    ];
 
-const PROPERTIES = [
-  {
-    id: "PP-1001", address: "142 Berkman Dr", neighborhood: "West Augusta",
-    bedrooms: 5, bathrooms: 4, maxGuests: 12, sqft: 3800,
-    pricePerNight: 3200, totalPrice: 22400,
-    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Covered Patio", "Golf Cart", "WiFi"],
-    status: "available", type: "Corporate", distanceMi: 1.2, walkable: true,
-    description: "Stunning 5BR estate just steps from Augusta National. Recently renovated chef's kitchen, heated pool, and private backyard perfect for entertaining.",
-    rating: 4.9, reviews: 8, yearListed: 2019,
-    highlight: "Walking distance to Gate 6",
-    imgHue: 142
-  },
-  {
-    id: "PP-1002", address: "308 Wheeler Rd", neighborhood: "National Hills",
-    bedrooms: 4, bathrooms: 3, maxGuests: 10, sqft: 3200,
-    pricePerNight: 2800, totalPrice: 19600,
-    amenities: ["Pool", "Chef's Kitchen", "Fireplace", "WiFi", "Screened Porch"],
-    status: "available", type: "Corporate", distanceMi: 0.8, walkable: true,
-    description: "Classic National Hills charmer with pool and mature landscaping. Walking distance to the course. Booked by Delta three consecutive years.",
-    rating: 4.8, reviews: 6, yearListed: 2020,
-    highlight: "Delta's #1 pick since 2024",
-    imgHue: 160
-  },
-  {
-    id: "PP-1003", address: "1547 Monte Sano Ave", neighborhood: "Summerville",
-    bedrooms: 6, bathrooms: 5, maxGuests: 14, sqft: 4500,
-    pricePerNight: 4100, totalPrice: 28700,
-    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio"],
-    status: "available", type: "Private", distanceMi: 2.1, walkable: false,
-    description: "Premier Summerville estate. Home theater, wine cellar, and resort-style pool. Ideal for large groups needing space and privacy.",
-    rating: 5.0, reviews: 4, yearListed: 2021,
-    highlight: "Perfect 5.0 rating",
-    imgHue: 180
-  },
-  {
-    id: "PP-1004", address: "2205 Henry St", neighborhood: "Olde Town",
-    bedrooms: 3, bathrooms: 2, maxGuests: 6, sqft: 2100,
-    pricePerNight: 1800, totalPrice: 12600,
-    amenities: ["Patio", "Fireplace", "WiFi", "Chef's Kitchen"],
-    status: "available", type: "Private", distanceMi: 3.4, walkable: false,
-    description: "Beautifully restored historic home in Olde Town. Cozy 3BR with character, perfect for smaller groups wanting a quieter Augusta experience.",
-    rating: 4.7, reviews: 5, yearListed: 2020,
-    highlight: "Historic district charm",
-    imgHue: 30
-  },
-  {
-    id: "PP-1005", address: "789 Milledge Rd", neighborhood: "West Augusta",
-    bedrooms: 4, bathrooms: 3.5, maxGuests: 8, sqft: 3000,
-    pricePerNight: 2500, totalPrice: 17500,
-    amenities: ["Pool", "Chef's Kitchen", "WiFi", "Golf Cart", "Patio"],
-    status: "available", type: "Local", distanceMi: 1.5, walkable: true,
-    description: "Modern 4BR with saltwater pool and open-concept living. Golf cart included. Five-minute walk to Washington Road restaurants.",
-    rating: 4.6, reviews: 3, yearListed: 2022,
-    highlight: "Golf cart included",
-    imgHue: 200
-  },
-  {
-    id: "PP-1006", address: "411 Cumming Rd", neighborhood: "National Hills",
-    bedrooms: 5, bathrooms: 4, maxGuests: 12, sqft: 3600,
-    pricePerNight: 3500, totalPrice: 24500,
-    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "WiFi", "Patio", "Fireplace"],
-    status: "on_hold", type: "Corporate", distanceMi: 0.6, walkable: true,
-    description: "Flagship National Hills property. Closest walkable home to Gate 6. Hot tub, theater room, and professional-grade outdoor kitchen.",
-    rating: 4.9, reviews: 7, yearListed: 2018,
-    highlight: "Closest to Gate 6",
-    imgHue: 120
-  },
-  {
-    id: "PP-1007", address: "925 Lake Olmstead Dr", neighborhood: "Lake Olmstead",
-    bedrooms: 4, bathrooms: 3, maxGuests: 10, sqft: 2800,
-    pricePerNight: 2200, totalPrice: 15400,
-    amenities: ["Lake View", "Dock", "Patio", "Chef's Kitchen", "WiFi", "Fireplace"],
-    status: "available", type: "Private", distanceMi: 4.2, walkable: false,
-    description: "Lakefront retreat with private dock and stunning water views. Peaceful setting ten minutes from the course.",
-    rating: 4.5, reviews: 2, yearListed: 2023,
-    highlight: "Private lakefront dock",
-    imgHue: 220
-  },
-  {
-    id: "PP-1008", address: "1803 Highland Ave", neighborhood: "Summerville",
-    bedrooms: 3, bathrooms: 2.5, maxGuests: 7, sqft: 2400,
-    pricePerNight: 2000, totalPrice: 14000,
-    amenities: ["Pool", "WiFi", "Screened Porch", "Chef's Kitchen", "Patio"],
-    status: "available", type: "Local", distanceMi: 2.5, walkable: false,
-    description: "Charming Summerville bungalow with pool and screened porch. Tree-lined street, walkable to local restaurants.",
-    rating: 4.4, reviews: 3, yearListed: 2022,
-    highlight: "Tree-lined Summerville street",
-    imgHue: 90
-  },
-  {
-    id: "PP-1009", address: "556 Berckmans Rd", neighborhood: "West Augusta",
-    bedrooms: 7, bathrooms: 6, maxGuests: 18, sqft: 5200,
-    pricePerNight: 5500, totalPrice: 38500,
-    amenities: ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio", "Fireplace", "Gym"],
-    status: "available", type: "Institutional", distanceMi: 0.4, walkable: true,
-    description: "Our crown jewel. 7BR estate on Berckmans Road — literally adjacent to Augusta National. Full gym, theater, wine cellar, resort pool.",
-    rating: 5.0, reviews: 5, yearListed: 2017,
-    highlight: "Adjacent to Augusta National",
-    imgHue: 155
-  },
-  {
-    id: "PP-1010", address: "2100 Walton Way", neighborhood: "Summerville",
-    bedrooms: 4, bathrooms: 3, maxGuests: 9, sqft: 2900,
-    pricePerNight: 2400, totalPrice: 16800,
-    amenities: ["Pool", "Chef's Kitchen", "WiFi", "Screened Porch", "Fireplace"],
-    status: "booked", type: "Corporate", distanceMi: 2.8, walkable: false,
-    description: "Walton Way classic with gorgeous pool and mature gardens. Summerville charm at its finest. Popular with returning families.",
-    rating: 4.7, reviews: 6, yearListed: 2019,
-    highlight: "Returning guest favorite",
-    imgHue: 45
-  }
-];
+    const PARTY_SIZES = [
+      { key: '2-6', label: '2 \u2013 6 guests', min: 2, max: 6 },
+      { key: '6-12', label: '6 \u2013 12 guests', min: 6, max: 12 },
+      { key: '12-20', label: '12 \u2013 20 guests', min: 12, max: 20 },
+    ];
 
-const NEIGHBORHOODS = ["All", "West Augusta", "National Hills", "Summerville", "Olde Town", "Lake Olmstead"];
-const ALL_AMENITIES = ["Pool", "Hot Tub", "Chef's Kitchen", "Theater", "Wine Cellar", "Golf Cart", "WiFi", "Patio", "Screened Porch", "Fireplace", "Lake View", "Dock", "Gym"];
+    const PRIORITIES = [
+      { key: 'walkingDistance', label: 'Walking Distance' },
+      { key: 'pool', label: 'Pool' },
+      { key: 'chefKitchen', label: 'Chef-Ready Kitchen' },
+      { key: 'multiProperty', label: 'Multi-Property Available' },
+    ];
 
-/* ── Booking Packages ── */
-const BOOKING_PACKAGES = [
-  { key: 'full', label: 'Full Week (Apr 5-12)', nights: 7 },
-  { key: 'practice', label: 'Practice Rounds (Apr 7-9)', nights: 2 },
-  { key: 'tournament', label: 'Tournament Days (Apr 10-13)', nights: 3 },
-  { key: 'extended', label: 'Extended Stay (Apr 3-14)', nights: 11 },
-];
+    function formatPrice(amount) {
+      return '$' + amount.toLocaleString('en-US');
+    }
+    function getWeeklyPrice(prop) { return prop.nightlyRate * 7; }
+    function getDriveTime(miles) {
+      if (miles <= 0.3) return 'a 2-minute drive';
+      if (miles <= 0.7) return 'a 3-minute drive';
+      if (miles <= 1.1) return 'a 4-minute drive';
+      if (miles <= 1.5) return 'a 5-minute drive';
+      if (miles <= 2.0) return 'a 7-minute drive';
+      return 'a 10-minute drive';
+    }
 
-/* ── Best For logic ── */
-function getBestFor(p) {
-  if (p.walkable) return { label: 'Walking Distance', color: '#006B54', bg: '#D1FAE5' };
-  if (p.bedrooms >= 6) return { label: 'Corporate Entertainment', color: '#1E40AF', bg: '#DBEAFE' };
-  if (p.amenities.includes('Pool') && p.amenities.includes('Hot Tub')) return { label: 'Luxury Retreat', color: '#6D28D9', bg: '#F5F3FF' };
-  if (p.bedrooms >= 3 && p.bedrooms <= 4 && p.pricePerNight <= 2000) return { label: 'Budget-Friendly', color: '#92400E', bg: '#FEF3C7' };
-  if (p.bedrooms >= 4 && p.bedrooms <= 5 && p.pricePerNight > 2000 && p.pricePerNight <= 3500) return { label: 'Group Getaway', color: '#0E7490', bg: '#ECFEFF' };
-  return { label: 'Group Getaway', color: '#0E7490', bg: '#ECFEFF' };
-}
+    const VerifiedIcon = () => (
+      <svg viewBox="0 0 24 24" fill="currentColor" style={{width:14,height:14}}><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    );
 
-const BEST_FOR_OPTIONS = ['All', 'Walking Distance', 'Corporate Entertainment', 'Luxury Retreat', 'Budget-Friendly', 'Group Getaway'];
-
-function PropertySearch() {
-  const [hood, setHood] = useState("All");
-  const [beds, setBeds] = useState(0);
-  const [baths, setBaths] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(6000);
-  const [guests, setGuests] = useState(0);
-  const [walkOnly, setWalkOnly] = useState(false);
-  const [amenities, setAmenities] = useState([]);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("price-asc");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [expanded, setExpanded] = useState(null);
-  const [inquiryId, setInquiryId] = useState(null);
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [viewMode, setViewMode] = useState("cards"); // cards, grid, or map
-  const [bookingPackage, setBookingPackage] = useState("full");
-  const [savedIds, setSavedIds] = useState([]);
-  const [showSavedOnly, setShowSavedOnly] = useState(false);
-  const [bestForFilter, setBestForFilter] = useState("All");
-
-  const toggleSaved = (id) => setSavedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-  const currentPackage = BOOKING_PACKAGES.find(bp => bp.key === bookingPackage);
-
-  const toggleAmenity = a => setAmenities(p => p.includes(a) ? p.filter(x => x !== a) : [...p, a]);
-
-  const filtered = useMemo(() => {
-    let r = PROPERTIES.filter(p => {
-      if (hood !== "All" && p.neighborhood !== hood) return false;
-      if (p.bedrooms < beds) return false;
-      if (p.bathrooms < baths) return false;
-      if (p.pricePerNight > maxPrice) return false;
-      if (p.maxGuests < guests) return false;
-      if (walkOnly && !p.walkable) return false;
-      if (statusFilter !== "all" && p.status !== statusFilter) return false;
-      if (typeFilter !== "all" && p.type !== typeFilter) return false;
-      if (amenities.length && !amenities.every(a => p.amenities.includes(a))) return false;
-      if (search) {
-        const s = search.toLowerCase();
-        if (![p.address, p.neighborhood, p.description, p.id].some(x => x.toLowerCase().includes(s))) return false;
-      }
-      if (showSavedOnly && !savedIds.includes(p.id)) return false;
-      if (bestForFilter !== 'All' && getBestFor(p).label !== bestForFilter) return false;
-      return true;
-    });
-    const [f, d] = sort.split("-");
-    r.sort((a, b) => {
-      const va = f === "price" ? a.pricePerNight : f === "beds" ? a.bedrooms : f === "rating" ? a.rating : a.distanceMi;
-      const vb = f === "price" ? b.pricePerNight : f === "beds" ? b.bedrooms : f === "rating" ? b.rating : b.distanceMi;
-      return d === "asc" ? va - vb : vb - va;
-    });
-    return r;
-  }, [hood, beds, baths, maxPrice, guests, walkOnly, amenities, search, sort, statusFilter, typeFilter, showSavedOnly, savedIds, bestForFilter]);
-
-  const clearAll = () => {
-    setHood("All"); setBeds(0); setBaths(0); setMaxPrice(6000);
-    setGuests(0); setWalkOnly(false); setAmenities([]); setSearch("");
-    setStatusFilter("all"); setTypeFilter("all"); setShowSavedOnly(false);
-    setBestForFilter("All");
-  };
-
-  const activeCount = [hood !== "All", beds > 0, baths > 0, maxPrice < 6000, guests > 0, walkOnly, statusFilter !== "all", typeFilter !== "all", amenities.length > 0, search.length > 0, showSavedOnly, bestForFilter !== "All"].filter(Boolean).length;
-
-  /* KPI calculations */
-  const totalValue = PROPERTIES.reduce((s, p) => s + p.totalPrice, 0);
-  const avgPrice = Math.round(PROPERTIES.reduce((s, p) => s + p.pricePerNight, 0) / PROPERTIES.length);
-  const availCount = PROPERTIES.filter(p => p.status === 'available').length;
-  const walkableCount = PROPERTIES.filter(p => p.walkable).length;
-  const avgRating = (PROPERTIES.reduce((s, p) => s + p.rating, 0) / PROPERTIES.length).toFixed(1);
-  const totalBeds = PROPERTIES.reduce((s, p) => s + p.bedrooms, 0);
-
-  /* Status counts */
-  const statusCounts = {};
-  Object.keys(STATUS_COLORS).forEach(k => { statusCounts[k] = PROPERTIES.filter(p => p.status === k).length; });
-  const typeCounts = {};
-  ['Corporate', 'Private', 'Local', 'Institutional'].forEach(t => { typeCounts[t] = PROPERTIES.filter(p => p.type === t).length; });
-
-  const StatusButton = ({ value, label, count }) => {
-    const isActive = statusFilter === value;
-    if (value === 'all') {
+    // ── Property Card ──
+    function PropertyCard({ property, onOpen }) {
+      const weekly = getWeeklyPrice(property);
       return (
-        <button onClick={() => setStatusFilter('all')} style={{
-          padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-          border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
-          background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
-          display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
-        }}>
-          {label}
-          <span style={{
-            background: isActive ? 'rgba(255,255,255,0.25)' : '#f0f0f0',
-            padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
-          }}>{count}</span>
-        </button>
+        <div className="card" onClick={() => onOpen(property)}>
+          <div className="card-img-wrap">
+            <img src={property.img} alt={property.address} loading="lazy" />
+            <span className="card-badge-type">{property.type}</span>
+            <span className="card-avail-badge">
+              <span className={`avail-dot${property.status === 'pending' ? ' pending' : ''}`} />
+              {property.status === 'pending' ? 'Pending' : 'Available'}
+            </span>
+          </div>
+          <div className="card-body">
+            <div className="card-address">{property.address}</div>
+            <div className="card-neighborhood">{property.neighborhood}, Augusta</div>
+            <div className="card-facts">
+              <span>{property.beds} beds</span><span className="sep">&middot;</span>
+              <span>{property.baths} baths</span><span className="sep">&middot;</span>
+              <span>Sleeps {property.sleeps}</span><span className="sep">&middot;</span>
+              <span>{property.distanceToGate6} mi to Gate 6</span>
+            </div>
+            <div className="card-bottom">
+              <div>
+                <div className="card-price">{formatPrice(weekly)}<span style={{fontSize:'0.75rem',fontWeight:400,color:'var(--text-tertiary)'}}> /week</span></div>
+                <div className="card-price-label">Full Week &middot; Apr 5 &ndash; 12</div>
+              </div>
+              <div style={{textAlign:'right'}}>
+                <div className="card-verified"><VerifiedIcon /> Verified by Patron</div>
+                {property.mastersYears > 0 && (
+                  <div className="card-track">Hosted {property.mastersYears} Masters week{property.mastersYears > 1 ? 's' : ''}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
-    const sc = STATUS_COLORS[value];
-    return (
-      <button onClick={() => setStatusFilter(statusFilter === value ? 'all' : value)} style={{
-        padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-        border: isActive ? `2px solid ${sc.solid}` : `1px solid ${sc.border}`,
-        background: isActive ? sc.solid : sc.bg, color: isActive ? '#fff' : sc.text,
-        display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
-      }}>
-        {label}
-        <span style={{
-          background: isActive ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.06)',
-          padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
-        }}>{count}</span>
-      </button>
-    );
-  };
 
-  const TypeButton = ({ value, label, count }) => {
-    const isActive = typeFilter === value;
-    if (value === 'all') {
+    // ── Quick View Modal ──
+    function QuickViewModal({ property, onClose, onToggleCompare, isCompared }) {
+      const [activeImg, setActiveImg] = useState(0);
+      if (!property) return null;
+
+      const weekly = getWeeklyPrice(property);
+      const packages = [
+        { name: 'Full Week', dates: 'Apr 5 \u2013 12', nights: 7 },
+        { name: 'Practice Rounds', dates: 'Apr 7 \u2013 9', nights: 3 },
+        { name: 'Tournament Days', dates: 'Apr 10 \u2013 13', nights: 4 },
+        { name: 'Extended Stay', dates: 'Apr 3 \u2013 14', nights: 12 },
+      ];
+
       return (
-        <button onClick={() => setTypeFilter('all')} style={{
-          padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-          border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
-          background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
-          display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
-        }}>
-          {label}
-          <span style={{
-            background: isActive ? 'rgba(255,255,255,0.25)' : '#f0f0f0',
-            padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
-          }}>{count}</span>
-        </button>
-      );
-    }
-    const tc = TYPE_COLORS[value];
-    return (
-      <button onClick={() => setTypeFilter(typeFilter === value ? 'all' : value)} style={{
-        padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-        border: `1px solid ${isActive ? tc.text : tc.border}`,
-        background: isActive ? tc.bg : '#fff', color: tc.text,
-        display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
-      }}>
-        {label}
-        <span style={{
-          background: isActive ? 'rgba(0,0,0,0.06)' : '#f5f5f5',
-          padding: '1px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700
-        }}>{count}</span>
-      </button>
-    );
-  };
-
-  /* Property image — real photo for PP-1001, gradient placeholders for others (4:3 landscape) */
-  const PropertyImage = ({ p, size }) => {
-    const w = size === 'grid' ? '100%' : 280;
-    const h = size === 'grid' ? 200 : 210;
-    const sc = STATUS_COLORS[p.status];
-    const hasPhoto = p.id === 'PP-1001';
-    return (
-      <div style={{
-        width: w, height: h, flexShrink: 0, position: 'relative', overflow: 'hidden',
-        background: hasPhoto ? '#000' : `linear-gradient(135deg, hsl(${p.imgHue},25%,35%) 0%, hsl(${p.imgHue},20%,45%) 50%, hsl(${p.imgHue},25%,35%) 100%)`,
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 12,
-        borderRadius: size === 'grid' ? '8px 8px 0 0' : 0
-      }}>
-        {/* Actual house photo for PP-1001 */}
-        {hasPhoto && (
-          <img src={HOUSE_IMG} alt={p.address} style={{
-            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-            objectFit: 'cover', objectPosition: 'center'
-          }} />
-        )}
-        {/* Top row: ID + rating */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 1 }}>
-          <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700, background: 'rgba(0,0,0,0.45)', color: '#fff', letterSpacing: 0.5 }}>{p.id}</span>
-          {p.rating >= 4.8 && (
-            <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 11, fontWeight: 700, background: 'rgba(0,0,0,0.45)', color: '#FFD700' }}>★ {p.rating}</span>
-          )}
-        </div>
-        {/* Center house icon — only for placeholders */}
-        {!hasPhoto && (
-          <div style={{ textAlign: 'center', opacity: 0.3 }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, marginTop: 4 }}>280 × 210 photo area</div>
-          </div>
-        )}
-        {hasPhoto && <div />}
-        {/* Bottom row: status + walkable */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
-          <span style={{
-            padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600,
-            background: sc.solid, color: '#fff'
-          }}>{sc.label}</span>
-          {p.walkable && (
-            <span style={{ padding: '4px 8px', borderRadius: 6, fontSize: 10, fontWeight: 600, background: 'rgba(0,0,0,0.35)', color: '#fff' }}>🚶 Walkable</span>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const InquiryModal = ({ p, onClose }) => (
-    <div style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-    }} onClick={onClose}>
-      <div style={{
-        background: '#fff', borderRadius: 12, padding: 32, width: 480, maxWidth: '90vw'
-      }} onClick={e => e.stopPropagation()}>
-        <h3 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 700 }}>Inquire: {p.address}</h3>
-        <p style={{ margin: '0 0 20px', fontSize: 13, color: '#888' }}>{p.id} · {p.neighborhood} · ${p.pricePerNight.toLocaleString()}/night</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input placeholder="Renter / Company Name" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
-          <input placeholder="Email" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
-          <input placeholder="Phone" style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input placeholder="Check-in" type="date" defaultValue="2027-04-01" style={{ flex: 1, padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
-            <input placeholder="Check-out" type="date" defaultValue="2027-04-14" style={{ flex: 1, padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit' }} />
-          </div>
-          <textarea placeholder="Notes..." rows={3} style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit', resize: 'vertical' }} />
-        </div>
-        <div style={{ display: 'flex', gap: 8, marginTop: 20, justifyContent: 'flex-end' }}>
-          <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: 8, border: '1px solid #e0e0e0', background: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Cancel</button>
-          <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: 8, border: 'none', background: '#006B54', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Submit Inquiry</button>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-
-      {/* ── Gradient Header ── */}
-      <div style={{
-        background: 'linear-gradient(135deg, #006B54, #004D3B)',
-        padding: '28px 40px 24px',
-        color: '#fff'
-      }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', opacity: 0.7, marginBottom: 6 }}>Patron Properties</div>
-              <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>Property Search</h1>
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={onClose}>&times;</button>
+            <div className="modal-hero">
+              <img src={property.imgs[activeImg]} alt={property.address} />
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button style={{
-                padding: '10px 20px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.3)',
-                background: 'rgba(255,255,255,0.1)', color: '#fff', fontSize: 13, fontWeight: 600,
-                cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
-              }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Export
-              </button>
-              <button style={{
-                padding: '10px 20px', borderRadius: 8, border: 'none',
-                background: '#fff', color: '#006B54', fontSize: 13, fontWeight: 700,
-                cursor: 'pointer', fontFamily: 'inherit'
-              }}>+ Add Property</button>
+            <div className="modal-thumbnails">
+              {property.imgs.map((src, i) => (
+                <div key={i} className={`modal-thumb${i === activeImg ? ' active' : ''}`} onClick={() => setActiveImg(i)}>
+                  <img src={src} alt="" />
+                </div>
+              ))}
             </div>
-          </div>
-        </div>
-      </div>
+            <div className="modal-body">
+              <div className="modal-title-row">
+                <div>
+                  <div className="modal-title">{property.address}</div>
+                  <div className="modal-neighborhood">{property.neighborhood}, Augusta, GA</div>
+                </div>
+                <div style={{textAlign:'right'}}>
+                  <span className="modal-type-badge">{property.type}</span>
+                  <div className="modal-price-tag" style={{marginTop:'0.5rem'}}>{formatPrice(weekly)}<span style={{fontSize:'0.875rem',fontWeight:400,color:'var(--text-tertiary)'}}> /week</span></div>
+                </div>
+              </div>
 
-      {/* ── KPI Bar ── */}
-      <div style={{
-        background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '16px 40px'
-      }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 24 }}>
-          {[
-            { label: 'PORTFOLIO VALUE', value: `$${(totalValue/1000).toFixed(0)}K`, sub: `${PROPERTIES.length} properties` },
-            { label: 'AVG NIGHTLY RATE', value: `$${avgPrice.toLocaleString()}`, sub: 'per property' },
-            { label: 'AVAILABLE', value: availCount, sub: `of ${PROPERTIES.length} total` },
-            { label: 'WALKABLE', value: walkableCount, sub: `${Math.round(walkableCount/PROPERTIES.length*100)}% of portfolio` },
-            { label: 'AVG RATING', value: avgRating, sub: `${PROPERTIES.reduce((s,p) => s+p.reviews, 0)} total reviews` },
-            { label: 'TOTAL BEDROOMS', value: totalBeds, sub: `${PROPERTIES.reduce((s,p) => s+p.maxGuests, 0)} max guests` },
-          ].map((kpi, i) => (
-            <div key={i} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#888', letterSpacing: 1, marginBottom: 4 }}>{kpi.label}</div>
-              <div style={{ fontSize: 28, fontWeight: 700, color: '#006B54', letterSpacing: -1 }}>{kpi.value}</div>
-              <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>{kpi.sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+              <div className="modal-avail">
+                <span className={`avail-dot${property.status === 'pending' ? ' pending' : ''}`} style={{width:8,height:8}} />
+                {property.status === 'pending' ? 'Availability Pending for Masters Week' : 'Available for Masters Week 2027'}
+              </div>
 
-      {/* ── Masters 2027 Banner ── */}
-      <div style={{
-        background: 'linear-gradient(90deg, #B8860B, #DAA520, #B8860B)',
-        padding: '8px 40px', textAlign: 'center'
-      }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: '#fff', letterSpacing: 1.5 }}>
-          🏌️ THE MASTERS 2027 · APRIL 5–11 · AUGUSTA NATIONAL GOLF CLUB · CALENDAR: APRIL 1–14
-        </span>
-      </div>
+              <p className="modal-editorial">{property.editorial}</p>
 
-      {/* ── Booking Package Selector ── */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, marginRight: 4 }}>BOOKING PACKAGE</span>
-            {BOOKING_PACKAGES.map(bp => {
-              const isActive = bookingPackage === bp.key;
-              return (
-                <button key={bp.key} onClick={() => setBookingPackage(bp.key)} style={{
-                  padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                  border: isActive ? '2px solid #006B54' : '1px solid #e0e0e0',
-                  background: isActive ? '#006B54' : '#fff', color: isActive ? '#fff' : '#555',
-                  display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit', transition: 'all 0.2s'
-                }}>
-                  {bp.label}
-                  {bp.key === 'full' && !isActive && (
-                    <span style={{ background: '#D1FAE5', color: '#065F46', padding: '1px 6px', borderRadius: 8, fontSize: 10, fontWeight: 700 }}>85%</span>
-                  )}
+              <div className="modal-facts-row">
+                <div className="modal-fact-item">
+                  <div className="modal-fact-value">{property.beds}</div>
+                  <div className="modal-fact-label">Bedrooms</div>
+                </div>
+                <div className="modal-fact-item">
+                  <div className="modal-fact-value">{property.baths}</div>
+                  <div className="modal-fact-label">Bathrooms</div>
+                </div>
+                <div className="modal-fact-item">
+                  <div className="modal-fact-value">{property.sleeps}</div>
+                  <div className="modal-fact-label">Sleeps</div>
+                </div>
+                <div className="modal-fact-item">
+                  <div className="modal-fact-value">{property.distanceToGate6}</div>
+                  <div className="modal-fact-label">Miles to Gate 6</div>
+                </div>
+                <div className="modal-fact-item">
+                  <div className="modal-fact-value" style={{fontSize:'0.9375rem'}}>{property.kitchenTier}</div>
+                  <div className="modal-fact-label">Kitchen Tier</div>
+                </div>
+              </div>
+
+              {Object.entries(property.amenities).map(([category, items]) => (
+                <div key={category}>
+                  <div className="modal-amenities-title">{category}</div>
+                  <div className="modal-amenities">
+                    {items.map((item, i) => (
+                      <div key={i} className="modal-amenity">
+                        <span className="modal-amenity-icon">&#10003;</span> {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div className="modal-distance">
+                {getDriveTime(property.distanceToGate6)} from Gate 6{property.distanceToGate6 <= 0.5 ? ' on Berckmans Road' : ''} &mdash; {property.distanceToGate6} miles
+              </div>
+
+              <div className="modal-packages">
+                <div className="modal-packages-title">Masters Week Packages</div>
+                {packages.map(pkg => (
+                  <div key={pkg.name} className="package-row">
+                    <div>
+                      <div className="package-name">{pkg.name}</div>
+                      <div className="package-dates">{pkg.dates}</div>
+                    </div>
+                    <div className="package-price">{formatPrice(property.nightlyRate * pkg.nights)}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="modal-actions">
+                <button className="btn-request">Request This Property</button>
+                <button
+                  className={`btn-compare${isCompared ? ' added' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); onToggleCompare(property); }}
+                >
+                  {isCompared ? 'Added to Comparison' : 'Add to Comparison'}
                 </button>
-              );
-            })}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      );
+    }
 
-      {/* ── Filter Buttons Row ── */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '14px 40px' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          {/* Status buttons */}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, minWidth: 52 }}>STATUS</span>
-            <StatusButton value="all" label="All Properties" count={PROPERTIES.length} />
-            {Object.entries(STATUS_COLORS).map(([key, sc]) => (
-              <StatusButton key={key} value={key} label={sc.label} count={statusCounts[key]} />
-            ))}
-          </div>
-          {/* Type buttons */}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#888', letterSpacing: 1, minWidth: 52 }}>TYPE</span>
-            <TypeButton value="all" label="All Types" count={PROPERTIES.length} />
-            {Object.keys(TYPE_COLORS).map(t => (
-              <TypeButton key={t} value={t} label={t} count={typeCounts[t]} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Search + Advanced Filters Bar ── */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '12px 40px' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search address, neighborhood, ID, or features..."
-              style={{
-                width: '100%', padding: '10px 16px 10px 38px', borderRadius: 8,
-                border: '1px solid #e0e0e0', fontSize: 14, fontFamily: 'inherit', background: '#fafafa'
-              }} />
-            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 15, opacity: 0.35 }}>🔍</span>
-          </div>
-          {/* Saved filter pill */}
-          <button onClick={() => setShowSavedOnly(!showSavedOnly)} style={{
-            padding: '10px 16px', borderRadius: 8,
-            border: showSavedOnly ? '2px solid #c53030' : '1px solid #e0e0e0',
-            background: showSavedOnly ? '#FEF2F2' : '#fafafa',
-            color: showSavedOnly ? '#c53030' : '#555', fontSize: 13, fontWeight: 600,
-            cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
-          }}>
-            {showSavedOnly ? '♥' : '♡'} Saved{savedIds.length > 0 ? ` (${savedIds.length})` : ''}
-          </button>
-          {/* Best For dropdown */}
-          <select value={bestForFilter} onChange={e => setBestForFilter(e.target.value)} style={{
-            padding: '10px 32px 10px 12px', borderRadius: 8, border: bestForFilter !== 'All' ? '2px solid #006B54' : '1px solid #e0e0e0',
-            fontSize: 13, fontWeight: 500, background: bestForFilter !== 'All' ? 'rgba(0,107,84,0.08)' : '#fafafa', cursor: 'pointer', fontFamily: 'inherit',
-            color: bestForFilter !== 'All' ? '#006B54' : '#555'
-          }}>
-            {BEST_FOR_OPTIONS.map(opt => (
-              <option key={opt} value={opt}>{opt === 'All' ? 'Best For: All' : `Best For: ${opt}`}</option>
-            ))}
-          </select>
-          <select value={sort} onChange={e => setSort(e.target.value)} style={{
-            padding: '10px 32px 10px 12px', borderRadius: 8, border: '1px solid #e0e0e0',
-            fontSize: 13, fontWeight: 500, background: '#fafafa', cursor: 'pointer', fontFamily: 'inherit'
-          }}>
-            <option value="price-asc">Price: Low → High</option>
-            <option value="price-desc">Price: High → Low</option>
-            <option value="beds-desc">Most Bedrooms</option>
-            <option value="rating-desc">Highest Rated</option>
-            <option value="distance-asc">Nearest to Course</option>
-          </select>
-          <button onClick={() => setFiltersOpen(!filtersOpen)} style={{
-            padding: '10px 18px', borderRadius: 8, border: '1px solid #e0e0e0',
-            background: filtersOpen ? 'rgba(0,107,84,0.08)' : '#fafafa',
-            color: filtersOpen ? '#006B54' : '#555', fontSize: 13, fontWeight: 600,
-            cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6
-          }}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <line x1="1" y1="4" x2="15" y2="4"/><line x1="1" y1="8" x2="15" y2="8"/><line x1="1" y1="12" x2="15" y2="12"/>
-              <circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="8" r="1.5" fill="currentColor"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/>
-            </svg>
-            Filters
-            {activeCount > 0 && <span style={{ background: '#006B54', color: '#fff', borderRadius: 20, padding: '1px 7px', fontSize: 11, fontWeight: 700 }}>{activeCount}</span>}
-          </button>
-          {/* View toggle */}
-          <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 8, overflow: 'hidden' }}>
-            <button onClick={() => setViewMode('cards')} style={{
-              padding: '8px 12px', border: 'none', cursor: 'pointer',
-              background: viewMode === 'cards' ? '#006B54' : '#fafafa', color: viewMode === 'cards' ? '#fff' : '#888', fontSize: 14
-            }}>☰</button>
-            <button onClick={() => setViewMode('grid')} style={{
-              padding: '8px 12px', border: 'none', cursor: 'pointer',
-              background: viewMode === 'grid' ? '#006B54' : '#fafafa', color: viewMode === 'grid' ? '#fff' : '#888', fontSize: 14
-            }}>▦</button>
-            <button onClick={() => setViewMode('map')} style={{
-              padding: '8px 12px', border: 'none', cursor: 'pointer',
-              background: viewMode === 'map' ? '#006B54' : '#fafafa', color: viewMode === 'map' ? '#fff' : '#888', fontSize: 14
-            }} title="Map View">◉</button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Collapsible Advanced Filters ── */}
-      <div style={{
-        maxHeight: filtersOpen ? 400 : 0, overflow: 'hidden',
-        transition: 'max-height 0.35s ease', background: '#fff',
-        borderBottom: filtersOpen ? '1px solid #e0e0e0' : 'none'
-      }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', padding: '20px 40px' }}>
-          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 16 }}>
-            {/* Neighborhood */}
-            <div>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>NEIGHBORHOOD</label>
-              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                {NEIGHBORHOODS.map(n => (
-                  <button key={n} onClick={() => setHood(n)} style={{
-                    padding: '6px 12px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
-                    border: hood === n ? 'none' : '1px solid #e0e0e0',
-                    background: hood === n ? '#006B54' : '#fff', color: hood === n ? '#fff' : '#555',
-                    fontFamily: 'inherit', transition: 'all 0.2s'
-                  }}>{n}</button>
-                ))}
-              </div>
-            </div>
-            {/* Bedrooms */}
-            <div>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>BEDROOMS</label>
-              <div style={{ display: 'flex', gap: 4 }}>
-                {[0,3,4,5,6,7].map(n => (
-                  <button key={n} onClick={() => setBeds(n)} style={{
-                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
-                    border: beds === n ? 'none' : '1px solid #e0e0e0',
-                    background: beds === n ? '#006B54' : '#fff', color: beds === n ? '#fff' : '#555',
-                    fontFamily: 'inherit'
-                  }}>{n === 0 ? 'Any' : n + '+'}</button>
-                ))}
-              </div>
-            </div>
-            {/* Bathrooms */}
-            <div>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>BATHROOMS</label>
-              <div style={{ display: 'flex', gap: 4 }}>
-                {[0,2,3,4,5].map(n => (
-                  <button key={n} onClick={() => setBaths(n)} style={{
-                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
-                    border: baths === n ? 'none' : '1px solid #e0e0e0',
-                    background: baths === n ? '#006B54' : '#fff', color: baths === n ? '#fff' : '#555',
-                    fontFamily: 'inherit'
-                  }}>{n === 0 ? 'Any' : n + '+'}</button>
-                ))}
-              </div>
-            </div>
-            {/* Max Price */}
-            <div style={{ minWidth: 180 }}>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>
-                MAX /NIGHT: <span style={{ color: '#006B54', fontSize: 12 }}>${maxPrice >= 6000 ? '6,000+' : maxPrice.toLocaleString()}</span>
-              </label>
-              <input type="range" min={1000} max={6000} step={100} value={maxPrice} onChange={e => setMaxPrice(+e.target.value)} />
-            </div>
-            {/* Guests */}
-            <div>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>GUESTS</label>
-              <div style={{ display: 'flex', gap: 4 }}>
-                {[0,6,8,10,14].map(n => (
-                  <button key={n} onClick={() => setGuests(n)} style={{
-                    padding: '6px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
-                    border: guests === n ? 'none' : '1px solid #e0e0e0',
-                    background: guests === n ? '#006B54' : '#fff', color: guests === n ? '#fff' : '#555',
-                    fontFamily: 'inherit'
-                  }}>{n === 0 ? 'Any' : n + '+'}</button>
-                ))}
-              </div>
-            </div>
-          </div>
-          {/* Amenities + toggles */}
-          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1, minWidth: 300 }}>
-              <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 8, letterSpacing: 1 }}>AMENITIES</label>
-              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                {ALL_AMENITIES.map(a => (
-                  <button key={a} onClick={() => toggleAmenity(a)} style={{
-                    padding: '6px 12px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
-                    border: amenities.includes(a) ? 'none' : '1px solid #e0e0e0',
-                    background: amenities.includes(a) ? '#006B54' : '#fff', color: amenities.includes(a) ? '#fff' : '#555',
-                    fontFamily: 'inherit'
-                  }}>{a}</button>
-                ))}
-              </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {/* Walkable toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 12, fontWeight: 500 }}>
-                <div style={{ width: 40, height: 22, borderRadius: 11, padding: 2, background: walkOnly ? '#006B54' : 'rgba(0,0,0,0.12)', transition: 'background 0.2s', cursor: 'pointer' }} onClick={() => setWalkOnly(!walkOnly)}>
-                  <div style={{ width: 18, height: 18, borderRadius: 9, background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transform: walkOnly ? 'translateX(18px)' : 'translateX(0)', transition: 'transform 0.2s' }} />
+    // ── Compare Modal ──
+    function CompareModal({ properties, onClose }) {
+      if (!properties || properties.length < 2) return null;
+      const [a, b] = properties;
+      const rows = [
+        { label: 'Bedrooms', aVal: a.beds, bVal: b.beds },
+        { label: 'Bathrooms', aVal: a.baths, bVal: b.baths },
+        { label: 'Sleeps', aVal: a.sleeps, bVal: b.sleeps },
+        { label: 'Distance to Gate 6', aVal: a.distanceToGate6 + ' mi', bVal: b.distanceToGate6 + ' mi' },
+        { label: 'Kitchen Tier', aVal: a.kitchenTier, bVal: b.kitchenTier },
+        { label: 'Pool', aVal: a.pool ? 'Yes' : 'No', bVal: b.pool ? 'Yes' : 'No' },
+        { label: 'Staff Quarters', aVal: a.staffQuarters ? 'Yes' : 'No', bVal: b.staffQuarters ? 'Yes' : 'No' },
+        { label: 'Parking', aVal: a.amenities.logistics[0], bVal: b.amenities.logistics[0] },
+        { label: 'Weekly Rate', aVal: formatPrice(getWeeklyPrice(a)), bVal: formatPrice(getWeeklyPrice(b)) },
+      ];
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal" style={{maxWidth:1100}} onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={onClose}>&times;</button>
+            <div className="compare-modal-body">
+              {[a, b].map((prop, idx) => (
+                <div key={prop.id} className="compare-col">
+                  <div className="compare-col-img"><img src={prop.img} alt={prop.address} /></div>
+                  <div className="compare-col-body">
+                    <div className="compare-col-name">{prop.address}</div>
+                    <div className="compare-col-price">{formatPrice(getWeeklyPrice(prop))} /week</div>
+                    {rows.map((row, ri) => {
+                      const val = idx === 0 ? row.aVal : row.bVal;
+                      const diff = String(row.aVal) !== String(row.bVal);
+                      return (
+                        <div key={ri} className={`compare-row${diff ? ' diff' : ''}`}>
+                          <span className="compare-row-label">{row.label}</span>
+                          <span className="compare-row-value">{val}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                Walkable only
-              </label>
-              {activeCount > 0 && (
-                <button onClick={clearAll} style={{
-                  background: 'none', border: 'none', color: '#c53030', fontSize: 12,
-                  fontWeight: 600, cursor: 'pointer', padding: 0, fontFamily: 'inherit'
-                }}>Clear all filters ×</button>
-              )}
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      );
+    }
 
-      {/* ── Results ── */}
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '24px 40px 60px' }}>
-        <div style={{ fontSize: 13, color: '#888', fontWeight: 500, marginBottom: 16 }}>
-          Showing <strong style={{ color: '#111' }}>{filtered.length}</strong> of {PROPERTIES.length} properties
-          {activeCount > 0 && <span> · {activeCount} filter{activeCount !== 1 && 's'} active</span>}
-          <span> · Package: <strong style={{ color: '#006B54' }}>{currentPackage.label}</strong></span>
-        </div>
+    // ── App ──
+    function App() {
+      const [partySize, setPartySize] = useState(null);
+      const [experienceType, setExperienceType] = useState(null);
+      const [priorities, setPriorities] = useState({});
+      const [quickView, setQuickView] = useState(null);
+      const [compared, setCompared] = useState([]);
+      const [showCompare, setShowCompare] = useState(false);
+      const collectionsRef = useRef(null);
 
-        {filtered.length === 0 ? (
-          <div style={{ background: '#fff', borderRadius: 12, padding: '64px 40px', textAlign: 'center', border: '1px solid #e0e0e0' }}>
-            <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 600 }}>No properties found</h3>
-            <p style={{ margin: '0 0 24px', color: '#888', fontSize: 14 }}>Adjust your filters to see more results.</p>
-            <button onClick={clearAll} style={{ padding: '12px 28px', borderRadius: 8, background: '#006B54', color: '#fff', border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>Clear All Filters</button>
-          </div>
-        ) : viewMode === 'map' ? (
-          /* ── Map View Placeholder ── */
-          <div style={{
-            background: '#fff', borderRadius: 12, border: '1px solid #e0e0e0', overflow: 'hidden',
-            minHeight: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            position: 'relative'
-          }}>
-            {/* Map-like background pattern */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.06,
-              backgroundImage: `
-                linear-gradient(0deg, #006B54 1px, transparent 1px),
-                linear-gradient(90deg, #006B54 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px'
-            }} />
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.03,
-              backgroundImage: `
-                linear-gradient(45deg, #006B54 1px, transparent 1px),
-                linear-gradient(-45deg, #006B54 1px, transparent 1px)
-              `,
-              backgroundSize: '120px 120px'
-            }} />
-            <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: 40 }}>
-              <div style={{ fontSize: 48, marginBottom: 16, opacity: 0.3 }}>🗺️</div>
-              <h3 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#006B54' }}>Map View — Coming Soon</h3>
-              <p style={{ margin: '0 0 16px', color: '#888', fontSize: 14, lineHeight: 1.6, maxWidth: 480 }}>
-                Properties will be shown relative to <strong>Gate 6, Berckmans Road</strong><br/>
-                (Augusta National tournament entrance)
-              </p>
-              <div style={{
-                display: 'inline-block', padding: '10px 20px', borderRadius: 8,
-                background: 'rgba(0,107,84,0.08)', color: '#006B54', fontSize: 13, fontWeight: 600
-              }}>
-                {filtered.length} properties ready to map · Distances range from {Math.min(...filtered.map(p => p.distanceMi))} to {Math.max(...filtered.map(p => p.distanceMi))} miles
+      const togglePriority = (key) => {
+        setPriorities(prev => ({ ...prev, [key]: !prev[key] }));
+      };
+
+      const toggleCompare = (prop) => {
+        setCompared(prev => {
+          const exists = prev.find(p => p.id === prop.id);
+          if (exists) return prev.filter(p => p.id !== prop.id);
+          if (prev.length >= 2) return [prev[1], prop];
+          return [...prev, prop];
+        });
+      };
+
+      const isCompared = (prop) => compared.some(p => p.id === prop.id);
+
+      const filteredIds = useMemo(() => {
+        let props = PROPERTIES;
+        if (partySize) {
+          const size = PARTY_SIZES.find(s => s.key === partySize);
+          if (size) props = props.filter(p => p.sleeps >= size.min && p.sleeps <= size.max + 4);
+        }
+        if (experienceType) {
+          const exp = EXPERIENCE_TYPES.find(e => e.key === experienceType);
+          if (exp) props = props.filter(p => exp.types.includes(p.type));
+        }
+        if (priorities.walkingDistance) props = props.filter(p => p.walkingDistance);
+        if (priorities.pool) props = props.filter(p => p.pool);
+        if (priorities.chefKitchen) props = props.filter(p => ['Commercial Catering', 'Professional', 'Private Chef', 'Chef-Ready'].includes(p.kitchenTier));
+        if (priorities.multiProperty) props = props.filter(p => ['Entertainer Home', 'Staff Housing'].includes(p.type));
+        return new Set(props.map(p => p.id));
+      }, [partySize, experienceType, priorities]);
+
+      const hasFilters = partySize || experienceType || Object.values(priorities).some(Boolean);
+
+      const scrollToCollection = () => {
+        collectionsRef.current?.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      return (
+        <>
+          {/* ── Hero ── */}
+          <section className="hero">
+            <div className="hero-bg" />
+            <div className="hero-overlay" />
+            <div className="hero-content">
+              <h1>Masters Week 2027</h1>
+              <p>Curated homes near Augusta National Golf Club</p>
+              <button className="hero-cta" onClick={scrollToCollection}>View This Year's Collection</button>
+            </div>
+            <div className="scroll-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </div>
+          </section>
+
+          {/* ── Concierge Intake ── */}
+          <section className="intake-section section">
+            <div className="section-wide">
+              <div className="intake-steps">
+                <div>
+                  <div className="intake-step-label"><span className="intake-step-num">1</span> Party Size</div>
+                  <div className="pill-group">
+                    {PARTY_SIZES.map(s => (
+                      <button key={s.key} className={`pill${partySize === s.key ? ' active' : ''}`} onClick={() => setPartySize(partySize === s.key ? null : s.key)}>
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="intake-step-label"><span className="intake-step-num">2</span> Experience Type</div>
+                  <div className="pill-group">
+                    {EXPERIENCE_TYPES.map(e => (
+                      <button key={e.key} className={`pill${experienceType === e.key ? ' active' : ''}`} onClick={() => setExperienceType(experienceType === e.key ? null : e.key)}>
+                        {e.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="intake-step-label"><span className="intake-step-num">3</span> Priorities</div>
+                  <div className="pill-group">
+                    {PRIORITIES.map(p => (
+                      <button key={p.key} className={`toggle-pill${priorities[p.key] ? ' active' : ''}`} onClick={() => togglePriority(p.key)}>
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="intake-result">
+                Show <strong>{filteredIds.size}</strong> {filteredIds.size === 1 ? 'property' : 'properties'} matching your needs
               </div>
             </div>
-          </div>
-        ) : viewMode === 'grid' ? (
-          /* ── Grid View ── */
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320, 1fr))', gap: 20 }}>
-            {filtered.map(p => {
-              const sc = STATUS_COLORS[p.status];
-              const tc = TYPE_COLORS[p.type];
+          </section>
+
+          {/* ── Curated Collections ── */}
+          <div ref={collectionsRef}>
+            {COLLECTIONS.map(collection => {
+              const collectionProps = collection.propertyIds
+                .map(id => PROPERTIES.find(p => p.id === id))
+                .filter(p => !hasFilters || filteredIds.has(p.id));
+              if (collectionProps.length === 0) return null;
+
               return (
-                <div key={p.id} style={{
-                  background: '#fff', borderRadius: 8, overflow: 'hidden',
-                  border: '1px solid #e0e0e0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                  cursor: 'pointer', transition: 'box-shadow 0.2s'
-                }}
-                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'}
-                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
-                  onClick={() => setExpanded(expanded === p.id ? null : p.id)}
-                >
-                  <div style={{ position: 'relative' }}>
-                    <PropertyImage p={p} size="grid" />
-                    <button onClick={(e) => { e.stopPropagation(); toggleSaved(p.id); }} style={{
-                      position: 'absolute', top: 12, right: 12, zIndex: 2, background: 'rgba(255,255,255,0.9)',
-                      border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 16, color: savedIds.includes(p.id) ? '#c53030' : '#888',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.15)', transition: 'all 0.2s'
-                    }}>{savedIds.includes(p.id) ? '♥' : '♡'}</button>
+                <section key={collection.key} className="collection-section section">
+                  <div className="section-wide">
+                    <div className="collection-header">
+                      <h2>{collection.title}</h2>
+                      <p className="collection-editorial">{collection.editorial}</p>
+                    </div>
+                    <div className={collection.layout === 'entertainer' ? 'cards-grid-entertainer' : 'cards-grid'}>
+                      {collectionProps.map(prop => (
+                        <PropertyCard key={prop.id} property={prop} onOpen={setQuickView} />
+                      ))}
+                    </div>
+
+                    {collection.key === 'entertainer' && (
+                      <div className="concierge-mobile">
+                        <div style={{width:56,height:56,borderRadius:'50%',background:'var(--accent-light)',display:'inline-flex',alignItems:'center',justifyContent:'center',color:'var(--patron-green)',fontSize:'1.25rem',fontWeight:600,marginBottom:'1rem'}}>SM</div>
+                        <div className="concierge-label">Your Masters Week Contact</div>
+                        <div className="concierge-name">Sarah Mitchell, Guest Services</div>
+                        <div className="concierge-detail">+1 (706) 555-0142</div>
+                        <div className="concierge-detail">sarah@patronproperties.com</div>
+                        <button className="concierge-btn" style={{maxWidth:280,margin:'1rem auto 0'}}>Schedule a Call</button>
+                        <div className="concierge-response">Response within 2 hours</div>
+                      </div>
+                    )}
                   </div>
-                  <div style={{ padding: 16 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                      <div>
-                        <div style={{ fontSize: 16, fontWeight: 700 }}>{p.address}</div>
-                        <div style={{ fontSize: 12, color: '#888' }}>{p.neighborhood} · {p.distanceMi}mi</div>
-                      </div>
-                      <span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>{p.type}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 12, marginBottom: 12, fontSize: 12, color: '#555' }}>
-                      <span>{p.bedrooms} BD</span><span>{p.bathrooms} BA</span><span>{p.maxGuests} Guests</span><span>{p.sqft.toLocaleString()} sf</span>
-                    </div>
-                    {(() => { const bf = getBestFor(p); return (
-                      <div style={{ marginBottom: 8 }}>
-                        <span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: bf.bg, color: bf.color, border: `1px solid ${bf.color}22` }}>
-                          {bf.label}
-                        </span>
-                      </div>
-                    ); })()}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <span style={{ fontSize: 20, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
-                        <span style={{ fontSize: 12, color: '#888' }}>/night</span>
-                        <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>${(p.pricePerNight * currentPackage.nights).toLocaleString()} total ({currentPackage.nights} nights)</div>
-                      </div>
-                      <div style={{ fontSize: 12, color: '#888' }}>★ {p.rating} ({p.reviews})</div>
-                    </div>
-                  </div>
-                </div>
+                </section>
               );
             })}
           </div>
-        ) : (
-          /* ── List/Card View ── */
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {filtered.map(p => {
-              const isExp = expanded === p.id;
-              const sc = STATUS_COLORS[p.status];
-              const tc = TYPE_COLORS[p.type];
-              return (
-                <div key={p.id} style={{
-                  background: '#fff', borderRadius: 12, overflow: 'hidden',
-                  border: '1px solid #e0e0e0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                  transition: 'box-shadow 0.2s'
-                }}
-                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'}
-                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'}
-                >
-                  <div style={{ display: 'flex' }}>
-                    {/* Image with Save button */}
-                    <div style={{ position: 'relative', flexShrink: 0 }}>
-                      <PropertyImage p={p} size="list" />
-                      <button onClick={(e) => { e.stopPropagation(); toggleSaved(p.id); }} style={{
-                        position: 'absolute', top: 12, right: 12, zIndex: 2, background: 'rgba(255,255,255,0.9)',
-                        border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 16, color: savedIds.includes(p.id) ? '#c53030' : '#888',
-                        boxShadow: '0 1px 4px rgba(0,0,0,0.15)', transition: 'all 0.2s'
-                      }}>{savedIds.includes(p.id) ? '♥' : '♡'}</button>
-                    </div>
 
-                    {/* Content */}
-                    <div style={{ flex: 1, padding: '16px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-                          <div>
-                            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>{p.address}</h3>
-                            <div style={{ fontSize: 13, color: '#888', marginTop: 2 }}>{p.neighborhood} · {p.distanceMi} mi from course</div>
-                          </div>
-                          <span style={{ padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600, background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>{p.type}</span>
-                        </div>
-                        <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 13, color: '#555' }}>
-                          <span><strong>{p.bedrooms}</strong> BD</span>
-                          <span><strong>{p.bathrooms}</strong> BA</span>
-                          <span><strong>{p.maxGuests}</strong> Guests</span>
-                          <span><strong>{p.sqft.toLocaleString()}</strong> sf</span>
-                          <span>★ <strong>{p.rating}</strong> ({p.reviews})</span>
-                        </div>
-                        {p.highlight && (
-                          <div style={{ marginTop: 8, padding: '4px 10px', borderRadius: 4, background: '#FFFBEB', color: '#92400E', fontSize: 11, fontWeight: 600, display: 'inline-block' }}>
-                            ✦ {p.highlight}
-                          </div>
-                        )}
-                        {(() => { const bf = getBestFor(p); return (
-                          <div style={{ marginTop: 6 }}>
-                            <span style={{ padding: '3px 10px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: bf.bg, color: bf.color, border: `1px solid ${bf.color}22` }}>
-                              {bf.label}
-                            </span>
-                          </div>
-                        ); })()}
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 10 }}>
-                        <div>
-                          <span style={{ fontSize: 24, fontWeight: 700, color: '#006B54' }}>${p.pricePerNight.toLocaleString()}</span>
-                          <span style={{ fontSize: 13, color: '#888' }}>/night</span>
-                          <div style={{ fontSize: 12, color: '#aaa', marginTop: 2 }}>${(p.pricePerNight * currentPackage.nights).toLocaleString()} total ({currentPackage.nights} nights)</div>
-                        </div>
-                        <div style={{ display: 'flex', gap: 8 }}>
-                          <button onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : p.id); }} style={{
-                            padding: '8px 16px', borderRadius: 8, border: '1px solid #e0e0e0',
-                            background: '#fff', color: '#555', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'
-                          }}>
-                            {isExp ? 'Less' : 'Details'}
-                          </button>
-                          <button onClick={(e) => { e.stopPropagation(); setInquiryId(p.id); }} style={{
-                            padding: '8px 16px', borderRadius: 8, border: 'none',
-                            background: '#006B54', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'
-                          }}>Inquire</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          {/* ── Footer ── */}
+          <footer className="site-footer">
+            <div className="footer-brand">Patron Properties &middot; Masters Tournament Housing &middot; Augusta, GA</div>
+            <div>Powered by Patron Properties</div>
+          </footer>
 
-                  {/* Expanded Details */}
-                  {isExp && (
-                    <div style={{ borderTop: '1px solid #e0e0e0', padding: '16px 20px', background: '#fafaf9' }}>
-                      <p style={{ fontSize: 14, color: '#555', lineHeight: 1.6, marginBottom: 12 }}>{p.description}</p>
-                      <div>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: '#888', letterSpacing: 1, marginBottom: 8 }}>AMENITIES</div>
-                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                          {p.amenities.map(a => (
-                            <span key={a} style={{ padding: '4px 10px', borderRadius: 4, background: '#f0f0f0', fontSize: 12, color: '#555', fontWeight: 500 }}>{a}</span>
-                          ))}
-                        </div>
-                      </div>
-                      <div style={{ marginTop: 12, fontSize: 12, color: '#aaa' }}>Listed since {p.yearListed} · {p.sqft.toLocaleString()} sq ft</div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+          {/* ── Concierge Sidebar (desktop) ── */}
+          <div className="concierge-sidebar">
+            <div className="concierge-photo">SM</div>
+            <div className="concierge-label">Your Masters Week Contact</div>
+            <div className="concierge-name">Sarah Mitchell, Guest Services</div>
+            <div className="concierge-detail">+1 (706) 555-0142</div>
+            <div className="concierge-detail">sarah@patronproperties.com</div>
+            <button className="concierge-btn">Schedule a Call</button>
+            <div className="concierge-response">Response within 2 hours</div>
           </div>
-        )}
-      </div>
 
-      {/* Inquiry Modal */}
-      {inquiryId && <InquiryModal p={PROPERTIES.find(x => x.id === inquiryId)} onClose={() => setInquiryId(null)} />}
+          {/* ── Compare Bar ── */}
+          {compared.length >= 2 && !showCompare && (
+            <div className="compare-bar">
+              <div className="compare-thumbs">
+                {compared.map(p => (
+                  <div key={p.id} className="compare-thumb-circle">
+                    <img src={p.img} alt={p.address} />
+                  </div>
+                ))}
+              </div>
+              <span className="compare-bar-text">Compare Your Selections</span>
+              <button className="compare-bar-btn" onClick={() => setShowCompare(true)}>Compare</button>
+              <button className="compare-clear" onClick={() => setCompared([])}>Clear</button>
+            </div>
+          )}
 
-      {/* ── Footer ── */}
-      <div style={{
-        borderTop: '1px solid #e0e0e0', padding: '16px 40px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        fontSize: 12, color: '#aaa', background: '#fff'
-      }}>
-        <span>Patron Properties · Masters 2027 · Property Search</span>
-        <span>Prototype v2.0 · Hybrid Design</span>
-      </div>
-    </div>
-  );
-}
+          {/* ── Quick View Modal ── */}
+          {quickView && (
+            <QuickViewModal
+              property={quickView}
+              onClose={() => setQuickView(null)}
+              onToggleCompare={toggleCompare}
+              isCompared={isCompared(quickView)}
+            />
+          )}
 
-ReactDOM.render(<PropertySearch />, document.getElementById('root'));
-</script>
+          {/* ── Compare Modal ── */}
+          {showCompare && compared.length >= 2 && (
+            <CompareModal properties={compared} onClose={() => setShowCompare(false)} />
+          )}
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>

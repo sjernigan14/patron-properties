@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Load-In & Staging</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #2d6a4f;
+    --primary-dark: #1b4332;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border: #e5e5e5;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(45,106,79,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  input, button { font-family: var(--font); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ── Checklist Template ── */
+const CHECKLIST_ITEMS = [
+  { id: 'personal', label: 'Personal items removed & stored' },
+  { id: 'deepClean', label: 'Deep clean completed' },
+  { id: 'linens', label: 'All linens fresh (beds made, towels set)' },
+  { id: 'kitchen', label: 'Kitchen stocked (basics: coffee, water, snacks)' },
+  { id: 'wifi', label: 'Wi-Fi tested & password card placed' },
+  { id: 'thermostat', label: 'Thermostat set to 72\u00B0F' },
+  { id: 'lights', label: 'All lights/outlets working' },
+  { id: 'outdoor', label: 'Outdoor areas clean (porch, patio, pool if applicable)' },
+  { id: 'binder', label: 'Welcome binder placed (Patron-provided)' },
+  { id: 'lockbox', label: 'Lockbox code set & tested' },
+  { id: 'parking', label: 'Parking cleared for guest vehicles' },
+  { id: 'trash', label: 'Trash/recycling emptied, new bags in' },
+];
+
+/* ── Property Data ── */
+const PROPERTIES = [
+  {
+    id: 'PP-1001',
+    address: '142 Berckmans Dr',
+    neighborhood: 'West Augusta',
+    beds: 7, baths: 5,
+    owner: 'Margaret Ashford',
+    guest: 'James Mitchell',
+    guestCompany: 'Goldman Sachs',
+    checkIn: 'Apr 5, 2027 — 3:00 PM',
+    checklist: [true, true, true, true, true, true, true, true, true, true, true, true],
+    verification: 'Verified',
+    notes: 'Margaret hires her own crew every year. Patron verified at 10 AM on Apr 4. Flawless as always.',
+    photoStatus: 'complete',
+  },
+  {
+    id: 'PP-1005',
+    address: '789 Milledge Rd',
+    neighborhood: 'West Augusta',
+    beds: 5, baths: 3,
+    owner: 'Robert & Linda Hayes',
+    guest: 'Steve Walsh',
+    guestCompany: 'Walsh Family',
+    checkIn: 'Apr 9, 2027 — 2:00 PM',
+    checklist: [true, true, true, true, true, true, false, true, false, false, true, false],
+    verification: 'In Progress',
+    notes: 'Linda called Taite twice today. Robert is re-checking the lockbox code. Nervous first-timer energy — they need reassurance, not reminders.',
+    photoStatus: 'partial',
+  },
+  {
+    id: 'PP-1009',
+    address: '556 Berckmans Rd',
+    neighborhood: 'West Augusta',
+    beds: 7, baths: 6,
+    owner: 'Catherine Harwell',
+    guest: 'Marcus Chen',
+    guestCompany: 'Delta Air Lines',
+    checkIn: 'Apr 5, 2027 — 12:00 PM',
+    checklist: [true, true, true, true, true, true, true, true, true, false, true, false],
+    verification: 'Scheduled',
+    notes: 'Catherine\'s staging notes: "Fresh flowers in foyer, use the Waterford crystal, NOT the everyday glasses." She insists on being present for Patron walkthrough.',
+    photoStatus: 'pending',
+  },
+  {
+    id: 'PP-1006',
+    address: '411 Cumming Rd',
+    neighborhood: 'National Hills',
+    beds: 6, baths: 4,
+    owner: 'Daniel & Christine Moore',
+    guest: 'Victoria Stone',
+    guestCompany: 'BlackRock',
+    checkIn: 'Apr 3, 2027 — 4:00 PM',
+    checklist: [true, true, true, false, true, false, false, false, false, true, false, false],
+    verification: 'Scheduled',
+    notes: 'Moores are in Atlanta — hired a local prep crew (Augusta Home Services). Crew started yesterday, behind schedule. Patron needs to follow up directly with the crew lead.',
+    photoStatus: 'none',
+  },
+];
+
+/* ── Helpers ── */
+const completionCount = (cl) => cl.filter(Boolean).length;
+const completionPct = (cl) => Math.round((completionCount(cl) / cl.length) * 100);
+
+const STATUS_STYLES = {
+  Verified:     { bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7', icon: '\u2713' },
+  'In Progress': { bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', icon: '\u25CB' },
+  Scheduled:    { bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD', icon: '\u25F7' },
+};
+
+/* ── Days until first check-in ── */
+const FIRST_CHECKIN = new Date('2027-04-03T16:00:00');
+const NOW = new Date('2027-03-31T08:00:00');
+const DAYS_UNTIL = Math.ceil((FIRST_CHECKIN - NOW) / (1000 * 60 * 60 * 24));
+
+/* ── App ── */
+function App() {
+  const [properties, setProperties] = useState(PROPERTIES);
+  const [expandedId, setExpandedId] = useState(null);
+  const [view, setView] = useState('cards');
+
+  const toggleCheck = (propIdx, checkIdx) => {
+    setProperties(prev => prev.map((p, i) => {
+      if (i !== propIdx) return p;
+      const cl = [...p.checklist];
+      cl[checkIdx] = !cl[checkIdx];
+      return { ...p, checklist: cl };
+    }));
+  };
+
+  const alerts = properties.filter(p => {
+    const pct = completionPct(p.checklist);
+    return pct < 50;
+  });
+
+  const overallPct = Math.round(
+    properties.reduce((s, p) => s + completionPct(p.checklist), 0) / properties.length
+  );
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+      {/* Header */}
+      <header style={{
+        background: 'linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%)',
+        color: '#fff', padding: '20px 32px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>Load-In & Staging</h1>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 2 }}>Patron Properties · Masters 2027</p>
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)',
+            borderRadius: 8, padding: '10px 20px', textAlign: 'center',
+          }}>
+            <div style={{ fontSize: 28, fontWeight: 700, lineHeight: 1 }}>{DAYS_UNTIL}</div>
+            <div style={{ fontSize: 11, opacity: 0.8, marginTop: 2 }}>days until first check-in</div>
+          </div>
+        </div>
+      </header>
+
+      {/* KPI Bar */}
+      <div style={{
+        background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e5e5e5',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24,
+      }}>
+        {[
+          { label: 'Properties Preparing', value: properties.length, sub: 'Active for Masters 2027' },
+          { label: 'Overall Readiness', value: `${overallPct}%`, sub: 'Avg checklist completion', color: overallPct >= 75 ? '#2d6a4f' : overallPct >= 50 ? '#D97706' : '#DC2626' },
+          { label: 'Verified', value: properties.filter(p => p.verification === 'Verified').length, sub: `of ${properties.length} properties`, color: '#065F46' },
+          { label: 'Needs Attention', value: alerts.length, sub: '<50% complete', color: alerts.length > 0 ? '#DC2626' : '#2d6a4f' },
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: kpi.color || '#2d6a4f', lineHeight: 1 }}>{kpi.value}</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{kpi.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* View Toggle */}
+      <div style={{ background: '#fff', padding: '12px 32px', borderBottom: '1px solid #e5e5e5', display: 'flex', gap: 8 }}>
+        {['cards', 'timeline'].map(v => (
+          <button key={v} onClick={() => setView(v)} style={{
+            padding: '6px 16px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            border: view === v ? '2px solid #2d6a4f' : '2px solid #e5e5e5',
+            background: view === v ? '#2d6a4f' : '#fff',
+            color: view === v ? '#fff' : '#2d6a4f',
+          }}>{v === 'cards' ? 'Property Cards' : 'Staging Timeline'}</button>
+        ))}
+      </div>
+
+      {/* Priority Alerts */}
+      {alerts.length > 0 && (
+        <div style={{ margin: '16px 32px 0', padding: '14px 20px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#DC2626', marginBottom: 6 }}>Priority Alerts</div>
+          {alerts.map(p => (
+            <div key={p.id} style={{ fontSize: 12, color: '#991B1B', marginBottom: 4 }}>
+              <span style={{ fontWeight: 600 }}>{p.address}</span> ({p.owner}) — {completionPct(p.checklist)}% complete, guest check-in: {p.checkIn}
+              <span style={{ marginLeft: 8, fontSize: 10, background: '#FEE2E2', padding: '2px 6px', borderRadius: 3, fontWeight: 700 }}>NEEDS ATTENTION</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div style={{ flex: 1, padding: '16px 32px 32px' }}>
+
+        {view === 'cards' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {properties.map((prop, propIdx) => {
+              const pct = completionPct(prop.checklist);
+              const done = completionCount(prop.checklist);
+              const isExpanded = expandedId === prop.id;
+              const vs = STATUS_STYLES[prop.verification];
+              const pctColor = pct === 100 ? '#065F46' : pct >= 75 ? '#2d6a4f' : pct >= 50 ? '#D97706' : '#DC2626';
+
+              return (
+                <div key={prop.id} style={{
+                  background: '#fff', borderRadius: 10, border: '1px solid #e5e5e5',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                  borderLeft: `4px solid ${pctColor}`,
+                  overflow: 'hidden',
+                }}>
+                  {/* Card Header */}
+                  <div style={{ padding: '18px 24px', cursor: 'pointer' }} onClick={() => setExpandedId(isExpanded ? null : prop.id)}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                          <span style={{ fontSize: 10, fontWeight: 600, color: '#6b7280', background: '#f5f5f4', padding: '2px 8px', borderRadius: 4 }}>{prop.id}</span>
+                          <span style={{ fontSize: 16, fontWeight: 700, color: '#1a1a1a' }}>{prop.address}</span>
+                          <span style={{ fontSize: 12, color: '#6b7280' }}>{prop.neighborhood}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: 24, fontSize: 13, color: '#6b7280', marginBottom: 4 }}>
+                          <span><strong style={{ color: '#1a1a1a' }}>Owner:</strong> {prop.owner}</span>
+                          <span><strong style={{ color: '#1a1a1a' }}>Guest:</strong> {prop.guest} ({prop.guestCompany})</span>
+                          <span><strong style={{ color: '#1a1a1a' }}>Check-in:</strong> {prop.checkIn}</span>
+                        </div>
+                        <div style={{ fontSize: 12, color: '#6b7280' }}>{prop.beds}BR / {prop.baths}BA</div>
+                      </div>
+
+                      <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 24 }}>
+                        {/* Completion */}
+                        <div style={{ fontSize: 28, fontWeight: 700, color: pctColor, lineHeight: 1 }}>{pct}%</div>
+                        <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>{done}/12 items</div>
+                        {/* Progress bar */}
+                        <div style={{ width: 120, height: 6, background: '#e5e5e5', borderRadius: 3, marginTop: 6, overflow: 'hidden' }}>
+                          <div style={{ width: `${pct}%`, height: '100%', background: pctColor, borderRadius: 3, transition: 'width 0.3s' }} />
+                        </div>
+                        {/* Verification badge */}
+                        <div style={{
+                          display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 8,
+                          fontSize: 11, fontWeight: 600, color: vs.text, background: vs.bg,
+                          padding: '3px 10px', borderRadius: 4, border: `1px solid ${vs.border}`,
+                        }}>
+                          <span>{vs.icon}</span> {prop.verification}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expanded Detail */}
+                  {isExpanded && (
+                    <div style={{ borderTop: '1px solid #e5e5e5', padding: '20px 24px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                        {/* Checklist */}
+                        <div>
+                          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 12 }}>Staging Checklist</h3>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            {CHECKLIST_ITEMS.map((item, checkIdx) => {
+                              const checked = prop.checklist[checkIdx];
+                              return (
+                                <label key={item.id} style={{
+                                  display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                                  fontSize: 13, color: checked ? '#065F46' : '#1a1a1a',
+                                  padding: '6px 10px', borderRadius: 6,
+                                  background: checked ? '#F0FDF4' : '#fff',
+                                  border: `1px solid ${checked ? '#BBF7D0' : '#e5e5e5'}`,
+                                }}>
+                                  <input
+                                    type="checkbox"
+                                    checked={checked}
+                                    onChange={() => toggleCheck(propIdx, checkIdx)}
+                                    style={{ width: 16, height: 16, accentColor: '#2d6a4f', cursor: 'pointer' }}
+                                  />
+                                  <span style={{ textDecoration: checked ? 'line-through' : 'none', opacity: checked ? 0.7 : 1 }}>{item.label}</span>
+                                  {!checked && pct < 50 && (
+                                    <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 700, color: '#DC2626', background: '#FEE2E2', padding: '1px 5px', borderRadius: 3 }}>MISSING</span>
+                                  )}
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Verification & Notes */}
+                        <div>
+                          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 12 }}>Patron Verification</h3>
+                          <div style={{
+                            padding: 16, borderRadius: 8, border: `1px solid ${vs.border}`,
+                            background: vs.bg, marginBottom: 16,
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                              <span style={{ fontSize: 18 }}>{vs.icon}</span>
+                              <span style={{ fontSize: 14, fontWeight: 700, color: vs.text }}>{prop.verification}</span>
+                            </div>
+                            <p style={{ fontSize: 12, color: vs.text, lineHeight: 1.5 }}>
+                              {prop.verification === 'Verified' && 'Patron staff completed walkthrough. Property meets all standards.'}
+                              {prop.verification === 'In Progress' && 'Patron staff is coordinating with the homeowner for walkthrough.'}
+                              {prop.verification === 'Scheduled' && 'Walkthrough scheduled after homeowner completes staging checklist.'}
+                            </p>
+                          </div>
+
+                          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 8 }}>Photo Verification</h3>
+                          <div style={{
+                            padding: 16, borderRadius: 8, border: '1px dashed #e5e5e5',
+                            background: '#fafafa', marginBottom: 16, textAlign: 'center',
+                          }}>
+                            {prop.photoStatus === 'complete' && (
+                              <div style={{ color: '#065F46', fontSize: 12 }}>
+                                <div style={{ fontSize: 24, marginBottom: 4 }}>&#128247;</div>
+                                <strong>12 photos uploaded</strong><br />Before/after documentation complete
+                              </div>
+                            )}
+                            {prop.photoStatus === 'partial' && (
+                              <div style={{ color: '#92400E', fontSize: 12 }}>
+                                <div style={{ fontSize: 24, marginBottom: 4 }}>&#128247;</div>
+                                <strong>5 of 12 photos uploaded</strong><br />Awaiting remaining rooms
+                              </div>
+                            )}
+                            {prop.photoStatus === 'pending' && (
+                              <div style={{ color: '#1E40AF', fontSize: 12 }}>
+                                <div style={{ fontSize: 24, marginBottom: 4 }}>&#128247;</div>
+                                <strong>Photos pending</strong><br />Scheduled with verification walkthrough
+                              </div>
+                            )}
+                            {prop.photoStatus === 'none' && (
+                              <div style={{ color: '#6b7280', fontSize: 12 }}>
+                                <div style={{ fontSize: 24, marginBottom: 4 }}>&#128247;</div>
+                                <strong>No photos yet</strong><br />Upload before/after photos to verify staging
+                              </div>
+                            )}
+                          </div>
+
+                          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 8 }}>Notes</h3>
+                          <div style={{
+                            padding: 12, borderRadius: 8, background: '#f5f5f4',
+                            border: '1px solid #e5e5e5', fontSize: 13, color: '#1a1a1a',
+                            lineHeight: 1.5, fontStyle: 'italic',
+                          }}>
+                            {prop.notes}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {view === 'timeline' && (
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: '#1a1a1a', marginBottom: 16 }}>Staging Timeline</h2>
+            <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e5e5e5', padding: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+              {/* Timeline header */}
+              <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 16, marginBottom: 8 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase' }}>Property</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase' }}>
+                  <span>Mar 28</span><span>Mar 30</span><span>Apr 1</span><span>Apr 3</span><span>Apr 5</span>
+                </div>
+              </div>
+
+              {properties.map(prop => {
+                const pct = completionPct(prop.checklist);
+                const barColor = pct === 100 ? '#065F46' : pct >= 75 ? '#2d6a4f' : pct >= 50 ? '#D97706' : '#DC2626';
+                const statusLabel = pct === 100 ? 'Verified' : pct >= 50 ? 'In Progress' : 'Not Started';
+                const statusColor = pct === 100 ? '#D1FAE5' : pct >= 50 ? '#FEF3C7' : '#FEE2E2';
+                const statusTextColor = pct === 100 ? '#065F46' : pct >= 50 ? '#92400E' : '#DC2626';
+
+                return (
+                  <div key={prop.id} style={{
+                    display: 'grid', gridTemplateColumns: '200px 1fr', gap: 16, alignItems: 'center',
+                    padding: '12px 0', borderTop: '1px solid #f0f0f0',
+                  }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{prop.address}</div>
+                      <div style={{ fontSize: 11, color: '#6b7280' }}>{prop.owner}</div>
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                      {/* Track */}
+                      <div style={{ height: 28, background: '#f5f5f4', borderRadius: 6, position: 'relative', overflow: 'hidden' }}>
+                        <div style={{
+                          height: '100%', width: `${pct}%`, background: barColor, borderRadius: 6,
+                          display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 8,
+                          transition: 'width 0.3s', minWidth: pct > 0 ? 40 : 0,
+                        }}>
+                          <span style={{ fontSize: 10, fontWeight: 700, color: '#fff' }}>{pct}%</span>
+                        </div>
+                      </div>
+                      {/* Status label */}
+                      <div style={{
+                        position: 'absolute', right: 0, top: -2,
+                        fontSize: 10, fontWeight: 600, color: statusTextColor,
+                        background: statusColor, padding: '2px 8px', borderRadius: 3,
+                      }}>{statusLabel}</div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Legend */}
+              <div style={{ display: 'flex', gap: 20, marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5' }}>
+                {[
+                  { color: '#DC2626', label: 'Not Started (<50%)' },
+                  { color: '#D97706', label: 'In Progress (50-74%)' },
+                  { color: '#2d6a4f', label: 'Nearly Ready (75-99%)' },
+                  { color: '#065F46', label: 'Verified (100%)' },
+                ].map(l => (
+                  <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#6b7280' }}>
+                    <div style={{ width: 12, height: 12, borderRadius: 3, background: l.color }} />
+                    {l.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer style={{ padding: '12px 32px', borderTop: '1px solid #e5e5e5', background: '#fff', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#999', textTransform: 'uppercase' }}>Patron Properties</span>
+        <span style={{ fontSize: 11, color: '#999' }}>B-04 Load-In & Staging · Homeowners do 85% of prep — Patron verifies</span>
+      </footer>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>

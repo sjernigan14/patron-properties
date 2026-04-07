@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Post-Event & Reconciliation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #2d6a4f;
+    --primary-dark: #1b4332;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border: #e5e5e5;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(45,106,79,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  input, button { font-family: var(--font); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ── Property Status Flow ── */
+const FLOW_STAGES = [
+  { id: 'checked_out', label: 'Guest Checked Out', icon: '\uD83D\uDEAA', bg: '#F3F4F6', text: '#374151', border: '#D1D5DB' },
+  { id: 'inspection', label: 'Inspection In Progress', icon: '\uD83D\uDD0D', bg: '#DBEAFE', text: '#1E40AF', border: '#93C5FD' },
+  { id: 'all_clear', label: 'All Clear', icon: '\u2705', bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7' },
+  { id: 'damage', label: 'Damage Reported', icon: '\u26A0\uFE0F', bg: '#FEF3C7', text: '#92400E', border: '#FCD34D' },
+  { id: 'complete', label: 'Reconciliation Complete', icon: '\u2705', bg: '#D1FAE5', text: '#065F46', border: '#6EE7B7' },
+];
+
+/* ── Inspection Checklist Template ── */
+const ROOM_CHECKS = [
+  { room: 'Living Areas', items: ['Furniture', 'Flooring', 'Walls', 'Decor'] },
+  { room: 'Kitchen', items: ['Appliances', 'Counters', 'Dishes', 'Pantry'] },
+  { room: 'Bedrooms', items: ['Beds', 'Linens', 'Closets', 'Furniture'] },
+  { room: 'Bathrooms', items: ['Fixtures', 'Mirrors', 'Towels', 'Plumbing'] },
+  { room: 'Exterior', items: ['Landscaping', 'Pool', 'Patio furniture', 'Fencing'] },
+  { room: 'Garage/Parking', items: ['Floor', 'Walls', 'Stored items'] },
+];
+
+/* ── Property Data ── */
+const PROPERTIES = [
+  {
+    id: 'PP-1001',
+    address: '142 Berckmans Dr',
+    neighborhood: 'West Augusta',
+    beds: 7, baths: 5,
+    owner: 'Margaret Ashford',
+    guest: 'James Mitchell',
+    guestCompany: 'Goldman Sachs',
+    checkOut: 'Apr 12, 2027 — 11:00 AM',
+    status: 'complete',
+    inspection: {
+      rooms: ROOM_CHECKS.map(r => ({ ...r, results: r.items.map(() => 'good') })),
+      notes: 'Property in excellent condition. Margaret\'s cleaning crew arrived within 2 hours of checkout. Professional as always.',
+    },
+    damage: null,
+    financial: {
+      gross: 38500,
+      commission: 5775,
+      damageDeductions: 0,
+      cleaningOverage: 0,
+      netPayout: 32725,
+      paymentStatus: 'Deposited',
+      paymentMethod: 'Direct deposit — Wells Fargo ****4821',
+      paymentDate: 'Mar 15, 2027',
+    },
+    guestFeedback: {
+      rating: 5,
+      comments: 'Incredible home. Best Masters experience in 3 years of attending. The proximity to the course is unmatched. Will absolutely return.',
+      wouldRebook: true,
+    },
+  },
+  {
+    id: 'PP-1005',
+    address: '789 Milledge Rd',
+    neighborhood: 'West Augusta',
+    beds: 5, baths: 3,
+    owner: 'Robert & Linda Hayes',
+    guest: 'Steve Walsh',
+    guestCompany: 'Walsh Family',
+    checkOut: 'Apr 12, 2027 — 10:00 AM',
+    status: 'complete',
+    inspection: {
+      rooms: ROOM_CHECKS.map((r, ri) => ({
+        ...r,
+        results: r.items.map((item, ii) => {
+          if (ri === 2 && ii === 0) return 'minor'; // Bedrooms > Beds — minor scuff
+          return 'good';
+        }),
+      })),
+      notes: 'Small scuff on master bedroom hardwood near the bed. Consistent with normal furniture movement. No structural or cosmetic concern beyond wear.',
+    },
+    damage: {
+      issues: [{
+        id: 'DMG-5001',
+        description: 'Small scuff on master bedroom hardwood floor',
+        room: 'Master Bedroom',
+        severity: 'Cosmetic',
+        estimatedCost: 0,
+        resolution: 'Normal wear & tear',
+        status: 'Closed',
+      }],
+    },
+    financial: {
+      gross: 10200,
+      commission: 1530,
+      damageDeductions: 0,
+      cleaningOverage: 0,
+      netPayout: 8670,
+      paymentStatus: 'Deposited',
+      paymentMethod: 'Direct deposit — First Citizens ****7293',
+      paymentDate: 'Mar 16, 2027',
+    },
+    guestFeedback: {
+      rating: 4,
+      comments: 'Great location. Robert was very welcoming. Kitchen was well-stocked. Only suggestion: a second set of bath towels in the guest bathroom.',
+      wouldRebook: true,
+    },
+  },
+  {
+    id: 'PP-1009',
+    address: '556 Berckmans Rd',
+    neighborhood: 'West Augusta',
+    beds: 7, baths: 6,
+    owner: 'Catherine Harwell',
+    guest: 'Marcus Chen',
+    guestCompany: 'Delta Air Lines',
+    checkOut: 'Apr 12, 2027 — 12:00 PM',
+    status: 'inspection',
+    inspection: {
+      rooms: ROOM_CHECKS.map((r, ri) => ({
+        ...r,
+        results: r.items.map((item, ii) => {
+          if (ri === 1 && ii === 2) return 'damage'; // Kitchen > Dishes — broken glass
+          return 'good';
+        }),
+      })),
+      notes: 'Catherine insists on being present for the full walkthrough. One Waterford crystal wine glass broken. Catherine identified it immediately. All other items in pristine condition.',
+    },
+    damage: {
+      issues: [{
+        id: 'DMG-9001',
+        description: 'Waterford crystal wine glass — broken',
+        room: 'Kitchen / Dining',
+        severity: 'Cosmetic',
+        estimatedCost: 85,
+        resolution: 'Charge to guest deposit',
+        status: 'Assessed',
+      }],
+    },
+    financial: {
+      gross: 40600,
+      commission: 6090,
+      damageDeductions: 85,
+      cleaningOverage: 0,
+      netPayout: 34425,
+      paymentStatus: 'Pending',
+      paymentMethod: 'Direct deposit — Bank of America ****1156',
+      paymentDate: 'Pending inspection completion',
+    },
+    guestFeedback: {
+      rating: 5,
+      comments: 'Stunning property. Closest home to the course we\'ve ever rented. Catherine\'s personal touches — the crystal, the flowers — made it feel like a true VIP experience. 10/10.',
+      wouldRebook: true,
+    },
+  },
+  {
+    id: 'PP-1006',
+    address: '411 Cumming Rd',
+    neighborhood: 'National Hills',
+    beds: 6, baths: 4,
+    owner: 'Daniel & Christine Moore',
+    guest: 'Victoria Stone',
+    guestCompany: 'BlackRock',
+    checkOut: 'Apr 14, 2027 — 11:00 AM',
+    status: 'complete',
+    inspection: {
+      rooms: ROOM_CHECKS.map(r => ({ ...r, results: r.items.map(() => 'good') })),
+      notes: 'Property in excellent condition. Extended stay (12 nights) but no issues. Private chef kept the kitchen immaculate. Moores don\'t even check — just want the wire transfer.',
+    },
+    damage: null,
+    financial: {
+      gross: 50400,
+      commission: 7560,
+      damageDeductions: 0,
+      cleaningOverage: 0,
+      netPayout: 42840,
+      paymentStatus: 'Deposited',
+      paymentMethod: 'Wire transfer — JP Morgan ****8834',
+      paymentDate: 'Mar 17, 2027',
+    },
+    guestFeedback: {
+      rating: 5,
+      comments: 'Perfect for our extended program. The extra space was essential for client entertaining. Pool area was the highlight — several deals closed poolside. Booking again for 2028.',
+      wouldRebook: true,
+    },
+  },
+];
+
+/* ── Tournament end reference ── */
+const TOURNAMENT_END = new Date('2027-04-11T19:00:00');
+const NOW = new Date('2027-04-18T10:00:00');
+const DAYS_SINCE = Math.floor((NOW - TOURNAMENT_END) / (1000 * 60 * 60 * 24));
+
+/* ── Helpers ── */
+const fmt = (n) => '$' + n.toLocaleString();
+const Stars = ({ rating }) => {
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    stars.push(
+      <span key={i} style={{ color: i <= rating ? '#D4AF37' : '#D1D5DB', fontSize: 16 }}>{'\u2605'}</span>
+    );
+  }
+  return <span style={{ display: 'inline-flex', gap: 2 }}>{stars}</span>;
+};
+
+/* ── App ── */
+function App() {
+  const [expandedId, setExpandedId] = useState(null);
+  const [activeTab, setActiveTab] = useState({});
+  const [emailModal, setEmailModal] = useState(null);
+
+  const totalGross = PROPERTIES.reduce((s, p) => s + p.financial.gross, 0);
+  const totalCommission = PROPERTIES.reduce((s, p) => s + p.financial.commission, 0);
+  const totalNet = PROPERTIES.reduce((s, p) => s + p.financial.netPayout, 0);
+  const completedCount = PROPERTIES.filter(p => p.status === 'complete').length;
+  const issueCount = PROPERTIES.filter(p => p.damage && p.damage.issues.length > 0).length;
+
+  const getTab = (id) => activeTab[id] || 'inspection';
+  const setTab = (id, tab) => setActiveTab(prev => ({ ...prev, [id]: tab }));
+
+  const getFlowStage = (status) => FLOW_STAGES.find(f => f.id === status) || FLOW_STAGES[0];
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+      {/* Header */}
+      <header style={{
+        background: 'linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%)',
+        color: '#fff', padding: '20px 32px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>Post-Event & Reconciliation</h1>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 2 }}>Patron Properties · Masters 2027</p>
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)',
+            borderRadius: 8, padding: '10px 20px', textAlign: 'center',
+          }}>
+            <div style={{ fontSize: 28, fontWeight: 700, lineHeight: 1 }}>{DAYS_SINCE}</div>
+            <div style={{ fontSize: 11, opacity: 0.8, marginTop: 2 }}>days since tournament ended</div>
+          </div>
+        </div>
+      </header>
+
+      {/* KPI Bar */}
+      <div style={{
+        background: '#fff', padding: '20px 32px', borderBottom: '1px solid #e5e5e5',
+        display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 24,
+      }}>
+        {[
+          { label: 'Gross Revenue', value: fmt(totalGross), sub: `${PROPERTIES.length} properties`, color: '#2d6a4f' },
+          { label: 'Patron Commission', value: fmt(totalCommission), sub: '15% of gross', color: '#6b7280' },
+          { label: 'Net to Homeowners', value: fmt(totalNet), sub: 'After all deductions', color: '#2d6a4f' },
+          { label: 'Reconciled', value: `${completedCount}/${PROPERTIES.length}`, sub: completedCount === PROPERTIES.length ? 'All complete' : 'In progress', color: completedCount === PROPERTIES.length ? '#065F46' : '#D97706' },
+          { label: 'Issues Found', value: issueCount, sub: issueCount === 0 ? 'Clean event' : `${issueCount} properties`, color: issueCount > 0 ? '#D97706' : '#065F46' },
+        ].map(kpi => (
+          <div key={kpi.label}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{kpi.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: kpi.color, lineHeight: 1 }}>{kpi.value}</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{kpi.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Status Board Overview */}
+      <div style={{ background: '#fff', padding: '16px 32px', borderBottom: '1px solid #e5e5e5' }}>
+        <div style={{ display: 'flex', gap: 12 }}>
+          {FLOW_STAGES.map(stage => {
+            const count = PROPERTIES.filter(p => p.status === stage.id).length;
+            return (
+              <div key={stage.id} style={{
+                flex: 1, padding: '10px 14px', borderRadius: 8,
+                background: count > 0 ? stage.bg : '#fafafa',
+                border: `1px solid ${count > 0 ? stage.border : '#e5e5e5'}`,
+                textAlign: 'center', opacity: count > 0 ? 1 : 0.5,
+              }}>
+                <div style={{ fontSize: 18, marginBottom: 2 }}>{stage.icon}</div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: stage.text }}>{count}</div>
+                <div style={{ fontSize: 10, color: stage.text, fontWeight: 600 }}>{stage.label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div style={{ flex: 1, padding: '16px 32px 32px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {PROPERTIES.map((prop) => {
+            const isExpanded = expandedId === prop.id;
+            const flow = getFlowStage(prop.status);
+            const tab = getTab(prop.id);
+            const fin = prop.financial;
+
+            return (
+              <div key={prop.id} style={{
+                background: '#fff', borderRadius: 10, border: '1px solid #e5e5e5',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                borderLeft: `4px solid ${flow.border}`,
+                overflow: 'hidden',
+              }}>
+                {/* Card Header */}
+                <div style={{ padding: '18px 24px', cursor: 'pointer' }} onClick={() => setExpandedId(isExpanded ? null : prop.id)}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                        <span style={{ fontSize: 10, fontWeight: 600, color: '#6b7280', background: '#f5f5f4', padding: '2px 8px', borderRadius: 4 }}>{prop.id}</span>
+                        <span style={{ fontSize: 16, fontWeight: 700, color: '#1a1a1a' }}>{prop.address}</span>
+                        <span style={{
+                          fontSize: 11, fontWeight: 600, color: flow.text, background: flow.bg,
+                          padding: '3px 10px', borderRadius: 4, border: `1px solid ${flow.border}`,
+                        }}>{flow.icon} {flow.label}</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: 24, fontSize: 13, color: '#6b7280' }}>
+                        <span><strong style={{ color: '#1a1a1a' }}>Owner:</strong> {prop.owner}</span>
+                        <span><strong style={{ color: '#1a1a1a' }}>Guest:</strong> {prop.guest} ({prop.guestCompany})</span>
+                        <span><strong style={{ color: '#1a1a1a' }}>Checkout:</strong> {prop.checkOut}</span>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 24 }}>
+                      <div style={{ fontSize: 24, fontWeight: 700, color: '#2d6a4f', lineHeight: 1 }}>{fmt(fin.netPayout)}</div>
+                      <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>net payout</div>
+                      <div style={{
+                        display: 'inline-block', marginTop: 6,
+                        fontSize: 10, fontWeight: 600,
+                        color: fin.paymentStatus === 'Deposited' ? '#065F46' : fin.paymentStatus === 'Processing' ? '#1E40AF' : '#92400E',
+                        background: fin.paymentStatus === 'Deposited' ? '#D1FAE5' : fin.paymentStatus === 'Processing' ? '#DBEAFE' : '#FEF3C7',
+                        padding: '2px 8px', borderRadius: 4,
+                      }}>{fin.paymentStatus}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expanded Detail */}
+                {isExpanded && (
+                  <div style={{ borderTop: '1px solid #e5e5e5' }}>
+                    {/* Tab Nav */}
+                    <div style={{ display: 'flex', borderBottom: '1px solid #e5e5e5' }}>
+                      {[
+                        { id: 'inspection', label: 'Inspection' },
+                        { id: 'financial', label: 'Financial Reconciliation' },
+                        { id: 'feedback', label: 'Guest Feedback' },
+                        { id: 'communication', label: 'Homeowner Communication' },
+                      ].map(t => (
+                        <button key={t.id} onClick={() => setTab(prop.id, t.id)} style={{
+                          padding: '12px 20px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                          border: 'none', borderBottom: tab === t.id ? '2px solid #2d6a4f' : '2px solid transparent',
+                          background: 'transparent', color: tab === t.id ? '#2d6a4f' : '#6b7280',
+                        }}>{t.label}</button>
+                      ))}
+                    </div>
+
+                    <div style={{ padding: '20px 24px' }}>
+
+                      {/* Inspection Tab */}
+                      {tab === 'inspection' && (
+                        <div>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+                            {prop.inspection.rooms.map((room, ri) => (
+                              <div key={ri} style={{
+                                padding: 16, borderRadius: 8, border: '1px solid #e5e5e5', background: '#fafafa',
+                              }}>
+                                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1a1a1a', marginBottom: 10 }}>{room.room}</h4>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                  {room.items.map((item, ii) => {
+                                    const result = room.results[ii];
+                                    const icon = result === 'good' ? '\u2713' : result === 'minor' ? '\u26A0\uFE0F' : '\u2717';
+                                    const color = result === 'good' ? '#065F46' : result === 'minor' ? '#92400E' : '#DC2626';
+                                    const bg = result === 'good' ? '#F0FDF4' : result === 'minor' ? '#FFFBEB' : '#FEF2F2';
+                                    return (
+                                      <div key={ii} style={{
+                                        display: 'flex', alignItems: 'center', gap: 8,
+                                        fontSize: 12, padding: '4px 8px', borderRadius: 4, background: bg,
+                                      }}>
+                                        <span style={{ color, fontWeight: 700, width: 20, textAlign: 'center' }}>{icon}</span>
+                                        <span style={{ color }}>{item}</span>
+                                        {result === 'minor' && <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 600, color: '#92400E' }}>Minor Issue</span>}
+                                        {result === 'damage' && <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 600, color: '#DC2626' }}>Damage Found</span>}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Inspection Notes */}
+                          <div style={{ marginTop: 16, padding: 14, borderRadius: 8, background: '#f5f5f4', border: '1px solid #e5e5e5' }}>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: '#1a1a1a', marginBottom: 6 }}>Inspector Notes</div>
+                            <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.5, fontStyle: 'italic' }}>{prop.inspection.notes}</p>
+                          </div>
+
+                          {/* Photo upload placeholder */}
+                          <div style={{
+                            marginTop: 16, padding: 20, borderRadius: 8, border: '1px dashed #e5e5e5',
+                            background: '#fafafa', textAlign: 'center',
+                          }}>
+                            <div style={{ fontSize: 24, marginBottom: 4 }}>&#128247;</div>
+                            <div style={{ fontSize: 12, color: '#6b7280' }}>Inspection photos attached to report</div>
+                          </div>
+
+                          {/* Damage Assessment Panel */}
+                          {prop.damage && prop.damage.issues.length > 0 && (
+                            <div style={{ marginTop: 16 }}>
+                              <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 10 }}>Damage Assessment</h4>
+                              {prop.damage.issues.map(issue => {
+                                const statusColors = {
+                                  Reported: { bg: '#FEE2E2', text: '#DC2626' },
+                                  Assessed: { bg: '#FEF3C7', text: '#92400E' },
+                                  Resolved: { bg: '#DBEAFE', text: '#1E40AF' },
+                                  Closed: { bg: '#D1FAE5', text: '#065F46' },
+                                };
+                                const sc = statusColors[issue.status] || statusColors.Reported;
+                                return (
+                                  <div key={issue.id} style={{
+                                    padding: 16, borderRadius: 8, border: '1px solid #FCD34D', background: '#FFFBEB',
+                                  }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                                      <div>
+                                        <div style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a' }}>{issue.description}</div>
+                                        <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>{issue.room} · Severity: {issue.severity}</div>
+                                      </div>
+                                      <span style={{
+                                        fontSize: 11, fontWeight: 600, color: sc.text, background: sc.bg,
+                                        padding: '3px 10px', borderRadius: 4,
+                                      }}>{issue.status}</span>
+                                    </div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, fontSize: 12 }}>
+                                      <div>
+                                        <div style={{ color: '#6b7280', marginBottom: 2 }}>Estimated Cost</div>
+                                        <div style={{ fontWeight: 700, color: '#1a1a1a' }}>{issue.estimatedCost > 0 ? fmt(issue.estimatedCost) : 'N/A'}</div>
+                                      </div>
+                                      <div>
+                                        <div style={{ color: '#6b7280', marginBottom: 2 }}>Resolution</div>
+                                        <div style={{ fontWeight: 700, color: '#1a1a1a' }}>{issue.resolution}</div>
+                                      </div>
+                                      <div>
+                                        <div style={{ color: '#6b7280', marginBottom: 2 }}>Status Flow</div>
+                                        <div style={{ fontSize: 11, color: '#6b7280' }}>Reported → Assessed → Resolved → Closed</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Financial Tab */}
+                      {tab === 'financial' && (
+                        <div>
+                          <div style={{
+                            padding: 24, borderRadius: 10, background: '#fafafa', border: '1px solid #e5e5e5',
+                            maxWidth: 480,
+                          }}>
+                            <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 16 }}>Financial Summary</h4>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: '#1a1a1a' }}>
+                                <span>Gross Rental Revenue</span>
+                                <span style={{ fontWeight: 700 }}>{fmt(fin.gross)}</span>
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: '#DC2626' }}>
+                                <span>Patron Commission (15%)</span>
+                                <span style={{ fontWeight: 600 }}>- {fmt(fin.commission)}</span>
+                              </div>
+                              {fin.damageDeductions > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: '#DC2626' }}>
+                                  <span>Damage Deductions</span>
+                                  <span style={{ fontWeight: 600 }}>- {fmt(fin.damageDeductions)}</span>
+                                </div>
+                              )}
+                              {fin.cleaningOverage > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: '#DC2626' }}>
+                                  <span>Cleaning Overage</span>
+                                  <span style={{ fontWeight: 600 }}>- {fmt(fin.cleaningOverage)}</span>
+                                </div>
+                              )}
+                              <div style={{ borderTop: '2px solid #2d6a4f', paddingTop: 12, display: 'flex', justifyContent: 'space-between', fontSize: 18 }}>
+                                <span style={{ fontWeight: 700, color: '#2d6a4f' }}>Net Payout to Homeowner</span>
+                                <span style={{ fontWeight: 700, color: '#2d6a4f' }}>{fmt(fin.netPayout)}</span>
+                              </div>
+                            </div>
+
+                            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid #e5e5e5' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '8px 12px', fontSize: 13 }}>
+                                <span style={{ color: '#6b7280' }}>Status</span>
+                                <span style={{ fontWeight: 600, color: fin.paymentStatus === 'Deposited' ? '#065F46' : '#92400E' }}>{fin.paymentStatus}</span>
+                                <span style={{ color: '#6b7280' }}>Method</span>
+                                <span>{fin.paymentMethod}</span>
+                                <span style={{ color: '#6b7280' }}>Date</span>
+                                <span>{fin.paymentDate}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Guest Feedback Tab */}
+                      {tab === 'feedback' && (
+                        <div>
+                          <div style={{
+                            padding: 24, borderRadius: 10, background: '#fafafa', border: '1px solid #e5e5e5',
+                            maxWidth: 560,
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                              <Stars rating={prop.guestFeedback.rating} />
+                              <span style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a' }}>{prop.guestFeedback.rating}/5</span>
+                              <span style={{ fontSize: 12, color: '#6b7280' }}>from {prop.guest} ({prop.guestCompany})</span>
+                            </div>
+                            <div style={{
+                              padding: 16, borderRadius: 8, background: '#fff', border: '1px solid #e5e5e5',
+                              fontSize: 14, color: '#1a1a1a', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 16,
+                            }}>
+                              "{prop.guestFeedback.comments}"
+                            </div>
+                            <div style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 8,
+                              padding: '8px 16px', borderRadius: 8,
+                              background: prop.guestFeedback.wouldRebook ? '#D1FAE5' : '#FEE2E2',
+                              border: `1px solid ${prop.guestFeedback.wouldRebook ? '#6EE7B7' : '#FECACA'}`,
+                            }}>
+                              <span style={{ fontSize: 16 }}>{prop.guestFeedback.wouldRebook ? '\u2713' : '\u2717'}</span>
+                              <span style={{
+                                fontSize: 13, fontWeight: 700,
+                                color: prop.guestFeedback.wouldRebook ? '#065F46' : '#DC2626',
+                              }}>
+                                {prop.guestFeedback.wouldRebook ? 'Would rebook' : 'Would not rebook'}
+                              </span>
+                            </div>
+                            <div style={{ marginTop: 12, fontSize: 11, color: '#6b7280' }}>
+                              This feedback feeds into the repeat guest compounding model for Masters 2028 planning.
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Communication Tab */}
+                      {tab === 'communication' && (
+                        <div>
+                          <div style={{
+                            padding: 24, borderRadius: 10, background: '#fafafa', border: '1px solid #e5e5e5',
+                            maxWidth: 600,
+                          }}>
+                            <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', marginBottom: 4 }}>Auto-Generated Summary Email</h4>
+                            <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>Send within 2 weeks of tournament end — the repeat enrollment window</p>
+
+                            <div style={{
+                              padding: 20, borderRadius: 8, background: '#fff', border: '1px solid #e5e5e5',
+                            }}>
+                              <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 4 }}>To: {prop.owner}</div>
+                              <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 12 }}>Subject: Your Masters 2027 Summary — Patron Properties</div>
+                              <div style={{ borderTop: '1px solid #e5e5e5', paddingTop: 12, fontSize: 13, color: '#1a1a1a', lineHeight: 1.6 }}>
+                                <p style={{ marginBottom: 12 }}>Dear {prop.owner.split(' &')[0].split(' ').slice(-1)[0]},</p>
+                                <p style={{ marginBottom: 12 }}>Thank you for hosting with Patron Properties during Masters 2027. Here is your complete summary:</p>
+                                <div style={{ background: '#f5f5f4', padding: 12, borderRadius: 6, marginBottom: 12, fontSize: 12 }}>
+                                  <strong>Revenue:</strong> {fmt(fin.gross)} gross / {fmt(fin.netPayout)} net payout<br />
+                                  <strong>Inspection:</strong> {prop.damage && prop.damage.issues.length > 0
+                                    ? `${prop.damage.issues.length} issue(s) — ${prop.damage.issues.map(i => i.resolution).join(', ')}`
+                                    : 'All clear, no damage reported'}<br />
+                                  <strong>Guest Rating:</strong> {prop.guestFeedback.rating}/5 stars{prop.guestFeedback.wouldRebook ? ' — would rebook' : ''}<br />
+                                  <strong>Payment:</strong> {fin.paymentStatus}{fin.paymentDate !== 'Pending inspection completion' ? ` on ${fin.paymentDate}` : ''}
+                                </div>
+                                <p style={{ marginBottom: 12 }}>We'd love to have you back for Masters 2028. Early enrollment locks in your listing priority and ensures preferred placement in our inventory.</p>
+                                <div style={{
+                                  display: 'inline-block', padding: '10px 24px', borderRadius: 6,
+                                  background: '#2d6a4f', color: '#fff', fontSize: 13, fontWeight: 700,
+                                  cursor: 'pointer',
+                                }}>Re-Enroll for Masters 2028</div>
+                                <p style={{ marginTop: 16, fontSize: 12, color: '#6b7280' }}>Warm regards,<br />The Patron Properties Team</p>
+                              </div>
+                            </div>
+
+                            <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
+                              <button style={{
+                                padding: '10px 20px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                                background: '#2d6a4f', color: '#fff', border: 'none', cursor: 'pointer',
+                              }}>Send Email</button>
+                              <button style={{
+                                padding: '10px 20px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                                background: '#fff', color: '#2d6a4f', border: '1px solid #e5e5e5', cursor: 'pointer',
+                              }}>Preview PDF</button>
+                              <button style={{
+                                padding: '10px 20px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                                background: '#fff', color: '#6b7280', border: '1px solid #e5e5e5', cursor: 'pointer',
+                              }}>Edit Template</button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer style={{ padding: '12px 32px', borderTop: '1px solid #e5e5e5', background: '#fff', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#999', textTransform: 'uppercase' }}>Patron Properties</span>
+        <span style={{ fontSize: 11, color: '#999' }}>B-05 Post-Event & Reconciliation · Guest checkout → Inspection → Payout → Re-enrollment</span>
+      </footer>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>

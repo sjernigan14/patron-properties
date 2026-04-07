@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patron Properties — Operator Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --primary: #2d6a4f;
+    --navy: #1a2332;
+    --bg: #f5f5f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border: #e5e5e5;
+    --red: #DC2626;
+    --amber: #D97706;
+    --green: #059669;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(45,106,79,0.2); }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo, useEffect } = React;
+
+/* ══════════════════════════════════════════════════════════════════
+   PATRON PROPERTIES — OPERATOR DASHBOARD (A-06)
+   Taite Sasnett's Home Screen · Masters 2027
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Master Data: Properties ── */
+const PROPERTIES = [
+  { id:'PP-1001', address:'142 Berckmans Dr', beds:7, bath:5, rate:5500, owner:'Margaret Ashford', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.3 mi', renter:'Goldman Sachs / Mitchell', gross:38500, status:'booked', year:3 },
+  { id:'PP-1002', address:'308 Wheeler Rd', beds:5, bath:3, rate:3200, owner:'Dr. Kevin & Amy Rhodes', neighborhood:'National Hills', type:'Executive Retreat', distance:'1.1 mi', renter:'Dr. Kevin Rhodes local', gross:8400, status:'booked', year:2 },
+  { id:'PP-1003', address:'1547 Monte Sano Ave', beds:6, bath:4, rate:4100, owner:'William & June Parker', neighborhood:'Summerville', type:'Entertainer Home', distance:'1.8 mi', renter:'Berkshire / Kramer', gross:28700, status:'active', year:2 },
+  { id:'PP-1004', address:'2205 Henry St', beds:4, bath:2, rate:1800, owner:'James & Carol Bennett', neighborhood:'Olde Town', type:'Golfer Cottage', distance:'2.4 mi', renter:'Thompson Family (pending)', gross:9000, status:'prospect', year:0 },
+  { id:'PP-1005', address:'789 Milledge Rd', beds:5, bath:3, rate:3400, owner:'Robert & Linda Hayes', neighborhood:'West Augusta', type:'Executive Retreat', distance:'0.7 mi', renter:'Walsh Family', gross:10200, status:'booked', year:2 },
+  { id:'PP-1006', address:'411 Cumming Rd', beds:6, bath:4, rate:4200, owner:'Daniel & Christine Moore', neighborhood:'National Hills', type:'Entertainer Home', distance:'0.9 mi', renter:'BlackRock / Stone', gross:50400, status:'active', year:2 },
+  { id:'PP-1007', address:'925 Lake Olmstead Dr', beds:4, bath:3, rate:2200, owner:'Patricia & George Sullivan', neighborhood:'Lake Olmstead', type:'Dinner Home', distance:'2.1 mi', renter:'Morgan Stanley / Wells', gross:15400, status:'booked', year:1 },
+  { id:'PP-1008', address:'1803 Highland Ave', beds:5, bath:3, rate:3500, owner:'Richard & Ellen Foster', neighborhood:'Summerville', type:'Executive Retreat', distance:'1.5 mi', renter:'Augusta University', gross:17500, status:'active', year:1 },
+  { id:'PP-1009', address:'556 Berckmans Rd', beds:7, bath:6, rate:5800, owner:'Catherine Harwell', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.2 mi', renter:'Delta / Chen', gross:40600, status:'booked', year:1 },
+  { id:'PP-1010', address:'2100 Walton Way', beds:3, bath:2, rate:2000, owner:'Thomas & Maria Nguyen', neighborhood:'Summerville', type:'Staff Housing', distance:'1.9 mi', renter:'Staff overflow', gross:6000, status:'booked', year:1 },
+];
+
+/* ── Financial Constants ── */
+const FINANCIALS = {
+  totalRevenue: 351700,
+  housingRevenue: 224700,
+  pmRevenue: 127000,
+  patronCommission: 33705,
+  netToOwners: 190995,
+  housingMargin: 94,
+  pmMargin: 2.3,
+  yoyGrowth: 18,
+  weightedPipeline: 192000,
+  totalPipeline: 276000,
+};
+
+/* ── Pipeline Deals ── */
+const PIPELINE_DEALS = [
+  { id:'D-2701', renter:'Delta Air Lines', contact:'Marcus Chen', total:40600, stage:'booked', days:2, priority:'high', property:'556 Berckmans Rd', pmValue:85000 },
+  { id:'D-2702', renter:'PGA of America', contact:'Sarah Mitchell', total:22400, stage:'contract', days:5, priority:'high', property:'142 Berkman Dr' },
+  { id:'D-2703', renter:'Rolex USA', contact:'James Park', total:28700, stage:'deposit', days:1, priority:'high', property:'1547 Monte Sano Ave' },
+  { id:'D-2704', renter:'Augusta Dental Group', contact:'Dr. Kevin Rhodes', total:19600, stage:'qualified', days:8, priority:'medium', property:'308 Wheeler Rd' },
+  { id:'D-2705', renter:'Thompson Family', contact:'Linda Thompson', total:12600, stage:'property_visit', days:3, priority:'medium', property:'2205 Henry St' },
+  { id:'D-2706', renter:'Morgan Stanley', contact:'Patricia Wells', total:24500, stage:'contract', days:2, priority:'high', property:'411 Cumming Rd' },
+  { id:'D-2707', renter:'IBM Events', contact:'Raj Patel', total:0, stage:'inquiry', days:1, priority:'high' },
+  { id:'D-2708', renter:'Steve & Karen Walsh', contact:'Steve Walsh', total:17500, stage:'qualified', days:12, priority:'low', property:'789 Milledge Rd' },
+  { id:'D-2709', renter:'Coca-Cola Hospitality', contact:'Diana Flores', total:0, stage:'inquiry', days:4, priority:'medium' },
+  { id:'D-2710', renter:'Augusta University Med', contact:'Dr. Alan Foster', total:14000, stage:'property_visit', days:6, priority:'low', property:'1803 Highland Ave' },
+  { id:'D-2711', renter:'UBS Private Banking', contact:'Michael Kramer', total:15400, stage:'deposit', days:4, priority:'medium', property:'925 Lake Olmstead Dr' },
+];
+
+const STAGE_LABELS = { inquiry:'Inquiry', qualified:'Qualified', property_visit:'Property Visit', contract:'Contract', deposit:'Deposit Paid', booked:'Booked' };
+const STAGE_PROBS = { inquiry:0.10, qualified:0.25, property_visit:0.40, contract:0.60, deposit:0.85, booked:1.00 };
+
+/* ── Attention Items ── */
+const ATTENTION_ITEMS = [
+  { severity:'red', title:'Bennett Property Stalled', detail:'PP-1004 — Contract stage, 12 days stale. James & Carol Bennett hesitant. Follow-up this week.', value:'$9,000 at risk', screen:'A-04', action:'Open Deal Pipeline' },
+  { severity:'red', title:'Berkshire Deposit Pending', detail:'Michael Kramer / Berkshire Investment Group. 2-property program ($95.2K total). Deposit overdue.', value:'$53,200 housing', screen:'A-04', action:'Open Deal Pipeline' },
+  { severity:'amber', title:'Overdue Documents', detail:'3 deals missing required documents. PGA — insurance + payment. Morgan Stanley — insurance + payment.', value:'78% complete', screen:'A-05', action:'Open Document Tracker' },
+  { severity:'amber', title:'Unbooked Property', detail:'PP-1004 (Bennett, 2205 Henry St) — prospect not signed. Thompson Family booking depends on this.', value:'$9,000 at risk', screen:'A-04', action:'Open Deal Pipeline' },
+  { severity:'amber', title:'Gap Night Revenue', detail:'Shoulder nights unfilled across portfolio. BlackRock extended stay covers Apr 3-14 but 4 properties have Apr 3-4 open.', value:'~$14K potential', screen:'A-04', action:'View Calendar' },
+];
+
+/* ── PM Programs ── */
+const PM_PROGRAMS = [
+  { client:'Delta Air Lines', agency:'Wasserman', contact:'Marcus Chen', value:125600, housing:40600, pm:85000, status:'Booked — 3rd year', lead:'Jackie Keller / Elan Arc' },
+  { client:'Berkshire Investment Group', agency:'Internal', contact:'Michael Kramer', value:95200, housing:53200, pm:42000, status:'Contract — deposit pending', lead:'Jackie Keller / Elan Arc' },
+];
+
+/* ── Home Type Counts ── */
+const HOME_TYPES = [
+  { type:'Entertainer', count:4, color:'#2d6a4f' },
+  { type:'Executive', count:3, color:'#1a2332' },
+  { type:'Dinner', count:1, color:'#D97706' },
+  { type:'Golfer', count:1, color:'#059669' },
+  { type:'Staff', count:1, color:'#6b7280' },
+];
+
+/* ── Season Milestones ── */
+const MILESTONES = [
+  { date:'Mar 15', label:'All prep checklists due', status:'upcoming', urgent:true },
+  { date:'Apr 1', label:'Berkshire deposit due', status:'upcoming', urgent:true },
+  { date:'This week', label:'Bennett follow-up call', status:'upcoming', urgent:true },
+  { date:'Apr 3', label:'BlackRock / Stone early arrival', status:'upcoming', urgent:false },
+  { date:'Apr 5-11', label:'Masters Tournament Week', status:'upcoming', urgent:false },
+  { date:'Apr 12', label:'Post-event inspections begin', status:'future', urgent:false },
+];
+
+/* ── Helpers ── */
+const fmt = (n) => n >= 1000 ? `$${(n/1000).toFixed(n >= 10000 ? 0 : 1)}K` : `$${n.toLocaleString()}`;
+const fmtFull = (n) => `$${n.toLocaleString()}`;
+
+/* ── Season Phase Calc ── */
+const MASTERS_START = new Date('2027-04-05');
+const TODAY = new Date('2027-03-01');
+const DAYS_UNTIL = Math.ceil((MASTERS_START - TODAY) / (1000 * 60 * 60 * 24));
+const TODAY_STR = TODAY.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const GREETING_HOUR = 7;
+const getGreeting = () => {
+  if (GREETING_HOUR < 12) return 'Good morning';
+  if (GREETING_HOUR < 17) return 'Good afternoon';
+  return 'Good evening';
+};
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Section Wrapper ── */
+function Section({ title, subtitle, children, id }) {
+  return (
+    <div id={id} style={{ marginBottom: 28, animation: 'slideIn 0.4s ease-out' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 16 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1a1a1a', letterSpacing: -0.3 }}>{title}</h2>
+        {subtitle && <span style={{ fontSize: 13, color: '#6b7280' }}>{subtitle}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* ── KPI Card ── */
+function KPICard({ label, value, sub, color, large }) {
+  return (
+    <div style={{
+      background: '#fff', borderRadius: 10, padding: large ? '20px 24px' : '16px 20px',
+      border: '1px solid #e5e5e5', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      flex: 1, minWidth: large ? 200 : 150,
+    }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: large ? 32 : 26, fontWeight: 700, color: color || '#2d6a4f', letterSpacing: -0.5, lineHeight: 1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>{sub}</div>}
+    </div>
+  );
+}
+
+/* ── Attention Card ── */
+function AttentionCard({ item }) {
+  const colors = {
+    red: { bg: '#FEF2F2', border: '#FECACA', accent: '#DC2626', text: '#991B1B', badge: '#DC2626' },
+    amber: { bg: '#FFFBEB', border: '#FDE68A', accent: '#D97706', text: '#92400E', badge: '#D97706' },
+    green: { bg: '#F0FDF4', border: '#BBF7D0', accent: '#059669', text: '#065F46', badge: '#059669' },
+  };
+  const c = colors[item.severity];
+  return (
+    <div
+      onClick={() => alert(`Navigate to ${item.screen}: ${item.action}`)}
+      style={{
+        background: c.bg, borderRadius: 10, padding: '16px 20px',
+        border: `1px solid ${c.border}`,
+        borderLeft: `4px solid ${c.accent}`,
+        cursor: 'pointer', transition: 'all 0.15s',
+        animation: item.severity === 'red' ? 'pulse 2.5s infinite' : 'none',
+        flex: '1 1 280px', minWidth: 280,
+      }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 4px 12px ${c.accent}22`; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', background: c.badge, padding: '2px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            {item.severity === 'red' ? 'Critical' : 'Attention'}
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: c.text }}>{item.title}</span>
+        </div>
+      </div>
+      <p style={{ fontSize: 12, color: c.text, lineHeight: 1.5, marginBottom: 8, opacity: 0.85 }}>{item.detail}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: c.accent }}>{item.value}</span>
+        <span style={{ fontSize: 11, fontWeight: 600, color: c.accent, textDecoration: 'underline', cursor: 'pointer' }}>{item.action} &#8594;</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Waterfall Chart ── */
+function WaterfallChart() {
+  const steps = [
+    { label: 'Platform Revenue', value: 351700, type: 'total' },
+    { label: 'Housing Gross', value: 224700, type: 'segment' },
+    { label: 'PM Revenue', value: 127000, type: 'segment' },
+    { label: 'Patron Commission', value: -33705, type: 'subtract' },
+    { label: 'Net to Owners', value: 190995, type: 'result' },
+  ];
+  const maxVal = 351700;
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 160, padding: '0 8px' }}>
+      {steps.map((step, i) => {
+        const absVal = Math.abs(step.value);
+        const barHeight = Math.max((absVal / maxVal) * 130, 20);
+        const color = step.type === 'subtract' ? '#DC2626' : step.type === 'result' ? '#2d6a4f' : step.type === 'total' ? '#1a2332' : '#3b82f6';
+        return (
+          <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: color }}>{step.value < 0 ? `-${fmtFull(absVal)}` : fmtFull(absVal)}</span>
+            <div style={{
+              width: '100%', maxWidth: 60, height: barHeight, borderRadius: '4px 4px 0 0',
+              background: step.type === 'subtract'
+                ? 'repeating-linear-gradient(135deg, #DC2626, #DC2626 3px, #EF4444 3px, #EF4444 6px)'
+                : color,
+              opacity: 0.9,
+            }} />
+            <span style={{ fontSize: 10, fontWeight: 500, color: '#6b7280', textAlign: 'center', lineHeight: 1.2 }}>{step.label}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── Mini Funnel ── */
+function PipelineFunnel() {
+  const stages = ['inquiry','qualified','property_visit','contract','deposit','booked'];
+  const counts = {};
+  stages.forEach(s => { counts[s] = PIPELINE_DEALS.filter(d => d.stage === s).length; });
+  const maxCount = Math.max(...Object.values(counts), 1);
+  const stageColors = {
+    inquiry: '#D97706', qualified: '#0891B2', property_visit: '#2563EB',
+    contract: '#7C3AED', deposit: '#059669', booked: '#2d6a4f',
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {stages.map(s => {
+        const count = counts[s];
+        const pct = (count / maxCount) * 100;
+        return (
+          <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: '#6b7280', width: 90, textAlign: 'right' }}>{STAGE_LABELS[s]}</span>
+            <div style={{ flex: 1, height: 20, background: '#f0f0f0', borderRadius: 4, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ width: `${pct}%`, height: '100%', background: stageColors[s], borderRadius: 4, transition: 'width 0.6s ease', minWidth: count > 0 ? 20 : 0 }} />
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', width: 20, textAlign: 'center' }}>{count}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── Mini Bar Chart: Home Types ── */
+function HomeTypeChart() {
+  const maxCount = Math.max(...HOME_TYPES.map(h => h.count));
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, height: 120, justifyContent: 'center' }}>
+      {HOME_TYPES.map(h => (
+        <div key={h.type} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: h.color }}>{h.count}</span>
+          <div style={{
+            width: 40, height: (h.count / maxCount) * 80,
+            background: h.color, borderRadius: '4px 4px 0 0', opacity: 0.85,
+          }} />
+          <span style={{ fontSize: 10, fontWeight: 500, color: '#6b7280', textAlign: 'center', lineHeight: 1.2, maxWidth: 60 }}>{h.type}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Season Timeline ── */
+function SeasonTimeline() {
+  const phases = [
+    { label:'Prospecting', pct:15, color:'#94A3B8', done:true },
+    { label:'Contracting', pct:20, color:'#3b82f6', done:true },
+    { label:'Prep & Staging', pct:25, color:'#D97706', active:true },
+    { label:'Tournament Week', pct:25, color:'#2d6a4f', done:false },
+    { label:'Post-Event', pct:15, color:'#6b7280', done:false },
+  ];
+  return (
+    <div>
+      <div style={{ display: 'flex', borderRadius: 8, overflow: 'hidden', height: 28 }}>
+        {phases.map((p, i) => (
+          <div key={i} style={{
+            flex: `0 0 ${p.pct}%`, background: p.active ? p.color : p.done ? p.color : '#e5e5e5',
+            opacity: p.done ? 0.5 : p.active ? 1 : 0.3,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 10, fontWeight: 600, color: '#fff', letterSpacing: 0.3,
+            position: 'relative',
+            borderRight: i < phases.length - 1 ? '2px solid #f5f5f4' : 'none',
+          }}>
+            {p.label}
+            {p.active && <span style={{ position:'absolute', bottom:-18, fontSize:9, color:'#D97706', fontWeight:700 }}>YOU ARE HERE</span>}
+          </div>
+        ))}
+      </div>
+      <div style={{ height: 18 }} />
+    </div>
+  );
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN APP
+   ═══════════════════════════════════════════════════════════ */
+function App() {
+  const [hoveredScreen, setHoveredScreen] = useState(null);
+
+  /* Pipeline calcs */
+  const weightedValue = PIPELINE_DEALS.reduce((sum, d) => sum + d.total * (STAGE_PROBS[d.stage] || 0), 0);
+  const topDeals = PIPELINE_DEALS.filter(d => d.stage !== 'booked').sort((a, b) => b.total - a.total).slice(0, 3);
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f5f5f4' }}>
+
+      {/* ═══ HEADER ═══ */}
+      <header style={{
+        background: 'linear-gradient(135deg, #1a2332 0%, #2a3a4f 60%, #1a2332 100%)',
+        color: '#fff', padding: '24px 32px 20px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+              <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>Patron Properties</h1>
+              <span style={{ fontSize: 10, fontWeight: 700, background: 'rgba(255,255,255,0.15)', padding: '3px 10px', borderRadius: 4, letterSpacing: 1, textTransform: 'uppercase' }}>Operator</span>
+            </div>
+            <p style={{ fontSize: 14, opacity: 0.7, marginBottom: 12 }}>Operator Dashboard &middot; Masters 2027</p>
+            <p style={{ fontSize: 22, fontWeight: 300, opacity: 0.95 }}>
+              {getGreeting()}, Taite
+            </p>
+            <p style={{ fontSize: 13, opacity: 0.6, marginTop: 4 }}>{TODAY_STR}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 48, fontWeight: 700, lineHeight: 1, color: '#D4AF37', letterSpacing: -1 }}>{DAYS_UNTIL}</div>
+            <div style={{ fontSize: 12, fontWeight: 600, opacity: 0.7, marginTop: 2 }}>days until Masters</div>
+            <div style={{ marginTop: 12, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button onClick={() => alert('Export dashboard PDF')} style={{ padding: '7px 14px', background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>Export</button>
+              <button onClick={() => alert('Navigate to Season Planner')} style={{ padding: '7px 14px', background: '#D4AF37', color: '#1a2332', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Season Planner</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* ═══ MASTERS BANNER ═══ */}
+      <div style={{
+        background: 'linear-gradient(90deg, #D4AF37 0%, #F4E4A6 50%, #D4AF37 100%)',
+        color: '#333', padding: '8px 32px', textAlign: 'center',
+        fontSize: 12, fontWeight: 600, letterSpacing: 0.5,
+        borderBottom: '2px solid #B8941C',
+      }}>
+        The Masters Tournament &middot; April 5-11, 2027 &middot; Augusta National Golf Club &middot; Final Prep Phase
+      </div>
+
+      {/* ═══ MAIN CONTENT ═══ */}
+      <div style={{ flex: 1, padding: '28px 32px', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
+
+        {/* ── SECTION 1: FINANCIAL SUMMARY ── */}
+        <Section title="Financial Summary" subtitle="P&L at a glance  |  Masters 2027">
+          {/* KPI Row */}
+          <div style={{ display: 'flex', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
+            <KPICard label="Total Platform Revenue" value={fmtFull(FINANCIALS.totalRevenue)} sub={`+${FINANCIALS.yoyGrowth}% vs 2026`} color="#1a2332" large />
+            <KPICard label="Housing Revenue" value={fmtFull(FINANCIALS.housingRevenue)} sub={`Commission: ${fmtFull(FINANCIALS.patronCommission)}`} color="#2d6a4f" large />
+            <KPICard label="PM Revenue" value={fmtFull(FINANCIALS.pmRevenue)} sub="2 active programs" color="#3b82f6" large />
+            <KPICard label="Net to Owners" value={fmtFull(FINANCIALS.netToOwners)} sub="85% of housing gross" color="#059669" large />
+          </div>
+
+          {/* Margins + Waterfall */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 20 }}>
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Margin Analysis</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: '#6b7280' }}>Housing Margin</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2d6a4f' }}>94%</span>
+                  </div>
+                  <div style={{ height: 8, background: '#f0f0f0', borderRadius: 4, overflow: 'hidden' }}>
+                    <div style={{ width: '94%', height: '100%', background: '#2d6a4f', borderRadius: 4 }} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: '#6b7280' }}>PM Margin</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#3b82f6' }}>2.3%</span>
+                  </div>
+                  <div style={{ height: 8, background: '#f0f0f0', borderRadius: 4, overflow: 'hidden' }}>
+                    <div style={{ width: '2.3%', height: '100%', background: '#3b82f6', borderRadius: 4, minWidth: 4 }} />
+                  </div>
+                </div>
+                <div style={{ borderTop: '1px solid #e5e5e5', paddingTop: 12, marginTop: 4 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 12, color: '#6b7280' }}>YoY Growth</span>
+                    <span style={{ fontSize: 16, fontWeight: 700, color: '#059669' }}>+18%</span>
+                  </div>
+                  <span style={{ fontSize: 11, color: '#6b7280' }}>vs Masters 2026 (projected)</span>
+                </div>
+              </div>
+            </div>
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Revenue Waterfall</div>
+              <WaterfallChart />
+            </div>
+          </div>
+        </Section>
+
+        {/* ── SECTION 2: ATTENTION ITEMS ── */}
+        <Section title="Attention Items" subtitle="What needs action today">
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            {ATTENTION_ITEMS.map((item, i) => (
+              <AttentionCard key={i} item={item} />
+            ))}
+          </div>
+        </Section>
+
+        {/* ── SECTION 3: PORTFOLIO SNAPSHOT ── */}
+        <Section title="Portfolio Snapshot" subtitle="10 homes under management">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            {/* Left: KPIs */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <KPICard label="Homes Under Management" value="10" sub="9 confirmed + 1 prospect" color="#1a2332" />
+                <KPICard label="Occupancy Rate" value="90%" sub="9 of 10 booked" color="#2d6a4f" />
+                <KPICard label="Avg Nightly Rate" value="$3,620" sub="Across portfolio" color="#3b82f6" />
+                <KPICard label="Repeat Homeowner Rate" value="80%" sub="8 of 10 returning" color="#059669" />
+              </div>
+              <div style={{ background: '#fff', borderRadius: 10, padding: '16px 20px', border: '1px solid #e5e5e5' }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', marginBottom: 8 }}>Repeat Renters</div>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {[
+                    { name:'James Mitchell / Goldman Sachs', years:'Year 3', color:'#2d6a4f' },
+                    { name:'Steve Walsh', years:'Year 2', color:'#3b82f6' },
+                    { name:'Delta Air Lines / Marcus Chen', years:'Year 3', color:'#7C3AED' },
+                  ].map((r, i) => (
+                    <span key={i} style={{
+                      fontSize: 11, fontWeight: 500, color: r.color, background: `${r.color}10`,
+                      padding: '4px 10px', borderRadius: 6, border: `1px solid ${r.color}30`,
+                    }}>
+                      {r.name} <span style={{ fontWeight: 700 }}>({r.years})</span>
+                    </span>
+                  ))}
+                </div>
+                <div style={{ fontSize: 12, color: '#6b7280', marginTop: 8 }}>Repeat Renter Rate: <span style={{ fontWeight: 700, color: '#2d6a4f' }}>40%</span> (3 returning renters)</div>
+              </div>
+            </div>
+            {/* Right: Home Type Chart */}
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Homes by Type</div>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <HomeTypeChart />
+              </div>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 12, flexWrap: 'wrap' }}>
+                {HOME_TYPES.map(h => (
+                  <span key={h.type} style={{ fontSize: 10, color: '#6b7280', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: 2, background: h.color, display: 'inline-block' }} />
+                    {h.type}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ── SECTION 4: PIPELINE SUMMARY ── */}
+        <Section title="Pipeline Summary" subtitle="From Deal Pipeline (A-04)">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            {/* Left: Funnel + KPI */}
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>Deals by Stage</div>
+                <span
+                  onClick={() => alert('Navigate to A-04 Deal Pipeline')}
+                  style={{ fontSize: 11, fontWeight: 600, color: '#2d6a4f', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Open Pipeline &#8594;
+                </span>
+              </div>
+              <PipelineFunnel />
+              <div style={{ borderTop: '1px solid #e5e5e5', marginTop: 16, paddingTop: 12, display: 'flex', gap: 20 }}>
+                <div>
+                  <div style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Weighted Value</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#2d6a4f' }}>~$192K</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Total Pipeline</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#1a2332' }}>$276K</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Active Deals</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#3b82f6' }}>{PIPELINE_DEALS.filter(d => d.stage !== 'booked').length}</div>
+                </div>
+              </div>
+            </div>
+            {/* Right: Top Deals */}
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Top Active Deals</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {topDeals.map(deal => {
+                  const stageColor = {
+                    inquiry:'#D97706', qualified:'#0891B2', property_visit:'#2563EB',
+                    contract:'#7C3AED', deposit:'#059669', booked:'#2d6a4f',
+                  }[deal.stage] || '#6b7280';
+                  return (
+                    <div key={deal.id}
+                      onClick={() => alert(`Open deal: ${deal.id} — ${deal.renter}`)}
+                      style={{
+                        padding: '14px 16px', borderRadius: 8, border: '1px solid #e5e5e5',
+                        cursor: 'pointer', transition: 'all 0.12s',
+                        borderLeft: `4px solid ${stageColor}`,
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#fafafa'}
+                      onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>{deal.renter}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: '#2d6a4f' }}>{deal.total > 0 ? fmtFull(deal.total) : 'TBD'}</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontSize: 10, fontWeight: 600, color: stageColor, background: `${stageColor}15`, padding: '2px 8px', borderRadius: 4 }}>{STAGE_LABELS[deal.stage]}</span>
+                        <span style={{ fontSize: 11, color: '#6b7280' }}>{deal.contact}</span>
+                        {deal.property && <span style={{ fontSize: 11, color: '#6b7280' }}>&middot; {deal.property}</span>}
+                        <span style={{ fontSize: 11, color: deal.days > 7 ? '#DC2626' : '#6b7280', fontWeight: deal.days > 7 ? 600 : 400 }}>&middot; {deal.days}d in stage</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ marginTop: 12, textAlign: 'center' }}>
+                <span
+                  onClick={() => alert('Navigate to A-04 Deal Pipeline')}
+                  style={{ fontSize: 12, fontWeight: 600, color: '#2d6a4f', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  View all {PIPELINE_DEALS.length} deals &#8594;
+                </span>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ── SECTION 5: TEAM & SEASON STATUS ── */}
+        <Section title="Team & Season Status" subtitle="Final Prep Phase -- March 2027">
+          {/* Season Timeline */}
+          <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5', marginBottom: 16 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 12 }}>Season Timeline</div>
+            <SeasonTimeline />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            {/* Left: Team */}
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Active Programs & Team</div>
+
+              {/* Jackie / Elan Arc */}
+              <div style={{ padding: '14px 16px', borderRadius: 8, background: '#f8f9fa', marginBottom: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>Jackie Keller</span>
+                    <span style={{ fontSize: 11, color: '#6b7280', marginLeft: 8 }}>Elan Arc</span>
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: '#7C3AED', background: '#F5F3FF', padding: '2px 8px', borderRadius: 4 }}>PM Lead</span>
+                </div>
+                {PM_PROGRAMS.map(p => (
+                  <div key={p.client} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderTop: '1px solid #e5e5e5' }}>
+                    <div>
+                      <span style={{ fontSize: 12, fontWeight: 500, color: '#1a1a1a' }}>{p.client}</span>
+                      <span style={{ fontSize: 11, color: '#6b7280', marginLeft: 6 }}>{p.status}</span>
+                    </div>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#2d6a4f' }}>{fmtFull(p.value)}</span>
+                  </div>
+                ))}
+                <div style={{ fontSize: 11, color: '#6b7280', marginTop: 8 }}>2 active programs &middot; {fmtFull(PM_PROGRAMS.reduce((s,p) => s+p.value, 0))} total value</div>
+              </div>
+
+              {/* Taite */}
+              <div style={{ padding: '14px 16px', borderRadius: 8, background: '#f8f9fa' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>Taite Sasnett</span>
+                    <span style={{ fontSize: 11, color: '#6b7280', marginLeft: 8 }}>Managing Director</span>
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: '#1a2332', background: '#E2E8F0', padding: '2px 8px', borderRadius: 4 }}>Operator</span>
+                </div>
+                <div style={{ fontSize: 12, color: '#1a1a1a', lineHeight: 1.6 }}>
+                  3 deals in active negotiation<br />
+                  Bennett follow-up, Berkshire deposit, Victoria Stone deposit<br />
+                  {PIPELINE_DEALS.filter(d => d.priority === 'high' && d.stage !== 'booked').length} high-priority items requiring attention
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Milestones */}
+            <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', border: '1px solid #e5e5e5' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 16 }}>Next Milestones</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {MILESTONES.map((m, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px',
+                    borderRadius: 8, background: m.urgent ? '#FFFBEB' : '#f8f9fa',
+                    border: m.urgent ? '1px solid #FDE68A' : '1px solid transparent',
+                  }}>
+                    <div style={{
+                      width: 8, height: 8, borderRadius: '50%',
+                      background: m.urgent ? '#D97706' : m.status === 'future' ? '#e5e5e5' : '#2d6a4f',
+                      flexShrink: 0,
+                      animation: m.urgent ? 'pulse 2s infinite' : 'none',
+                    }} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', minWidth: 80 }}>{m.date}</span>
+                    <span style={{ fontSize: 12, color: m.urgent ? '#92400E' : '#6b7280', flex: 1 }}>{m.label}</span>
+                    {m.urgent && <span style={{ fontSize: 9, fontWeight: 700, color: '#D97706', background: '#FEF3C7', padding: '2px 6px', borderRadius: 3 }}>URGENT</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Section>
+
+      </div>
+
+      {/* ═══ FOOTER ═══ */}
+      <footer style={{
+        padding: '16px 32px', borderTop: '1px solid #e5e5e5', background: '#fff',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12,
+      }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#6b7280', textTransform: 'uppercase' }}>Patron Properties &middot; Operator View</span>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          {[
+            { label:'Prospect Finder', screen:'A-01' },
+            { label:'Homeowner Intake', screen:'A-02' },
+            { label:'Renter CRM', screen:'A-03' },
+            { label:'Deal Pipeline', screen:'A-04' },
+            { label:'Document Tracker', screen:'A-05' },
+            { label:'This Dashboard', screen:'A-06' },
+          ].map(link => (
+            <span
+              key={link.screen}
+              onClick={() => alert(`Navigate to ${link.screen}: ${link.label}`)}
+              onMouseEnter={() => setHoveredScreen(link.screen)}
+              onMouseLeave={() => setHoveredScreen(null)}
+              style={{
+                fontSize: 11, fontWeight: 500, cursor: 'pointer',
+                color: hoveredScreen === link.screen ? '#2d6a4f' : '#6b7280',
+                textDecoration: hoveredScreen === link.screen ? 'underline' : 'none',
+                transition: 'all 0.12s',
+              }}
+            >
+              {link.screen}: {link.label}
+            </span>
+          ))}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
