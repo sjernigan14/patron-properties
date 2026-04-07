@@ -9,19 +9,19 @@
 | ID | Address | Beds | Bath | Nightly Rate | Owner | Neighborhood | Type | Distance to Gate 6 |
 |----|---------|------|------|-------------|-------|--------------|------|-------------------|
 | PP-1001 | 142 Berckmans Dr | 7 | 5 | $5,500 | Margaret Ashford | West Augusta | Host Home | 0.3 mi |
-| PP-1002 | 308 Wheeler Rd | 5 | 3 | $3,200 | Dr. Kevin & Amy Rhodes | National Hills | Golfer Home | 1.1 mi |
+| PP-1002 | 308 Wheeler Rd | 5 | 3 | $3,200 | Dr. Kevin & Amy Rhodes | National Hills | Dinner Home | 1.1 mi |
 | PP-1003 | 1547 Monte Sano Ave | 6 | 4 | $4,100 | William & June Parker | Summerville | Host Home | 1.8 mi |
 | PP-1004 | 2205 Henry St | 4 | 2 | $1,800 | James & Carol Bennett | Olde Town | Sleeper Home | 2.4 mi |
-| PP-1005 | 789 Milledge Rd | 5 | 3 | $3,400 | Robert & Linda Hayes | West Augusta | Golfer Home | 0.7 mi |
+| PP-1005 | 789 Milledge Rd | 5 | 3 | $3,400 | Robert & Linda Hayes | West Augusta | Dinner Home | 0.7 mi |
 | PP-1006 | 411 Cumming Rd | 6 | 4 | $4,200 | Daniel & Christine Moore | National Hills | Host Home | 0.9 mi |
-| PP-1007 | 925 Lake Olmstead Dr | 4 | 3 | $2,200 | Patricia & George Sullivan | Lake Olmstead | Golfer Home | 2.1 mi |
+| PP-1007 | 925 Lake Olmstead Dr | 4 | 3 | $2,200 | Patricia & George Sullivan | Lake Olmstead | Dinner Home | 2.1 mi |
 | PP-1008 | 1803 Highland Ave | 5 | 3 | $3,500 | Richard & Ellen Foster | Summerville | Host Home | 1.5 mi |
 | PP-1009 | 556 Berckmans Rd | 7 | 6 | $5,800 | Catherine Harwell | West Augusta | Host Home | 0.2 mi |
 | PP-1010 | 2100 Walton Way | 3 | 2 | $2,000 | Thomas & Maria Nguyen | Summerville | Staff Home | 1.9 mi |
 
 ### Home Type Taxonomy (Masters Nomenclature)
 - **Host Home**: You're going to host dinners and entertain at this house. Catering kitchen, dining for 12+, event-ready outdoor space. Higher fee — guests are using the home as a venue, not just sleeping there. More maintenance, more wear. PP-1001, PP-1003, PP-1006, PP-1008, PP-1009.
-- **Golfer Home**: Core group of golfers or executives who are out at the course all day. They come back, shower, have a drink, sleep. Mid-tier amenities. PP-1002, PP-1005, PP-1007.
+- **Dinner Home**: Core group of golfers or executives who are out at the course all day. They come back, shower, have a drink, sleep. Mid-tier amenities. PP-1002, PP-1005, PP-1007.
 - **Sleeper Home**: Staff are basically just sleeping there. Not entertaining, minimal use of kitchen/living areas. Less maintenance, less wear, lower fee. PP-1004.
 - **Staff Home**: Support crew, drivers, vendor teams, overflow. Functional, not premium. PP-1010.
 
@@ -38,7 +38,7 @@
 **Personality**: Low-maintenance, trusts Patron, wants her check and a damage report. Emails, doesn't text.
 
 ### 2. Robert & Linda Hayes — "The Nervous First-Timers"
-**Property**: PP-1005, 789 Milledge Rd (5BR/3BA, $3,400/nt) — Golfer Home
+**Property**: PP-1005, 789 Milledge Rd (5BR/3BA, $3,400/nt) — Dinner Home
 **Profile**: Robert is a retired engineer, 62. Linda teaches at Augusta University. They've lived in the house 28 years. Worried about strangers in their home.
 **Funnel stage**: Second year — converted from prospect in 2025
 **Journey**: Found via skip trace (A-01, Patron Score 87) → cold call from Taite → property visit → signed after seeing Margaret Ashford's payout → first year went well, minor scuff on hardwood (resolved). Now enrolled for Year 2.
@@ -62,7 +62,7 @@
 **Personality**: High-touch. Wants to be involved. But once she trusts you, she's a referral engine.
 
 ### 5. Dr. Kevin & Amy Rhodes — "The Local Professionals"
-**Property**: PP-1002, 308 Wheeler Rd (5BR/3BA, $3,200/nt) — Golfer Home
+**Property**: PP-1002, 308 Wheeler Rd (5BR/3BA, $3,200/nt) — Dinner Home
 **Profile**: Kevin is a dentist with a practice in Augusta. Amy manages their rental properties (they own 3). They move into Amy's parents' house during Masters week.
 **Funnel stage**: Active Homeowner (Year 2)
 **Journey**: Kevin was referred by a patient who rents through Patron → intake completed with Amy handling everything → smooth process, Amy is organized and responsive.
@@ -134,7 +134,7 @@
 
 #### Morgan Stanley (direct, no agency, no PM program)
 **Contact**: Patricia Wells, Managing Director
-**Property**: PP-1007 (925 Lake Olmstead Dr, Golfer Home, $2,200/nt)
+**Property**: PP-1007 (925 Lake Olmstead Dr, Dinner Home, $2,200/nt)
 **Program**: Housing only — intimate client dinners, 10 guests. No PM program.
 **Value**: $15,400 housing only
 **Status**: Booked, contract signed
@@ -145,7 +145,7 @@
 ## DIRECT RENTERS (individuals/families, no agency)
 
 ### 1. Steve Walsh — Walsh Family
-**Property**: PP-1005 (789 Milledge Rd, Golfer Home, Hayes property)
+**Property**: PP-1005 (789 Milledge Rd, Dinner Home, Hayes property)
 **Booking**: Tournament days Apr 9-12, $10,200 total (3 nights at $3,400)
 **Status**: Booked (repeat from 2026)
 **Story**: Easy client. The Hayes specifically requested him back. Proof the repeat guest model works.

@@ -37,120 +37,129 @@ const { useState, useEffect, useCallback, useMemo, useRef } = React;
    ──────────────────────────────────────────── */
 
 const PROPERTIES = [
-  { id:'PP-1001', address:'142 Berckmans Dr', beds:7, baths:5, rate:5500, owner:'Margaret Ashford', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.3 mi', sleeps:14, features:['Pool','Catering Kitchen','Event Space','Garden Terrace'], img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80', available:false },
-  { id:'PP-1002', address:'308 Wheeler Rd', beds:5, baths:3, rate:3200, owner:'Dr. Kevin & Amy Rhodes', neighborhood:'National Hills', type:'Executive Retreat', distance:'1.1 mi', sleeps:10, features:['Wine Cellar','Study','Putting Green'], img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', available:true },
-  { id:'PP-1003', address:'1547 Monte Sano Ave', beds:6, baths:4, rate:4100, owner:'William & June Parker', neighborhood:'Summerville', type:'Entertainer Home', distance:'1.8 mi', sleeps:12, features:['Chef Kitchen','Outdoor Dining','Fire Pit','Guest Suite'], img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', available:false },
-  { id:'PP-1004', address:'2205 Henry St', beds:4, baths:2, rate:1800, owner:'James & Carol Bennett', neighborhood:'Olde Town', type:'Golfer Cottage', distance:'2.4 mi', sleeps:8, features:['Screened Porch','Grill','Parking for 4'], img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80', available:true },
-  { id:'PP-1005', address:'789 Milledge Rd', beds:5, baths:3, rate:3400, owner:'Robert & Linda Hayes', neighborhood:'West Augusta', type:'Executive Retreat', distance:'0.7 mi', sleeps:10, features:['Covered Patio','Library','Home Theater'], img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80', available:true },
-  { id:'PP-1006', address:'411 Cumming Rd', beds:6, baths:4, rate:4200, owner:'Daniel & Christine Moore', neighborhood:'National Hills', type:'Entertainer Home', distance:'0.9 mi', sleeps:12, features:['Pool','Outdoor Kitchen','Media Room','Guest House'], img:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', available:false },
+  { id:'PP-1001', address:'142 Berckmans Dr', beds:7, baths:5, rate:5500, owner:'Margaret Ashford', neighborhood:'West Augusta', type:'Host Home', distance:'0.3 mi', sleeps:14, features:['Pool','Catering Kitchen','Event Space','Garden Terrace'], img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80', available:false },
+  { id:'PP-1002', address:'308 Wheeler Rd', beds:5, baths:3, rate:3200, owner:'Dr. Kevin & Amy Rhodes', neighborhood:'National Hills', type:'Dinner Home', distance:'1.1 mi', sleeps:10, features:['Wine Cellar','Study','Putting Green'], img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', available:true },
+  { id:'PP-1003', address:'1547 Monte Sano Ave', beds:6, baths:4, rate:4100, owner:'William & June Parker', neighborhood:'Summerville', type:'Host Home', distance:'1.8 mi', sleeps:12, features:['Chef Kitchen','Outdoor Dining','Fire Pit','Guest Suite'], img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', available:false },
+  { id:'PP-1004', address:'2205 Henry St', beds:4, baths:2, rate:1800, owner:'James & Carol Bennett', neighborhood:'Olde Town', type:'Sleeper Home', distance:'2.4 mi', sleeps:8, features:['Screened Porch','Grill','Parking for 4'], img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80', available:true },
+  { id:'PP-1005', address:'789 Milledge Rd', beds:5, baths:3, rate:3400, owner:'Robert & Linda Hayes', neighborhood:'West Augusta', type:'Dinner Home', distance:'0.7 mi', sleeps:10, features:['Covered Patio','Library','Home Theater'], img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80', available:true },
+  { id:'PP-1006', address:'411 Cumming Rd', beds:6, baths:4, rate:4200, owner:'Daniel & Christine Moore', neighborhood:'National Hills', type:'Host Home', distance:'0.9 mi', sleeps:12, features:['Pool','Outdoor Kitchen','Media Room','Guest House'], img:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', available:false },
   { id:'PP-1007', address:'925 Lake Olmstead Dr', beds:4, baths:3, rate:2200, owner:'Patricia & George Sullivan', neighborhood:'Lake Olmstead', type:'Dinner Home', distance:'2.1 mi', sleeps:10, features:['Lake Views','Formal Dining','Wine Room','Covered Dock'], img:'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80', available:false },
-  { id:'PP-1008', address:'1803 Highland Ave', beds:5, baths:3, rate:3500, owner:'Richard & Ellen Foster', neighborhood:'Summerville', type:'Executive Retreat', distance:'1.5 mi', sleeps:10, features:['Open Floor Plan','Chef Kitchen','Garden','Study'], img:'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=800&q=80', available:false },
-  { id:'PP-1009', address:'556 Berckmans Rd', beds:7, baths:6, rate:5800, owner:'Catherine Harwell', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.2 mi', sleeps:18, features:['Pool','Grand Kitchen','Event Lawn','Wine Cellar','Guest Wing','Featured in Augusta Magazine'], img:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80', available:false },
-  { id:'PP-1010', address:'2100 Walton Way', beds:3, baths:2, rate:2000, owner:'Thomas & Maria Nguyen', neighborhood:'Summerville', type:'Staff Housing', distance:'1.9 mi', sleeps:6, features:['Functional Layout','Parking','Laundry'], img:'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80', available:true }
+  { id:'PP-1008', address:'1803 Highland Ave', beds:5, baths:3, rate:3500, owner:'Richard & Ellen Foster', neighborhood:'Summerville', type:'Dinner Home', distance:'1.5 mi', sleeps:10, features:['Open Floor Plan','Chef Kitchen','Garden','Study'], img:'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=800&q=80', available:false },
+  { id:'PP-1009', address:'556 Berckmans Rd', beds:7, baths:6, rate:5800, owner:'Catherine Harwell', neighborhood:'West Augusta', type:'Host Home', distance:'0.2 mi', sleeps:18, features:['Pool','Grand Kitchen','Event Lawn','Wine Cellar','Guest Wing','Featured in Augusta Magazine'], img:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80', available:false },
+  { id:'PP-1010', address:'2100 Walton Way', beds:3, baths:2, rate:2000, owner:'Thomas & Maria Nguyen', neighborhood:'Summerville', type:'Staff Home', distance:'1.9 mi', sleeps:6, features:['Functional Layout','Parking','Laundry'], img:'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80', available:true }
 ];
 
 const AGENCY_DATA = {
-  delta: {
+  wasserman: {
     agencyName: 'Wasserman',
-    clientName: 'Delta Air Lines',
-    contactName: 'Marcus',
-    contactLastName: 'Chen',
-    contactTitle: 'VP Corporate Events',
-    programName: 'Delta Air Lines Masters Hospitality 2027',
+    contactName: 'Rachel',
+    contactLastName: 'Torres',
+    contactTitle: 'VP Hospitality Programs',
     brandColor: '#003366',
     brandAccent: '#c8102e',
     logoText: 'W',
-    propertyIds: ['PP-1009'],
-    guests: 18,
-    guestType: '18 executives',
-    year: '3rd consecutive year',
-    housing: 40600,
-    pm: 85000,
-    total: 125600,
-    status: 'Confirmed',
-    depositStatus: 'Deposit Paid',
-    components: [
-      { name: 'Housing', detail: 'PP-1009 — 556 Berckmans Rd, 7BR/6BA', status: 'Confirmed', icon: '\u2302' },
-      { name: 'Private Chef', detail: 'Chef Laurent Moreau, all 7 evenings', status: 'Confirmed', icon: '\u{1F374}' },
-      { name: 'Transportation', detail: 'Airport transfers + daily shuttle (18-pax)', status: 'Confirmed', icon: '\u{1F698}' },
-      { name: 'Badges & Tickets', detail: '18 Mon practice, 18 Wed Par 3, 18 Thu-Sun tournament', status: 'Confirmed', icon: '\u{1F3CC}' },
-      { name: 'Content & Photography', detail: 'Event photographer, daily social media assets', status: 'Confirmed', icon: '\u{1F4F7}' },
-      { name: 'Catering', detail: 'Welcome dinner, 2 breakfasts, closing reception', status: 'Menu Pending', icon: '\u{1F37D}' }
+    programs: [
+      {
+        id: 'delta',
+        clientName: 'Delta Air Lines',
+        clientContact: 'Marcus Chen',
+        clientTitle: 'VP Corporate Events',
+        programName: 'Delta Air Lines Masters Hospitality 2027',
+        propertyIds: ['PP-1009'],
+        guests: 18,
+        guestType: '18 executives',
+        year: '3rd consecutive year',
+        housing: 40600,
+        pm: 85000,
+        total: 125600,
+        status: 'Confirmed',
+        depositStatus: 'Deposit Paid',
+        components: [
+          { name: 'Housing', detail: 'PP-1009 — 556 Berckmans Rd, 7BR/6BA', status: 'Confirmed', icon: '\u2302' },
+          { name: 'Private Chef', detail: 'Chef Laurent Moreau, all 7 evenings', status: 'Confirmed', icon: '\u{1F374}' },
+          { name: 'Transportation', detail: 'Airport transfers + daily shuttle (18-pax)', status: 'Confirmed', icon: '\u{1F698}' },
+          { name: 'Badges & Tickets', detail: '18 Mon practice, 18 Wed Par 3, 18 Thu-Sun tournament', status: 'Confirmed', icon: '\u{1F3CC}' },
+          { name: 'Content & Photography', detail: 'Event photographer, daily social media assets', status: 'Confirmed', icon: '\u{1F4F7}' },
+          { name: 'Catering', detail: 'Welcome dinner, 2 breakfasts, closing reception', status: 'Menu Pending', icon: '\u{1F37D}' }
+        ],
+        timeline: [
+          { date: 'Apr 7', label: 'Guest Arrival & Check-in' },
+          { date: 'Apr 7-9', label: 'Practice Rounds' },
+          { date: 'Apr 10', label: 'Opening Ceremony & Round 1' },
+          { date: 'Apr 11', label: 'Round 2' },
+          { date: 'Apr 12', label: 'Moving Day (Round 3)' },
+          { date: 'Apr 13', label: 'Final Round' },
+          { date: 'Apr 14', label: 'Check-out & Departure' }
+        ]
+      },
+      {
+        id: 'goldman',
+        clientName: 'Goldman Sachs',
+        clientContact: 'James Mitchell',
+        clientTitle: 'Managing Director',
+        programName: 'Goldman Sachs Masters Client Hospitality 2027',
+        propertyIds: ['PP-1001'],
+        guests: 14,
+        guestType: '14 guests',
+        year: '1st year with Patron',
+        housing: 38500,
+        pm: 0,
+        total: 38500,
+        status: 'Confirmed',
+        depositStatus: 'Contract Signed',
+        components: [
+          { name: 'Housing', detail: 'PP-1001 — 142 Berckmans Dr, 7BR/5BA', status: 'Confirmed', icon: '\u2302' },
+          { name: 'Golf Coordination', detail: 'Practice round tee times, local course access', status: 'In Progress', icon: '\u{1F3CC}' }
+        ],
+        timeline: [
+          { date: 'Apr 8', label: 'Guest Arrival & Check-in' },
+          { date: 'Apr 8-9', label: 'Practice Rounds & Client Golf' },
+          { date: 'Apr 10-13', label: 'Tournament Days' },
+          { date: 'Apr 13', label: 'Check-out & Departure' }
+        ]
+      }
     ],
-    timeline: [
-      { date: 'Apr 7', label: 'Guest Arrival & Check-in' },
-      { date: 'Apr 7-9', label: 'Practice Rounds' },
-      { date: 'Apr 10', label: 'Opening Ceremony & Round 1' },
-      { date: 'Apr 11', label: 'Round 2' },
-      { date: 'Apr 12', label: 'Moving Day (Round 3)' },
-      { date: 'Apr 13', label: 'Final Round' },
-      { date: 'Apr 14', label: 'Check-out & Departure' }
-    ],
-    analytics: { lastYearRevenue: 118000, thisYearRevenue: 125600, lastYearBookings: 1, thisYearBookings: 1, totalCommission: 18840, totalYears: 3, totalPrograms: 3, totalRevenue: 362000, satisfaction: 9.6 }
+    analytics: { lastYearRevenue: 118000, thisYearRevenue: 164100, lastYearBookings: 1, thisYearBookings: 2, totalCommission: 24615, totalYears: 3, totalPrograms: 4, totalRevenue: 400500, satisfaction: 9.6 }
   },
-  morgan: {
-    agencyName: 'Morgan Stanley',
-    clientName: 'Morgan Stanley',
-    contactName: 'Patricia',
-    contactLastName: 'Wells',
-    contactTitle: 'Managing Director',
-    programName: 'Morgan Stanley Masters Client Entertainment 2027',
-    brandColor: '#00205B',
-    brandAccent: '#0078D4',
-    logoText: 'MS',
-    propertyIds: ['PP-1007'],
-    guests: 10,
-    guestType: '10 VIP clients',
-    year: '1st year with Patron',
-    housing: 15400,
-    pm: 0,
-    total: 15400,
-    status: 'Confirmed',
-    depositStatus: 'Contract Signed',
-    components: [
-      { name: 'Housing', detail: 'PP-1007 — 925 Lake Olmstead Dr, 4BR/3BA', status: 'Confirmed', icon: '\u2302' },
-      { name: 'Catering Coordination', detail: 'Patron connecting with local caterers', status: 'In Progress', icon: '\u{1F374}' }
-    ],
-    timeline: [
-      { date: 'Apr 8', label: 'Guest Arrival & Check-in' },
-      { date: 'Apr 8-9', label: 'Practice Rounds & Client Dinners' },
-      { date: 'Apr 10-13', label: 'Tournament Days' },
-      { date: 'Apr 13', label: 'Check-out & Departure' }
-    ],
-    analytics: { lastYearRevenue: 0, thisYearRevenue: 15400, lastYearBookings: 0, thisYearBookings: 1, totalCommission: 2310, totalYears: 1, totalPrograms: 1, totalRevenue: 15400, satisfaction: null }
-  },
-  berkshire: {
-    agencyName: 'Berkshire Investment Group',
-    clientName: 'Berkshire Investment Group',
-    contactName: 'Michael',
-    contactLastName: 'Kramer',
-    contactTitle: 'Head of Events',
-    programName: 'Berkshire Masters Executive Retreat 2027',
+  onlocation: {
+    agencyName: 'On Location',
+    contactName: 'David',
+    contactLastName: 'Park',
+    contactTitle: 'Director of Events',
     brandColor: '#1B4D3E',
     brandAccent: '#8B6914',
-    logoText: 'BIG',
-    propertyIds: ['PP-1003','PP-1008'],
-    guests: 20,
-    guestType: '20+ executives',
-    year: '1st year with Patron',
-    housing: 53200,
-    pm: 42000,
-    total: 95200,
-    status: 'Active',
-    depositStatus: 'Deposit Pending',
-    components: [
-      { name: 'Housing — Golf Group', detail: 'PP-1003 — 1547 Monte Sano Ave, 6BR/4BA', status: 'Confirmed', icon: '\u2302' },
-      { name: 'Housing — Dinner Group', detail: 'PP-1008 — 1803 Highland Ave, 5BR/3BA', status: 'Confirmed', icon: '\u2302' },
-      { name: 'Shuttle Service', detail: 'Dedicated shuttle between properties, 7am-11pm', status: 'Scheduled', icon: '\u{1F698}' },
-      { name: 'Catering', detail: 'Private chef at PP-1003, catered dinners at PP-1008', status: 'In Progress', icon: '\u{1F374}' },
-      { name: 'Badges & Tickets', detail: '20 practice round, 20 tournament badges (Thu-Sun)', status: 'Pending', icon: '\u{1F3CC}' }
-    ],
-    timeline: [
-      { date: 'Apr 7', label: 'Advance Team Arrives' },
-      { date: 'Apr 8', label: 'Executive Arrival & Welcome Dinner' },
-      { date: 'Apr 9', label: 'Practice Round & Group Golf' },
-      { date: 'Apr 10-13', label: 'Tournament Days' },
-      { date: 'Apr 14', label: 'Check-out & Departure' }
+    logoText: 'OL',
+    programs: [
+      {
+        id: 'berkshire',
+        clientName: 'Berkshire Investment Group',
+        clientContact: 'Michael Kramer',
+        clientTitle: 'Head of Events',
+        programName: 'Berkshire Masters Executive Retreat 2027',
+        propertyIds: ['PP-1003','PP-1008'],
+        guests: 20,
+        guestType: '20+ executives',
+        year: '1st year with Patron',
+        housing: 53200,
+        pm: 42000,
+        total: 95200,
+        status: 'Active',
+        depositStatus: 'Deposit Pending',
+        components: [
+          { name: 'Housing — Golf Group', detail: 'PP-1003 — 1547 Monte Sano Ave, 6BR/4BA', status: 'Confirmed', icon: '\u2302' },
+          { name: 'Housing — Executive Group', detail: 'PP-1008 — 1803 Highland Ave, 5BR/3BA', status: 'Confirmed', icon: '\u2302' },
+          { name: 'Shuttle Service', detail: 'Dedicated shuttle between properties, 7am-11pm', status: 'Scheduled', icon: '\u{1F698}' },
+          { name: 'Catering', detail: 'Private chef at PP-1003, catered dinners at PP-1008', status: 'In Progress', icon: '\u{1F374}' },
+          { name: 'Badges & Tickets', detail: '20 practice round, 20 tournament badges (Thu-Sun)', status: 'Pending', icon: '\u{1F3CC}' }
+        ],
+        timeline: [
+          { date: 'Apr 7', label: 'Advance Team Arrives' },
+          { date: 'Apr 8', label: 'Executive Arrival & Welcome Dinner' },
+          { date: 'Apr 9', label: 'Practice Round & Group Golf' },
+          { date: 'Apr 10-13', label: 'Tournament Days' },
+          { date: 'Apr 14', label: 'Check-out & Departure' }
+        ]
+      }
     ],
     analytics: { lastYearRevenue: 0, thisYearRevenue: 95200, lastYearBookings: 0, thisYearBookings: 2, totalCommission: 14280, totalYears: 1, totalPrograms: 1, totalRevenue: 95200, satisfaction: null }
   }
@@ -332,7 +341,7 @@ function Sidebar({ activeView, setActiveView, agency }) {
 
       <div style={{ padding:'28px 24px 20px' }}>
         <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:6 }}>
-          <div style={{ width:36, height:36, borderRadius:8, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:700, fontSize: agency.logoText.length > 2 ? 10 : 14, letterSpacing:'-0.02em' }}>{agency.logoText}</div>
+          <div style={{ width:36, height:36, borderRadius:8, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:700, fontSize:14, letterSpacing:'-0.02em' }}>{agency.logoText}</div>
           <div>
             <div style={{ fontSize:14, fontWeight:700, color:C.text }}>{agency.agencyName}</div>
             <div style={{ fontSize:11, color:C.textTer, fontWeight:500 }}>Agency Portal</div>
@@ -378,71 +387,132 @@ function Sidebar({ activeView, setActiveView, agency }) {
    DASHBOARD VIEW
    ──────────────────────────────────────────── */
 
-function DashboardView({ agency }) {
-  const props = agency.propertyIds.map(id => PROPERTIES.find(p => p.id === id));
+function ProgramCard({ program, agency, expanded, onToggle }) {
+  const props = program.propertyIds.map(id => PROPERTIES.find(p => p.id === id));
   const heroProperty = props[0];
 
   return (
+    <Card style={{ marginBottom:24, padding:0, overflow:'hidden' }}>
+      <div style={{ display:'flex', minHeight: expanded ? 320 : 200 }}>
+        <div style={{ flex:'0 0 40%', position:'relative', cursor:'pointer' }} onClick={onToggle}>
+          <img src={heroProperty.img} alt={heroProperty.address} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+          <div style={{ position:'absolute', bottom:16, left:16, right:16 }}>
+            <div style={{ display:'flex', gap:6 }}>
+              <span style={{ background:'rgba(0,0,0,0.65)', color:'#fff', padding:'5px 12px', borderRadius:6, fontSize:11, fontWeight:600, backdropFilter:'blur(8px)' }}>{heroProperty.distance} to Gate 6</span>
+              <span style={{ background:'rgba(0,0,0,0.65)', color:'#fff', padding:'5px 12px', borderRadius:6, fontSize:11, fontWeight:600, backdropFilter:'blur(8px)' }}>{heroProperty.type}</span>
+            </div>
+          </div>
+        </div>
+        <div style={{ flex:1, padding:'28px 32px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
+            <StatusBadge status={program.status} />
+            <StatusBadge status={program.depositStatus} />
+          </div>
+          <h2 style={{ fontSize:20, fontWeight:800, letterSpacing:'-0.03em', marginBottom:4, lineHeight:1.2, cursor:'pointer' }} onClick={onToggle}>{program.programName}</h2>
+          <p style={{ fontSize:13, color:C.textSec, marginBottom:4 }}>Client: <strong>{program.clientContact}</strong>, {program.clientTitle}</p>
+          <p style={{ fontSize:13, color:C.textSec, marginBottom:16, lineHeight:1.5 }}>
+            {heroProperty.id} — {heroProperty.address} · {heroProperty.beds}BR/{heroProperty.baths}BA · Sleeps {heroProperty.sleeps}
+          </p>
+          {props.length > 1 && (
+            <div style={{ marginBottom:12 }}>
+              {props.slice(1).map(p => (
+                <p key={p.id} style={{ fontSize:12, color:C.textSec, marginBottom:2 }}>+ {p.id} — {p.address} ({p.beds}BR/{p.baths}BA)</p>
+              ))}
+            </div>
+          )}
+          <div style={{ display:'flex', gap:28, paddingTop:14, borderTop:`1px solid ${C.borderLight}` }}>
+            <MetricCard label="Guests" value={program.guests} sub={program.guestType} />
+            <MetricCard label="Program Value" value={fmt(program.total)} accent sub={program.pm > 0 ? `Housing ${fmt(program.housing)} + PM ${fmt(program.pm)}` : `Housing only`} />
+            <MetricCard label="History" value={program.year} />
+          </div>
+        </div>
+      </div>
+
+      {/* Expanded detail */}
+      {expanded && (
+        <div style={{ borderTop:`1px solid ${C.borderLight}`, padding:'24px 32px' }}>
+          {/* Timeline */}
+          <div style={{ marginBottom:24 }}>
+            <h4 style={{ fontSize:12, fontWeight:600, color:C.textTer, textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:14 }}>Key Dates</h4>
+            <div style={{ display:'flex', gap:0, position:'relative', paddingTop:8 }}>
+              <div style={{ position:'absolute', top:20, left:24, right:24, height:2, background:C.borderLight, zIndex:0 }}></div>
+              {program.timeline.map((t, i) => (
+                <div key={i} style={{ flex:1, textAlign:'center', position:'relative', zIndex:1 }}>
+                  <div style={{ width:10, height:10, borderRadius:5, background: i === 0 || i === program.timeline.length - 1 ? C.gold : C.green, margin:'0 auto 10px', border:`2px solid ${C.surface}`, boxShadow:`0 0 0 2px ${i === 0 || i === program.timeline.length - 1 ? C.gold : C.green}` }}></div>
+                  <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:2 }}>{t.date}</div>
+                  <div style={{ fontSize:10, color:C.textSec, lineHeight:1.3 }}>{t.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Components */}
+          <h4 style={{ fontSize:12, fontWeight:600, color:C.textTer, textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:12 }}>Program Components</h4>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:10 }}>
+            {program.components.map((comp, i) => (
+              <div key={i} style={{ padding:'14px 16px', background:C.bg, borderRadius:C.radiusSm, display:'flex', alignItems:'flex-start', gap:12 }}>
+                <div style={{ fontSize:18, lineHeight:1 }}>{comp.icon}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:3 }}>
+                    <h4 style={{ fontSize:13, fontWeight:700 }}>{comp.name}</h4>
+                    <StatusBadge status={comp.status} />
+                  </div>
+                  <p style={{ fontSize:12, color:C.textSec, lineHeight:1.4 }}>{comp.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function DashboardView({ agency }) {
+  const [expandedProgram, setExpandedProgram] = useState(agency.programs[0].id);
+  const totalGuests = agency.programs.reduce((sum, p) => sum + p.guests, 0);
+  const totalValue = agency.programs.reduce((sum, p) => sum + p.total, 0);
+  const totalHousing = agency.programs.reduce((sum, p) => sum + p.housing, 0);
+  const totalPM = agency.programs.reduce((sum, p) => sum + p.pm, 0);
+
+  return (
     <div style={{ maxWidth:1000, margin:'0 auto' }}>
-      {/* Program Hero */}
-      <Card style={{ marginBottom:24, padding:0, overflow:'hidden' }}>
-        <div style={{ display:'flex', minHeight:320 }}>
-          <div style={{ flex:'0 0 45%', position:'relative' }}>
-            <img src={heroProperty.img} alt={heroProperty.address} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
-            <div style={{ position:'absolute', bottom:16, left:16, right:16 }}>
-              <div style={{ display:'flex', gap:6 }}>
-                <span style={{ background:'rgba(0,0,0,0.65)', color:'#fff', padding:'5px 12px', borderRadius:6, fontSize:11, fontWeight:600, backdropFilter:'blur(8px)' }}>{heroProperty.distance} to Gate 6</span>
-                <span style={{ background:'rgba(0,0,0,0.65)', color:'#fff', padding:'5px 12px', borderRadius:6, fontSize:11, fontWeight:600, backdropFilter:'blur(8px)' }}>{heroProperty.type}</span>
-              </div>
-            </div>
+      {/* Agency Overview */}
+      <Card style={{ marginBottom:24, padding:'28px 32px', background:`linear-gradient(135deg, ${agency.brandColor}08 0%, transparent 100%)` }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+          <div>
+            <h2 style={{ fontSize:22, fontWeight:800, letterSpacing:'-0.03em', marginBottom:4 }}>{agency.agencyName} — Masters Week 2027</h2>
+            <p style={{ fontSize:14, color:C.textSec }}>{agency.programs.length} active client {agency.programs.length === 1 ? 'program' : 'programs'}</p>
           </div>
-          <div style={{ flex:1, padding:'32px 36px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16 }}>
-              <StatusBadge status={agency.status} />
-              <StatusBadge status={agency.depositStatus} />
-            </div>
-            <h2 style={{ fontSize:24, fontWeight:800, letterSpacing:'-0.03em', marginBottom:8, lineHeight:1.2 }}>{agency.programName}</h2>
-            <p style={{ fontSize:14, color:C.textSec, marginBottom:20, lineHeight:1.5 }}>
-              {heroProperty.id} — {heroProperty.address}
-              <br/>
-              {heroProperty.beds} BR · {heroProperty.baths} BA · {heroProperty.distance} to Gate 6 · Sleeps {heroProperty.sleeps}
-            </p>
-            {props.length > 1 && (
-              <div style={{ marginBottom:16 }}>
-                {props.slice(1).map(p => (
-                  <p key={p.id} style={{ fontSize:13, color:C.textSec, marginBottom:4 }}>+ {p.id} — {p.address} ({p.beds}BR/{p.baths}BA)</p>
-                ))}
-              </div>
-            )}
-            <div style={{ display:'flex', gap:32, paddingTop:16, borderTop:`1px solid ${C.borderLight}` }}>
-              <MetricCard label="Guests" value={agency.guests} sub={agency.guestType} />
-              <MetricCard label="Program Value" value={fmt(agency.total)} accent sub={agency.pm > 0 ? `Housing ${fmt(agency.housing)} + PM ${fmt(agency.pm)}` : `Housing only`} />
-              <MetricCard label="History" value={agency.year} />
-            </div>
+          <div style={{ display:'flex', alignItems:'center', gap:8, padding:'6px 16px', background:C.goldLight, borderRadius:20 }}>
+            <span style={{ fontSize:12, fontWeight:800, color:C.gold }}>Total Portfolio: {fmt(totalValue)}</span>
           </div>
+        </div>
+        <div style={{ display:'flex', gap:40 }}>
+          <MetricCard label="Client Programs" value={agency.programs.length} sub={agency.programs.map(p => p.clientName).join(', ')} />
+          <MetricCard label="Total Guests" value={totalGuests} />
+          <MetricCard label="Total Housing" value={fmt(totalHousing)} accent />
+          <MetricCard label="Total PM Services" value={totalPM > 0 ? fmt(totalPM) : '\u2014'} accent={totalPM > 0} />
         </div>
       </Card>
 
-      {/* Key Dates Timeline */}
-      <Card style={{ marginBottom:24 }}>
-        <SectionTitle sub="Masters Week 2027">Key Dates</SectionTitle>
-        <div style={{ display:'flex', gap:0, position:'relative', paddingTop:8 }}>
-          <div style={{ position:'absolute', top:20, left:24, right:24, height:2, background:C.borderLight, zIndex:0 }}></div>
-          {agency.timeline.map((t, i) => (
-            <div key={i} style={{ flex:1, textAlign:'center', position:'relative', zIndex:1 }}>
-              <div style={{ width:10, height:10, borderRadius:5, background: i === 0 || i === agency.timeline.length - 1 ? C.gold : C.green, margin:'0 auto 10px', border:`2px solid ${C.surface}`, boxShadow:`0 0 0 2px ${i === 0 || i === agency.timeline.length - 1 ? C.gold : C.green}` }}></div>
-              <div style={{ fontSize:13, fontWeight:700, color:C.text, marginBottom:2 }}>{t.date}</div>
-              <div style={{ fontSize:11, color:C.textSec, lineHeight:1.3 }}>{t.label}</div>
-            </div>
-          ))}
-        </div>
-      </Card>
+      {/* Program Cards */}
+      <SectionTitle sub="Click a program to expand details">Client Programs</SectionTitle>
+      {agency.programs.map(program => (
+        <ProgramCard
+          key={program.id}
+          program={program}
+          agency={agency}
+          expanded={expandedProgram === program.id}
+          onToggle={() => setExpandedProgram(expandedProgram === program.id ? null : program.id)}
+        />
+      ))}
 
       {/* Quick Actions */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:16, marginBottom:24 }}>
         {[
-          { icon:'\u{1F465}', label:'View Guest List', sub:`${agency.guests} attendees registered` },
-          { icon:'\u{1F4CB}', label:'View Program Schedule', sub:'Meals, transport, badges' },
+          { icon:'\u{1F465}', label:'View Guest Lists', sub:`${totalGuests} total attendees` },
+          { icon:'\u{1F4CB}', label:'View Program Schedules', sub:'Meals, transport, badges' },
           { icon:'\u{1F4DD}', label:'Build a Proposal', sub:'New program or add properties' },
           { icon:'\u{1F4DE}', label:'Contact Your Concierge', sub:'Taite Sasnett, direct line' },
         ].map((a, i) => (
@@ -450,23 +520,6 @@ function DashboardView({ agency }) {
             <div style={{ fontSize:28, marginBottom:12 }}>{a.icon}</div>
             <div style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:4 }}>{a.label}</div>
             <div style={{ fontSize:12, color:C.textSec }}>{a.sub}</div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Program Components */}
-      <SectionTitle sub="Everything included in your program">Program Components</SectionTitle>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:12, marginBottom:24 }}>
-        {agency.components.map((comp, i) => (
-          <Card key={i} style={{ padding:'20px 22px', display:'flex', alignItems:'flex-start', gap:14 }}>
-            <div style={{ fontSize:22, lineHeight:1 }}>{comp.icon}</div>
-            <div style={{ flex:1 }}>
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
-                <h4 style={{ fontSize:14, fontWeight:700 }}>{comp.name}</h4>
-                <StatusBadge status={comp.status} />
-              </div>
-              <p style={{ fontSize:13, color:C.textSec, lineHeight:1.4 }}>{comp.detail}</p>
-            </div>
           </Card>
         ))}
       </div>
@@ -483,7 +536,7 @@ function InventoryView({ onAddToProposal }) {
   const [priceRange, setPriceRange] = useState('all');
   const [bedFilter, setBedFilter] = useState('all');
 
-  const types = ['All', 'Entertainer Home', 'Executive Retreat', 'Dinner Home', 'Golfer Cottage', 'Staff Housing'];
+  const types = ['All', 'Host Home', 'Dinner Home', 'Sleeper Home', 'Staff Home'];
 
   const filtered = useMemo(() => {
     return PROPERTIES.filter(p => {
@@ -551,11 +604,10 @@ function InventoryView({ onAddToProposal }) {
         <div key={type} style={{ marginBottom:36 }}>
           <h3 style={{ fontSize:16, fontWeight:700, color:C.text, marginBottom:4 }}>{type}</h3>
           <p style={{ fontSize:12, color:C.textSec, marginBottom:16 }}>
-            {type === 'Entertainer Home' && 'Full-scale corporate hosting. Event space, catering kitchen, pool.'}
-            {type === 'Executive Retreat' && 'C-suite entertaining, partner dinners, client hospitality.'}
-            {type === 'Dinner Home' && 'Intimate client dinners, small group hosting.'}
-            {type === 'Golfer Cottage' && 'Core group of golfers, low-key experience.'}
-            {type === 'Staff Housing' && 'Support staff, overflow, driver crews.'}
+            {type === 'Host Home' && 'Full-scale corporate hosting. Event space, catering kitchen, pool.'}
+            {type === 'Dinner Home' && 'C-suite entertaining, partner dinners, golf-focused hospitality.'}
+            {type === 'Sleeper Home' && 'Core group of golfers, comfortable sleeping accommodations.'}
+            {type === 'Staff Home' && 'Support staff, overflow, driver crews.'}
           </p>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(320, 1fr))', gap:20 }}>
             {props.map(p => <PropertyCard key={p.id} property={p} compact showAdd onAdd={onAddToProposal} />)}
@@ -731,7 +783,7 @@ function ProposalBuilderView({ agency }) {
           <div style={{ padding:'36px 40px 28px', borderBottom:`1px solid ${C.borderLight}`, background:`linear-gradient(135deg, ${agency.brandColor}08 0%, transparent 100%)` }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
               <div>
-                <div style={{ width:48, height:48, borderRadius:10, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:700, fontSize: agency.logoText.length > 2 ? 12 : 16, marginBottom:16 }}>{agency.logoText}</div>
+                <div style={{ width:48, height:48, borderRadius:10, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:700, fontSize:16, marginBottom:16 }}>{agency.logoText}</div>
                 <h3 style={{ fontSize:22, fontWeight:800, letterSpacing:'-0.03em', marginBottom:4 }}>Masters Week 2027 Proposal</h3>
                 <p style={{ fontSize:14, color:C.textSec }}>Prepared for {clientName || 'Your Client'} by {agency.agencyName}</p>
               </div>
@@ -831,6 +883,9 @@ function ProposalBuilderView({ agency }) {
 function AnalyticsView({ agency }) {
   const a = agency.analytics;
   const revenueGrowth = a.lastYearRevenue > 0 ? ((a.thisYearRevenue - a.lastYearRevenue) / a.lastYearRevenue * 100).toFixed(0) : null;
+  const totalHousing = agency.programs.reduce((sum, p) => sum + p.housing, 0);
+  const totalPM = agency.programs.reduce((sum, p) => sum + p.pm, 0);
+  const totalValue = agency.programs.reduce((sum, p) => sum + p.total, 0);
 
   return (
     <div style={{ maxWidth:900, margin:'0 auto' }}>
@@ -911,19 +966,21 @@ function AnalyticsView({ agency }) {
             </tr>
           </thead>
           <tbody>
-            <tr style={{ borderBottom:`1px solid ${C.borderLight}` }}>
-              <td style={{ padding:'14px 0', fontSize:14, fontWeight:600 }}>{agency.programName}</td>
-              <td style={{ textAlign:'right', fontSize:14, padding:'14px 0' }}>{fmt(agency.housing)}</td>
-              <td style={{ textAlign:'right', fontSize:14, padding:'14px 0' }}>{agency.pm > 0 ? fmt(agency.pm) : '—'}</td>
-              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{fmt(agency.total)}</td>
-              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, color:C.gold, padding:'14px 0' }}>{fmt(Math.round(agency.total * 0.15))}</td>
-            </tr>
+            {agency.programs.map((prog, i) => (
+              <tr key={prog.id} style={{ borderBottom:`1px solid ${C.borderLight}` }}>
+                <td style={{ padding:'14px 0', fontSize:14, fontWeight:600 }}>{prog.clientName}</td>
+                <td style={{ textAlign:'right', fontSize:14, padding:'14px 0' }}>{fmt(prog.housing)}</td>
+                <td style={{ textAlign:'right', fontSize:14, padding:'14px 0' }}>{prog.pm > 0 ? fmt(prog.pm) : '\u2014'}</td>
+                <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{fmt(prog.total)}</td>
+                <td style={{ textAlign:'right', fontSize:14, fontWeight:700, color:C.gold, padding:'14px 0' }}>{fmt(Math.round(prog.total * 0.15))}</td>
+              </tr>
+            ))}
             <tr>
               <td style={{ padding:'14px 0', fontSize:14, fontWeight:800 }}>Total</td>
-              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{fmt(agency.housing)}</td>
-              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{agency.pm > 0 ? fmt(agency.pm) : '—'}</td>
-              <td style={{ textAlign:'right', fontSize:16, fontWeight:800, padding:'14px 0' }}>{fmt(agency.total)}</td>
-              <td style={{ textAlign:'right', fontSize:16, fontWeight:800, color:C.gold, padding:'14px 0' }}>{fmt(Math.round(agency.total * 0.15))}</td>
+              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{fmt(totalHousing)}</td>
+              <td style={{ textAlign:'right', fontSize:14, fontWeight:700, padding:'14px 0' }}>{totalPM > 0 ? fmt(totalPM) : '\u2014'}</td>
+              <td style={{ textAlign:'right', fontSize:16, fontWeight:800, padding:'14px 0' }}>{fmt(totalValue)}</td>
+              <td style={{ textAlign:'right', fontSize:16, fontWeight:800, color:C.gold, padding:'14px 0' }}>{fmt(Math.round(totalValue * 0.15))}</td>
             </tr>
           </tbody>
         </table>
@@ -1049,7 +1106,7 @@ function SupportView() {
 
 function App() {
   const [activeView, setActiveView] = useState('dashboard');
-  const [activeAgency, setActiveAgency] = useState('delta');
+  const [activeAgency, setActiveAgency] = useState('wasserman');
   const [showSwitcher, setShowSwitcher] = useState(false);
 
   const agency = AGENCY_DATA[activeAgency];
@@ -1082,13 +1139,13 @@ function App() {
                   border:`1px solid ${C.border}`,
                 }}
               >
-                <div style={{ width:24, height:24, borderRadius:6, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontSize:9, fontWeight:700 }}>{agency.logoText.substring(0,2)}</div>
-                {agency.contactName} {agency.contactLastName}
+                <div style={{ width:24, height:24, borderRadius:6, background:agency.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontSize:9, fontWeight:700 }}>{agency.logoText}</div>
+                {agency.agencyName}
                 <span style={{ fontSize:10, marginLeft:4 }}>{showSwitcher ? '\u25B2' : '\u25BC'}</span>
               </button>
               {showSwitcher && (
                 <div style={{ position:'absolute', top:'100%', right:0, marginTop:6, background:C.surface, borderRadius:C.radius, border:`1px solid ${C.border}`, width:280, zIndex:100, overflow:'hidden', boxShadow:'0 8px 32px rgba(0,0,0,0.08)' }}>
-                  <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C.borderLight}`, fontSize:11, fontWeight:600, color:C.textTer, textTransform:'uppercase', letterSpacing:'0.06em' }}>Switch Account</div>
+                  <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C.borderLight}`, fontSize:11, fontWeight:600, color:C.textTer, textTransform:'uppercase', letterSpacing:'0.06em' }}>Switch Agency</div>
                   {Object.entries(AGENCY_DATA).map(([key, ag]) => (
                     <div
                       key={key}
@@ -1101,8 +1158,8 @@ function App() {
                     >
                       <div style={{ width:32, height:32, borderRadius:8, background:ag.brandColor, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontSize: ag.logoText.length > 2 ? 9 : 12, fontWeight:700 }}>{ag.logoText}</div>
                       <div>
-                        <div style={{ fontSize:13, fontWeight:700 }}>{ag.contactName} {ag.contactLastName}</div>
-                        <div style={{ fontSize:11, color:C.textSec }}>{ag.clientName} · {ag.contactTitle}</div>
+                        <div style={{ fontSize:13, fontWeight:700 }}>{ag.agencyName}</div>
+                        <div style={{ fontSize:11, color:C.textSec }}>{ag.contactName} {ag.contactLastName} · {ag.contactTitle}</div>
                       </div>
                     </div>
                   ))}

@@ -506,7 +506,7 @@
         id: 'PP-1001', address: '142 Berckmans Dr',
         beds: 7, baths: 5, sleeps: 18, nightlyRate: 5500,
         owner: 'Margaret Ashford', neighborhood: 'West Augusta',
-        type: 'Entertainer Home', distanceToGate6: 0.3,
+        type: 'Host Home', distanceToGate6: 0.3,
         status: 'available', mastersYears: 3, renter: 'Goldman Sachs',
         img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
         imgs: [
@@ -528,7 +528,7 @@
         id: 'PP-1002', address: '308 Wheeler Rd',
         beds: 5, baths: 3, sleeps: 12, nightlyRate: 3200,
         owner: 'Dr. Kevin & Amy Rhodes', neighborhood: 'National Hills',
-        type: 'Executive Retreat', distanceToGate6: 1.1,
+        type: 'Dinner Home', distanceToGate6: 1.1,
         status: 'available', mastersYears: 2, renter: 'Direct Booking',
         img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
         imgs: [
@@ -549,7 +549,7 @@
         id: 'PP-1003', address: '1547 Monte Sano Ave',
         beds: 6, baths: 4, sleeps: 14, nightlyRate: 4100,
         owner: 'William & June Parker', neighborhood: 'Summerville',
-        type: 'Entertainer Home', distanceToGate6: 1.8,
+        type: 'Host Home', distanceToGate6: 1.8,
         status: 'available', mastersYears: 2, renter: 'Berkshire Investment Group',
         img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
         imgs: [
@@ -570,7 +570,7 @@
         id: 'PP-1004', address: '2205 Henry St',
         beds: 4, baths: 2, sleeps: 8, nightlyRate: 1800,
         owner: 'James & Carol Bennett', neighborhood: 'Olde Town',
-        type: 'Golfer Cottage', distanceToGate6: 2.4,
+        type: 'Sleeper Home', distanceToGate6: 2.4,
         status: 'pending', mastersYears: 0, renter: 'Thompson Family (pending)',
         img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
         imgs: [
@@ -591,7 +591,7 @@
         id: 'PP-1005', address: '789 Milledge Rd',
         beds: 5, baths: 3, sleeps: 12, nightlyRate: 3400,
         owner: 'Robert & Linda Hayes', neighborhood: 'West Augusta',
-        type: 'Executive Retreat', distanceToGate6: 0.7,
+        type: 'Dinner Home', distanceToGate6: 0.7,
         status: 'available', mastersYears: 2, renter: 'Walsh Family',
         img: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&q=80',
         imgs: [
@@ -612,7 +612,7 @@
         id: 'PP-1006', address: '411 Cumming Rd',
         beds: 6, baths: 4, sleeps: 16, nightlyRate: 4200,
         owner: 'Daniel & Christine Moore', neighborhood: 'National Hills',
-        type: 'Entertainer Home', distanceToGate6: 0.9,
+        type: 'Host Home', distanceToGate6: 0.9,
         status: 'available', mastersYears: 2, renter: 'BlackRock',
         img: 'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80',
         imgs: [
@@ -654,7 +654,7 @@
         id: 'PP-1008', address: '1803 Highland Ave',
         beds: 5, baths: 3, sleeps: 12, nightlyRate: 3500,
         owner: 'Richard & Ellen Foster', neighborhood: 'Summerville',
-        type: 'Executive Retreat', distanceToGate6: 1.5,
+        type: 'Host Home', distanceToGate6: 1.5,
         status: 'available', mastersYears: 1, renter: 'Augusta University',
         img: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80',
         imgs: [
@@ -675,7 +675,7 @@
         id: 'PP-1009', address: '556 Berckmans Rd',
         beds: 7, baths: 6, sleeps: 20, nightlyRate: 5800,
         owner: 'Catherine Harwell', neighborhood: 'West Augusta',
-        type: 'Entertainer Home', distanceToGate6: 0.2,
+        type: 'Host Home', distanceToGate6: 0.2,
         status: 'available', mastersYears: 1, renter: 'Delta Air Lines',
         img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
         imgs: [
@@ -697,7 +697,7 @@
         id: 'PP-1010', address: '2100 Walton Way',
         beds: 3, baths: 2, sleeps: 6, nightlyRate: 2000,
         owner: 'Thomas & Maria Nguyen', neighborhood: 'Summerville',
-        type: 'Staff Housing', distanceToGate6: 1.9,
+        type: 'Staff Home', distanceToGate6: 1.9,
         status: 'available', mastersYears: 1, renter: 'Staff Overflow',
         img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80',
         imgs: [
@@ -718,30 +718,30 @@
 
     const COLLECTIONS = [
       {
-        key: 'entertainer', title: 'Built for Entertaining',
+        key: 'host', title: 'Host Homes',
         editorial: 'Full-scale hosting with catering kitchens, event-ready outdoor spaces, and room for your entire party.',
-        propertyIds: ['PP-1001', 'PP-1003', 'PP-1006', 'PP-1009'],
+        propertyIds: ['PP-1001', 'PP-1003', 'PP-1006', 'PP-1009', 'PP-1008'],
         layout: 'entertainer',
       },
       {
-        key: 'executive', title: 'Executive Retreats',
-        editorial: 'Refined finishes for C-suite gatherings and partner dinners.',
-        propertyIds: ['PP-1005', 'PP-1002', 'PP-1008'],
+        key: 'golfer', title: 'Dinner Homes',
+        editorial: 'Refined settings for golf groups, partner dinners, and executive retreats.',
+        propertyIds: ['PP-1002', 'PP-1005', 'PP-1007'],
         layout: 'grid',
       },
       {
         key: 'classic', title: 'Classic Augusta',
-        editorial: 'Intimate settings for small groups and dedicated golf crews.',
-        propertyIds: ['PP-1004', 'PP-1007', 'PP-1010'],
+        editorial: 'Intimate settings for small groups, sleeper homes, and staff support.',
+        propertyIds: ['PP-1004', 'PP-1010'],
         layout: 'grid',
       },
     ];
 
     const EXPERIENCE_TYPES = [
-      { key: 'entertainer', label: 'The Entertainer', types: ['Entertainer Home'] },
-      { key: 'executive', label: 'The Executive Retreat', types: ['Executive Retreat'] },
-      { key: 'golfer', label: "The Golfer's Lodge", types: ['Golfer Cottage', 'Dinner Home'] },
-      { key: 'staff', label: 'Staff Quarters', types: ['Staff Housing'] },
+      { key: 'host', label: 'Host Home', types: ['Host Home'] },
+      { key: 'golfer', label: 'Dinner Home', types: ['Dinner Home'] },
+      { key: 'sleeper', label: 'Sleeper Home', types: ['Sleeper Home'] },
+      { key: 'staff', label: 'Staff Home', types: ['Staff Home'] },
     ];
 
     const PARTY_SIZES = [
@@ -1010,7 +1010,7 @@
         if (priorities.walkingDistance) props = props.filter(p => p.walkingDistance);
         if (priorities.pool) props = props.filter(p => p.pool);
         if (priorities.chefKitchen) props = props.filter(p => ['Commercial Catering', 'Professional', 'Private Chef', 'Chef-Ready'].includes(p.kitchenTier));
-        if (priorities.multiProperty) props = props.filter(p => ['Entertainer Home', 'Staff Housing'].includes(p.type));
+        if (priorities.multiProperty) props = props.filter(p => ['Host Home', 'Staff Home'].includes(p.type));
         return new Set(props.map(p => p.id));
       }, [partySize, experienceType, priorities]);
 
@@ -1098,7 +1098,7 @@
                       ))}
                     </div>
 
-                    {collection.key === 'entertainer' && (
+                    {collection.key === 'host' && (
                       <div className="concierge-mobile">
                         <div style={{width:56,height:56,borderRadius:'50%',background:'var(--accent-light)',display:'inline-flex',alignItems:'center',justifyContent:'center',color:'var(--patron-green)',fontSize:'1.25rem',fontWeight:600,marginBottom:'1rem'}}>SM</div>
                         <div className="concierge-label">Your Masters Week Contact</div>

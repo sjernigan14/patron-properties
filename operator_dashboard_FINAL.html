@@ -43,25 +43,25 @@ const { useState, useMemo, useEffect } = React;
 
 /* ── Master Data: Properties ── */
 const PROPERTIES = [
-  { id:'PP-1001', address:'142 Berckmans Dr', beds:7, bath:5, rate:5500, owner:'Margaret Ashford', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.3 mi', renter:'Goldman Sachs / Mitchell', gross:38500, status:'booked', year:3 },
-  { id:'PP-1002', address:'308 Wheeler Rd', beds:5, bath:3, rate:3200, owner:'Dr. Kevin & Amy Rhodes', neighborhood:'National Hills', type:'Executive Retreat', distance:'1.1 mi', renter:'Dr. Kevin Rhodes local', gross:8400, status:'booked', year:2 },
-  { id:'PP-1003', address:'1547 Monte Sano Ave', beds:6, bath:4, rate:4100, owner:'William & June Parker', neighborhood:'Summerville', type:'Entertainer Home', distance:'1.8 mi', renter:'Berkshire / Kramer', gross:28700, status:'active', year:2 },
-  { id:'PP-1004', address:'2205 Henry St', beds:4, bath:2, rate:1800, owner:'James & Carol Bennett', neighborhood:'Olde Town', type:'Golfer Cottage', distance:'2.4 mi', renter:'Thompson Family (pending)', gross:9000, status:'prospect', year:0 },
-  { id:'PP-1005', address:'789 Milledge Rd', beds:5, bath:3, rate:3400, owner:'Robert & Linda Hayes', neighborhood:'West Augusta', type:'Executive Retreat', distance:'0.7 mi', renter:'Walsh Family', gross:10200, status:'booked', year:2 },
-  { id:'PP-1006', address:'411 Cumming Rd', beds:6, bath:4, rate:4200, owner:'Daniel & Christine Moore', neighborhood:'National Hills', type:'Entertainer Home', distance:'0.9 mi', renter:'BlackRock / Stone', gross:50400, status:'active', year:2 },
+  { id:'PP-1001', address:'142 Berckmans Dr', beds:7, bath:5, rate:5500, owner:'Margaret Ashford', neighborhood:'West Augusta', type:'Host Home', distance:'0.3 mi', renter:'Goldman Sachs / Mitchell', gross:38500, status:'booked', year:3 },
+  { id:'PP-1002', address:'308 Wheeler Rd', beds:5, bath:3, rate:3200, owner:'Dr. Kevin & Amy Rhodes', neighborhood:'National Hills', type:'Dinner Home', distance:'1.1 mi', renter:'Local group', gross:22400, status:'booked', year:2 },
+  { id:'PP-1003', address:'1547 Monte Sano Ave', beds:6, bath:4, rate:4100, owner:'William & June Parker', neighborhood:'Summerville', type:'Host Home', distance:'1.8 mi', renter:'Berkshire / Kramer', gross:28700, status:'active', year:2 },
+  { id:'PP-1004', address:'2205 Henry St', beds:4, bath:2, rate:1800, owner:'James & Carol Bennett', neighborhood:'Olde Town', type:'Sleeper Home', distance:'2.4 mi', renter:'Thompson Family (pending)', gross:9000, status:'prospect', year:0 },
+  { id:'PP-1005', address:'789 Milledge Rd', beds:5, bath:3, rate:3400, owner:'Robert & Linda Hayes', neighborhood:'West Augusta', type:'Dinner Home', distance:'0.7 mi', renter:'Walsh Family', gross:10200, status:'booked', year:2 },
+  { id:'PP-1006', address:'411 Cumming Rd', beds:6, bath:4, rate:4200, owner:'Daniel & Christine Moore', neighborhood:'National Hills', type:'Host Home', distance:'0.9 mi', renter:'Cabot / Wheeler', gross:29400, status:'active', year:2 },
   { id:'PP-1007', address:'925 Lake Olmstead Dr', beds:4, bath:3, rate:2200, owner:'Patricia & George Sullivan', neighborhood:'Lake Olmstead', type:'Dinner Home', distance:'2.1 mi', renter:'Morgan Stanley / Wells', gross:15400, status:'booked', year:1 },
-  { id:'PP-1008', address:'1803 Highland Ave', beds:5, bath:3, rate:3500, owner:'Richard & Ellen Foster', neighborhood:'Summerville', type:'Executive Retreat', distance:'1.5 mi', renter:'Augusta University', gross:17500, status:'active', year:1 },
-  { id:'PP-1009', address:'556 Berckmans Rd', beds:7, bath:6, rate:5800, owner:'Catherine Harwell', neighborhood:'West Augusta', type:'Entertainer Home', distance:'0.2 mi', renter:'Delta / Chen', gross:40600, status:'booked', year:1 },
-  { id:'PP-1010', address:'2100 Walton Way', beds:3, bath:2, rate:2000, owner:'Thomas & Maria Nguyen', neighborhood:'Summerville', type:'Staff Housing', distance:'1.9 mi', renter:'Staff overflow', gross:6000, status:'booked', year:1 },
+  { id:'PP-1008', address:'1803 Highland Ave', beds:5, bath:3, rate:3500, owner:'Richard & Ellen Foster', neighborhood:'Summerville', type:'Host Home', distance:'1.5 mi', renter:'Augusta University', gross:17500, status:'active', year:1 },
+  { id:'PP-1009', address:'556 Berckmans Rd', beds:7, bath:6, rate:5800, owner:'Catherine Harwell', neighborhood:'West Augusta', type:'Host Home', distance:'0.2 mi', renter:'Delta / Chen', gross:40600, status:'booked', year:1 },
+  { id:'PP-1010', address:'2100 Walton Way', beds:3, bath:2, rate:2000, owner:'Thomas & Maria Nguyen', neighborhood:'Summerville', type:'Staff Home', distance:'1.9 mi', renter:'Staff overflow', gross:6000, status:'booked', year:1 },
 ];
 
 /* ── Financial Constants ── */
 const FINANCIALS = {
-  totalRevenue: 351700,
-  housingRevenue: 224700,
-  pmRevenue: 127000,
-  patronCommission: 33705,
-  netToOwners: 190995,
+  totalRevenue: 382700,
+  housingRevenue: 217700,
+  pmRevenue: 165000,
+  patronCommission: 32655,
+  netToOwners: 185045,
   housingMargin: 94,
   pmMargin: 2.3,
   yoyGrowth: 18,
@@ -72,16 +72,10 @@ const FINANCIALS = {
 /* ── Pipeline Deals ── */
 const PIPELINE_DEALS = [
   { id:'D-2701', renter:'Delta Air Lines', contact:'Marcus Chen', total:40600, stage:'booked', days:2, priority:'high', property:'556 Berckmans Rd', pmValue:85000 },
-  { id:'D-2702', renter:'PGA of America', contact:'Sarah Mitchell', total:22400, stage:'contract', days:5, priority:'high', property:'142 Berkman Dr' },
-  { id:'D-2703', renter:'Rolex USA', contact:'James Park', total:28700, stage:'deposit', days:1, priority:'high', property:'1547 Monte Sano Ave' },
-  { id:'D-2704', renter:'Augusta Dental Group', contact:'Dr. Kevin Rhodes', total:19600, stage:'qualified', days:8, priority:'medium', property:'308 Wheeler Rd' },
   { id:'D-2705', renter:'Thompson Family', contact:'Linda Thompson', total:12600, stage:'property_visit', days:3, priority:'medium', property:'2205 Henry St' },
-  { id:'D-2706', renter:'Morgan Stanley', contact:'Patricia Wells', total:24500, stage:'contract', days:2, priority:'high', property:'411 Cumming Rd' },
-  { id:'D-2707', renter:'IBM Events', contact:'Raj Patel', total:0, stage:'inquiry', days:1, priority:'high' },
+  { id:'D-2706', renter:'Morgan Stanley', contact:'Patricia Wells', total:24500, stage:'contract', days:2, priority:'high', property:'925 Lake Olmstead Dr' },
   { id:'D-2708', renter:'Steve & Karen Walsh', contact:'Steve Walsh', total:17500, stage:'qualified', days:12, priority:'low', property:'789 Milledge Rd' },
-  { id:'D-2709', renter:'Coca-Cola Hospitality', contact:'Diana Flores', total:0, stage:'inquiry', days:4, priority:'medium' },
-  { id:'D-2710', renter:'Augusta University Med', contact:'Dr. Alan Foster', total:14000, stage:'property_visit', days:6, priority:'low', property:'1803 Highland Ave' },
-  { id:'D-2711', renter:'UBS Private Banking', contact:'Michael Kramer', total:15400, stage:'deposit', days:4, priority:'medium', property:'925 Lake Olmstead Dr' },
+  { id:'D-2710', renter:'Bennett / Thompson', contact:'James Bennett', total:9000, stage:'prospect', days:14, priority:'medium', property:'2205 Henry St' },
 ];
 
 const STAGE_LABELS = { inquiry:'Inquiry', qualified:'Qualified', property_visit:'Property Visit', contract:'Contract', deposit:'Deposit Paid', booked:'Booked' };
@@ -91,24 +85,24 @@ const STAGE_PROBS = { inquiry:0.10, qualified:0.25, property_visit:0.40, contrac
 const ATTENTION_ITEMS = [
   { severity:'red', title:'Bennett Property Stalled', detail:'PP-1004 — Contract stage, 12 days stale. James & Carol Bennett hesitant. Follow-up this week.', value:'$9,000 at risk', screen:'A-04', action:'Open Deal Pipeline' },
   { severity:'red', title:'Berkshire Deposit Pending', detail:'Michael Kramer / Berkshire Investment Group. 2-property program ($95.2K total). Deposit overdue.', value:'$53,200 housing', screen:'A-04', action:'Open Deal Pipeline' },
-  { severity:'amber', title:'Overdue Documents', detail:'3 deals missing required documents. PGA — insurance + payment. Morgan Stanley — insurance + payment.', value:'78% complete', screen:'A-05', action:'Open Document Tracker' },
-  { severity:'amber', title:'Unbooked Property', detail:'PP-1004 (Bennett, 2205 Henry St) — prospect not signed. Thompson Family booking depends on this.', value:'$9,000 at risk', screen:'A-04', action:'Open Deal Pipeline' },
-  { severity:'amber', title:'Gap Night Revenue', detail:'Shoulder nights unfilled across portfolio. BlackRock extended stay covers Apr 3-14 but 4 properties have Apr 3-4 open.', value:'~$14K potential', screen:'A-04', action:'View Calendar' },
+  { severity:'amber', title:'Prep Checklists Due Mar 15', detail:'All property prep checklists due in 2 weeks. Confirm staging, supplies, and vendor schedules across 10 properties.', value:'Upcoming deadline', screen:'A-05', action:'Open Document Tracker' },
+  { severity:'amber', title:'Cabot Program Review — Apr 1', detail:'Jackie coordinating Cabot program review with Sarah Wheeler. 2nd-year renewal, $67.4K total value.', value:'$67,400 program', screen:'A-04', action:'Open Deal Pipeline' },
+  { severity:'amber', title:'Elevate Prospect Meeting', detail:'Relationship-building meeting with Elevate prospect. Early-stage opportunity — nurture and qualify.', value:'Pipeline growth', screen:'A-04', action:'Open Deal Pipeline' },
 ];
 
 /* ── PM Programs ── */
 const PM_PROGRAMS = [
   { client:'Delta Air Lines', agency:'Wasserman', contact:'Marcus Chen', value:125600, housing:40600, pm:85000, status:'Booked — 3rd year', lead:'Jackie Keller / Elan Arc' },
-  { client:'Berkshire Investment Group', agency:'Internal', contact:'Michael Kramer', value:95200, housing:53200, pm:42000, status:'Contract — deposit pending', lead:'Jackie Keller / Elan Arc' },
+  { client:'Berkshire Investment Group', agency:'On Location', contact:'Michael Kramer', value:95200, housing:53200, pm:42000, status:'Contract — deposit pending', lead:'Jackie Keller / Elan Arc' },
+  { client:'Cabot', agency:'Direct (Jackie)', contact:'Sarah Wheeler', value:67400, housing:29400, pm:38000, status:'Booked — 2nd year', lead:'Jackie Keller / Élan Arc' },
 ];
 
 /* ── Home Type Counts ── */
 const HOME_TYPES = [
-  { type:'Entertainer', count:4, color:'#2d6a4f' },
-  { type:'Executive', count:3, color:'#1a2332' },
-  { type:'Dinner', count:1, color:'#D97706' },
-  { type:'Golfer', count:1, color:'#059669' },
-  { type:'Staff', count:1, color:'#6b7280' },
+  { type:'Host Home', count:5, color:'#2d6a4f' },
+  { type:'Dinner Home', count:3, color:'#1a2332' },
+  { type:'Sleeper Home', count:1, color:'#D97706' },
+  { type:'Staff Home', count:1, color:'#6b7280' },
 ];
 
 /* ── Season Milestones ── */
@@ -116,7 +110,7 @@ const MILESTONES = [
   { date:'Mar 15', label:'All prep checklists due', status:'upcoming', urgent:true },
   { date:'Apr 1', label:'Berkshire deposit due', status:'upcoming', urgent:true },
   { date:'This week', label:'Bennett follow-up call', status:'upcoming', urgent:true },
-  { date:'Apr 3', label:'BlackRock / Stone early arrival', status:'upcoming', urgent:false },
+  { date:'Apr 3', label:'Cabot early setup — Jackie coordinating', status:'upcoming', urgent:false },
   { date:'Apr 5-11', label:'Masters Tournament Week', status:'upcoming', urgent:false },
   { date:'Apr 12', label:'Post-event inspections begin', status:'future', urgent:false },
 ];
@@ -211,13 +205,13 @@ function AttentionCard({ item }) {
 /* ── Waterfall Chart ── */
 function WaterfallChart() {
   const steps = [
-    { label: 'Platform Revenue', value: 351700, type: 'total' },
-    { label: 'Housing Gross', value: 224700, type: 'segment' },
-    { label: 'PM Revenue', value: 127000, type: 'segment' },
-    { label: 'Patron Commission', value: -33705, type: 'subtract' },
-    { label: 'Net to Owners', value: 190995, type: 'result' },
+    { label: 'Platform Revenue', value: 382700, type: 'total' },
+    { label: 'Housing Gross', value: 217700, type: 'segment' },
+    { label: 'PM Revenue', value: 165000, type: 'segment' },
+    { label: 'Patron Commission', value: -32655, type: 'subtract' },
+    { label: 'Net to Owners', value: 185045, type: 'result' },
   ];
-  const maxVal = 351700;
+  const maxVal = 382700;
   return (
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 160, padding: '0 8px' }}>
       {steps.map((step, i) => {
@@ -383,7 +377,7 @@ function App() {
           <div style={{ display: 'flex', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
             <KPICard label="Total Platform Revenue" value={fmtFull(FINANCIALS.totalRevenue)} sub={`+${FINANCIALS.yoyGrowth}% vs 2026`} color="#1a2332" large />
             <KPICard label="Housing Revenue" value={fmtFull(FINANCIALS.housingRevenue)} sub={`Commission: ${fmtFull(FINANCIALS.patronCommission)}`} color="#2d6a4f" large />
-            <KPICard label="PM Revenue" value={fmtFull(FINANCIALS.pmRevenue)} sub="2 active programs" color="#3b82f6" large />
+            <KPICard label="PM Revenue" value={fmtFull(FINANCIALS.pmRevenue)} sub="3 active programs" color="#3b82f6" large />
             <KPICard label="Net to Owners" value={fmtFull(FINANCIALS.netToOwners)} sub="85% of housing gross" color="#059669" large />
           </div>
 
@@ -590,7 +584,7 @@ function App() {
                     <span style={{ fontSize: 12, fontWeight: 700, color: '#2d6a4f' }}>{fmtFull(p.value)}</span>
                   </div>
                 ))}
-                <div style={{ fontSize: 11, color: '#6b7280', marginTop: 8 }}>2 active programs &middot; {fmtFull(PM_PROGRAMS.reduce((s,p) => s+p.value, 0))} total value</div>
+                <div style={{ fontSize: 11, color: '#6b7280', marginTop: 8 }}>3 active programs &middot; {fmtFull(PM_PROGRAMS.reduce((s,p) => s+p.value, 0))} total value</div>
               </div>
 
               {/* Taite */}
@@ -604,7 +598,7 @@ function App() {
                 </div>
                 <div style={{ fontSize: 12, color: '#1a1a1a', lineHeight: 1.6 }}>
                   3 deals in active negotiation<br />
-                  Bennett follow-up, Berkshire deposit, Victoria Stone deposit<br />
+                  Bennett follow-up, Berkshire deposit, Cabot program review<br />
                   {PIPELINE_DEALS.filter(d => d.priority === 'high' && d.stage !== 'booked').length} high-priority items requiring attention
                 </div>
               </div>
